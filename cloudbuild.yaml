@@ -1,0 +1,22 @@
+steps:
+# Step 1: Build the Docker image
+# This step uses the standard Docker builder provided by Cloud Build.
+# It builds an image using the Dockerfile in the current directory (.)
+# and tags it as gcr.io/YOUR_PROJECT_ID/agenda-api:v1
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/cerberus-data-cloud/agenda-api:v1', '-f', 'cerberus_report_backend/Dockerfile', '.', '--no-cache']
+
+# Step 2 (Implicit): Push the image
+# By default, after a successful build, Cloud Build will try to push
+# any images specified in the 'images' section below.
+
+# List of images to be pushed to Artifact Registry (or GCR)
+images:
+- 'gcr.io/cerberus-data-cloud/agenda-api:v1'
+
+# Specify the service account for Cloud Build to use for executing these steps
+serviceAccount: 'projects/cerberus-data-cloud/serviceAccounts/cerberus-service-account@cerberus-data-cloud.iam.gserviceaccount.com'
+
+# Optional: You can also specify logging configuration if needed
+options:
+  logging: CLOUD_LOGGING_ONLY

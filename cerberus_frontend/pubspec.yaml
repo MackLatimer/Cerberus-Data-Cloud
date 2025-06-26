@@ -1,0 +1,39 @@
+name: flutter_project
+description: A new Flutter project.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  go_router: ^15.2.0
+  url_launcher: ^6.3.1
+  http: ^1.4.0
+  intl: ^0.20.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    # - assets/images/ # Will be removed
+    # - assets/fonts/ # Will be removed
+    - cerberus_frontend/assets/ # Ensure this path is listed for general assets
+
+  fonts:
+    - family: LeagueSpartan
+      fonts:
+        - asset: cerberus_frontend/assets/LeagueSpartan-VariableFont_wght.ttf
+          # weight: 700 # Variable font, weight can be controlled in TextStyle
+    - family: Signika
+      fonts:
+        - asset: cerberus_frontend/assets/Signika-VariableFont_GRAD,wght.ttf
+          # weight: 400 # Variable font, weight can be controlled in TextStyle
