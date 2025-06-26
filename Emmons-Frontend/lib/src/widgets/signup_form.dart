@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert'; // For jsonEncode
+import '../config.dart'; // Import the configuration file
 
 class SignupFormWidget extends StatefulWidget {
   const SignupFormWidget({super.key});
@@ -11,11 +14,108 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
   final _formKey = GlobalKey<FormState>();
   bool _endorseChecked = false;
   bool _getInvolvedChecked = false;
+  bool _isLoading = false; // To manage loading state
+
+  // Controllers for text fields to easily access their values
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _phoneController = TextEditingController();
+
+  Future<void> _submitForm() async {
+    if (!_formKey.currentState!.validate()) {
+      return; // Form is not valid
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    // Prepare data for submission
+    // This structure should align with what your backend expects.
+    // This is an example, assuming your backend /api/v1/signups or /api/v1/voters
+    // can handle these fields.
+    final signupData = {
+      'first_name': _firstNameController.text,
+      'last_name': _lastNameController.text,
+      'email_address': _emailController.text,
+      'phone_number': _phoneController.text.isNotEmpty ? _phoneController.text : null,
+      'campaign_id': currentCampaignId, // From config.dart
+      'interests': {
+        'wants_to_endorse': _endorseChecked,
+        'wants_to_get_involved': _getInvolvedChecked,
+      },
+      // You might also want to submit this as an interaction
+      // or have the backend create an interaction record.
+      // For example, an interaction of type 'Website Signup'.
+      'interaction_type': 'Website Signup',
+      'notes': 'Signed up via website form. Endorse: $_endorseChecked, Get Involved: $_getInvolvedChecked',
+    };
+
+    // Define the API endpoint.
+    // This could be a generic 'signups' endpoint or directly creating a 'voter'
+    // and logging an 'interaction'. For this example, let's assume a '/signups' endpoint.
+    // Adjust if your backend uses a different structure (e.g. /voters and then /interactions)
+    final url = Uri.parse('$apiBaseUrl/signups'); // Or perhaps '$apiBaseUrl/voters'
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(signupData),
+      ).timeout(const Duration(seconds: defaultNetworkTimeoutSeconds));
+
+      if (!mounted) return; // Check if the widget is still in the tree
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        // Successfully submitted
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Thank you for signing up!'), backgroundColor: Colors.green),
+        );
+        _formKey.currentState?.reset();
+        _firstNameController.clear();
+        _lastNameController.clear();
+        _emailController.clear();
+        _phoneController.clear();
+        setState(() {
+          _endorseChecked = false;
+          _getInvolvedChecked = false;
+        });
+      } else {
+        // Server returned an error
+        // You might want to parse response.body if it contains error details
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error submitting form: ${response.statusCode}. Please try again.'), backgroundColor: Colors.red),
+        );
+      }
+    } catch (e) {
+      // Network error or other exception
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('An error occurred: $e. Please check your connection and try again.'), backgroundColor: Colors.red),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controllers when the widget is disposed.
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    // final colorScheme = Theme.of(context).colorScheme;
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -27,6 +127,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
             Text('Join the Movement!', style: textTheme.titleMedium),
             const SizedBox(height: 20),
             TextFormField(
+              controller: _firstNameController,
               decoration: const InputDecoration(labelText: 'First Name'),
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -37,6 +138,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
             ),
             const SizedBox(height: 12),
             TextFormField(
+              controller: _lastNameController,
               decoration: const InputDecoration(labelText: 'Last Name'),
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -47,13 +149,14 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
             ),
             const SizedBox(height: 12),
             TextFormField(
+              controller: _emailController,
               decoration: const InputDecoration(labelText: 'Email'),
               keyboardType: TextInputType.emailAddress,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter your email';
                 }
-                if (!value.contains('@')) {
+                if (!value.contains('@') || !value.contains('.')) {
                   return 'Please enter a valid email';
                 }
                 return null;
@@ -61,6 +164,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
             ),
             const SizedBox(height: 12),
             TextFormField(
+              controller: _phoneController,
               decoration: const InputDecoration(labelText: 'Phone Number (Optional)'),
               keyboardType: TextInputType.phone,
             ),
@@ -89,18 +193,12 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
             ),
             const SizedBox(height: 24),
             Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    // Process data (placeholder)
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Processing Data... (Placeholder)')),
-                    );
-                    // TODO: Implement actual data submission logic
-                  }
-                },
-                child: const Text('Sign Up'),
-              ),
+              child: _isLoading
+                  ? const CircularProgressIndicator()
+                  : ElevatedButton(
+                      onPressed: _submitForm,
+                      child: const Text('Sign Up'),
+                    ),
             ),
           ],
         ),

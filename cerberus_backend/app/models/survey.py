@@ -1,0 +1,66 @@
+from ..extensions import db
+from .shared_mixins import TimestampMixin # Only created_at from schema for survey_questions
+# from sqlalchemy.dialects.postgresql import JSONB # Replaced with db.JSON
+# Use db.JSON for broader compatibility (SQLite, PostgreSQL etc.)
+
+class SurveyQuestion(db.Model): # Not using TimestampMixin if only created_at needed as per schema
+    __tablename__ = 'survey_questions'
+
+    question_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    campaign_id = db.Column(db.Integer, db.ForeignKey('campaigns.campaign_id', ondelete='CASCADE'), nullable=True) # Optional: campaign-specific
+    question_text = db.Column(db.Text, nullable=False)
+    question_type = db.Column(db.String(50), nullable=False) # e.g., 'Multiple Choice', 'Open Text', 'Rating Scale'
+    possible_answers = db.Column(db.JSON, nullable=True)
+
+    created_at = db.Column(db.DateTime(timezone=True), server_default=db.func.now())
+    # `updated_at` is not in the schema for this table.
+
+    # Relationships
+    campaign = db.relationship('Campaign', back_populates='survey_questions')
+    responses = db.relationship('SurveyResponse', back_populates='question', lazy='dynamic', cascade="all, delete-orphan")
+
+    def __repr__(self):
+        return f"<SurveyQuestion '{self.question_text[:30]}...' (ID: {self.question_id})>"
+
+    def to_dict(self):
+        return {
+            'question_id': self.question_id,
+            'campaign_id': self.campaign_id,
+            'question_text': self.question_text,
+            'question_type': self.question_type,
+            'possible_answers': self.possible_answers,
+            'created_at': self.created_at.isoformat() if self.created_at else None
+        }
+
+class SurveyResponse(db.Model): # Not using TimestampMixin as schema only has `responded_at` (effectively created_at for response)
+    __tablename__ = 'survey_responses'
+
+    response_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    interaction_id = db.Column(db.Integer, db.ForeignKey('interactions.interaction_id', ondelete='CASCADE'), nullable=True) # Link to interaction
+    voter_id = db.Column(db.Integer, db.ForeignKey('voters.voter_id', ondelete='CASCADE'), nullable=False, index=True)
+    question_id = db.Column(db.Integer, db.ForeignKey('survey_questions.question_id', ondelete='CASCADE'), nullable=False, index=True)
+
+    response_value = db.Column(db.Text, nullable=True) # For open text or single choice
+    response_values = db.Column(db.JSON, nullable=True) # For multiple selections
+
+    responded_at = db.Column(db.DateTime(timezone=True), server_default=db.func.now())
+    # `updated_at` is not in the schema for this table.
+
+    # Relationships
+    interaction = db.relationship('Interaction', back_populates='survey_responses')
+    voter = db.relationship('Voter', back_populates='survey_responses')
+    question = db.relationship('SurveyQuestion', back_populates='responses')
+
+    def __repr__(self):
+        return f"<SurveyResponse ID: {self.response_id} (Voter: {self.voter_id}, Question: {self.question_id})>"
+
+    def to_dict(self):
+        return {
+            'response_id': self.response_id,
+            'interaction_id': self.interaction_id,
+            'voter_id': self.voter_id,
+            'question_id': self.question_id,
+            'response_value': self.response_value,
+            'response_values': self.response_values,
+            'responded_at': self.responded_at.isoformat() if self.responded_at else None
+        }
