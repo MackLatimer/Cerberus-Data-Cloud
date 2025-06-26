@@ -1,6 +1,6 @@
 # Stage 1: Build the Flutter application
 # Using a specific newer version of cirrusci/flutter image
-FROM cirrusci/flutter:3.22.2 AS build
+FROM cirrusci/flutter:3.22.1 AS build
 
 # Set working directory for Flutter build
 WORKDIR /app_src
