@@ -1,132 +1,47 @@
-# Test Scraper (`test_scraper.py`)
+# Cerberus Multi-App Repository
 
-This document provides instructions on how to run the `test_scraper.py` script.
-The `test_scraper.py` script contains unit tests for the `scraper.py` module, which is responsible for scraping agenda data from municipality websites.
+This repository hosts a suite of applications designed for campaign management, voter data analysis, and public information dissemination. The system comprises multiple frontends and backends that work in conjunction.
 
-## Prerequisites
+## System Architecture
 
-Before running the tests, ensure you have the following installed:
+The Cerberus system is composed of the following main components:
 
-- Python 3.x
-- pip (Python package installer)
+1.  **`cerberus_campaigns_backend`**:
+    *   **Purpose**: This is the central backend for managing voter data, campaign information, interactions, and surveys.
+    *   **Technology**: Python (Flask), SQLAlchemy.
+    *   **Connections**:
+        *   Accessed by `emmons_frontend` for campaign-specific interactions.
+        *   Accessed by `cerberus_frontend` for data upload, viewing, and administrative tasks related to campaign data.
 
-## Setting up the Environment
+2.  **`emmons_frontend`**:
+    *   **Purpose**: A Flutter-based web application representing a specific campaign frontend (e.g., for a candidate named Emmons). It allows users (e.g., volunteers, campaign staff) to interact with voter data relevant to that campaign.
+    *   **Technology**: Flutter.
+    *   **Connections**:
+        *   Connects to `cerberus_campaigns_backend` to fetch and submit campaign-specific data. The backend URL is configured in `lib/src/config.dart` (currently `http://127.0.0.1:5001/api/v1`).
 
-1.  **Clone the repository (if you haven't already):**
-    ```bash
-    git clone <repository_url>
-    cd <repository_directory>
-    ```
-    *(Replace `<repository_url>` and `<repository_directory>` with the actual URL and directory name.)*
+3.  **`cerberus_frontend`**:
+    *   **Purpose**: A Flutter-based web application with multiple roles:
+        *   **Data Portal**: Provides a user interface for uploading new data (e.g., voter lists) and viewing existing data stored in the `cerberus_campaigns_backend`.
+        *   **Cerberus Report Page**: A frontend for the `cerberus_report_backend`, allowing users to search and view publicly available agenda items from municipalities.
+    *   **Technology**: Flutter.
+    *   **Connections**:
+        *   Connects to `cerberus_campaigns_backend` for data management functionalities (specific API endpoints for this connection need to be defined/verified within the frontend's data services).
+        *   Connects to `cerberus_report_backend` for the "Cerberus Report" feature. The backend URL is configured in `lib/pages/report/report_page.dart` (currently `https://agenda-api-service-885603051818.us-south1.run.app`).
 
-2.  **Install dependencies:**
-    Navigate to the root directory of the project. The backend dependencies are defined in `cerberus_report_backend/requirements.txt`. Run the following command to install them:
-    ```bash
-    pip install -r cerberus_report_backend/requirements.txt
-    ```
+4.  **`cerberus_report_backend`**:
+    *   **Purpose**: This backend scrapes, stores, and provides an API for public municipal agenda items. It also handles user subscriptions for notifications about new agenda items.
+    *   **Technology**: Python (Flask), Google Cloud SQL (PostgreSQL).
+    *   **Connections**:
+        *   Accessed by `cerberus_frontend` (Report Page) to display agenda data and manage subscriptions.
 
-## Running the Tests
+## Directory Structure
 
-Once the environment is set up, you can run the tests using the following commands from the root directory of the project:
+*   `cerberus_campaigns_backend/`: Contains the Flask backend for campaign and voter data.
+*   `cerberus_frontend/`: Contains the Flutter frontend for the data portal and Cerberus Report page.
+*   `cerberus_report_backend/`: Contains the Flask backend for scraping and serving public agenda data.
+*   `emmons_frontend/`: Contains the Flutter frontend for a specific campaign.
+*   `cloudbuild.yaml`: Configuration for Google Cloud Build.
 
-```bash
-python -m unittest cerberus_report_backend/test_scraper.py
-```
-(You can also run `python -m unittest cerberus_report_backend/test_notification_sender.py` for the notification sender tests).
+## Getting Started
 
-## Configuration
-
-The `scraper.py` script, which `test_scraper.py` tests, relies on the `DATABASE_URL` environment variable for connecting to the database.
-
-For the purpose of `test_scraper.py`, the database connection (`scraper.get_db_connection`) is mocked. Therefore, you **do not** need to set up the `DATABASE_URL` environment variable specifically to run these unit tests.
-
-However, if you intend to run the main `scraper.py` script or other parts of the application that depend on a database connection, ensure that `DATABASE_URL` is properly configured in your environment. (Note: `api.py` and `notification_sender.py` use individual Google Cloud SQL connector environment variables instead of `DATABASE_URL`).
-
-## Interpreting Test Results
-
-After running the tests, `unittest` will provide output indicating the status of each test:
-
--   **OK:** All tests passed successfully. You'll typically see a message like `OK` at the end, along with the number of tests run.
--   **FAILURES/ERRORS:** If any tests fail or encounter errors, `unittest` will detail them. It will show which tests failed, the reason for failure (e.g., assertion errors), and a traceback for errors.
-
-Example of a successful output:
-
-```
-.
-----------------------------------------------------------------------
-Ran 1 test in 0.001s
-
-OK
-```
-*(The number of dots usually corresponds to the number of tests executed.)*
-
-If there are failures, the output will look something like this (example):
-
-```
-F.
-======================================================================
-FAIL: test_example_failure (test_module.TestClassName)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/path/to/your/test_module.py", line XX, in test_example_failure
-    self.assertEqual(1, 2)
-AssertionError: 1 != 2
-
-----------------------------------------------------------------------
-Ran 2 tests in 0.002s
-
-FAILED (failures=1)
-```
-Pay attention to the messages to understand which specific tests did not pass and why.
-
----
-
-# Email Notification Feature (`notification_sender.py`)
-
-The `notification_sender.py` script is responsible for sending email notifications to users who have subscribed to updates based on specific filter criteria. It queries the database for new agenda items matching user subscriptions and uses SendGrid to dispatch emails.
-
-## Environment Variables
-
-For `notification_sender.py` to function correctly, the following environment variables must be set:
-
--   **`SENDGRID_API_KEY`**: Your API key for the SendGrid service. This is required to send emails.
--   **`SENDER_EMAIL`**: The email address from which notifications will be sent (e.g., `notifications@yourdomain.com`). This must be a verified sender in SendGrid.
--   **`INSTANCE_CONNECTION_NAME`**: The connection name for your Google Cloud SQL instance (e.g., `your-project:your-region:your-instance`).
--   **`DB_USER`**: The username for the database connection.
--   **`DB_PASS`**: The password for the database user.
--   **`DB_NAME`**: The name of the database.
--   **`APP_BASE_URL`**: (Optional) The base URL of your frontend application (e.g., `https://www.yourapp.com`). This defaults to `http://localhost:3000` if not set. It's used for constructing links back to your application in the notification emails.
-
-## Scheduling `notification_sender.py`
-
-The `notification_sender.py` script needs to be run periodically to check for new agenda items and send out notifications. Here are a few common ways to schedule its execution:
-
-1.  **Cron Job:**
-    If you have a server (e.g., a Compute Engine VM), you can set up a cron job.
-    Example cron entry to run the script daily at 3 AM:
-    ```cron
-    0 3 * * * /usr/bin/python3 /path/to/your/project/cerberus_report_backend/notification_sender.py >> /path/to/your/project/logs/notification_sender.log 2>&1
-    ```
-    Ensure the Python interpreter path and script path are correct. Logging output is recommended.
-
-2.  **Google Cloud Scheduler & Cloud Run/Cloud Functions:**
-    A more serverless approach is to use Google Cloud Scheduler to trigger a job.
-    -   **Cloud Run:** Package your Python application (including `notification_sender.py`) into a Docker container. Create a Cloud Run job (not a service) that executes `python notification_sender.py`. Trigger this job using Cloud Scheduler.
-    -   **Cloud Functions (2nd gen):** Deploy a Python Cloud Function that wraps the logic of `notification_sender.py`. Trigger this function using Cloud Scheduler. This is suitable if the script's execution time fits within Cloud Function limits.
-
-    This approach benefits from managed execution and easier integration with other Google Cloud services.
-
-## Dependencies
-
-The notification feature introduced the following major dependency:
--   `sendgrid`: This Python library is used to interact with the SendGrid API for sending emails. It has been added to the `cerberus_report_backend/requirements.txt` file.
-
-Remember to install or update dependencies if you are deploying this feature:
-```bash
-pip install -r cerberus_report_backend/requirements.txt
-```
-
-Unit tests for this feature can be run with:
-```bash
-python -m unittest cerberus_report_backend/test_notification_sender.py
-```
+Each application directory (`cerberus_campaigns_backend`, `cerberus_frontend`, `cerberus_report_backend`, `emmons_frontend`) contains its own `README.md` file with specific setup instructions, dependencies, and usage guidelines. Please refer to those for details on how to run each component.
