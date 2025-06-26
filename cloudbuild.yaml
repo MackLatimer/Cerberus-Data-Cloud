@@ -1,55 +1,50 @@
 steps:
-steps:
-# Step 1: Build the Docker image for cerberus_report_backend (agenda-api)
-- name: 'gcr.io/cloud-builders/docker'
-  id: 'build-report-backend'
-  args: [
-    'build',
-    '-t', 'gcr.io/cerberus-data-cloud/agenda-api:v1',
-    '-f', 'cerberus_report_backend/Dockerfile',
-    '.', # Build context is the root of the repository
-    '--no-cache'
-  ]
+  # Step 1: Build the Docker image for cerberus_report_backend (agenda-api)
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build-report-backend'
+    args: [
+      'build',
+      '-t', 'gcr.io/cerberus-data-cloud/agenda-api:v1',
+      '-f', 'cerberus_report_backend/Dockerfile',
+      '.', # Build context is the root of the repository
+      '--no-cache'
+    ]
 
-# Step 2: Build the Docker image for cerberus_campaigns_backend (campaigns-api)
-- name: 'gcr.io/cloud-builders/docker'
-  id: 'build-campaigns-backend'
-  args: [
-    'build',
-    '-t', 'gcr.io/cerberus-data-cloud/campaigns-api:v1',
-    '-f', 'cerberus_campaigns_backend/Dockerfile', # Use the Dockerfile in its specific directory
-    '.', # Build context is the root of the repository
-    '--no-cache'
-  ]
+  # Step 2: Build the Docker image for cerberus_campaigns_backend (campaigns-api)
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build-campaigns-backend'
+    args: [
+      'build',
+      '-t', 'gcr.io/cerberus-data-cloud/campaigns-api:v1',
+      '-f', 'cerberus_campaigns_backend/Dockerfile', # Use the Dockerfile in its specific directory
+      '.', # Build context is the root of the repository
+      '--no-cache'
+    ]
 
-    '.', # Build context is the root of the repository
-    '--no-cache'
-  ]
-
-# Step 3: Build the Docker image for emmons_frontend (web-frontend)
-- name: 'gcr.io/cloud-builders/docker'
-  id: 'build-emmons-frontend'
-  args: [
-    'build',
-    '-t', 'gcr.io/cerberus-data-cloud/emmons-frontend:v1',
-    '-f', 'emmons_frontend/Dockerfile', # Use the Dockerfile in its specific directory
-    '.', # Build context is the root of the repository
-    '--no-cache'
-  ]
-  # This step depends on the previous steps if build artifacts from them were needed,
-  # but Docker builds are generally independent unless sharing context in complex ways.
-  # For clarity, no explicit waitFor needed here as they build different things from root context.
+  # Step 3: Build the Docker image for emmons_frontend (web-frontend)
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build-emmons-frontend'
+    args: [
+      'build',
+      '-t', 'gcr.io/cerberus-data-cloud/emmons-frontend:v1',
+      '-f', 'emmons_frontend/Dockerfile', # Use the Dockerfile in its specific directory
+      '.', # Build context is the root of the repository
+      '--no-cache'
+    ]
+    # This step depends on the previous steps if build artifacts from them were needed,
+    # but Docker builds are generally independent unless sharing context in complex ways.
+    # For clarity, no explicit waitFor needed here as they build different things from root context.
 
 # List of images to be pushed to Artifact Registry (or GCR)
 # Cloud Build will push these images after all build steps complete successfully.
 images:
-- 'gcr.io/cerberus-data-cloud/agenda-api:v1'
-- 'gcr.io/cerberus-data-cloud/campaigns-api:v1'
-- 'gcr.io/cerberus-data-cloud/emmons-frontend:v1'
+  - 'gcr.io/cerberus-data-cloud/agenda-api:v1'
+  - 'gcr.io/cerberus-data-cloud/campaigns-api:v1'
+  - 'gcr.io/cerberus-data-cloud/emmons-frontend:v1'
 
 # Specify the service account for Cloud Build to use for executing these steps
 serviceAccount: 'projects/cerberus-data-cloud/serviceAccounts/cerberus-service-account@cerberus-data-cloud.iam.gserviceaccount.com'
 
 # Optional: You can also specify logging configuration if needed
 options:
-  logging: CLOUD_LOGGING_ONLY
+  logging: CLOUD_LOGGING_ONLYCloud
