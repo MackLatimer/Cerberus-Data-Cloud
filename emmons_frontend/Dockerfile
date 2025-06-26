@@ -1,5 +1,6 @@
 # Stage 1: Build the Flutter application
-FROM europe-west1-docker.pkg.dev/flutter-community/images/flutter-docker/flutter:stable AS build
+# Using a public image from Docker Hub like cirrusci/flutter
+FROM cirrusci/flutter:stable AS build
 
 # Set working directory for Flutter build
 WORKDIR /app_src
