@@ -1,10 +1,12 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
+from flask_cors import CORS # Import CORS
 
 db = SQLAlchemy()
 migrate = Migrate()
 bcrypt = Bcrypt()
+cors = CORS() # Initialize CORS
 
 # If you add other extensions, initialize them here
 # e.g., from flask_mail import Mail
@@ -17,6 +19,7 @@ def init_extensions(app):
     db.init_app(app)
     migrate.init_app(app, db) # Initialize Flask-Migrate
     bcrypt.init_app(app)
+    cors.init_app(app, resources={r"/api/*": {"origins": "*"}}) # Initialize CORS for all /api/* routes
     # mail.init_app(app) # if using Flask-Mail
 
     # For Flask-Migrate, it's good practice to ensure models are imported

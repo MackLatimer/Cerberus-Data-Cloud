@@ -9,3 +9,4 @@ PyJWT==2.8.0 # For token-based authentication (optional, but good for APIs)
 gunicorn==21.2.0 # WSGI server for deployment
 pytest==7.4.4 # For running tests
 pytest-flask==1.3.0 # For Flask specific test fixtures
+Flask-CORS==4.0.0 # For Cross-Origin Resource Sharing
