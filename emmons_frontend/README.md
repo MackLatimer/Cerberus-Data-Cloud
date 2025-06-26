@@ -92,9 +92,18 @@ The output will be placed in the `build/web` directory. These files can then be 
 ## Key Configuration Points
 
 *   **API Base URL**: `lib/src/config.dart` -> `apiBaseUrl`
+    *   For local development, this is set to `http://127.0.0.1:5001/api/v1`.
+    *   **For GCP Deployment**: Before building the frontend for deployment (e.g., via Cloud Build), you **MUST** update this `apiBaseUrl` to the URL of your deployed `campaigns-api` Cloud Run service. For example:
+        ```dart
+        // const String apiBaseUrl = 'http://127.0.0.1:5001/api/v1'; // Local
+        const String apiBaseUrl = 'https://campaigns-api-YOUR_SERVICE_HASH-REGION.a.run.app/api/v1'; // Deployed
+        ```
+        Replace `https://campaigns-api-YOUR_SERVICE_HASH-REGION.a.run.app` with the actual URL provided by Cloud Run for your `campaigns-api` service.
+        Future improvements might involve a runtime configuration mechanism (e.g., loading a `config.json`) to avoid manual changes before each build for different environments.
 *   **Campaign ID**: `lib/src/config.dart` -> `currentCampaignId`
+    *   Ensure this ID matches an existing campaign in the `cerberus_campaigns_backend` database.
 
-Ensure these are correctly set for your development or production environment. The `currentCampaignId` must correspond to an existing campaign record in the `cerberus_campaigns_backend` database.
+Ensure these are correctly set for your development or production environment.
 
 ## Development Notes
 
