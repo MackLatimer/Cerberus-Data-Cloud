@@ -65,24 +65,19 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - CurtisEmmonsRepublicanPrimarySquare.png
-    - assets/
-    - assets/fonts/
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
-
-  # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/assets-and-images/#resolution-aware
-
-  # For details regarding adding assets from package dependencies, see
-  # https://flutter.dev/assets-and-images/#from-packages
+    - assets/ # This will include emmons_frontend/assets/CurtisEmmonsRepublicanPrimarySquare.png
+              # and any other files directly under emmons_frontend/assets/
+    - assets/fonts/ # This will include emmons_frontend/assets/fonts/BebasNeue-Regular.ttf
+                    # and any other files directly under emmons_frontend/assets/fonts/
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
-  # fonts:
+  # list giving the asset and other descriptors for the font.
+  fonts:
+    - family: BebasNeue
+      fonts:
+        - asset: assets/fonts/BebasNeue-Regular.ttf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
