@@ -1,10 +1,11 @@
 // Configuration for the application
 
-// TODO: Replace with your actual backend API URL
+// Configuration for the application
+
 // For local development with Flask backend running on port 5001:
-const String apiBaseUrl = 'http://127.0.0.1:5001/api/v1';
+// const String apiBaseUrl = 'http://127.0.0.1:5001/api/v1';
 // Example for a deployed backend:
-// const String apiBaseUrl = 'https://your-backend-service-url.com/api/v1';
+const String apiBaseUrl = 'https://campaigns-api-885603051818.us-south1.run.app/api/v1';
 
 // Campaign ID for this specific frontend instance.
 // This might be useful if the backend needs to know which campaign site is making the request.
