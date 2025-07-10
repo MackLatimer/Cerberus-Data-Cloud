@@ -28,7 +28,7 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       leading: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Image.asset('CurtisEmmonsRepublicanPrimarySquare.png'), // Logo
+        child: Image.asset('assets/CurtisEmmonsRepublicanPrimarySquare.png'), // Logo
       ),
       title: Text(title, style: textTheme.titleLarge?.copyWith(color: Colors.white)),
       automaticallyImplyLeading: false, // No back button for top-level pages
