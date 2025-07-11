@@ -13,11 +13,12 @@ steps:
   # Step 2: Build the Docker image for cerberus_campaigns_backend (campaigns-api)
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build-campaigns-backend'
+    dir: 'cerberus_campaigns_backend' # Change working directory to the backend's root
     args: [
       'build',
       '-t', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:v1', # Updated to Artifact Registry
-      '-f', 'cerberus_campaigns_backend/Dockerfile', # Use the Dockerfile in its specific directory
-      '.', # Build context is the root of the repository
+      '-f', 'Dockerfile', # Dockerfile is now in the current context
+      '.', # Build context is now cerberus_campaigns_backend
       '--no-cache'
     ]
 
