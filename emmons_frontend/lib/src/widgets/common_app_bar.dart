@@ -18,7 +18,7 @@ class CommonAppBar extends StatefulWidget implements PreferredSizeWidget {
   _CommonAppBarState createState() => _CommonAppBarState();
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => Size.fromHeight(kToolbarHeight * 4); // Increased preferred height
 }
 
 class _CommonAppBarState extends State<CommonAppBar> {
@@ -97,8 +97,8 @@ class _CommonAppBarState extends State<CommonAppBar> {
       leading: Padding(
         padding: const EdgeInsets.all(4.0), // Reduced padding to allow more space for the logo
         child: SizedBox( // Added SizedBox to explicitly control logo size
-          height: kToolbarHeight * 0.8, // Make logo height 80% of AppBar height
-          width: kToolbarHeight * 2.5, // Adjust width as needed for aspect ratio
+          height: kToolbarHeight * 3.2, // Make logo height 320% of original AppBar height factor
+          width: kToolbarHeight * 10, // Adjust width to maintain aspect ratio
           child: SvgPicture.asset(
             'assets/Emmons_Logo_4_TP.svg',
             semanticsLabel: 'Curtis Emmons for Bell County Commissioner Precinct 4 Logo',
@@ -132,5 +132,5 @@ class _CommonAppBarState extends State<CommonAppBar> {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => Size.fromHeight(kToolbarHeight * 4); // Increased preferred height
 }

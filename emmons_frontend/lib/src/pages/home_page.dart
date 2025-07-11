@@ -24,6 +24,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true, // Ensure body content goes behind AppBar
       appBar: CommonAppBar(
         title: 'Curtis Emmons for Bell County Precinct 4',
         scrollController: _scrollController,
