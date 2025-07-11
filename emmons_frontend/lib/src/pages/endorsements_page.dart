@@ -3,24 +3,56 @@ import 'package:candidate_website/src/widgets/common_app_bar.dart';
 import 'package:candidate_website/src/widgets/signup_form.dart';
 import 'package:candidate_website/src/widgets/donate_button.dart';
 
-class EndorsementsPage extends StatelessWidget {
+class EndorsementsPage extends StatefulWidget {
   const EndorsementsPage({super.key});
+
+  @override
+  _EndorsementsPageState createState() => _EndorsementsPageState();
+}
+
+class _EndorsementsPageState extends State<EndorsementsPage> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CommonAppBar(title: 'Endorsements'),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24.0),
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 800),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Text(
-                  'Endorse Curtis Emmons',
-                  style: Theme.of(context).textTheme.headlineMedium,
+      appBar: CommonAppBar(
+        title: 'Endorsements',
+        scrollController: _scrollController,
+      ),
+      body: CustomScrollView( // Changed to CustomScrollView
+        controller: _scrollController,
+        slivers: <Widget>[
+          SliverToBoxAdapter(
+            child: Container(
+              height: 300, // Height of the hero image
+              color: Colors.grey[300], // Placeholder color
+              child: Center(
+                child: Text(
+                  'Hero Image: Endorsements', // Placeholder text
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+              ),
+            ),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.all(24.0),
+            sliver: SliverToBoxAdapter(
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 800),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Text(
+                        'Endorse Curtis Emmons',
+                        style: Theme.of(context).textTheme.headlineMedium,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 20),
@@ -45,6 +77,9 @@ class EndorsementsPage extends StatelessWidget {
             ),
           ),
         ),
+            ),
+          ),
+        ],
       ),
     );
   }
