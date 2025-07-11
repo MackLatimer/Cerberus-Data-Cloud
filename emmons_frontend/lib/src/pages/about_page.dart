@@ -23,7 +23,7 @@ class _AboutPageState extends State<AboutPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CommonAppBar(
-        title: 'About Curtis Emmons',
+        title: 'About Me', // Changed title
         scrollController: _scrollController,
       ),
       body: CustomScrollView( // Changed to CustomScrollView
