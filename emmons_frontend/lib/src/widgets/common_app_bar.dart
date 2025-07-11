@@ -100,7 +100,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
           );
         }).toList(),
         // Allow for additional actions to be passed if needed
-        if (actions != null) ...actions!,
+        if (widget.actions != null) ...widget.actions!, // Changed to widget.actions
         const SizedBox(width: 16), // Add some spacing at the end
       ],
     );

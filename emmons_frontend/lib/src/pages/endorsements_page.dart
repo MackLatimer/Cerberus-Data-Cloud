@@ -140,8 +140,9 @@ class _EndorsementsPageState extends State<EndorsementsPage> {
       children: endorsers.map((name) => Chip(
         label: Text(name, style: textTheme.labelLarge),
         backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
-        side: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
-      )).toList(),
+        side: BorderSide(color: Theme.of(context).colorScheme.outlineVariant), // Added trailing comma
+      ), // Added trailing comma
+      ).toList(),
     );
   }
 }
