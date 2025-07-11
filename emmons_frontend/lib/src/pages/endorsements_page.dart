@@ -115,7 +115,6 @@ class _EndorsementsPageState extends State<EndorsementsPage> {
                   ),
                 ),
               ),
-        ),
             ),
           ),
         ],
