@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:candidate_website/src/widgets/common_app_bar.dart';
 import 'package:candidate_website/src/widgets/signup_form.dart';
 import 'package:candidate_website/src/widgets/donate_button.dart';
+import 'package:candidate_website/src/widgets/footer.dart'; // Import the Footer widget
 
 class IssuesPage extends StatefulWidget {
   const IssuesPage({super.key});
@@ -93,7 +94,7 @@ class _IssuesPageState extends State<IssuesPage> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
                       Text(
-                        'Key Issues Facing Bell County Precinct 4',
+                        'Issues', // Changed text here
                         style: Theme.of(context).textTheme.headlineMedium,
                   textAlign: TextAlign.center,
                 ),
@@ -133,6 +134,7 @@ class _IssuesPageState extends State<IssuesPage> {
         ),
             ),
           ),
++          const SliverToBoxAdapter(child: Footer()), // Add Footer here
         ],
       ),
     );

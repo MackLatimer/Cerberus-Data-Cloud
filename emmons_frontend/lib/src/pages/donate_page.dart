@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:candidate_website/src/widgets/common_app_bar.dart';
 import 'package:candidate_website/src/widgets/donate_button.dart'; // Re-using for consistency
 // import 'package:url_launcher/url_launcher.dart'; // For actual donation link later
+import 'package:candidate_website/src/widgets/footer.dart'; // Import the Footer widget
 
 class DonatePage extends StatefulWidget {
   const DonatePage({super.key});
@@ -18,6 +19,7 @@ class _DonatePageState extends State<DonatePage> {
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _addressController = TextEditingController();
+  final _addressLine2Controller = TextEditingController(); // New controller for Address Line 2
   final _cityController = TextEditingController();
   final _stateController = TextEditingController();
   final _zipController = TextEditingController();
@@ -26,12 +28,17 @@ class _DonatePageState extends State<DonatePage> {
   final _employerController = TextEditingController();
   final _occupationController = TextEditingController();
 
+  // State variables for checkboxes
+  bool _agreedToMessaging = false;
+  bool _agreedToEmails = false;
+
   @override
   void dispose() {
     _scrollController.dispose();
     _firstNameController.dispose();
     _lastNameController.dispose();
     _addressController.dispose();
+    _addressLine2Controller.dispose(); // Dispose new controller
     _cityController.dispose();
     _stateController.dispose();
     _zipController.dispose();
@@ -152,6 +159,7 @@ class _DonatePageState extends State<DonatePage> {
         ),
             ),
           ),
++          const SliverToBoxAdapter(child: Footer()), // Add Footer here
         ],
       ),
     );
@@ -172,26 +180,45 @@ class _DonatePageState extends State<DonatePage> {
           _buildTextFormField(label: 'First Name', controller: _firstNameController, isRequired: true),
           _buildTextFormField(label: 'Last Name', controller: _lastNameController, isRequired: true),
           _buildTextFormField(label: 'Street Address', controller: _addressController, isRequired: true),
+          _buildTextFormField(label: 'Address Line 2', controller: _addressLine2Controller), // Added Address Line 2
           _buildTextFormField(label: 'City', controller: _cityController, isRequired: true),
           _buildTextFormField(label: 'State', controller: _stateController, isRequired: true),
           _buildTextFormField(label: 'ZIP Code', controller: _zipController, isRequired: true, keyboardType: TextInputType.number),
           _buildTextFormField(label: 'Email', controller: _emailController, isRequired: true, keyboardType: TextInputType.emailAddress),
           _buildTextFormField(label: 'Phone Number', controller: _phoneController, keyboardType: TextInputType.phone),
           const SizedBox(height: 16),
-           Text(
-            'For campaign finance reporting purposes (optional but appreciated):',
-            style: Theme.of(context).textTheme.bodySmall,
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 8),
+          // Removed 'For campaign finance reporting purposes...' text
           _buildTextFormField(label: 'Employer', controller: _employerController),
           _buildTextFormField(label: 'Occupation', controller: _occupationController),
+          const SizedBox(height: 16),
+          CheckboxListTile(
+            title: Text('I agree to receive automated messaging from Elect Emmons', style: Theme.of(context).textTheme.bodyMedium),
+            value: _agreedToMessaging,
+            onChanged: (bool? value) {
+              setState(() {
+                _agreedToMessaging = value ?? false;
+              });
+            },
+            controlAffinity: ListTileControlAffinity.leading,
+            contentPadding: EdgeInsets.zero,
+          ),
+          CheckboxListTile(
+            title: Text('I agree to receive emails from Elect Emmons', style: Theme.of(context).textTheme.bodyMedium),
+            value: _agreedToEmails,
+            onChanged: (bool? value) {
+              setState(() {
+                _agreedToEmails = value ?? false;
+              });
+            },
+            controlAffinity: ListTileControlAffinity.leading,
+            contentPadding: EdgeInsets.zero,
+          ),
           const SizedBox(height: 24),
           ElevatedButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 // Process data - for now, just print or show a dialog
-                _showDonationDataDialog();
+                _showDonationDataDialog(); // This will also need to include new checkbox values
               }
             },
             style: ElevatedButton.styleFrom(
@@ -249,6 +276,7 @@ class _DonatePageState extends State<DonatePage> {
       'First Name': _firstNameController.text,
       'Last Name': _lastNameController.text,
       'Address': _addressController.text,
+      'Address Line 2': _addressLine2Controller.text, // Added Address Line 2
       'City': _cityController.text,
       'State': _stateController.text,
       'ZIP': _zipController.text,
@@ -256,6 +284,8 @@ class _DonatePageState extends State<DonatePage> {
       'Phone': _phoneController.text,
       'Employer': _employerController.text,
       'Occupation': _occupationController.text,
+      'Agreed to Messaging': _agreedToMessaging.toString(), // Added checkbox value
+      'Agreed to Emails': _agreedToEmails.toString(), // Added checkbox value
     };
 
     showDialog(
