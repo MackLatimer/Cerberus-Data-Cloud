@@ -3,8 +3,21 @@ import 'package:candidate_website/src/widgets/common_app_bar.dart';
 import 'package:candidate_website/src/widgets/donate_button.dart'; // Re-using for consistency
 // import 'package:url_launcher/url_launcher.dart'; // For actual donation link later
 
-class DonatePage extends StatelessWidget {
+class DonatePage extends StatefulWidget {
   const DonatePage({super.key});
+
+  @override
+  _DonatePageState createState() => _DonatePageState();
+}
+
+class _DonatePageState extends State<DonatePage> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   // Placeholder for actual donation link
   final String _donationUrl = 'https://placeholder-donation-platform.com/curtis-emmons';
@@ -19,18 +32,37 @@ class DonatePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CommonAppBar(title: 'Support the Campaign'),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24.0),
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 600), // Slightly narrower for focus
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Text(
-                  'Your Support Makes a Difference!',
-                  style: Theme.of(context).textTheme.headlineMedium,
+      appBar: CommonAppBar(
+        title: 'Support the Campaign',
+        scrollController: _scrollController,
+      ),
+      body: CustomScrollView( // Changed to CustomScrollView
+        controller: _scrollController,
+        slivers: <Widget>[
+          SliverToBoxAdapter(
+            child: Container(
+              height: 300, // Height of the hero image
+              color: Colors.grey[300], // Placeholder color
+              child: Center(
+                child: Text(
+                  'Hero Image: Donate', // Placeholder text
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+              ),
+            ),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.all(24.0),
+            sliver: SliverToBoxAdapter(
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 600), // Slightly narrower for focus
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Text(
+                        'Your Support Makes a Difference!',
+                        style: Theme.of(context).textTheme.headlineMedium,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 20),
@@ -91,6 +123,9 @@ class DonatePage extends StatelessWidget {
             ),
           ),
         ),
+            ),
+          ),
+        ],
       ),
     );
   }

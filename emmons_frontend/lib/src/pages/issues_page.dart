@@ -3,8 +3,21 @@ import 'package:candidate_website/src/widgets/common_app_bar.dart';
 import 'package:candidate_website/src/widgets/signup_form.dart';
 import 'package:candidate_website/src/widgets/donate_button.dart';
 
-class IssuesPage extends StatelessWidget {
+class IssuesPage extends StatefulWidget {
   const IssuesPage({super.key});
+
+  @override
+  _IssuesPageState createState() => _IssuesPageState();
+}
+
+class _IssuesPageState extends State<IssuesPage> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   Widget _buildIssueSection(BuildContext context, String title, String content) {
     return Padding(
@@ -30,18 +43,37 @@ class IssuesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CommonAppBar(title: 'Key Issues'),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24.0),
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 800),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Text(
-                  'Key Issues Facing Bell County Precinct 4',
-                  style: Theme.of(context).textTheme.headlineMedium,
+      appBar: CommonAppBar(
+        title: 'Key Issues',
+        scrollController: _scrollController,
+      ),
+      body: CustomScrollView( // Changed to CustomScrollView
+        controller: _scrollController,
+        slivers: <Widget>[
+          SliverToBoxAdapter(
+            child: Container(
+              height: 300, // Height of the hero image
+              color: Colors.grey[300], // Placeholder color
+              child: Center(
+                child: Text(
+                  'Hero Image: Issues', // Placeholder text
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+              ),
+            ),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.all(24.0),
+            sliver: SliverToBoxAdapter(
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 800),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Text(
+                        'Key Issues Facing Bell County Precinct 4',
+                        style: Theme.of(context).textTheme.headlineMedium,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 30),
@@ -74,6 +106,9 @@ class IssuesPage extends StatelessWidget {
             ),
           ),
         ),
+            ),
+          ),
+        ],
       ),
     );
   }

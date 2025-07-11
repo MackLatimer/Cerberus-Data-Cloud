@@ -1,15 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
+class CommonAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
   final List<Widget>? actions;
+  final ScrollController? scrollController;
 
   const CommonAppBar({
     super.key,
     required this.title,
     this.actions,
+    this.scrollController,
   });
+
+  @override
+  _CommonAppBarState createState() => _CommonAppBarState();
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+}
+
+class _CommonAppBarState extends State<CommonAppBar> {
+  double _appBarOpacity = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.scrollController != null) {
+      widget.scrollController!.addListener(_updateAppBarOpacity);
+    }
+  }
+
+  @override
+  void dispose() {
+    if (widget.scrollController != null) {
+      widget.scrollController!.removeListener(_updateAppBarOpacity);
+    }
+    super.dispose();
+  }
+
+  void _updateAppBarOpacity() {
+    if (widget.scrollController!.hasClients) {
+      final offset = widget.scrollController!.offset;
+      // Start fading in after scrolling 50 pixels, fully opaque by 200 pixels
+      const startFadeOffset = 50.0;
+      const endFadeOffset = 200.0;
+      double opacity = 0.0;
+      if (offset > startFadeOffset) {
+        opacity = (offset - startFadeOffset) / (endFadeOffset - startFadeOffset);
+      }
+      setState(() {
+        _appBarOpacity = opacity.clamp(0.0, 1.0);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +71,17 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
     ];
 
     return AppBar(
+      backgroundColor: colorScheme.primary.withOpacity(_appBarOpacity),
+      elevation: _appBarOpacity > 0 ? 4.0 : 0.0, // Add shadow when not transparent
       leading: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Image.asset('assets/CurtisEmmonsRepublicanPrimarySquare.png'), // Logo
+        child: SvgPicture.asset(
+          'assets/Emmons_Logo_4_TP.svg',
+          semanticsLabel: 'Curtis Emmons for Bell County Commissioner Precinct 4 Logo',
+          fit: BoxFit.contain,
+        ),
       ),
-      title: Text(title, style: textTheme.titleLarge?.copyWith(color: Colors.white)),
+      title: null, // Removed title
       automaticallyImplyLeading: false, // No back button for top-level pages
       actions: <Widget>[
         // Spread the navigation items as TextButtons
