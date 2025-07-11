@@ -11,8 +11,6 @@ class SignupFormWidget extends StatefulWidget {
   State<SignupFormWidget> createState() => _SignupFormWidgetState();
 }
 
-import 'package:go_router/go_router.dart'; // Import for routing
-
 class _SignupFormWidgetState extends State<SignupFormWidget> {
   final _formKey = GlobalKey<FormState>();
   bool _endorseChecked = false;
