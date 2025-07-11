@@ -3,6 +3,7 @@ import 'package:candidate_website/src/widgets/common_app_bar.dart';
 import 'package:candidate_website/src/widgets/signup_form.dart';
 import 'package:candidate_website/src/widgets/donate_button.dart';
 import 'package:candidate_website/src/widgets/home_page_section.dart'; // Import the new widget
+import 'package:candidate_website/src/widgets/footer.dart'; // Import the Footer widget
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -63,9 +64,8 @@ class _HomePageState extends State<HomePage> {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 40),
-                const SignupFormWidget(),
-                const SizedBox(height: 40),
-                Center(child: const DonateButtonWidget()),
+                // SignupFormWidget was here
+                Center(child: const DonateButtonWidget()), // Donate button can stay or move with form
                 const SizedBox(height: 60), // Increased spacing before sections
 
                 // Page Sections
@@ -97,13 +97,16 @@ class _HomePageState extends State<HomePage> {
                   routePath: '/donate',
                   imageBackgroundColor: Colors.green,
                 ),
-                 const SizedBox(height: 40),
+                const SizedBox(height: 40),
+                const SignupFormWidget(), // Moved SignupFormWidget here
+                const SizedBox(height: 40),
               ],
             ),
           ),
         ),
             ),
           ),
++          const SliverToBoxAdapter(child: Footer()), // Add Footer here
         ],
       ),
     );

@@ -3,6 +3,7 @@ import 'package:candidate_website/src/widgets/common_app_bar.dart';
 import 'package:candidate_website/src/widgets/signup_form.dart';
 import 'package:candidate_website/src/widgets/donate_button.dart';
 import 'package:candidate_website/src/widgets/high_profile_endorsement_card.dart'; // Import the new widget
+import 'package:candidate_website/src/widgets/footer.dart'; // Import the Footer widget
 
 class EndorsementsPage extends StatefulWidget {
   const EndorsementsPage({super.key});
@@ -117,6 +118,7 @@ class _EndorsementsPageState extends State<EndorsementsPage> {
               ),
             ),
           ),
++          const SliverToBoxAdapter(child: Footer()), // Add Footer here
         ],
       ),
     );

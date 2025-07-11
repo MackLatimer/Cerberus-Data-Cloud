@@ -7,6 +7,7 @@ import 'package:candidate_website/src/pages/donate_page.dart';
 import 'package:candidate_website/src/pages/endorsements_page.dart';
 import 'package:candidate_website/src/pages/home_page.dart';
 import 'package:candidate_website/src/pages/issues_page.dart';
+import 'package:candidate_website/src/pages/privacy_policy_page.dart'; // Import the new page
 
 // Define the routes for the application
 final _router = GoRouter(
@@ -14,23 +15,27 @@ final _router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const HomePage(),
+      pageBuilder: (context, state) => const NoTransitionPage(child: HomePage()),
     ),
     GoRoute(
       path: '/issues',
-      builder: (context, state) => const IssuesPage(),
+      pageBuilder: (context, state) => const NoTransitionPage(child: IssuesPage()),
     ),
     GoRoute(
       path: '/about',
-      builder: (context, state) => const AboutPage(),
+      pageBuilder: (context, state) => const NoTransitionPage(child: AboutPage()),
     ),
     GoRoute(
       path: '/endorsements',
-      builder: (context, state) => const EndorsementsPage(),
+      pageBuilder: (context, state) => const NoTransitionPage(child: EndorsementsPage()),
     ),
     GoRoute(
       path: '/donate',
-      builder: (context, state) => const DonatePage(),
+      pageBuilder: (context, state) => const NoTransitionPage(child: DonatePage()),
+    ),
+    GoRoute( // Add Privacy Policy route
+      path: '/privacy-policy',
+      pageBuilder: (context, state) => const NoTransitionPage(child: PrivacyPolicyPage()),
     ),
   ],
 );

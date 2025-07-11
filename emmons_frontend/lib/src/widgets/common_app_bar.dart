@@ -22,14 +22,18 @@ class CommonAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _CommonAppBarState extends State<CommonAppBar> {
-  double _appBarOpacity = 0.0;
+  double _appBarOpacity = 1.0; // Default to opaque
 
   @override
   void initState() {
     super.initState();
     if (widget.scrollController != null) {
+      // If there's a scroll controller, start transparent for overlap effect
+      _appBarOpacity = 0.0;
       widget.scrollController!.addListener(_updateAppBarOpacity);
+      WidgetsBinding.instance.addPostFrameCallback((_) => _updateAppBarOpacity());
     }
+    // If no scrollController is provided, _appBarOpacity remains 1.0 (opaque)
   }
 
   @override
@@ -41,18 +45,35 @@ class _CommonAppBarState extends State<CommonAppBar> {
   }
 
   void _updateAppBarOpacity() {
-    if (widget.scrollController!.hasClients) {
+    if (widget.scrollController != null && widget.scrollController!.hasClients) {
       final offset = widget.scrollController!.offset;
-      // Start fading in after scrolling 50 pixels, fully opaque by 200 pixels
-      const startFadeOffset = 50.0;
+      // AppBar starts fully transparent.
+      // Start fading in after scrolling past a small threshold (e.g., 10 pixels).
+      // Becomes fully opaque after scrolling a certain distance (e.g., 200 pixels).
+      const startFadeOffset = 10.0;
       const endFadeOffset = 200.0;
-      double opacity = 0.0;
-      if (offset > startFadeOffset) {
+
+      double opacity;
+      if (offset <= startFadeOffset) {
+        opacity = 0.0; // Stay transparent if below or at startFadeOffset
+      } else if (offset >= endFadeOffset) {
+        opacity = 1.0; // Fully opaque if at or past endFadeOffset
+      } else {
+        // Calculate opacity during the transition
         opacity = (offset - startFadeOffset) / (endFadeOffset - startFadeOffset);
       }
-      setState(() {
-        _appBarOpacity = opacity.clamp(0.0, 1.0);
-      });
+
+      if (mounted) { // Check if the widget is still in the tree
+        setState(() {
+          _appBarOpacity = opacity.clamp(0.0, 1.0);
+        });
+      }
+    } else if (widget.scrollController == null) {
+      // If no scroll controller, keep it transparent.
+      // This could be adjusted if a different default is needed for non-scrolling pages.
+      if (mounted && _appBarOpacity != 0.0) {
+         // setState(() { _appBarOpacity = 0.0; }); // Or 1.0 if opaque is default
+      }
     }
   }
 
@@ -74,11 +95,15 @@ class _CommonAppBarState extends State<CommonAppBar> {
       backgroundColor: colorScheme.primary.withOpacity(_appBarOpacity),
       elevation: _appBarOpacity > 0 ? 4.0 : 0.0, // Add shadow when not transparent
       leading: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: SvgPicture.asset(
-          'assets/Emmons_Logo_4_TP.svg',
-          semanticsLabel: 'Curtis Emmons for Bell County Commissioner Precinct 4 Logo',
-          fit: BoxFit.contain,
+        padding: const EdgeInsets.all(4.0), // Reduced padding to allow more space for the logo
+        child: SizedBox( // Added SizedBox to explicitly control logo size
+          height: kToolbarHeight * 0.8, // Make logo height 80% of AppBar height
+          width: kToolbarHeight * 2.5, // Adjust width as needed for aspect ratio
+          child: SvgPicture.asset(
+            'assets/Emmons_Logo_4_TP.svg',
+            semanticsLabel: 'Curtis Emmons for Bell County Commissioner Precinct 4 Logo',
+            fit: BoxFit.contain,
+          ),
         ),
       ),
       title: null, // Removed title
