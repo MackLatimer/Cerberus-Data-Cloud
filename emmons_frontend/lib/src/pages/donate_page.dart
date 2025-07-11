@@ -3,8 +3,21 @@ import 'package:candidate_website/src/widgets/common_app_bar.dart';
 import 'package:candidate_website/src/widgets/donate_button.dart'; // Re-using for consistency
 // import 'package:url_launcher/url_launcher.dart'; // For actual donation link later
 
-class DonatePage extends StatelessWidget {
+class DonatePage extends StatefulWidget {
   const DonatePage({super.key});
+
+  @override
+  _DonatePageState createState() => _DonatePageState();
+}
+
+class _DonatePageState extends State<DonatePage> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   // Placeholder for actual donation link
   final String _donationUrl = 'https://placeholder-donation-platform.com/curtis-emmons';
@@ -19,8 +32,12 @@ class DonatePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CommonAppBar(title: 'Support the Campaign'),
+      appBar: CommonAppBar(
+        title: 'Support the Campaign',
+        scrollController: _scrollController,
+      ),
       body: SingleChildScrollView(
+        controller: _scrollController,
         padding: const EdgeInsets.all(24.0),
         child: Center(
           child: ConstrainedBox(

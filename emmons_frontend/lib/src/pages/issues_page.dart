@@ -3,8 +3,21 @@ import 'package:candidate_website/src/widgets/common_app_bar.dart';
 import 'package:candidate_website/src/widgets/signup_form.dart';
 import 'package:candidate_website/src/widgets/donate_button.dart';
 
-class IssuesPage extends StatelessWidget {
+class IssuesPage extends StatefulWidget {
   const IssuesPage({super.key});
+
+  @override
+  _IssuesPageState createState() => _IssuesPageState();
+}
+
+class _IssuesPageState extends State<IssuesPage> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   Widget _buildIssueSection(BuildContext context, String title, String content) {
     return Padding(
@@ -30,8 +43,12 @@ class IssuesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CommonAppBar(title: 'Key Issues'),
+      appBar: CommonAppBar(
+        title: 'Key Issues',
+        scrollController: _scrollController,
+      ),
       body: SingleChildScrollView(
+        controller: _scrollController,
         padding: const EdgeInsets.all(24.0),
         child: Center(
           child: ConstrainedBox(
