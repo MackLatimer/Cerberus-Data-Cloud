@@ -21,7 +21,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends     libpq-dev     build-essential     && rm -rf /var/lib/apt/lists/*
 
 # Copy the requirements file into the container at /app
-COPY cerberus_campaigns_backend/requirements.txt .
+COPY requirements.txt .
 
 # Install any needed packages specified in requirements.txt
 # --no-cache-dir: Disables the pip cache, which can reduce image size.
@@ -31,7 +31,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the application code into the container at /app
 # This includes the 'app' directory, 'run.py', '.env.example', etc.
 # Ensure the .env file is NOT copied if it contains secrets; secrets should be passed as environment variables.
-COPY cerberus_campaigns_backend/ /app/
+COPY . /app/
 
 # Make port defined by $PORT (set by Cloud Run, defaults to 5001 here if not set) available
 # This EXPOSE is informational; Cloud Run handles actual port mapping based on what the app listens to.
