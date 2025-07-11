@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert'; // For jsonEncode
+import 'package:go_router/go_router.dart'; // Import for routing
 import '../config.dart'; // Import the configuration file
 
 class SignupFormWidget extends StatefulWidget {
@@ -14,6 +15,8 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
   final _formKey = GlobalKey<FormState>();
   bool _endorseChecked = false;
   bool _getInvolvedChecked = false;
+  bool _agreedToMessaging = false; // New state for messaging opt-in
+  bool _agreedToEmails = false; // New state for email opt-in
   bool _isLoading = false; // To manage loading state
 
   // Controllers for text fields to easily access their values
@@ -44,6 +47,8 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
       'interests': {
         'wants_to_endorse': _endorseChecked,
         'wants_to_get_involved': _getInvolvedChecked,
+        'agreed_to_messaging': _agreedToMessaging, // Add new consent flag
+        'agreed_to_emails': _agreedToEmails, // Add new consent flag
       },
       // You might also want to submit this as an interaction
       // or have the backend create an interaction record.
@@ -80,6 +85,8 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
         setState(() {
           _endorseChecked = false;
           _getInvolvedChecked = false;
+          _agreedToMessaging = false; // Reset new checkbox
+          _agreedToEmails = false; // Reset new checkbox
         });
       } else {
         // Server returned an error
@@ -165,7 +172,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
             const SizedBox(height: 12),
             TextFormField(
               controller: _phoneController,
-              decoration: const InputDecoration(labelText: 'Phone Number (Optional)'),
+              decoration: const InputDecoration(labelText: 'Phone Number'), // Removed "(Optional)"
               keyboardType: TextInputType.phone,
             ),
             const SizedBox(height: 16),
@@ -191,6 +198,33 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
               controlAffinity: ListTileControlAffinity.leading,
               contentPadding: EdgeInsets.zero,
             ),
+            CheckboxListTile( // New checkbox for automated messaging
+              title: Text('I agree to receive automated messaging from Elect Emmons', style: textTheme.bodyMedium),
+              value: _agreedToMessaging,
+              onChanged: (bool? value) {
+                setState(() {
+                  _agreedToMessaging = value ?? false;
+                });
+              },
+              controlAffinity: ListTileControlAffinity.leading,
+              contentPadding: EdgeInsets.zero,
+            ),
+            CheckboxListTile( // New checkbox for emails
+              title: Text('I agree to receive emails from Elect Emmons', style: textTheme.bodyMedium),
+              value: _agreedToEmails,
+              onChanged: (bool? value) {
+                setState(() {
+                  _agreedToEmails = value ?? false;
+                });
+              },
+              controlAffinity: ListTileControlAffinity.leading,
+              contentPadding: EdgeInsets.zero,
+            ),
+            const SizedBox(height: 16),
+            Text( // Disclaimer text
+              'Reply STOP to opt out, HELP for help. Msg & data rates may apply. Frequency may vary.',
+              style: textTheme.bodySmall?.copyWith(fontStyle: FontStyle.italic),
+            ),
             const SizedBox(height: 24),
             Center(
               child: _isLoading
@@ -199,6 +233,18 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                       onPressed: _submitForm,
                       child: const Text('Sign Up'),
                     ),
+            ),
+            const SizedBox(height: 16), // Spacing before privacy policy link
+            Center(
+              child: TextButton(
+                onPressed: () {
+                  context.go('/privacy-policy'); // Navigate to Privacy Policy page
+                },
+                child: Text(
+                  'Privacy Policy',
+                  style: textTheme.bodyMedium?.copyWith(decoration: TextDecoration.underline),
+                ),
+              ),
             ),
           ],
         ),
