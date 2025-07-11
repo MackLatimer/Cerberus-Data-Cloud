@@ -18,7 +18,6 @@ class _IssuesPageState extends State<IssuesPage> {
     _scrollController.dispose();
     super.dispose();
   }
-
   Widget _buildIssueSection(BuildContext context, String title, String content, {Color imagePlaceholderColor = Colors.blueGrey}) {
     final textTheme = Theme.of(context).textTheme;
     // final colorScheme = Theme.of(context).colorScheme; // Not used directly here yet, but good to have
