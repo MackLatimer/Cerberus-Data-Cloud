@@ -47,18 +47,33 @@ class _IssuesPageState extends State<IssuesPage> {
         title: 'Key Issues',
         scrollController: _scrollController,
       ),
-      body: SingleChildScrollView(
+      body: CustomScrollView( // Changed to CustomScrollView
         controller: _scrollController,
-        padding: const EdgeInsets.all(24.0),
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 800),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Text(
-                  'Key Issues Facing Bell County Precinct 4',
-                  style: Theme.of(context).textTheme.headlineMedium,
+        slivers: <Widget>[
+          SliverToBoxAdapter(
+            child: Container(
+              height: 300, // Height of the hero image
+              color: Colors.grey[300], // Placeholder color
+              child: Center(
+                child: Text(
+                  'Hero Image: Issues', // Placeholder text
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+              ),
+            ),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.all(24.0),
+            sliver: SliverToBoxAdapter(
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 800),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Text(
+                        'Key Issues Facing Bell County Precinct 4',
+                        style: Theme.of(context).textTheme.headlineMedium,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 30),
@@ -91,6 +106,9 @@ class _IssuesPageState extends State<IssuesPage> {
             ),
           ),
         ),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -36,18 +36,33 @@ class _DonatePageState extends State<DonatePage> {
         title: 'Support the Campaign',
         scrollController: _scrollController,
       ),
-      body: SingleChildScrollView(
+      body: CustomScrollView( // Changed to CustomScrollView
         controller: _scrollController,
-        padding: const EdgeInsets.all(24.0),
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 600), // Slightly narrower for focus
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Text(
-                  'Your Support Makes a Difference!',
-                  style: Theme.of(context).textTheme.headlineMedium,
+        slivers: <Widget>[
+          SliverToBoxAdapter(
+            child: Container(
+              height: 300, // Height of the hero image
+              color: Colors.grey[300], // Placeholder color
+              child: Center(
+                child: Text(
+                  'Hero Image: Donate', // Placeholder text
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+              ),
+            ),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.all(24.0),
+            sliver: SliverToBoxAdapter(
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 600), // Slightly narrower for focus
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Text(
+                        'Your Support Makes a Difference!',
+                        style: Theme.of(context).textTheme.headlineMedium,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 20),
@@ -108,6 +123,9 @@ class _DonatePageState extends State<DonatePage> {
             ),
           ),
         ),
+            ),
+          ),
+        ],
       ),
     );
   }

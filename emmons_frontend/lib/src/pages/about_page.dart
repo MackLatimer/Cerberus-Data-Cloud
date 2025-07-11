@@ -26,18 +26,33 @@ class _AboutPageState extends State<AboutPage> {
         title: 'About Curtis Emmons',
         scrollController: _scrollController,
       ),
-      body: SingleChildScrollView(
+      body: CustomScrollView( // Changed to CustomScrollView
         controller: _scrollController,
-        padding: const EdgeInsets.all(24.0),
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 800),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Text(
-                  'About Curtis Emmons',
-                  style: Theme.of(context).textTheme.headlineMedium,
+        slivers: <Widget>[
+          SliverToBoxAdapter(
+            child: Container(
+              height: 300, // Height of the hero image
+              color: Colors.grey[300], // Placeholder color
+              child: Center(
+                child: Text(
+                  'Hero Image: About Me', // Placeholder text
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+              ),
+            ),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.all(24.0),
+            sliver: SliverToBoxAdapter(
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 800),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Text(
+                        'About Curtis Emmons',
+                        style: Theme.of(context).textTheme.headlineMedium,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 20),
@@ -56,6 +71,9 @@ class _AboutPageState extends State<AboutPage> {
             ),
           ),
         ),
+            ),
+          ),
+        ],
       ),
     );
   }
