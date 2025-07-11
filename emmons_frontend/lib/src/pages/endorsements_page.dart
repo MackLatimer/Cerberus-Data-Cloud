@@ -137,12 +137,10 @@ class _EndorsementsPageState extends State<EndorsementsPage> {
       spacing: 8.0, // Horizontal space between chips
       runSpacing: 4.0, // Vertical space between lines of chips
       alignment: WrapAlignment.center,
-      children: endorsers.map((name) => Chip(
-        label: Text(name, style: textTheme.labelLarge),
-        backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
-        side: BorderSide(color: Theme.of(context).colorScheme.outlineVariant), // Added trailing comma
-      ), // Added trailing comma
-      ).toList(),
+      children: endorsers.map((name) {
+        // Simplified Chip for debugging
+        return Chip(label: Text(name));
+      }).toList(),
     );
   }
 }
