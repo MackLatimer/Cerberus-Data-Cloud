@@ -3,14 +3,31 @@ import 'package:candidate_website/src/widgets/common_app_bar.dart';
 import 'package:candidate_website/src/widgets/signup_form.dart';
 import 'package:candidate_website/src/widgets/donate_button.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CommonAppBar(title: 'Curtis Emmons for Bell County Precinct 4'),
+      appBar: CommonAppBar(
+        title: 'Curtis Emmons for Bell County Precinct 4',
+        scrollController: _scrollController,
+      ),
       body: SingleChildScrollView(
+        controller: _scrollController,
         padding: const EdgeInsets.all(24.0),
         child: Center(
           child: ConstrainedBox(
