@@ -118,7 +118,7 @@ class _EndorsementsPageState extends State<EndorsementsPage> {
               ),
             ),
           ),
-+          const SliverToBoxAdapter(child: Footer()), // Add Footer here
+          const SliverToBoxAdapter(child: Footer()), // Add Footer here
         ],
       ),
     );

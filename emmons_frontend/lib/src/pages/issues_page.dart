@@ -134,7 +134,7 @@ class _IssuesPageState extends State<IssuesPage> {
         ),
             ),
           ),
-+          const SliverToBoxAdapter(child: Footer()), // Add Footer here
+          const SliverToBoxAdapter(child: Footer()), // Add Footer here
         ],
       ),
     );

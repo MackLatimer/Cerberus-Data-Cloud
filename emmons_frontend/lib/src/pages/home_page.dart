@@ -106,7 +106,7 @@ class _HomePageState extends State<HomePage> {
         ),
             ),
           ),
-+          const SliverToBoxAdapter(child: Footer()), // Add Footer here
+          const SliverToBoxAdapter(child: Footer()), // Add Footer here
         ],
       ),
     );

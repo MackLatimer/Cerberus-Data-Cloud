@@ -159,7 +159,7 @@ class _DonatePageState extends State<DonatePage> {
         ),
             ),
           ),
-+          const SliverToBoxAdapter(child: Footer()), // Add Footer here
+          const SliverToBoxAdapter(child: Footer()), // Add Footer here
         ],
       ),
     );

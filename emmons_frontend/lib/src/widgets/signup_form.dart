@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert'; // For jsonEncode
+import 'package:go_router/go_router.dart'; // Import for routing
 import '../config.dart'; // Import the configuration file
 
 class SignupFormWidget extends StatefulWidget {

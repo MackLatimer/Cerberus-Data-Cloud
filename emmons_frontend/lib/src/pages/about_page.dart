@@ -70,7 +70,7 @@ class _AboutPageState extends State<AboutPage> {
         ),
             ),
           ),
-+          const SliverToBoxAdapter(child: Footer()), // Add Footer here
+          const SliverToBoxAdapter(child: Footer()), // Add Footer here
         ],
       ),
     );
