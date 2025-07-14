@@ -2,6 +2,8 @@ from flask import Blueprint, request, jsonify
 from ..extensions import db
 from ..models import Voter, Interaction, Campaign, CampaignVoter # Ensure CampaignVoter is imported
 from datetime import datetime, timezone # Import timezone
+import csv
+import io
 
 # Define a Blueprint for voter-related operations that are typically protected (for portal)
 voters_api_bp = Blueprint('voters_api', __name__, url_prefix='/api/v1/voters')
@@ -216,3 +218,44 @@ def delete_voter_via_portal(voter_id):
 
 # Note: Authentication (@auth_required) is critical for the voters_api_bp endpoints
 # and needs to be implemented. The public_api_bp /signups endpoint is intentionally public.
+
+@voters_api_bp.route('/upload', methods=['POST'])
+def upload_voters():
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part"}), 400
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+    if file:
+        try:
+            stream = io.StringIO(file.stream.read().decode("UTF8"), newline=None)
+            csv_input = csv.reader(stream)
+            # Assuming the first row is the header
+            header = next(csv_input)
+            # You might want to map columns to your model fields here
+            # For example: {'First Name': 'first_name', 'Last Name': 'last_name', ...}
+            # This is a simplified example
+            for row in csv_input:
+                # This assumes a specific order of columns, which is fragile.
+                # A more robust solution would use the header to map columns.
+                first_name, last_name, email = row[0], row[1], row[2]
+
+                # Basic data cleaning
+                first_name = first_name.strip().title()
+                last_name = last_name.strip().title()
+                email = email.strip().lower()
+
+                # Check for existing voter
+                voter = Voter.query.filter_by(email_address=email).first()
+                if not voter:
+                    voter = Voter(
+                        first_name=first_name,
+                        last_name=last_name,
+                        email_address=email,
+                    )
+                    db.session.add(voter)
+            db.session.commit()
+            return jsonify({"message": "File processed successfully"}), 200
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({"error": str(e)}), 500

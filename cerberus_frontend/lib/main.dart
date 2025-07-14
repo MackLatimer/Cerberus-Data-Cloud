@@ -5,6 +5,7 @@ import 'pages/home/home_page.dart';
 import 'pages/about/about_page.dart';
 import 'pages/contact/contact_page.dart';
 import 'pages/report/report_page.dart';
+import 'pages/upload/upload_page.dart';
 import 'test_appbar.dart';
 
 import 'test_appbar.dart' as test_app;
@@ -44,6 +45,12 @@ final GoRouter _router = GoRouter(
           path: '/report',
           builder: (BuildContext context, GoRouterState state) {
             return const ReportPage();
+          },
+        ),
+        GoRoute(
+          path: '/upload',
+          builder: (BuildContext context, GoRouterState state) {
+            return const UploadPage();
           },
         ),
       ],
@@ -244,6 +251,14 @@ class RootLayout extends StatelessWidget {
               title: Text('Report', style: theme.textTheme.labelLarge?.copyWith(color: theme.colorScheme.onSurface)),
               onTap: () {
                 context.go('/report');
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.upload_file, color: theme.colorScheme.onSurfaceVariant),
+              title: Text('Upload', style: theme.textTheme.labelLarge?.copyWith(color: theme.colorScheme.onSurface)),
+              onTap: () {
+                context.go('/upload');
                 Navigator.pop(context);
               },
             ),
