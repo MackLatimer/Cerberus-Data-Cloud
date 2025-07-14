@@ -1,23 +1,44 @@
-# Ignore all files and directories by default
-**
-
-# Allow files and directories that are necessary for the builds
-!cerberus_report_backend/
-!cerberus_campaigns_backend/
-!emmons_frontend/
-!cloudbuild.yaml
-
-# Ignore specific files and directories that are not needed
+# Ignore git files
 .git
 .gitignore
+
+# Ignore python cache
 **/__pycache__
 **/*.pyc
 **/*.pyo
 **/*.pyd
+
+# Ignore dart files
 .dart_tool/
 .flutter-plugins-dependencies
 .metadata
 build/
+
+# Ignore IDE files
 .idea/
 .vscode/
 .history/
+
+# Ignore unnecessary directories
+cerberus_frontend/
+emmons_frontend/test/
+emmons_frontend/web/
+cerberus_report_backend/__pycache__/
+cerberus_campaigns_backend/tests/
+cerberus_campaigns_backend/docs/
+
+# Ignore log files
+*.log
+
+# Ignore other unnecessary files
+emmons_frontend/new
+emmons_frontend/nginx.conf
+cerberus_report_backend/health_check_base_output.json
+cerberus_report_backend/health_check_retry_script.sh
+cerberus_report_backend/health_check_script.sh
+cerberus_report_backend/municipalities_output.json
+cerberus_report_backend/test_db_output.json
+cerberus_campaigns_backend/database_schema.sql
+cerberus_campaigns_backend/.env.example
+cloudbuild.yaml-old
+*.bak
