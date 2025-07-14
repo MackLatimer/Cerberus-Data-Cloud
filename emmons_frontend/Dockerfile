@@ -1,6 +1,6 @@
 # Stage 1: Build the Flutter application
-# Using leoafarias/flutter image
-FROM leoafarias/flutter:3.22.1 AS build
+# Using cirrusci/flutter image
+FROM cirrusci/flutter:3.19.0 AS build
 
 # Set working directory for Flutter build
 WORKDIR /app_src
