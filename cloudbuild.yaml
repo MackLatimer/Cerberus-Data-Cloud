@@ -2,35 +2,35 @@ steps:
   # Step 1: Build the Docker image for cerberus_report_backend (agenda-api)
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build-report-backend'
+    waitFor: ['-']
     args: [
       'build',
       '-t', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/agenda-api:v1', # Updated to Artifact Registry
       '-f', 'cerberus_report_backend/Dockerfile',
-      '.', # Build context is the root of the repository
-      '--no-cache'
+      'cerberus_report_backend' # Build context is the root of the repository
     ]
 
   # Step 2: Build the Docker image for cerberus_campaigns_backend (campaigns-api)
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build-campaigns-backend'
     dir: 'cerberus_campaigns_backend' # Change working directory to the backend's root
+    waitFor: ['-']
     args: [
       'build',
       '-t', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:v1', # Updated to Artifact Registry
       '-f', 'Dockerfile', # Dockerfile is now in the current context
-      '.', # Build context is now cerberus_campaigns_backend
-      '--no-cache'
+      '.' # Build context is now cerberus_campaigns_backend
     ]
 
   # Step 3: Build the Docker image for emmons_frontend (web-frontend)
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build-emmons-frontend'
+    waitFor: ['-']
     args: [
       'build',
       '-t', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/emmons-frontend:v1', # Updated to Artifact Registry
       '-f', 'emmons_frontend/Dockerfile', # Use the Dockerfile in its specific directory
-      '.', # Build context is the root of the repository
-      '--no-cache'
+      'emmons_frontend' # Build context is the root of the repository
     ]
 
 # List of images to be pushed to Artifact Registry
