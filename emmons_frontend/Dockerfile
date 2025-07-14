@@ -6,14 +6,14 @@ FROM leoafarias/flutter:3.22.1 AS build
 WORKDIR /app_src
 
 # Copy pubspec.yaml and pubspec.lock first to leverage Docker cache
-COPY emmons_frontend/pubspec.yaml ./
-COPY emmons_frontend/pubspec.lock ./
+COPY pubspec.yaml ./
+COPY pubspec.lock ./
 
 # Get dependencies
 RUN flutter pub get
 
 # Copy the rest of the frontend application code
-COPY emmons_frontend/ ./
+COPY . .
 
 # Build the web application
 # Using --release for a production build
@@ -27,7 +27,7 @@ FROM nginx:1.25-alpine
 COPY --from=build /app_src/build/web /usr/share/nginx/html
 
 # Copy a custom Nginx configuration file
-COPY emmons_frontend/nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose port 80
 EXPOSE 80
