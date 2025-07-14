@@ -18,7 +18,7 @@ class CommonAppBar extends StatefulWidget implements PreferredSizeWidget {
   _CommonAppBarState createState() => _CommonAppBarState();
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight * 4.8);
+  Size get preferredSize => Size.fromHeight(kToolbarHeight * 3.2);
 }
 
 class _CommonAppBarState extends State<CommonAppBar> {
@@ -96,13 +96,19 @@ class _CommonAppBarState extends State<CommonAppBar> {
       elevation: _appBarOpacity > 0 ? 4.0 : 0.0, // Add shadow when not transparent
       leading: Padding(
         padding: const EdgeInsets.all(4.0), // Reduced padding to allow more space for the logo
-        child: SizedBox( // Added SizedBox to explicitly control logo size
-          height: kToolbarHeight * 4.5, // Logo height 1.5x AppBar height
-          child: SvgPicture.asset(
-            'assets/Emmons_Logo_4_TP.svg',
-            semanticsLabel: 'Curtis Emmons for Bell County Commissioner Precinct 4 Logo',
-            fit: BoxFit.contain,
-          ),
+        child: Builder(
+          builder: (context) {
+            final double logoHeight = kToolbarHeight * 3;
+            return SizedBox(
+              height: logoHeight,
+              width: logoHeight * (150 / 50),
+              child: SvgPicture.asset(
+                'assets/Emmons_Logo_4_TP.svg',
+                semanticsLabel: 'Curtis Emmons for Bell County Commissioner Precinct 4 Logo',
+                fit: BoxFit.fill,
+              ),
+            );
+          }
         ),
       ),
       title: null, // Removed title
@@ -131,5 +137,5 @@ class _CommonAppBarState extends State<CommonAppBar> {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight * 4.8);
+  Size get preferredSize => Size.fromHeight(kToolbarHeight * 3.2); // Target 1.6x AppBar height
 }
