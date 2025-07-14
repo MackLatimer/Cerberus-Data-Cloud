@@ -62,6 +62,7 @@ class _DonatePageState extends State<DonatePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: CommonAppBar(
         title: 'Support the Campaign',
         scrollController: _scrollController,

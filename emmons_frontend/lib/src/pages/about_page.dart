@@ -23,6 +23,7 @@ class _AboutPageState extends State<AboutPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: CommonAppBar(
         title: 'About Me', // Changed title
         scrollController: _scrollController,
