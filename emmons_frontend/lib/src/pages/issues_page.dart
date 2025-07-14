@@ -65,6 +65,7 @@ class _IssuesPageState extends State<IssuesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: CommonAppBar(
         title: 'Issues', // Changed title
         scrollController: _scrollController,

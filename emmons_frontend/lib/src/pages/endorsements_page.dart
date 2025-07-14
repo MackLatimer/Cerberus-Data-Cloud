@@ -24,6 +24,7 @@ class _EndorsementsPageState extends State<EndorsementsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: CommonAppBar(
         title: 'Endorsements',
         scrollController: _scrollController,
