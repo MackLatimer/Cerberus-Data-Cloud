@@ -1,0 +1,23 @@
+# Ignore all files and directories by default
+**
+
+# Allow files and directories that are necessary for the builds
+!cerberus_report_backend/
+!cerberus_campaigns_backend/
+!emmons_frontend/
+!cloudbuild.yaml
+
+# Ignore specific files and directories that are not needed
+.git
+.gitignore
+**/__pycache__
+**/*.pyc
+**/*.pyo
+**/*.pyd
+.dart_tool/
+.flutter-plugins-dependencies
+.metadata
+build/
+.idea/
+.vscode/
+.history/
