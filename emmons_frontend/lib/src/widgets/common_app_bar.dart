@@ -18,7 +18,7 @@ class CommonAppBar extends StatefulWidget implements PreferredSizeWidget {
   _CommonAppBarState createState() => _CommonAppBarState();
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight * 4.95);
+  Size get preferredSize => Size.fromHeight(kToolbarHeight * 2.475);
 }
 
 class _CommonAppBarState extends State<CommonAppBar> {
@@ -98,7 +98,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
         padding: const EdgeInsets.all(4.0), // Reduced padding to allow more space for the logo
         child: Builder(
           builder: (context) {
-            final double logoHeight = kToolbarHeight * 4.5;
+            final double logoHeight = kToolbarHeight * 2.25;
             return SizedBox(
               height: logoHeight,
               width: logoHeight * 3,
@@ -137,5 +137,5 @@ class _CommonAppBarState extends State<CommonAppBar> {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight * 4.95);
+  Size get preferredSize => Size.fromHeight(kToolbarHeight * 2.475);
 }
