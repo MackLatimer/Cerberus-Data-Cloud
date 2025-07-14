@@ -1,7 +1,7 @@
 FROM python:3.10
 WORKDIR /app
 RUN python --version > /app/python_version.txt && cat /app/python_version.txt
-COPY cerberus_report_backend/requirements.txt .
+COPY requirements.txt .
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 COPY cerberus_report_backend/api.py .
