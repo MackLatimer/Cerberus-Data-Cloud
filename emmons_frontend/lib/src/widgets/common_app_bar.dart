@@ -103,7 +103,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
             semanticsLabel: 'Curtis Emmons for Bell County Commissioner Precinct 4 Logo',
             fit: BoxFit.contain,
           ),
-        ],
+        ),
       ),
       title: null, // Removed title
       automaticallyImplyLeading: false, // No back button for top-level pages
