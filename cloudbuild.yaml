@@ -2,12 +2,13 @@ steps:
   # Step 1: Build the Docker image for cerberus_report_backend (agenda-api)
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build-report-backend'
+    dir: 'cerberus_report_backend'
     waitFor: ['-']
     args: [
       'build',
       '-t', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/agenda-api:v1', # Updated to Artifact Registry
-      '-f', 'cerberus_report_backend/Dockerfile',
-      'cerberus_report_backend' # Build context is the root of the repository
+      '-f', 'Dockerfile',
+      '.'
     ]
 
   # Step 2: Build the Docker image for cerberus_campaigns_backend (campaigns-api)
