@@ -1,6 +1,6 @@
 # Stage 1: Build the Flutter application
-# Using cirrusci/flutter image
-FROM cirrusci/flutter:3.19.0 AS build
+# Using google/flutter image
+FROM google/flutter:latest AS build
 
 # Set working directory for Flutter build
 WORKDIR /app_src
