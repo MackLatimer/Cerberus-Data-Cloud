@@ -170,20 +170,29 @@ class RootLayout extends StatelessWidget {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
+        toolbarHeight: 120,
+        leadingWidth: 120,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Image.asset(
-            'cerberus_frontend/assets/Cerberus Logo Final.png',
-            height: 120, // Adjust height as needed
-            semanticLabel: 'Cerberus Campaigns Logo', // Added semantic label
-            errorBuilder: (context, error, stackTrace) {
-              // Log error or show a more specific placeholder if needed
-              // print('Error loading logo: $error');
-              return const Icon(Icons.business, color: Colors.white, size: 30); // Fallback
-            },
+
+          child: SizedBox(
+            width: 120,
+            height: 120,
+            child: Image.asset(
+              'cerberus_frontend/assets/Cerberus Logo Final.png',
+              height: 120, // Adjust height as needed
+              semanticLabel: 'Cerberus Campaigns Logo', // Added semantic label
+              errorBuilder: (context, error, stackTrace) {
+                // Log error or show a more specific placeholder if needed
+                // print('Error loading logo: $error');
+                return const Icon(Icons.business,
+                    color: Colors.white, size: 30); // Fallback
+              },
+            ),
           ),
         ),
-        title: Text('Cerberus Campaigns', style: theme.appBarTheme.titleTextStyle),
+        title:
+            Text('Cerberus Campaigns', style: theme.appBarTheme.titleTextStyle),
         actions: [
           Tooltip( // Added Tooltip
             message: 'Open navigation menu',
