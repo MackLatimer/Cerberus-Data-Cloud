@@ -1,6 +1,6 @@
 # Stage 1: Build the Flutter application
-# Using leoafarias/flutter image
-FROM leoafarias/flutter:3.22.1 AS build
+# Using google/flutter image
+FROM google/flutter:latest AS build
 
 # Set working directory for Flutter build
 WORKDIR /app_src
