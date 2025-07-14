@@ -174,7 +174,7 @@ class RootLayout extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Image.asset(
             'cerberus_frontend/assets/Cerberus Logo Final.png',
-            height: 30, // Adjust height as needed
+            height: 120, // Adjust height as needed
             semanticLabel: 'Cerberus Campaigns Logo', // Added semantic label
             errorBuilder: (context, error, stackTrace) {
               // Log error or show a more specific placeholder if needed
