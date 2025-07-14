@@ -4,7 +4,9 @@ RUN python --version > /app/python_version.txt && cat /app/python_version.txt
 COPY requirements.txt .
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
-COPY cerberus_report_backend/api.py .
+COPY api.py .
+COPY scraper.py .
+COPY notification_sender.py .
 EXPOSE 8080
 ENV PORT 8080
 ENV PYTHONUNBUFFERED TRUE
