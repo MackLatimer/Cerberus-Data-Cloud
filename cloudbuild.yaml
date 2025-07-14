@@ -30,7 +30,7 @@ steps:
     waitFor: ['-']
     args: [
       'build',
-      '-t', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/emmons-frontend:$SHORT_SHA', # Updated to Artifact Registry
+      '-t', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/cerberus-frontend:$SHORT_SHA', # Updated to Artifact Registry
       '-f', 'Dockerfile', # Use the Dockerfile in its specific directory
       '.'
     ]
@@ -39,7 +39,7 @@ steps:
 images:
   - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/agenda-api:v1'
   - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:v1'
-  - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/emmons-frontend:$SHORT_SHA'
+  - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/cerberus-frontend:$SHORT_SHA'
 
 # Specify the service account for Cloud Build to use for executing these steps
 # Ensure this service account has 'Artifact Registry Writer' role for the project or specifically for the 'cerberus-images' repository.
