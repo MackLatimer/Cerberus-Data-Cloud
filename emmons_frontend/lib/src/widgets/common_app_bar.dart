@@ -18,7 +18,7 @@ class CommonAppBar extends StatefulWidget implements PreferredSizeWidget {
   _CommonAppBarState createState() => _CommonAppBarState();
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight * 4); // Target 4x AppBar height
+  Size get preferredSize => Size.fromHeight(kToolbarHeight * 8); // Target 8x AppBar height
 }
 
 class _CommonAppBarState extends State<CommonAppBar> {
@@ -94,17 +94,22 @@ class _CommonAppBarState extends State<CommonAppBar> {
     return AppBar(
       backgroundColor: colorScheme.primary.withOpacity(_appBarOpacity),
       elevation: _appBarOpacity > 0 ? 4.0 : 0.0, // Add shadow when not transparent
-      leading: Padding(
-        padding: const EdgeInsets.all(4.0), // Reduced padding to allow more space for the logo
-        child: SizedBox( // Added SizedBox to explicitly control logo size
-          height: (kToolbarHeight * 4) * 0.9, // Logo height 90% of 4x AppBar height
-          width: (kToolbarHeight * 4) * 0.9 * 3.125, // Proportional width
-          child: SvgPicture.asset(
-            'assets/Emmons_Logo_4_TP.svg',
-            semanticsLabel: 'Curtis Emmons for Bell County Commissioner Precinct 4 Logo',
-            fit: BoxFit.contain,
+      leading: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(4.0), // Reduced padding to allow more space for the logo
+            child: SizedBox( // Added SizedBox to explicitly control logo size
+              height: (kToolbarHeight * 8) * 0.9, // Logo height 90% of 8x AppBar height
+              width: (kToolbarHeight * 8) * 0.9 * 3.125, // Proportional width
+              child: SvgPicture.asset(
+                'assets/Emmons_Logo_4_TP.svg',
+                semanticsLabel: 'Curtis Emmons for Bell County Commissioner Precinct 4 Logo',
+                fit: BoxFit.contain,
+              ),
+            ),
           ),
-        ),
+        ],
       ),
       title: null, // Removed title
       automaticallyImplyLeading: false, // No back button for top-level pages
@@ -132,5 +137,5 @@ class _CommonAppBarState extends State<CommonAppBar> {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight * 4); // Target 4x AppBar height
+  Size get preferredSize => Size.fromHeight(kToolbarHeight * 8); // Target 8x AppBar height
 }
