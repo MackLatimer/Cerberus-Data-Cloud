@@ -23,10 +23,10 @@ steps:
       '.' # Build context is now cerberus_campaigns_backend
     ]
 
-  # Step 3: Build the Docker image for emmons_frontend (web-frontend)
+  # Step 3: Build the Docker image for cerberus_frontend (web-frontend)
   - name: 'gcr.io/cloud-builders/docker'
-    id: 'build-emmons-frontend'
-    dir: 'emmons_frontend'
+    id: 'build-cerberus-frontend'
+    dir: 'cerberus_frontend'
     waitFor: ['-']
     args: [
       'build',
