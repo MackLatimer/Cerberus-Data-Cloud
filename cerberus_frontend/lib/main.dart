@@ -174,6 +174,7 @@ class RootLayout extends StatelessWidget {
         leadingWidth: 120,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
+
           child: SizedBox(
             width: 120,
             height: 120,
