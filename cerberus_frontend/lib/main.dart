@@ -5,9 +5,12 @@ import 'pages/home/home_page.dart';
 import 'pages/about/about_page.dart';
 import 'pages/contact/contact_page.dart';
 import 'pages/report/report_page.dart';
+import 'test_appbar.dart';
+
+import 'test_appbar.dart' as test_app;
 
 void main() {
-  runApp(const MyApp());
+  test_app.main();
 }
 
 final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
