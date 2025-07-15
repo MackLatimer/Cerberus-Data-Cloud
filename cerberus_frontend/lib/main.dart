@@ -153,16 +153,16 @@ ThemeData _buildAppTheme() {
       labelStyle: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.onSurfaceVariant, fontFamily: fontSignika),
       floatingLabelStyle: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.primary, fontFamily: fontSignika),
     ),
-    cardTheme: CardThemeData( // Fixed: CardTheme to CardThemeData
-      color: theme.colorScheme.surfaceContainerLow, // M3 card color
-      elevation: 1.0, // M3 elevated card style
+    cardTheme: CardTheme(
+      color: theme.colorScheme.surfaceContainerLow,
+      elevation: 1.0,
       shadowColor: theme.colorScheme.shadow,
       margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
     ),
     drawerTheme: DrawerThemeData(
-      backgroundColor: theme.colorScheme.surfaceContainerLow, // M3 drawer background
-      elevation: 0.0, // M3 drawers often have no shadow, relying on scrim
+      backgroundColor: theme.colorScheme.surfaceContainerLow,
+      elevation: 0.0,
     ),
   );
 }
@@ -174,98 +174,114 @@ class RootLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Access theme for drawer header styling
     final theme = Theme.of(context);
 
     return Scaffold(
-      key: _scaffoldKey,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(120.0),
-        child: AppBar(
-          toolbarHeight: 120.0,
-          leadingWidth: 120.0,
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              width: 120,
-              height: 120,
-              child: Image.asset(
-                'assets/Cerberus Logo Final.png',
-                fit: BoxFit.contain,
+        key: _scaffoldKey,
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(180.0),
+          child: AppBar(
+            toolbarHeight: 180.0,
+            leadingWidth: 720.0,
+            leading: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                width: 720,
+                height: 180,
+                child: Image.asset(
+                  'assets/Cerberus Logo Final.png',
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
+            title: Text('Cerberus Campaigns',
+                style: theme.appBarTheme.titleTextStyle),
+            actions: [
+              Tooltip(
+                message: 'Open navigation menu',
+                child: IconButton(
+                  icon: Icon(Icons.menu_rounded,
+                      color: theme.appBarTheme.foregroundColor),
+                  onPressed: () {
+                    _scaffoldKey.currentState?.openDrawer();
+                  },
+                ),
+              ),
+            ],
           ),
-          title:
-              Text('Cerberus Campaigns', style: theme.appBarTheme.titleTextStyle),
-        actions: [
-          Tooltip( // Added Tooltip
-            message: 'Open navigation menu',
-            child: IconButton(
-              icon: Icon(Icons.menu_rounded, color: theme.appBarTheme.foregroundColor), // Updated to Material Symbols
-              onPressed: () {
-                _scaffoldKey.currentState?.openDrawer();
-              },
-            ),
-          ),
-        ],
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerLow, // Match DrawerTheme background
-              ),
-              child: Text( // Apply M3 typography
-                'Navigation',
-                style: theme.textTheme.titleLarge?.copyWith(color: theme.colorScheme.onSurface),
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.home_rounded, color: theme.colorScheme.onSurfaceVariant), // Updated to Material Symbols
-              title: Text('Home', style: theme.textTheme.labelLarge?.copyWith(color: theme.colorScheme.onSurface)),
-              onTap: () {
-                context.go('/');
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.info_outline_rounded, color: theme.colorScheme.onSurfaceVariant), // Updated to Material Symbols
-              title: Text('About', style: theme.textTheme.labelLarge?.copyWith(color: theme.colorScheme.onSurface)),
-              onTap: () {
-                context.go('/about');
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.contact_mail_rounded, color: theme.colorScheme.onSurfaceVariant), // Corrected Icon Name
-              title: Text('Contact', style: theme.textTheme.labelLarge?.copyWith(color: theme.colorScheme.onSurface)),
-              onTap: () {
-                context.go('/contact');
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.assessment_rounded, color: theme.colorScheme.onSurfaceVariant), // Corrected Icon Name
-              title: Text('Report', style: theme.textTheme.labelLarge?.copyWith(color: theme.colorScheme.onSurface)),
-              onTap: () {
-                context.go('/report');
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.upload_file, color: theme.colorScheme.onSurfaceVariant),
-              title: Text('Upload', style: theme.textTheme.labelLarge?.copyWith(color: theme.colorScheme.onSurface)),
-              onTap: () {
-                context.go('/upload');
-                Navigator.pop(context);
-              },
-            ),
-          ],
         ),
-      ),
-      body: child,
-    );
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surfaceContainerLow,
+                ),
+                child: Text(
+                  'Navigation',
+                  style: theme.textTheme.titleLarge
+                      ?.copyWith(color: theme.colorScheme.onSurface),
+                ),
+              ),
+              ListTile(
+                leading: Icon(Icons.home_rounded,
+                    color: theme.colorScheme.onSurfaceVariant),
+                title: Text('Home',
+                    style: theme.textTheme.labelLarge
+                        ?.copyWith(color: theme.colorScheme.onSurface)),
+                onTap: () {
+                  context.go('/');
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.info_outline_rounded,
+                    color: theme.colorScheme.onSurfaceVariant),
+                title: Text('About',
+                    style: theme.textTheme.labelLarge
+                        ?.copyWith(color: theme.colorScheme.onSurface)),
+                onTap: () {
+                  context.go('/about');
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.contact_mail_rounded,
+                    color: theme.colorScheme.onSurfaceVariant),
+                title: Text('Contact',
+                    style: theme.textTheme.labelLarge
+                        ?.copyWith(color: theme.colorScheme.onSurface)),
+                onTap: () {
+                  context.go('/contact');
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.assessment_rounded,
+                    color: theme.colorScheme.onSurfaceVariant),
+                title: Text('Report',
+                    style: theme.textTheme.labelLarge
+                        ?.copyWith(color: theme.colorScheme.onSurface)),
+                onTap: () {
+                  context.go('/report');
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.upload_file,
+                    color: theme.colorScheme.onSurfaceVariant),
+                title: Text('Upload',
+                    style: theme.textTheme.labelLarge
+                        ?.copyWith(color: theme.colorScheme.onSurface)),
+                onTap: () {
+                  context.go('/upload');
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        ),
+        body: child);
   }
 }
