@@ -98,14 +98,13 @@ class _CommonAppBarState extends State<CommonAppBar> {
         padding: const EdgeInsets.all(4.0), // Reduced padding to allow more space for the logo
         child: Builder(
           builder: (context) {
-            final double logoHeight = kToolbarHeight * 2.25;
             return SizedBox(
-              height: logoHeight,
-              width: logoHeight * 3,
+              height: 100,
+              width: 400,
               child: SvgPicture.asset(
                 'assets/Emmons_Logo_4_TP.svg',
                 semanticsLabel: 'Curtis Emmons for Bell County Commissioner Precinct 4 Logo',
-                fit: BoxFit.fill,
+                fit: BoxFit.contain,
               ),
             );
           }
