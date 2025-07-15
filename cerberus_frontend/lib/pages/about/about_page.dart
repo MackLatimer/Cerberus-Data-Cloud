@@ -12,6 +12,14 @@ class AboutPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          // About Us Title
+          Text(
+            'About Us',
+            style: Theme.of(context).textTheme.headlineLarge,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 24.0),
+
           // Non Profit Fundraising Campaigns section
           Text(
             'Non Profit Fundraising Campaigns',
@@ -31,30 +39,30 @@ class AboutPage extends StatelessWidget {
           const SizedBox(height: 24.0),
 
           // Business Advertising Campaigns section
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    'Business Advertising Campaigns',
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                  const SizedBox(height: 16.0), // Increased spacing
-                  const Text(
-                    "As whole hearted believers in the free market, we recognize that business is the back bone of our community.\nFrom providing vital services, to creating good jobs, to supporting our local non profits, none of us we be here without them.\nThat's why we find mission driven businesses who are dedicated to making our community better and providing superior goods and services.\nWe take care of advertising campaigns and customers acquisition allowing them to take care of business.",
-                  ),
-                  const SizedBox(height: 16.0), // Increased spacing
-                  ElevatedButton(
-                    onPressed: () {
-                      context.go('/contact');
-                    },
-                    child: const Text('Contact Us'),
-                  ),
-                ],
-              ),
-            ],
+          Container(
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  'Business Advertising Campaigns',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                  textAlign: TextAlign.right,
+                ),
+                const SizedBox(height: 16.0), // Increased spacing
+                const Text(
+                  "As whole hearted believers in the free market, we recognize that business is the back bone of our community.\nFrom providing vital services, to creating good jobs, to supporting our local non profits, none of us we be here without them.\nThat's why we find mission driven businesses who are dedicated to making our community better and providing superior goods and services.\nWe take care of advertising campaigns and customers acquisition allowing them to take care of business.",
+                  textAlign: TextAlign.right,
+                ),
+                const SizedBox(height: 16.0), // Increased spacing
+                ElevatedButton(
+                  onPressed: () {
+                    context.go('/contact');
+                  },
+                  child: const Text('Contact Us'),
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 24.0),
 

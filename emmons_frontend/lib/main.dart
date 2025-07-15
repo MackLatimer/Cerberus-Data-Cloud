@@ -53,8 +53,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     const Color primaryColor = Color(0xFF002663); // Dark Blue
     const Color secondaryColor = Color(0xFFA01124); // Red
-    const Color backgroundColor = Color(0xFFFFFFFF); // White
-    const Color textColor = Color(0xFF000000); // Black
+    const Color backgroundColor = Color(0xFF000000); // Black
+    const Color textColor = Color(0xFFFFFFFF); // White
 
     final TextTheme appTextTheme = TextTheme(
       displayLarge: GoogleFonts.bebasNeue(fontSize: 152, color: textColor, fontWeight: FontWeight.bold),
