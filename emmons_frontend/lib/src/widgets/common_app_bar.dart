@@ -18,7 +18,7 @@ class CommonAppBar extends StatefulWidget implements PreferredSizeWidget {
   _CommonAppBarState createState() => _CommonAppBarState();
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight * 4.95);
+  Size get preferredSize => const Size.fromHeight(150);
 }
 
 class _CommonAppBarState extends State<CommonAppBar> {
@@ -98,13 +98,14 @@ class _CommonAppBarState extends State<CommonAppBar> {
         padding: const EdgeInsets.all(4.0), // Reduced padding to allow more space for the logo
         child: Builder(
           builder: (context) {
-            return SizedBox(
-              height: 100,
-              width: 400,
-              child: SvgPicture.asset(
-                'assets/Emmons_Logo_4_TP.svg',
-                semanticsLabel: 'Curtis Emmons for Bell County Commissioner Precinct 4 Logo',
-                fit: BoxFit.contain,
+            return Center(
+              child: SizedBox(
+                height: 100,
+                width: 400,
+                child: Image.asset(
+                  'assets/Emmons_Logo_4_TP.png',
+                  fit: BoxFit.contain,
+                ),
               ),
             );
           }
@@ -113,28 +114,31 @@ class _CommonAppBarState extends State<CommonAppBar> {
       title: null, // Removed title
       automaticallyImplyLeading: false, // No back button for top-level pages
       actions: <Widget>[
-        // Spread the navigation items as TextButtons
-        ...navItems.map((item) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: TextButton(
-              onPressed: () {
-                context.go(item['path']!);
-              },
-              child: Text(
-                item['label']!,
-                style: textTheme.labelMedium?.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-            ),
-          );
-        }).toList(),
-        // Allow for additional actions to be passed if needed
-        if (widget.actions != null) ...widget.actions!, // Changed to widget.actions
-        const SizedBox(width: 16), // Add some spacing at the end
+        Center(
+          child: Row(
+            children: [
+              // Spread the navigation items as TextButtons
+              ...navItems.map((item) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: TextButton(
+                    onPressed: () {
+                      context.go(item['path']!);
+                    },
+                    child: Text(
+                      item['label']!,
+                      style: textTheme.labelMedium?.copyWith(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24),
+                    ),
+                  ),
+                );
+              }).toList(),
+              // Allow for additional actions to be passed if needed
+              if (widget.actions != null) ...widget.actions!, // Changed to widget.actions
+              const SizedBox(width: 16), // Add some spacing at the end
+            ],
+          ),
+        )
       ],
     );
   }
-
-  @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight * 4.95);
 }
