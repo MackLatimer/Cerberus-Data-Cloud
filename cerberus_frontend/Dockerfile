@@ -1,5 +1,20 @@
-# Use a specific version of the Flutter SDK
-FROM cirrusci/flutter:3.19.6
+# Use a specific version of the Ubuntu
+FROM ubuntu:22.04
+
+# Set non-interactive mode
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    git \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Flutter
+RUN git clone https://github.com/flutter/flutter.git /usr/local/flutter
+ENV PATH="/usr/local/flutter/bin:/usr/local/flutter/bin/cache/dart-sdk/bin:${PATH}"
+RUN flutter precache
 
 # Set the working directory
 WORKDIR /app
