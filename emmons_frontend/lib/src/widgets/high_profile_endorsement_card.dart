@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class HighProfileEndorsementCard extends StatelessWidget {
   final String name;
   final String quote;
-  final String imagePath; // Placeholder for now
+  final String imagePath;
   final Color imageBackgroundColor;
+  final bool imageLeft;
 
   const HighProfileEndorsementCard({
     super.key,
@@ -12,34 +13,30 @@ class HighProfileEndorsementCard extends StatelessWidget {
     required this.quote,
     required this.imagePath,
     this.imageBackgroundColor = Colors.grey,
+    this.imageLeft = true,
   });
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    return Card(
-      elevation: 3,
-      margin: const EdgeInsets.symmetric(vertical: 12.0),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    final imageWidget = Expanded(
+      child: Container(
+        height: 300,
+        color: imageBackgroundColor,
+        child: Center(
+          child: Icon(Icons.person, size: 60, color: Colors.white.withOpacity(0.8)),
+        ),
+      ),
+    );
+
+    final textWidget = Expanded(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(24.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Container(
-              width: 120,
-              height: 120,
-              decoration: BoxDecoration(
-                color: imageBackgroundColor,
-                shape: BoxShape.circle,
-                // image: DecorationImage(
-                //   image: AssetImage(imagePath), // Or NetworkImage
-                //   fit: BoxFit.cover,
-                // ),
-              ),
-              child: Icon(Icons.person, size: 60, color: Colors.white.withOpacity(0.8)), // Placeholder
-            ),
-            const SizedBox(height: 16),
             Text(
               name,
               style: textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
@@ -53,6 +50,14 @@ class HighProfileEndorsementCard extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 16.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: imageLeft ? [imageWidget, textWidget] : [textWidget, imageWidget],
       ),
     );
   }
