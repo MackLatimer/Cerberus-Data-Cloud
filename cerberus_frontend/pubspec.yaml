@@ -16,6 +16,7 @@ dependencies:
   http: ^1.4.0
   intl: ^0.20.2
   file_picker: ^8.0.0+1
+  video_player: ^2.8.6
 
 dev_dependencies:
   flutter_test:
@@ -28,6 +29,8 @@ flutter:
     - assets/
     - assets/images/
     - assets/fonts/
+    - assets/Slow Blue Smoke.mov
+    - assets/Cerberus Favicon.png
 
   fonts:
     - family: LeagueSpartan

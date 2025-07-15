@@ -16,6 +16,7 @@ class ContactPage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text('$label: ', style: const TextStyle(fontWeight: FontWeight.bold)),
           InkWell(

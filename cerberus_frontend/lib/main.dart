@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:video_player/video_player.dart';
 
 import 'pages/home/home_page.dart';
 import 'pages/about/about_page.dart';
 import 'pages/contact/contact_page.dart';
 import 'pages/report/report_page.dart';
 import 'pages/upload/upload_page.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -92,9 +94,10 @@ ThemeData _buildAppTheme() {
   // Apply M3-aligned component themes
   return theme.copyWith(
     appBarTheme: AppBarTheme(
-      backgroundColor: primaryBlack,
+      backgroundColor: Colors.transparent,
       foregroundColor: primaryWhite,
       elevation: 0.0, // M3 often uses 0 or low elevation
+      toolbarHeight: 200,
       surfaceTintColor: theme.colorScheme.surfaceTint, // Recommended for M3 app bars
       iconTheme: const IconThemeData(color: primaryWhite), // Ensure icons match foreground
       actionsIconTheme: const IconThemeData(color: primaryWhite), // Ensure action icons match
@@ -112,7 +115,7 @@ ThemeData _buildAppTheme() {
 
       headlineLarge: TextStyle(fontFamily: fontLeagueSpartan, fontSize: 32.0, fontWeight: FontWeight.w400, letterSpacing: 0.0, height: 40.0/32.0, color: theme.colorScheme.onSurface),
       headlineMedium: TextStyle(fontFamily: fontLeagueSpartan, fontSize: 28.0, fontWeight: FontWeight.w400, letterSpacing: 0.0, height: 36.0/28.0, color: theme.colorScheme.onSurface),
-      headlineSmall: TextStyle(fontFamily: fontLeagueSpartan, fontSize: 24.0, fontWeight: FontWeight.w400, letterSpacing: 0.0, height: 32.0/24.0, color: theme.colorScheme.onSurface),
+      headlineSmall: TextStyle(fontFamily: 'LeagueSpartan', fontSize: 50.0, fontWeight: FontWeight.bold, color: theme.colorScheme.onSurface),
 
       titleLarge: TextStyle(fontFamily: fontLeagueSpartan, fontSize: 22.0, fontWeight: FontWeight.w400, letterSpacing: 0.0, height: 28.0/22.0, color: theme.colorScheme.onSurface), // Used for AppBar title by default in M3
       titleMedium: TextStyle(fontFamily: fontSignika, fontSize: 16.0, fontWeight: FontWeight.w500, letterSpacing: 0.15, height: 24.0/16.0, color: theme.colorScheme.onSurface),
@@ -128,7 +131,7 @@ ThemeData _buildAppTheme() {
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: theme.colorScheme.primary,
+        backgroundColor: const Color(0xFF003b71),
         foregroundColor: theme.colorScheme.onPrimary,
         // M3 uses TextTheme.labelLarge for ElevatedButton's text style by default.
         // We ensure our custom font and its properties from labelLarge are used.
@@ -167,10 +170,35 @@ ThemeData _buildAppTheme() {
   );
 }
 
-class RootLayout extends StatelessWidget {
+class RootLayout extends StatefulWidget {
   const RootLayout({required this.child, super.key});
 
   final Widget child;
+
+  @override
+  State<RootLayout> createState() => _RootLayoutState();
+}
+
+class _RootLayoutState extends State<RootLayout> {
+  late VideoPlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.asset('assets/Slow Blue Smoke.mov')
+      ..initialize().then((_) {
+        // Ensure the first frame is shown after the video is initialized, even before the video plays.
+        setState(() {});
+        _controller.setLooping(true);
+        _controller.play();
+      });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -179,48 +207,71 @@ class RootLayout extends StatelessWidget {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        automaticallyImplyLeading: false, // No hamburger menu
-        title: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                'assets/Cerberus Logo Final.png',
-                height: 200,
-                fit: BoxFit.contain,
-              ),
-              const SizedBox(width: 16),
-              Text(
-                'Cerberus Campaigns',
-                style: theme.appBarTheme.titleTextStyle?.copyWith(fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
+        automaticallyImplyLeading: false,
+        flexibleSpace: Stack(
+          children: <Widget>[
+            _controller.value.isInitialized
+                ? SizedBox.expand(
+                    child: FittedBox(
+                      fit: BoxFit.cover,
+                      child: SizedBox(
+                        width: _controller.value.size.width,
+                        height: _controller.value.size.height,
+                        child: VideoPlayer(_controller),
+                      ),
+                    ),
+                  )
+                : Container(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 16.0),
+                  child: Image.asset(
+                    'assets/Cerberus Logo Final.png',
+                    height: 150,
+                    width: 150,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+                Text(
+                  'Cerberus Campaigns',
+                  style: theme.appBarTheme.titleTextStyle?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () => context.go('/'),
+                      child: Text('Home', style: TextStyle(color: theme.appBarTheme.foregroundColor, fontWeight: FontWeight.bold)),
+                    ),
+                    TextButton(
+                      onPressed: () => context.go('/about'),
+                      child: Text('About', style: TextStyle(color: theme.appBarTheme.foregroundColor, fontWeight: FontWeight.bold)),
+                    ),
+                    TextButton(
+                      onPressed: () => context.go('/contact'),
+                      child: Text('Contact', style: TextStyle(color: theme.appBarTheme.foregroundColor, fontWeight: FontWeight.bold)),
+                    ),
+                    TextButton(
+                      onPressed: () => context.go('/report'),
+                      child: Text('Report', style: TextStyle(color: theme.appBarTheme.foregroundColor, fontWeight: FontWeight.bold)),
+                    ),
+                    TextButton(
+                      onPressed: () => context.go('/upload'),
+                      child: Text('Upload', style: TextStyle(color: theme.appBarTheme.foregroundColor, fontWeight: FontWeight.bold)),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => context.go('/'),
-            child: Text('Home', style: TextStyle(color: theme.appBarTheme.foregroundColor, fontWeight: FontWeight.bold)),
-          ),
-          TextButton(
-            onPressed: () => context.go('/about'),
-            child: Text('About', style: TextStyle(color: theme.appBarTheme.foregroundColor, fontWeight: FontWeight.bold)),
-          ),
-          TextButton(
-            onPressed: () => context.go('/contact'),
-            child: Text('Contact', style: TextStyle(color: theme.appBarTheme.foregroundColor, fontWeight: FontWeight.bold)),
-          ),
-          TextButton(
-            onPressed: () => context.go('/report'),
-            child: Text('Report', style: TextStyle(color: theme.appBarTheme.foregroundColor, fontWeight: FontWeight.bold)),
-          ),
-          TextButton(
-            onPressed: () => context.go('/upload'),
-            child: Text('Upload', style: TextStyle(color: theme.appBarTheme.foregroundColor, fontWeight: FontWeight.bold)),
-          ),
-        ],
       ),
-      body: child,
+      body: widget.child,
     );
   }
 }
