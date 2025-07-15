@@ -153,7 +153,7 @@ ThemeData _buildAppTheme() {
       labelStyle: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.onSurfaceVariant, fontFamily: fontSignika),
       floatingLabelStyle: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.primary, fontFamily: fontSignika),
     ),
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       color: theme.colorScheme.surfaceContainerLow,
       elevation: 1.0,
       shadowColor: theme.colorScheme.shadow,
