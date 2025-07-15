@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:candidate_website/src/widgets/common_app_bar.dart';
 import 'package:candidate_website/src/widgets/signup_form.dart';
-import 'package:candidate_website/src/widgets/donate_button.dart';
-import 'package:candidate_website/src/widgets/home_page_section.dart'; // Import the new widget
-import 'package:candidate_website/src/widgets/footer.dart'; // Import the Footer widget
+import 'package:candidate_website/src/widgets/donate_section.dart';
+import 'package:candidate_website/src/widgets/home_page_section.dart';
+import 'package:candidate_website/src/widgets/footer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -24,18 +24,18 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true, // Ensure body content goes behind AppBar
+      extendBodyBehindAppBar: true,
       appBar: CommonAppBar(
         title: 'Curtis Emmons for Bell County Precinct 4',
         scrollController: _scrollController,
       ),
-      body: CustomScrollView( // Changed to CustomScrollView for more flexibility with slivers
+      body: CustomScrollView(
         controller: _scrollController,
         slivers: <Widget>[
           SliverToBoxAdapter(
             child: Container(
-              height: 300, // Height of the hero image
-              color: Colors.grey[300], // Placeholder color
+              height: 300,
+              color: Colors.grey[300],
               child: Center(
                 child: Text(
                   'Hero Image Placeholder',
@@ -44,70 +44,76 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          SliverPadding(
-            padding: const EdgeInsets.all(24.0),
-            sliver: SliverToBoxAdapter(
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 800), // Max width for main content
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      Text(
-                        'Welcome to the Campaign!',
-                        style: Theme.of(context).textTheme.headlineMedium,
-                  textAlign: TextAlign.center,
+          SliverToBoxAdapter(
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 1200),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    const SizedBox(height: 40),
+                    Text(
+                      'Welcome to the Campaign!',
+                      style: Theme.of(context).textTheme.headlineMedium,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                      child: Text(
+                        'Join us in making a difference for Bell County Precinct 4. Curtis Emmons is dedicated to serving our community with integrity, transparency, and a commitment to progress.',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    const SizedBox(height: 60),
+                    const HomePageSection(
+                      title: 'Issues',
+                      summary:
+                          'Learn about the key issues Curtis is focused on to improve our precinct.',
+                      imagePath: 'assets/placeholder_issues.png',
+                      routePath: '/issues',
+                      imageBackgroundColor: Colors.blueGrey,
+                      imageLeft: true,
+                    ),
+                    const HomePageSection(
+                      title: 'About Me',
+                      summary:
+                          'Discover more about Curtis Emmons, his background, and his vision for Bell County.',
+                      imagePath: 'assets/placeholder_about.png',
+                      routePath: '/about',
+                      imageBackgroundColor: Colors.teal,
+                      imageLeft: false,
+                    ),
+                    const HomePageSection(
+                      title: 'Endorsements',
+                      summary:
+                          'See who is endorsing Curtis and learn how you can add your support.',
+                      imagePath: 'assets/placeholder_endorsements.png',
+                      routePath: '/endorsements',
+                      imageBackgroundColor: Colors.amber,
+                      imageLeft: true,
+                    ),
+                    const HomePageSection(
+                      title: 'Donate',
+                      summary:
+                          'Support the campaign financially and help us make a difference.',
+                      imagePath: 'assets/placeholder_donate.png',
+                      routePath: '/donate',
+                      imageBackgroundColor: Colors.green,
+                      imageLeft: false,
+                    ),
+                    const SizedBox(height: 40),
+                    const DonateSection(),
+                    const SizedBox(height: 40),
+                    const SignupFormWidget(),
+                    const SizedBox(height: 40),
+                  ],
                 ),
-                const SizedBox(height: 20),
-                Text(
-                  'Join us in making a difference for Bell County Precinct 4. Curtis Emmons is dedicated to serving our community with integrity, transparency, and a commitment to progress.',
-                  style: Theme.of(context).textTheme.bodyLarge,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 40),
-                // SignupFormWidget was here
-                Center(child: const DonateButtonWidget()), // Donate button can stay or move with form
-                const SizedBox(height: 60), // Increased spacing before sections
-
-                // Page Sections
-                const HomePageSection(
-                  title: 'Issues',
-                  summary: 'Learn about the key issues Curtis is focused on to improve our precinct.',
-                  imagePath: 'assets/placeholder_issues.png', // Replace with actual image path
-                  routePath: '/issues',
-                  imageBackgroundColor: Colors.blueGrey,
-                ),
-                const HomePageSection(
-                  title: 'About Me',
-                  summary: 'Discover more about Curtis Emmons, his background, and his vision for Bell County.',
-                  imagePath: 'assets/placeholder_about.png', // Replace with actual image path
-                  routePath: '/about',
-                  imageBackgroundColor: Colors.teal,
-                ),
-                const HomePageSection(
-                  title: 'Endorsements',
-                  summary: 'See who is endorsing Curtis and learn how you can add your support.',
-                  imagePath: 'assets/placeholder_endorsements.png', // Replace with actual image path
-                  routePath: '/endorsements',
-                  imageBackgroundColor: Colors.amber,
-                ),
-                const HomePageSection(
-                  title: 'Donate',
-                  summary: 'Support the campaign financially and help us make a difference.',
-                  imagePath: 'assets/placeholder_donate.png', // Replace with actual image path
-                  routePath: '/donate',
-                  imageBackgroundColor: Colors.green,
-                ),
-                const SizedBox(height: 40),
-                const SignupFormWidget(), // Moved SignupFormWidget here
-                const SizedBox(height: 40),
-              ],
+              ),
             ),
           ),
-        ),
-            ),
-          ),
-          const SliverToBoxAdapter(child: Footer()), // Add Footer here
+          const SliverToBoxAdapter(child: Footer()),
         ],
       ),
     );
