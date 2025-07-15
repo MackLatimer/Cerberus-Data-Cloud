@@ -69,7 +69,7 @@ class HomePageSection extends StatelessWidget {
     );
 
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 16.0),
+      margin: EdgeInsets.zero,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: imageLeft ? [imageWidget, textWidget] : [textWidget, imageWidget],
