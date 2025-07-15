@@ -29,6 +29,24 @@ class HomePage extends StatelessWidget {
           ),
           const SizedBox(height: 24.0),
 
+          // Contact Us section
+          Text(
+            'Contact Us',
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+          const SizedBox(height: 16.0), // Increased spacing
+          const Text(
+            "We believe that your time is precious and we are most effective when we can react to problems quickly. That's why when you work with us, you will be in direct contact with one of the three owners. Prospective partners can also reach out to our direct lines to schedule a meeting with us. Communication is key in pulling of a successful campaign and we are dedicated to quick and transparent communication.",
+          ),
+          const SizedBox(height: 16.0), // Consistent spacing before button
+          ElevatedButton(
+            onPressed: () {
+              context.go('/contact');
+            },
+            child: const Text('Learn More'),
+          ),
+          const SizedBox(height: 24.0),
+
           // JOIN OUR EMAIL AND TEXT LIST section
           Text(
             'JOIN OUR EMAIL AND TEXT LIST',
@@ -78,24 +96,6 @@ class HomePage extends StatelessWidget {
               // TODO: Implement submit functionality
             },
             child: const Text('Submit'),
-          ),
-          const SizedBox(height: 24.0),
-
-          // Contact Us section
-          Text(
-            'Contact Us',
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-          const SizedBox(height: 16.0), // Increased spacing
-          const Text(
-            "We believe that your time is precious and we are most effective when we can react to problems quickly. That's why when you work with us, you will be in direct contact with one of the three owners. Prospective partners can also reach out to our direct lines to schedule a meeting with us. Communication is key in pulling of a successful campaign and we are dedicated to quick and transparent communication.",
-          ),
-          const SizedBox(height: 16.0), // Consistent spacing before button
-          ElevatedButton(
-            onPressed: () {
-              context.go('/contact');
-            },
-            child: const Text('Learn More'),
           ),
         ],
       ),
