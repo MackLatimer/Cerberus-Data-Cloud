@@ -63,7 +63,6 @@ class _HomePageState extends State<HomePage> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                const SizedBox(height: 60),
                 const HomePageSection(
                   title: 'Issues',
                   summary:

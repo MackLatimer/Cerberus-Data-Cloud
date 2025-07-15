@@ -95,49 +95,46 @@ class _CommonAppBarState extends State<CommonAppBar> {
       backgroundColor: colorScheme.primary.withOpacity(_appBarOpacity),
       elevation: _appBarOpacity > 0 ? 4.0 : 0.0, // Add shadow when not transparent
       leading: Padding(
-        padding: const EdgeInsets.all(4.0), // Reduced padding to allow more space for the logo
-        child: Builder(
-          builder: (context) {
-            return Center(
-              child: SizedBox(
-                height: 100,
-                width: 400,
-                child: Image.asset(
-                  'assets/Emmons_Logo_4_TP.png',
-                  fit: BoxFit.contain,
-                ),
-              ),
-            );
-          }
+        padding: const EdgeInsets.all(4.0),
+        child: Center(
+          child: SizedBox(
+            height: 100,
+            width: 400,
+            child: Image.asset(
+              'assets/Emmons_Logo_4_TP.png',
+              fit: BoxFit.contain,
+            ),
+          ),
         ),
       ),
-      title: null, // Removed title
-      automaticallyImplyLeading: false, // No back button for top-level pages
+      title: null,
+      automaticallyImplyLeading: false,
       actions: <Widget>[
-        Center(
-          child: Row(
-            children: [
-              // Spread the navigation items as TextButtons
-              ...navItems.map((item) {
+        Expanded(
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: navItems.map((item) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: TextButton(
-                    onPressed: () {
-                      context.go(item['path']!);
-                    },
+                    onPressed: () => context.go(item['path']!),
                     child: Text(
                       item['label']!,
-                      style: textTheme.labelMedium?.copyWith(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24),
+                      style: textTheme.labelMedium?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                      ),
                     ),
                   ),
                 );
               }).toList(),
-              // Allow for additional actions to be passed if needed
-              if (widget.actions != null) ...widget.actions!, // Changed to widget.actions
-              const SizedBox(width: 16), // Add some spacing at the end
-            ],
+            ),
           ),
-        )
+        ),
+        if (widget.actions != null) ...widget.actions!,
+        const SizedBox(width: 16),
       ],
     );
   }
