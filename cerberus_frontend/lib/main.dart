@@ -92,13 +92,17 @@ ThemeData _buildAppTheme() {
   // Apply M3-aligned component themes
   return theme.copyWith(
     appBarTheme: AppBarTheme(
-      backgroundColor: theme.colorScheme.surfaceContainerHighest,
-      foregroundColor: theme.colorScheme.onSurfaceVariant,
+      backgroundColor: primaryBlack,
+      foregroundColor: primaryWhite,
       elevation: 0.0, // M3 often uses 0 or low elevation
       surfaceTintColor: theme.colorScheme.surfaceTint, // Recommended for M3 app bars
-      iconTheme: IconThemeData(color: theme.colorScheme.onSurfaceVariant), // Ensure icons match foreground
-      actionsIconTheme: IconThemeData(color: theme.colorScheme.onSurfaceVariant), // Ensure action icons match
-      titleTextStyle: theme.textTheme.titleLarge?.copyWith(color: theme.colorScheme.onSurfaceVariant, fontFamily: fontLeagueSpartan),
+      iconTheme: const IconThemeData(color: primaryWhite), // Ensure icons match foreground
+      actionsIconTheme: const IconThemeData(color: primaryWhite), // Ensure action icons match
+      titleTextStyle: theme.textTheme.titleLarge?.copyWith(
+          color: primaryWhite,
+          fontFamily: fontLeagueSpartan,
+          fontSize: 44.0,
+          fontWeight: FontWeight.bold),
     ),
     textTheme: TextTheme(
       // M3 Type Scale using LeagueSpartan and Signika
@@ -173,111 +177,47 @@ class RootLayout extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-        key: _scaffoldKey,
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(180.0),
-          child: AppBar(
-            toolbarHeight: 180.0,
-            leadingWidth: 720.0,
-            leading: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
-                width: 720,
-                height: 180,
-                child: Image.asset(
-                  'assets/Cerberus Logo Final.png',
-                  fit: BoxFit.contain,
-                ),
-              ),
+      key: _scaffoldKey,
+      appBar: AppBar(
+        automaticallyImplyLeading: false, // No hamburger menu
+        title: Row(
+          children: [
+            Image.asset(
+              'assets/Cerberus Logo Final.png',
+              height: 100,
+              fit: BoxFit.contain,
             ),
-            title: Text('Cerberus Campaigns',
-                style: theme.appBarTheme.titleTextStyle),
-            actions: [
-              Tooltip(
-                message: 'Open navigation menu',
-                child: IconButton(
-                  icon: Icon(Icons.menu_rounded,
-                      color: theme.appBarTheme.foregroundColor),
-                  onPressed: () {
-                    _scaffoldKey.currentState?.openDrawer();
-                  },
-                ),
-              ),
-            ],
-          ),
+            const SizedBox(width: 16),
+            Text(
+              'Cerberus Campaigns',
+              style: theme.appBarTheme.titleTextStyle,
+            ),
+          ],
         ),
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              DrawerHeader(
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.surfaceContainerLow,
-                ),
-                child: Text(
-                  'Navigation',
-                  style: theme.textTheme.titleLarge
-                      ?.copyWith(color: theme.colorScheme.onSurface),
-                ),
-              ),
-              ListTile(
-                leading: Icon(Icons.home_rounded,
-                    color: theme.colorScheme.onSurfaceVariant),
-                title: Text('Home',
-                    style: theme.textTheme.labelLarge
-                        ?.copyWith(color: theme.colorScheme.onSurface)),
-                onTap: () {
-                  context.go('/');
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.info_outline_rounded,
-                    color: theme.colorScheme.onSurfaceVariant),
-                title: Text('About',
-                    style: theme.textTheme.labelLarge
-                        ?.copyWith(color: theme.colorScheme.onSurface)),
-                onTap: () {
-                  context.go('/about');
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.contact_mail_rounded,
-                    color: theme.colorScheme.onSurfaceVariant),
-                title: Text('Contact',
-                    style: theme.textTheme.labelLarge
-                        ?.copyWith(color: theme.colorScheme.onSurface)),
-                onTap: () {
-                  context.go('/contact');
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.assessment_rounded,
-                    color: theme.colorScheme.onSurfaceVariant),
-                title: Text('Report',
-                    style: theme.textTheme.labelLarge
-                        ?.copyWith(color: theme.colorScheme.onSurface)),
-                onTap: () {
-                  context.go('/report');
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.upload_file,
-                    color: theme.colorScheme.onSurfaceVariant),
-                title: Text('Upload',
-                    style: theme.textTheme.labelLarge
-                        ?.copyWith(color: theme.colorScheme.onSurface)),
-                onTap: () {
-                  context.go('/upload');
-                  Navigator.pop(context);
-                },
-              ),
-            ],
+        actions: [
+          TextButton(
+            onPressed: () => context.go('/'),
+            child: Text('Home', style: TextStyle(color: theme.appBarTheme.foregroundColor)),
           ),
-        ),
-        body: child);
+          TextButton(
+            onPressed: () => context.go('/about'),
+            child: Text('About', style: TextStyle(color: theme.appBarTheme.foregroundColor)),
+          ),
+          TextButton(
+            onPressed: () => context.go('/contact'),
+            child: Text('Contact', style: TextStyle(color: theme.appBarTheme.foregroundColor)),
+          ),
+          TextButton(
+            onPressed: () => context.go('/report'),
+            child: Text('Report', style: TextStyle(color: theme.appBarTheme.foregroundColor)),
+          ),
+          TextButton(
+            onPressed: () => context.go('/upload'),
+            child: Text('Upload', style: TextStyle(color: theme.appBarTheme.foregroundColor)),
+          ),
+        ],
+      ),
+      body: child,
+    );
   }
 }
