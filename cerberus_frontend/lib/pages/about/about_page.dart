@@ -13,10 +13,11 @@ class AboutPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           // About Us Title
-          Text(
-            'About Us',
-            style: Theme.of(context).textTheme.headlineLarge,
-            textAlign: TextAlign.center,
+          Center(
+            child: Text(
+              'About Us',
+              style: Theme.of(context).textTheme.headlineLarge,
+            ),
           ),
           const SizedBox(height: 24.0),
 
@@ -42,7 +43,7 @@ class AboutPage extends StatelessWidget {
           Container(
             width: double.infinity,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
                   'Business Advertising Campaigns',
