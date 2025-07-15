@@ -12,26 +12,27 @@ class DonateSection extends StatelessWidget {
     return Container(
       color: colorScheme.surfaceVariant,
       padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 24.0),
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 1200),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Text(
-                'Support the Campaign and Help Us Make a Difference!',
-                style: textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: colorScheme.onSurfaceVariant,
-                ),
-                textAlign: TextAlign.center,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            flex: 1,
+            child: Text(
+              'Make a Difference!',
+              style: textTheme.headlineMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: colorScheme.onSurfaceVariant,
               ),
+              textAlign: TextAlign.center,
             ),
-            const SizedBox(width: 40),
-            const DonateButtonWidget(),
-          ],
-        ),
+          ),
+          const SizedBox(width: 40),
+          const Expanded(
+            flex: 1,
+            child: DonateButtonWidget(),
+          ),
+        ],
       ),
     );
   }

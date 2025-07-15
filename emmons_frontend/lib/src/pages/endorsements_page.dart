@@ -45,48 +45,66 @@ class _EndorsementsPageState extends State<EndorsementsPage> {
             ),
           ),
           SliverToBoxAdapter(
-            child: Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 1200),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    const SizedBox(height: 40),
-                    Text(
-                      'Endorsements',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineMedium
-                          ?.copyWith(fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 30),
-                    Text(
-                      'Distinguished Supporters',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 16),
-                    const HighProfileEndorsementCard(
-                      name: 'Jane Doe',
-                      quote:
-                          'Curtis has the vision and dedication Bell County needs. He has my full support!',
-                      imagePath: 'assets/placeholder_jane.png',
-                      imageBackgroundColor: Colors.purpleAccent,
-                      imageLeft: true,
-                    ),
-                    const HighProfileEndorsementCard(
-                      name: 'John Smith',
-                      quote:
-                          'I\'ve worked with Curtis for years, and his commitment to our community is unwavering.',
-                      imagePath: 'assets/placeholder_john.png',
-                      imageBackgroundColor: Colors.lightBlueAccent,
-                      imageLeft: false,
-                    ),
-                    const SizedBox(height: 40),
-                    Text(
-                      'Community Endorsers',
-                      style: Theme.of(context).textTheme.headlineSmall,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                const SizedBox(height: 40),
+                Text(
+                  'Endorsements',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineMedium
+                      ?.copyWith(fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 30),
+                Text(
+                  'Distinguished Supporters',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                const HighProfileEndorsementCard(
+                  name: 'Jane Doe',
+                  quote:
+                      'Curtis has the vision and dedication Bell County needs. He has my full support!',
+                  imagePath: 'assets/placeholder_jane.png',
+                  imageBackgroundColor: Colors.purpleAccent,
+                  imageLeft: true,
+                ),
+                const HighProfileEndorsementCard(
+                  name: 'John Smith',
+                  quote:
+                      'I\'ve worked with Curtis for years, and his commitment to our community is unwavering.',
+                  imagePath: 'assets/placeholder_john.png',
+                  imageBackgroundColor: Colors.lightBlueAccent,
+                  imageLeft: false,
+                ),
+                const HighProfileEndorsementCard(
+                  name: 'Bob Johnson',
+                  quote: 'A true leader for our time.',
+                  imagePath: 'assets/placeholder_bob.png',
+                  imageBackgroundColor: Colors.greenAccent,
+                  imageLeft: true,
+                ),
+                const HighProfileEndorsementCard(
+                  name: 'Susan Williams',
+                  quote: 'The best choice for Bell County.',
+                  imagePath: 'assets/placeholder_susan.png',
+                  imageBackgroundColor: Colors.redAccent,
+                  imageLeft: false,
+                ),
+                const HighProfileEndorsementCard(
+                  name: 'Michael Brown',
+                  quote: 'He will get the job done.',
+                  imagePath: 'assets/placeholder_michael.png',
+                  imageBackgroundColor: Colors.orangeAccent,
+                  imageLeft: true,
+                ),
+                const SizedBox(height: 40),
+                Text(
+                  'Community Endorsers',
+                  style: Theme.of(context).textTheme.headlineSmall,
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 16),
