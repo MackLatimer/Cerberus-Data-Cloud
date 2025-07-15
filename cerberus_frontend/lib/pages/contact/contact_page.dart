@@ -18,7 +18,7 @@ class ContactPage extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text('$label: ', style: const TextStyle(fontWeight: FontWeight.bold)),
+          Text('$label: ', style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
           InkWell(
             child: Text(
               value,
@@ -32,21 +32,29 @@ class ContactPage extends StatelessWidget {
   }
 
   Widget _buildContactCard(BuildContext context, String name, String phone, String email) {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              name,
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            const SizedBox(height: 12.0), // Increased spacing
-            _buildContactDetailRow(context, 'Phone', phone, 'tel:'),
-            _buildContactDetailRow(context, 'Email', email, 'mailto:'),
-          ],
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 750),
+      child: Card(
+        color: Colors.black,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: Colors.white, width: 3.0),
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        margin: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                name,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
+              ),
+              const SizedBox(height: 12.0), // Increased spacing
+              _buildContactDetailRow(context, 'Phone', phone, 'tel:'),
+              _buildContactDetailRow(context, 'Email', email, 'mailto:'),
+            ],
+          ),
         ),
       ),
     );
@@ -57,7 +65,7 @@ class ContactPage extends StatelessWidget {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Center(
             child: Text(
