@@ -4,17 +4,19 @@ import 'package:go_router/go_router.dart';
 class HomePageSection extends StatelessWidget {
   final String title;
   final String summary;
-  final String imagePath; // Placeholder for now, could be network or asset
+  final String imagePath;
   final String routePath;
   final Color imageBackgroundColor;
+  final bool imageLeft;
 
   const HomePageSection({
     super.key,
     required this.title,
     required this.summary,
-    required this.imagePath, // In future, might be an ImageProvider
+    required this.imagePath,
     required this.routePath,
-    this.imageBackgroundColor = Colors.grey, // Default placeholder color
+    this.imageBackgroundColor = Colors.grey,
+    this.imageLeft = true,
   });
 
   @override
@@ -22,24 +24,23 @@ class HomePageSection extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 16.0),
-      elevation: 2.0,
+    final imageWidget = Expanded(
+      child: Container(
+        height: 300,
+        color: imageBackgroundColor,
+        child: Center(
+          child: Icon(Icons.image, size: 50, color: Colors.white70),
+        ),
+      ),
+    );
+
+    final textWidget = Expanded(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(24.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            // Placeholder for an image
-            Container(
-              height: 150,
-              color: imageBackgroundColor,
-              child: Center(
-                child: Icon(Icons.image, size: 50, color: Colors.white70), // Placeholder icon
-                // child: Image.asset(imagePath, fit: BoxFit.cover), // If using local assets
-              ),
-            ),
-            const SizedBox(height: 16.0),
             Text(
               title,
               style: textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
@@ -64,6 +65,14 @@ class HomePageSection extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 16.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: imageLeft ? [imageWidget, textWidget] : [textWidget, imageWidget],
       ),
     );
   }
