@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  go_router: ^15.2.0
+  go_router: ^15.1.2
   url_launcher: ^6.3.1
   http: ^1.4.0
   intl: ^0.20.2
@@ -25,16 +25,14 @@ flutter:
   uses-material-design: true
 
   assets:
-    # - assets/images/ # Will be removed
-    # - assets/fonts/ # Will be removed
-    - cerberus_frontend/assets/ # Ensure this path is listed for general assets
+    - assets/
+    - assets/images/
+    - assets/fonts/
 
   fonts:
     - family: LeagueSpartan
       fonts:
-        - asset: cerberus_frontend/assets/LeagueSpartan-VariableFont_wght.ttf
-          # weight: 700 # Variable font, weight can be controlled in TextStyle
+        - asset: assets/LeagueSpartan-VariableFont_wght.ttf
     - family: Signika
       fonts:
-        - asset: cerberus_frontend/assets/Signika-VariableFont_GRAD,wght.ttf
-          # weight: 400 # Variable font, weight can be controlled in TextStyle
+        - asset: assets/Signika-VariableFont_GRAD,wght.ttf
