@@ -1,5 +1,5 @@
 # Use a specific version of the Flutter SDK
-FROM cirrusci/flutter:3.19.6
+FROM google/flutter:latest
 
 # Set the working directory
 WORKDIR /app
