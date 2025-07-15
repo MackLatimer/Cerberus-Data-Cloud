@@ -84,9 +84,9 @@ ThemeData _buildAppTheme() {
       // primary: primaryBlue, // Example: if M3 derivation isn't quite right
       // secondary: primaryRed, // Example
       error: primaryRed, // Keep custom error color if desired
-      // brightness: Brightness.light, // Or Brightness.dark
+      brightness: Brightness.dark,
     ),
-    // scaffoldBackgroundColor will be derived from colorScheme.background by default in M3
+    scaffoldBackgroundColor: primaryBlack,
   );
 
   // Apply M3-aligned component themes
@@ -180,40 +180,43 @@ class RootLayout extends StatelessWidget {
       key: _scaffoldKey,
       appBar: AppBar(
         automaticallyImplyLeading: false, // No hamburger menu
-        title: Row(
-          children: [
-            Image.asset(
-              'assets/Cerberus Logo Final.png',
-              height: 100,
-              fit: BoxFit.contain,
-            ),
-            const SizedBox(width: 16),
-            Text(
-              'Cerberus Campaigns',
-              style: theme.appBarTheme.titleTextStyle,
-            ),
-          ],
+        title: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/Cerberus Logo Final.png',
+                height: 200,
+                fit: BoxFit.contain,
+              ),
+              const SizedBox(width: 16),
+              Text(
+                'Cerberus Campaigns',
+                style: theme.appBarTheme.titleTextStyle?.copyWith(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
         ),
         actions: [
           TextButton(
             onPressed: () => context.go('/'),
-            child: Text('Home', style: TextStyle(color: theme.appBarTheme.foregroundColor)),
+            child: Text('Home', style: TextStyle(color: theme.appBarTheme.foregroundColor, fontWeight: FontWeight.bold)),
           ),
           TextButton(
             onPressed: () => context.go('/about'),
-            child: Text('About', style: TextStyle(color: theme.appBarTheme.foregroundColor)),
+            child: Text('About', style: TextStyle(color: theme.appBarTheme.foregroundColor, fontWeight: FontWeight.bold)),
           ),
           TextButton(
             onPressed: () => context.go('/contact'),
-            child: Text('Contact', style: TextStyle(color: theme.appBarTheme.foregroundColor)),
+            child: Text('Contact', style: TextStyle(color: theme.appBarTheme.foregroundColor, fontWeight: FontWeight.bold)),
           ),
           TextButton(
             onPressed: () => context.go('/report'),
-            child: Text('Report', style: TextStyle(color: theme.appBarTheme.foregroundColor)),
+            child: Text('Report', style: TextStyle(color: theme.appBarTheme.foregroundColor, fontWeight: FontWeight.bold)),
           ),
           TextButton(
             onPressed: () => context.go('/upload'),
-            child: Text('Upload', style: TextStyle(color: theme.appBarTheme.foregroundColor)),
+            child: Text('Upload', style: TextStyle(color: theme.appBarTheme.foregroundColor, fontWeight: FontWeight.bold)),
           ),
         ],
       ),

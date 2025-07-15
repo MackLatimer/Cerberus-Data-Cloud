@@ -73,7 +73,7 @@ class _UploadPageState extends State<UploadPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Upload Voter Data'),
+        title: const Center(child: Text('Upload Voter Data')),
       ),
       body: Center(
         child: Column(

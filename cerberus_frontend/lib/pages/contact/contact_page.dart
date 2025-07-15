@@ -36,7 +36,7 @@ class ContactPage extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
               name,
@@ -58,9 +58,14 @@ class ContactPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            'Contact Us',
-            style: Theme.of(context).textTheme.headlineSmall,
+          Center(
+            child: Text(
+              'Contact Us',
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontFamily: 'LeagueSpartan',
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
           ),
           const SizedBox(height: 16.0),
           _buildContactCard(
