@@ -14,12 +14,13 @@ class DonatePage extends StatefulWidget {
 class _DonatePageState extends State<DonatePage> {
   final ScrollController _scrollController = ScrollController();
   final _formKey = GlobalKey<FormState>();
+  bool _showFullForm = false;
 
   // Controllers for form fields
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _addressController = TextEditingController();
-  final _addressLine2Controller = TextEditingController(); // New controller for Address Line 2
+  final _addressLine2Controller = TextEditingController();
   final _cityController = TextEditingController();
   final _stateController = TextEditingController();
   final _zipController = TextEditingController();
@@ -38,7 +39,7 @@ class _DonatePageState extends State<DonatePage> {
     _firstNameController.dispose();
     _lastNameController.dispose();
     _addressController.dispose();
-    _addressLine2Controller.dispose(); // Dispose new controller
+    _addressLine2Controller.dispose();
     _cityController.dispose();
     _stateController.dispose();
     _zipController.dispose();
@@ -97,57 +98,24 @@ class _DonatePageState extends State<DonatePage> {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 20),
-                // Donor Information Form
-                _buildDonorForm(context),
+                if (_showFullForm)
+                  _buildDonorForm(context)
+                else
+                  _buildDonationGrid(context),
                 const SizedBox(height: 30),
-                Text(
-                  'Contributions to the Curtis Emmons for County Commissioner campaign help us reach voters, share our message, and work towards a better future for Bell County Precinct 4. Every donation, no matter the size, is deeply appreciated and crucial to our success.',
-                  style: Theme.of(context).textTheme.bodyLarge,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 16),
-                // Commenting out the old button and text about redirection for now,
-                // as the form is now primary. Can be re-added if direct link is also desired.
-                // Text(
-                //   'By clicking the button below, you will be redirected to our secure donation portal. (This is a placeholder - no actual transaction will occur).',
-                //   style: Theme.of(context).textTheme.bodyMedium,
-                //   textAlign: TextAlign.center,
-                // ),
-                // const SizedBox(height: 40),
-                // Center(
-                //   child: SizedBox(
-                //     width: double.infinity, // Make button wider
-                //     child: ElevatedButton(
-                //       onPressed: () {
-                //         // Later, this will use url_launcher: _launchDonationUrl();
-                //         showDialog(
-                //           context: context,
-                //           builder: (context) => AlertDialog(
-                //             title: const Text('Donation Placeholder'),
-                //             content: Text('This would navigate to: $_donationUrl'),
-                //             actions: [
-                //               TextButton(
-                //                 child: const Text('OK'),
-                //                 onPressed: () => Navigator.of(context).pop(),
-                //               ),
-                //             ],
-                //           ),
-                //         );
-                //       },
-                //       style: ElevatedButton.styleFrom(
-                //         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 32),
-                //         textStyle: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 24),
-                //       ),
-                //       child: const Text('Proceed to Secure Donation Portal'), // Updated text
-                //     ),
-                //   ),
-                // ),
+                if (!_showFullForm)
+                  Text(
+                    'Contributions to the Curtis Emmons for County Commissioner campaign help us reach voters, share our message, and work towards a better future for Bell County Precinct 4. Every donation, no matter the size, is deeply appreciated and crucial to our success.',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                    textAlign: TextAlign.center,
+                  ),
                 const SizedBox(height: 40),
-                Text(
-                  'If you prefer to donate by mail, please send a check payable to "Curtis Emmons Campaign" to: [Campaign PO Box or Address Here - Placeholder]',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                  textAlign: TextAlign.center,
-                ),
+                if (!_showFullForm)
+                  Text(
+                    'If you prefer to donate by mail, please send a check payable to "Curtis Emmons Campaign" to: [Campaign PO Box or Address Here - Placeholder]',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    textAlign: TextAlign.center,
+                  ),
                 const SizedBox(height: 20),
                 Text(
                   'Thank you for your generosity!',
@@ -271,13 +239,51 @@ class _DonatePageState extends State<DonatePage> {
     );
   }
 
+  Widget _buildDonationGrid(BuildContext context) {
+    final amounts = [10, 25, 50, 100, 250, 500, 1000, 2500, 5000];
+    return Column(
+      children: [
+        GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+            childAspectRatio: 2.5,
+          ),
+          itemCount: amounts.length,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemBuilder: (context, index) {
+            return ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  _showFullForm = true;
+                });
+              },
+              child: Text('\$${amounts[index]}'),
+            );
+          },
+        ),
+        const SizedBox(height: 20),
+        ElevatedButton(
+          onPressed: () {
+            setState(() {
+              _showFullForm = true;
+            });
+          },
+          child: const Text('Custom Amount'),
+        ),
+      ],
+    );
+  }
+
   void _showDonationDataDialog() {
     // In a real app, you'd send this data to a server or payment processor
     final formData = {
       'First Name': _firstNameController.text,
       'Last Name': _lastNameController.text,
       'Address': _addressController.text,
-      'Address Line 2': _addressLine2Controller.text, // Added Address Line 2
+      'Address Line 2': _addressLine2Controller.text,
       'City': _cityController.text,
       'State': _stateController.text,
       'ZIP': _zipController.text,
@@ -285,8 +291,8 @@ class _DonatePageState extends State<DonatePage> {
       'Phone': _phoneController.text,
       'Employer': _employerController.text,
       'Occupation': _occupationController.text,
-      'Agreed to Messaging': _agreedToMessaging.toString(), // Added checkbox value
-      'Agreed to Emails': _agreedToEmails.toString(), // Added checkbox value
+      'Agreed to Messaging': _agreedToMessaging.toString(),
+      'Agreed to Emails': _agreedToEmails.toString(),
     };
 
     showDialog(
@@ -295,7 +301,9 @@ class _DonatePageState extends State<DonatePage> {
         title: const Text('Donation Information Received (Placeholder)'),
         content: SingleChildScrollView(
           child: ListBody(
-            children: formData.entries.map((entry) => Text('${entry.key}: ${entry.value}')).toList(),
+            children: formData.entries
+                .map((entry) => Text('${entry.key}: ${entry.value}'))
+                .toList(),
           ),
         ),
         actions: [

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:candidate_website/src/widgets/common_app_bar.dart';
 import 'package:candidate_website/src/widgets/signup_form.dart';
-import 'package:candidate_website/src/widgets/donate_button.dart';
+import 'package:candidate_website/src/widgets/donate_section.dart';
 import 'package:candidate_website/src/widgets/footer.dart'; // Import the Footer widget
 
 class AboutPage extends StatefulWidget {
@@ -61,10 +61,8 @@ class _AboutPageState extends State<AboutPage> {
                 // New Biography Content
                 _buildBiographyContent(context),
                 const SizedBox(height: 40),
+                const DonateSection(),
                 const SignupFormWidget(),
-                const SizedBox(height: 40),
-                Center(child: const DonateButtonWidget()),
-                const SizedBox(height: 40),
               ],
             ),
           ),

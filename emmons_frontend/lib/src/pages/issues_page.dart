@@ -104,7 +104,6 @@ class _IssuesPageState extends State<IssuesPage> {
                   style: Theme.of(context).textTheme.headlineMedium,
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 30),
                 _buildIssueSection(
                   context,
                   'Economic Growth & Job Creation',

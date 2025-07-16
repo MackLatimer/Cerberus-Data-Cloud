@@ -10,7 +10,7 @@ class DonateSection extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
-      color: colorScheme.surfaceVariant,
+      color: colorScheme.primary,
       padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 24.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -22,7 +22,7 @@ class DonateSection extends StatelessWidget {
               'Make a Difference!',
               style: textTheme.headlineMedium?.copyWith(
                 fontWeight: FontWeight.bold,
-                color: colorScheme.onSurfaceVariant,
+                color: Colors.white,
               ),
               textAlign: TextAlign.center,
             ),
