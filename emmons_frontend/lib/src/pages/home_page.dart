@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
                   title: 'Issues',
                   summary:
                       'Learn about the key issues Curtis is focused on to improve our precinct.',
-                  imagePath: 'assets/placeholder_issues.png',
+                  imagePath: 'assets/Emmons_Logo_4_TP.png',
                   routePath: '/issues',
                   imageBackgroundColor: Colors.blueGrey,
                   imageLeft: true,
@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                   title: 'About Me',
                   summary:
                       'Discover more about Curtis Emmons, his background, and his vision for Bell County.',
-                  imagePath: 'assets/placeholder_about.png',
+                  imagePath: 'assets/Emmons_Logo_4_TP.png',
                   routePath: '/about',
                   imageBackgroundColor: Colors.teal,
                   imageLeft: false,
@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage> {
                   title: 'Endorsements',
                   summary:
                       'See who is endorsing Curtis and learn how you can add your support.',
-                  imagePath: 'assets/placeholder_endorsements.png',
+                  imagePath: 'assets/Emmons_Logo_4_TP.png',
                   routePath: '/endorsements',
                   imageBackgroundColor: Colors.amber,
                   imageLeft: true,
@@ -103,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                   title: 'Donate',
                   summary:
                       'Support the campaign financially and help us make a difference.',
-                  imagePath: 'assets/placeholder_donate.png',
+                  imagePath: 'assets/Emmons_Logo_4_TP.png',
                   routePath: '/donate',
                   imageBackgroundColor: Colors.green,
                   imageLeft: false,
@@ -113,9 +113,9 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          const SliverToBoxAdapter(child: Footer()),
         ],
       ),
+      bottomNavigationBar: const Footer(),
     );
   }
 }
