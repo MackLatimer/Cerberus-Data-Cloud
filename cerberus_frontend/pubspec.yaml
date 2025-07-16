@@ -29,7 +29,7 @@ flutter:
     - assets/
     - assets/images/
     - assets/fonts/
-    - assets/Slow Blue Smoke.mov
+    - assets/Slow_Blue_Smoke.mov
     - assets/Cerberus_Favicon.png
 
   fonts:
