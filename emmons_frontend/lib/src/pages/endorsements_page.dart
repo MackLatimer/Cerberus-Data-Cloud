@@ -69,7 +69,8 @@ class _EndorsementsPageState extends State<EndorsementsPage> {
                   quote:
                       'Curtis has the vision and dedication Bell County needs. He has my full support!',
                   imagePath: 'assets/placeholder_jane.png',
-                  imageBackgroundColor: Colors.purpleAccent,
+                  backgroundColor: Color(0xffa01124),
+                  textColor: Colors.white,
                   imageLeft: true,
                 ),
                 const HighProfileEndorsementCard(
@@ -77,28 +78,28 @@ class _EndorsementsPageState extends State<EndorsementsPage> {
                   quote:
                       'I\'ve worked with Curtis for years, and his commitment to our community is unwavering.',
                   imagePath: 'assets/placeholder_john.png',
-                  imageBackgroundColor: Colors.lightBlueAccent,
                   imageLeft: false,
                 ),
                 const HighProfileEndorsementCard(
                   name: 'Bob Johnson',
                   quote: 'A true leader for our time.',
                   imagePath: 'assets/placeholder_bob.png',
-                  imageBackgroundColor: Colors.greenAccent,
+                  backgroundColor: Color(0xff002663),
+                  textColor: Colors.white,
                   imageLeft: true,
                 ),
                 const HighProfileEndorsementCard(
                   name: 'Susan Williams',
                   quote: 'The best choice for Bell County.',
                   imagePath: 'assets/placeholder_susan.png',
-                  imageBackgroundColor: Colors.redAccent,
                   imageLeft: false,
                 ),
                 const HighProfileEndorsementCard(
                   name: 'Michael Brown',
                   quote: 'He will get the job done.',
                   imagePath: 'assets/placeholder_michael.png',
-                  imageBackgroundColor: Colors.orangeAccent,
+                  backgroundColor: Color(0xffa01124),
+                  textColor: Colors.white,
                   imageLeft: true,
                 ),
                 const SizedBox(height: 40),

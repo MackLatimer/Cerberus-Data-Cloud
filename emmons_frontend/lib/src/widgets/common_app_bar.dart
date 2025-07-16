@@ -94,26 +94,13 @@ class _CommonAppBarState extends State<CommonAppBar> {
     return AppBar(
       backgroundColor: colorScheme.primary.withOpacity(_appBarOpacity),
       elevation: _appBarOpacity > 0 ? 4.0 : 0.0, // Add shadow when not transparent
-      leading: Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: Center(
-          child: SizedBox(
-            height: 100,
-            width: 400,
-            child: Image.asset(
-              'assets/Emmons_Logo_4_TP.png',
-              fit: BoxFit.contain,
-            ),
-          ),
-        ),
-      ),
       title: null,
       automaticallyImplyLeading: false,
       actions: <Widget>[
         Expanded(
           child: Center(
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: navItems.map((item) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),

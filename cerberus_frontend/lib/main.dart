@@ -109,25 +109,25 @@ ThemeData _buildAppTheme() {
     ),
     textTheme: TextTheme(
       // M3 Type Scale using LeagueSpartan and Signika
-      displayLarge: TextStyle(fontFamily: fontLeagueSpartan, fontSize: 57.0, fontWeight: FontWeight.w400, letterSpacing: -0.25, height: 64.0/57.0, color: theme.colorScheme.onSurface),
-      displayMedium: TextStyle(fontFamily: fontLeagueSpartan, fontSize: 45.0, fontWeight: FontWeight.w400, letterSpacing: 0.0, height: 52.0/45.0, color: theme.colorScheme.onSurface),
-      displaySmall: TextStyle(fontFamily: fontLeagueSpartan, fontSize: 36.0, fontWeight: FontWeight.w400, letterSpacing: 0.0, height: 44.0/36.0, color: theme.colorScheme.onSurface),
+      displayLarge: TextStyle(fontFamily: fontLeagueSpartan, fontSize: 57.0, fontWeight: FontWeight.bold, letterSpacing: -0.25, height: 64.0/57.0, color: theme.colorScheme.onSurface),
+      displayMedium: TextStyle(fontFamily: fontLeagueSpartan, fontSize: 45.0, fontWeight: FontWeight.bold, letterSpacing: 0.0, height: 52.0/45.0, color: theme.colorScheme.onSurface),
+      displaySmall: TextStyle(fontFamily: fontLeagueSpartan, fontSize: 36.0, fontWeight: FontWeight.bold, letterSpacing: 0.0, height: 44.0/36.0, color: theme.colorScheme.onSurface),
 
-      headlineLarge: TextStyle(fontFamily: fontLeagueSpartan, fontSize: 32.0, fontWeight: FontWeight.w400, letterSpacing: 0.0, height: 40.0/32.0, color: theme.colorScheme.onSurface),
-      headlineMedium: TextStyle(fontFamily: fontLeagueSpartan, fontSize: 28.0, fontWeight: FontWeight.w400, letterSpacing: 0.0, height: 36.0/28.0, color: theme.colorScheme.onSurface),
-      headlineSmall: TextStyle(fontFamily: 'LeagueSpartan', fontSize: 44.0, fontWeight: FontWeight.bold, color: Colors.white),
+      headlineLarge: TextStyle(fontFamily: fontLeagueSpartan, fontSize: 32.0, fontWeight: FontWeight.bold, letterSpacing: 0.0, height: 40.0/32.0, color: theme.colorScheme.onSurface),
+      headlineMedium: TextStyle(fontFamily: fontLeagueSpartan, fontSize: 28.0, fontWeight: FontWeight.bold, letterSpacing: 0.0, height: 36.0/28.0, color: theme.colorScheme.onSurface),
+      headlineSmall: TextStyle(fontFamily: 'LeagueSpartan', fontSize: 45.0, fontWeight: FontWeight.bold, color: Colors.white),
 
-      titleLarge: TextStyle(fontFamily: fontLeagueSpartan, fontSize: 22.0, fontWeight: FontWeight.w400, letterSpacing: 0.0, height: 28.0/22.0, color: theme.colorScheme.onSurface), // Used for AppBar title by default in M3
-      titleMedium: TextStyle(fontFamily: fontSignika, fontSize: 16.0, fontWeight: FontWeight.w500, letterSpacing: 0.15, height: 24.0/16.0, color: theme.colorScheme.onSurface),
-      titleSmall: TextStyle(fontFamily: fontSignika, fontSize: 14.0, fontWeight: FontWeight.w500, letterSpacing: 0.1, height: 20.0/14.0, color: theme.colorScheme.onSurface),
+      titleLarge: TextStyle(fontFamily: fontLeagueSpartan, fontSize: 22.0, fontWeight: FontWeight.bold, letterSpacing: 0.0, height: 28.0/22.0, color: theme.colorScheme.onSurface), // Used for AppBar title by default in M3
+      titleMedium: TextStyle(fontFamily: fontSignika, fontSize: 18.0, fontWeight: FontWeight.w500, letterSpacing: 0.15, height: 24.0/16.0, color: theme.colorScheme.onSurface),
+      titleSmall: TextStyle(fontFamily: fontSignika, fontSize: 18.0, fontWeight: FontWeight.w500, letterSpacing: 0.1, height: 20.0/14.0, color: theme.colorScheme.onSurface),
 
-      bodyLarge: TextStyle(fontFamily: fontSignika, fontSize: 18.0, fontWeight: FontWeight.w400, letterSpacing: 0.5, height: 24.0/16.0, color: Colors.white),
-      bodyMedium: TextStyle(fontFamily: fontSignika, fontSize: 14.0, fontWeight: FontWeight.w400, letterSpacing: 0.25, height: 20.0/14.0, color: theme.colorScheme.onSurface),
-      bodySmall: TextStyle(fontFamily: fontSignika, fontSize: 12.0, fontWeight: FontWeight.w400, letterSpacing: 0.4, height: 16.0/12.0, color: theme.colorScheme.onSurfaceVariant),
+      bodyLarge: TextStyle(fontFamily: 'Signika', fontSize: 18.0, color: Colors.white),
+      bodyMedium: TextStyle(fontFamily: fontSignika, fontSize: 18.0, fontWeight: FontWeight.w400, letterSpacing: 0.25, height: 20.0/14.0, color: theme.colorScheme.onSurface),
+      bodySmall: TextStyle(fontFamily: fontSignika, fontSize: 18.0, fontWeight: FontWeight.w400, letterSpacing: 0.4, height: 16.0/12.0, color: theme.colorScheme.onSurfaceVariant),
 
-      labelLarge: TextStyle(fontFamily: fontSignika, fontSize: 18.0, fontWeight: FontWeight.w400, letterSpacing: 0.1, height: 20.0/14.0, color: Colors.white), // Default for ElevatedButton
-      labelMedium: TextStyle(fontFamily: fontSignika, fontSize: 12.0, fontWeight: FontWeight.w500, letterSpacing: 0.5, height: 16.0/12.0, color: theme.colorScheme.onSurface),
-      labelSmall: TextStyle(fontFamily: fontSignika, fontSize: 11.0, fontWeight: FontWeight.w500, letterSpacing: 0.5, height: 16.0/11.0, color: theme.colorScheme.onSurfaceVariant),
+      labelLarge: TextStyle(fontFamily: 'Signika', fontSize: 18.0, color: Colors.white), // Default for ElevatedButton
+      labelMedium: TextStyle(fontFamily: fontSignika, fontSize: 18.0, fontWeight: FontWeight.w500, letterSpacing: 0.5, height: 16.0/12.0, color: theme.colorScheme.onSurface),
+      labelSmall: TextStyle(fontFamily: fontSignika, fontSize: 18.0, fontWeight: FontWeight.w500, letterSpacing: 0.5, height: 16.0/11.0, color: theme.colorScheme.onSurfaceVariant),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
@@ -223,54 +223,53 @@ class _RootLayoutState extends State<RootLayout> {
                   )
                 : Container(),
             Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16.0),
-                    child: Image.asset(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 150.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
                       'assets/Cerberus Logo Final.png',
                       height: 150,
                       width: 150,
                       fit: BoxFit.contain,
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
-                    child: Text(
+                    const SizedBox(width: 20),
+                    Text(
                       'Cerberus Campaigns',
                       style: theme.appBarTheme.titleTextStyle?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                        onPressed: () => context.go('/'),
-                        child: Text('Home', style: TextStyle(color: theme.appBarTheme.foregroundColor, fontWeight: FontWeight.bold, fontSize: 24)),
-                      ),
-                      TextButton(
-                        onPressed: () => context.go('/about'),
-                        child: Text('About', style: TextStyle(color: theme.appBarTheme.foregroundColor, fontWeight: FontWeight.bold, fontSize: 24)),
-                      ),
-                      TextButton(
-                        onPressed: () => context.go('/contact'),
-                        child: Text('Contact', style: TextStyle(color: theme.appBarTheme.foregroundColor, fontWeight: FontWeight.bold, fontSize: 24)),
-                      ),
-                      TextButton(
-                        onPressed: () => context.go('/report'),
-                        child: Text('Report', style: TextStyle(color: theme.appBarTheme.foregroundColor, fontWeight: FontWeight.bold, fontSize: 24)),
-                      ),
-                      TextButton(
-                        onPressed: () => context.go('/upload'),
-                        child: Text('Upload', style: TextStyle(color: theme.appBarTheme.foregroundColor, fontWeight: FontWeight.bold, fontSize: 24)),
-                      ),
-                    ],
-                  ),
-                ],
+                    const Spacer(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                          onPressed: () => context.go('/'),
+                          child: Text('Home', style: TextStyle(color: theme.appBarTheme.foregroundColor, fontWeight: FontWeight.bold, fontSize: 24)),
+                        ),
+                        TextButton(
+                          onPressed: () => context.go('/about'),
+                          child: Text('About', style: TextStyle(color: theme.appBarTheme.foregroundColor, fontWeight: FontWeight.bold, fontSize: 24)),
+                        ),
+                        TextButton(
+                          onPressed: () => context.go('/contact'),
+                          child: Text('Contact', style: TextStyle(color: theme.appBarTheme.foregroundColor, fontWeight: FontWeight.bold, fontSize: 24)),
+                        ),
+                        TextButton(
+                          onPressed: () => context.go('/report'),
+                          child: Text('Report', style: TextStyle(color: theme.appBarTheme.foregroundColor, fontWeight: FontWeight.bold, fontSize: 24)),
+                        ),
+                        TextButton(
+                          onPressed: () => context.go('/upload'),
+                          child: Text('Upload', style: TextStyle(color: theme.appBarTheme.foregroundColor, fontWeight: FontWeight.bold, fontSize: 24)),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
