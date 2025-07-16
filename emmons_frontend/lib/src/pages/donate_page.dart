@@ -94,6 +94,12 @@ class _DonatePageState extends State<DonatePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
+                    Text(
+                      'Support our Mission!',
+                      style: Theme.of(context).textTheme.headlineMedium,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 20),
                     if (_showFullForm)
                       _buildDonorForm(context)
                     else
@@ -118,6 +124,7 @@ class _DonatePageState extends State<DonatePage> {
                       style: Theme.of(context).textTheme.titleMedium,
                       textAlign: TextAlign.center,
                     ),
+                    const Footer(),
                   ],
                 ),
               ),
@@ -125,7 +132,6 @@ class _DonatePageState extends State<DonatePage> {
           ),
         ),
       ),
-      bottomNavigationBar: const Footer(),
     );
   }
 

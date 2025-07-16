@@ -92,7 +92,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
     ];
 
     return AppBar(
-      backgroundColor: Colors.white.withOpacity(_appBarOpacity),
+      backgroundColor: Colors.white,
       elevation: _appBarOpacity > 0 ? 4.0 : 0.0, // Add shadow when not transparent
       title: null, // Set to null because we are using a custom layout
       automaticallyImplyLeading: false,
@@ -109,24 +109,33 @@ class _CommonAppBarState extends State<CommonAppBar> {
                 height: 100,
               ),
               // Navigation items on the right
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: navItems.map((item) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: TextButton(
-                      onPressed: () => context.go(item['path']!),
-                      child: Text(
-                        item['label']!,
-                        style: textTheme.labelMedium?.copyWith(
-                          color: const Color(0xff002663),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24,
+              Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(15.0),
+                    bottomLeft: Radius.circular(15.0),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: navItems.map((item) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: TextButton(
+                        onPressed: () => context.go(item['path']!),
+                        child: Text(
+                          item['label']!,
+                          style: textTheme.labelMedium?.copyWith(
+                            color: const Color(0xff002663),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                }).toList(),
+                    );
+                  }).toList(),
+                ),
               ),
             ],
           ),
