@@ -94,35 +94,45 @@ class _CommonAppBarState extends State<CommonAppBar> {
     return AppBar(
       backgroundColor: colorScheme.primary.withOpacity(_appBarOpacity),
       elevation: _appBarOpacity > 0 ? 4.0 : 0.0, // Add shadow when not transparent
-      title: null,
+      title: null, // Set to null because we are using a custom layout
       automaticallyImplyLeading: false,
-      actions: <Widget>[
-        Expanded(
-          child: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: navItems.map((item) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: TextButton(
-                    onPressed: () => context.go(item['path']!),
-                    child: Text(
-                      item['label']!,
-                      style: textTheme.labelMedium?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
+      flexibleSpace: Center(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              // Logo on the left
+              Image.asset(
+                'assets/Emmons_Logo_4_TP.png',
+                width: 400,
+                height: 100,
+              ),
+              // Navigation items on the right
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: navItems.map((item) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: TextButton(
+                      onPressed: () => context.go(item['path']!),
+                      child: Text(
+                        item['label']!,
+                        style: textTheme.labelMedium?.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24,
+                        ),
                       ),
                     ),
-                  ),
-                );
-              }).toList(),
-            ),
+                  );
+                }).toList(),
+              ),
+            ],
           ),
         ),
-        if (widget.actions != null) ...widget.actions!,
-        const SizedBox(width: 16),
-      ],
+      ),
+      actions: widget.actions,
     );
   }
 }

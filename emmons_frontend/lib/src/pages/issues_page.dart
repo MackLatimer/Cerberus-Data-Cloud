@@ -32,16 +32,19 @@ class _IssuesPageState extends State<IssuesPage> {
 
     final imageWidget = Expanded(
       child: Container(
-        height: 300,
-        color: backgroundColor,
-        child: Center(
-          child: Icon(Icons.image, size: 60, color: Colors.white.withOpacity(0.7)),
+        height: 400,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/Emmons_Logo_4_TP.png'),
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );
 
     final textWidget = Expanded(
       child: Container(
+        height: 400,
         color: backgroundColor,
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -66,10 +69,10 @@ class _IssuesPageState extends State<IssuesPage> {
       ),
     );
 
-    return Container(
-      margin: EdgeInsets.zero,
+    return SizedBox(
+      height: 400,
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: imageLeft ? [imageWidget, textWidget] : [textWidget, imageWidget],
       ),
     );
@@ -123,34 +126,28 @@ class _IssuesPageState extends State<IssuesPage> {
                   'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Ensuring our neighborhoods are safe and our first responders are well-equipped is a top priority.',
                   imageLeft: false,
                 ),
-                SizedBox(
-                  height: 0,
-                  child: _buildIssueSection(
-                    context,
-                    'Infrastructure Development & Maintenance',
-                    'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. We must invest in maintaining and improving our roads, bridges, and public utilities to support our growing community.',
-                    backgroundColor: const Color(0xff002663),
-                    textColor: Colors.white,
-                    imageLeft: true,
-                  ),
+                _buildIssueSection(
+                  context,
+                  'Infrastructure Development & Maintenance',
+                  'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. We must invest in maintaining and improving our roads, bridges, and public utilities to support our growing community.',
+                  backgroundColor: const Color(0xff002663),
+                  textColor: Colors.white,
+                  imageLeft: true,
                 ),
-                SizedBox(
-                  height: 0,
-                  child: _buildIssueSection(
-                    context,
-                    'Fiscal Responsibility & Transparent Governance',
-                    'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Curtis is committed to responsible spending of taxpayer dollars and ensuring all county operations are transparent and accountable to the public.',
-                    imageLeft: false,
-                  ),
+                _buildIssueSection(
+                  context,
+                  'Fiscal Responsibility & Transparent Governance',
+                  'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Curtis is committed to responsible spending of taxpayer dollars and ensuring all county operations are transparent and accountable to the public.',
+                  imageLeft: false,
                 ),
-                SizedBox(height: 0, child: DonateSection()),
-                SizedBox(height: 0, child: SignupFormWidget()),
+                const DonateSection(),
+                const SignupFormWidget(),
               ],
             ),
           ),
-          const SliverToBoxAdapter(child: Footer()),
         ],
       ),
+      bottomNavigationBar: const Footer(),
     );
   }
 }
