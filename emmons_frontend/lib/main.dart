@@ -108,6 +108,9 @@ class MyApp extends StatelessWidget {
             foregroundColor: Colors.white,
             textStyle: appTextTheme.labelLarge, // Ensure this uses the white color defined in labelLarge
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
           ),
         ),
         textButtonTheme: TextButtonThemeData(

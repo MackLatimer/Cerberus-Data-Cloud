@@ -22,9 +22,8 @@ class HighProfileEndorsementCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    final imageWidget = Expanded(
+    final imageWidget = Flexible(
       child: Container(
-        height: 300,
         color: backgroundColor,
         child: Center(
           child: Icon(Icons.person, size: 60, color: Colors.white.withOpacity(0.8)),
@@ -32,7 +31,7 @@ class HighProfileEndorsementCard extends StatelessWidget {
       ),
     );
 
-    final textWidget = Expanded(
+    final textWidget = Flexible(
       child: Container(
         color: backgroundColor,
         padding: const EdgeInsets.all(24.0),
@@ -58,10 +57,9 @@ class HighProfileEndorsementCard extends StatelessWidget {
       ),
     );
 
-    return Container(
-      margin: EdgeInsets.zero,
+    return IntrinsicHeight(
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: imageLeft ? [imageWidget, textWidget] : [textWidget, imageWidget],
       ),
     );
