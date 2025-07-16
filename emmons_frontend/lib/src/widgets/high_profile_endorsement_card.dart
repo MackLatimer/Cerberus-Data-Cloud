@@ -4,7 +4,8 @@ class HighProfileEndorsementCard extends StatelessWidget {
   final String name;
   final String quote;
   final String imagePath;
-  final Color imageBackgroundColor;
+  final Color? backgroundColor;
+  final Color? textColor;
   final bool imageLeft;
 
   const HighProfileEndorsementCard({
@@ -12,7 +13,8 @@ class HighProfileEndorsementCard extends StatelessWidget {
     required this.name,
     required this.quote,
     required this.imagePath,
-    this.imageBackgroundColor = Colors.grey,
+    this.backgroundColor,
+    this.textColor,
     this.imageLeft = true,
   });
 
@@ -23,7 +25,7 @@ class HighProfileEndorsementCard extends StatelessWidget {
     final imageWidget = Expanded(
       child: Container(
         height: 300,
-        color: imageBackgroundColor,
+        color: backgroundColor,
         child: Center(
           child: Icon(Icons.person, size: 60, color: Colors.white.withOpacity(0.8)),
         ),
@@ -31,7 +33,8 @@ class HighProfileEndorsementCard extends StatelessWidget {
     );
 
     final textWidget = Expanded(
-      child: Padding(
+      child: Container(
+        color: backgroundColor,
         padding: const EdgeInsets.all(24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -39,13 +42,15 @@ class HighProfileEndorsementCard extends StatelessWidget {
           children: <Widget>[
             Text(
               name,
-              style: textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+              style: textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold, color: textColor ?? Colors.black),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 8),
             Text(
               '"${quote}"',
-              style: textTheme.titleMedium?.copyWith(fontStyle: FontStyle.italic),
+              style: textTheme.titleMedium?.copyWith(
+                  fontStyle: FontStyle.italic, color: textColor ?? Colors.black),
               textAlign: TextAlign.center,
             ),
           ],

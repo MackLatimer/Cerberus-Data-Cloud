@@ -241,6 +241,7 @@ class _DonatePageState extends State<DonatePage> {
 
   Widget _buildDonationGrid(BuildContext context) {
     final amounts = [10, 25, 50, 100, 250, 500, 1000, 2500, 5000];
+    final customAmountController = TextEditingController();
     return Column(
       children: [
         GridView.builder(
@@ -265,13 +266,22 @@ class _DonatePageState extends State<DonatePage> {
           },
         ),
         const SizedBox(height: 20),
+        TextFormField(
+          controller: customAmountController,
+          decoration: const InputDecoration(
+            labelText: 'Custom Amount',
+            border: OutlineInputBorder(),
+          ),
+          keyboardType: TextInputType.number,
+        ),
+        const SizedBox(height: 20),
         ElevatedButton(
           onPressed: () {
             setState(() {
               _showFullForm = true;
             });
           },
-          child: const Text('Custom Amount'),
+          child: const Text('Submit'),
         ),
       ],
     );

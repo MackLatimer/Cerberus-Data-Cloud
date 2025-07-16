@@ -24,7 +24,8 @@ class _IssuesPageState extends State<IssuesPage> {
     BuildContext context,
     String title,
     String content, {
-    Color imagePlaceholderColor = Colors.blueGrey,
+    Color? backgroundColor,
+    Color? textColor,
     bool imageLeft = true,
   }) {
     final textTheme = Theme.of(context).textTheme;
@@ -32,7 +33,7 @@ class _IssuesPageState extends State<IssuesPage> {
     final imageWidget = Expanded(
       child: Container(
         height: 300,
-        color: imagePlaceholderColor,
+        color: backgroundColor,
         child: Center(
           child: Icon(Icons.image, size: 60, color: Colors.white.withOpacity(0.7)),
         ),
@@ -40,7 +41,8 @@ class _IssuesPageState extends State<IssuesPage> {
     );
 
     final textWidget = Expanded(
-      child: Padding(
+      child: Container(
+        color: backgroundColor,
         padding: const EdgeInsets.all(24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -48,13 +50,15 @@ class _IssuesPageState extends State<IssuesPage> {
           children: <Widget>[
             Text(
               title,
-              style: textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+              style: textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold, color: textColor ?? Colors.black),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 12),
             Text(
               content,
-              style: textTheme.bodyLarge,
+              style:
+                  textTheme.bodyLarge?.copyWith(color: textColor ?? Colors.black),
               textAlign: TextAlign.justify,
             ),
           ],
@@ -104,36 +108,43 @@ class _IssuesPageState extends State<IssuesPage> {
                   style: Theme.of(context).textTheme.headlineMedium,
                   textAlign: TextAlign.center,
                 ),
+                const SizedBox(height: 40),
                 _buildIssueSection(
                   context,
                   'Economic Growth & Job Creation',
                   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Curtis believes in fostering a business-friendly environment that attracts new opportunities and supports local entrepreneurs.',
-                  imagePlaceholderColor: Colors.teal,
+                  backgroundColor: const Color(0xffa01124),
+                  textColor: Colors.white,
                   imageLeft: true,
                 ),
                 _buildIssueSection(
                   context,
                   'Community Safety & Emergency Services',
                   'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Ensuring our neighborhoods are safe and our first responders are well-equipped is a top priority.',
-                  imagePlaceholderColor: Colors.orange,
                   imageLeft: false,
                 ),
-                _buildIssueSection(
-                  context,
-                  'Infrastructure Development & Maintenance',
-                  'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. We must invest in maintaining and improving our roads, bridges, and public utilities to support our growing community.',
-                  imagePlaceholderColor: Colors.indigo,
-                  imageLeft: true,
+                SizedBox(
+                  height: 0,
+                  child: _buildIssueSection(
+                    context,
+                    'Infrastructure Development & Maintenance',
+                    'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. We must invest in maintaining and improving our roads, bridges, and public utilities to support our growing community.',
+                    backgroundColor: const Color(0xff002663),
+                    textColor: Colors.white,
+                    imageLeft: true,
+                  ),
                 ),
-                _buildIssueSection(
-                  context,
-                  'Fiscal Responsibility & Transparent Governance',
-                  'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Curtis is committed to responsible spending of taxpayer dollars and ensuring all county operations are transparent and accountable to the public.',
-                  imagePlaceholderColor: Colors.brown,
-                  imageLeft: false,
+                SizedBox(
+                  height: 0,
+                  child: _buildIssueSection(
+                    context,
+                    'Fiscal Responsibility & Transparent Governance',
+                    'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Curtis is committed to responsible spending of taxpayer dollars and ensuring all county operations are transparent and accountable to the public.',
+                    imageLeft: false,
+                  ),
                 ),
-                const DonateSection(),
-                const SignupFormWidget(),
+                SizedBox(height: 0, child: DonateSection()),
+                SizedBox(height: 0, child: SignupFormWidget()),
               ],
             ),
           ),
