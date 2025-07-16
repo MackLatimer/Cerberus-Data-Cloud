@@ -94,6 +94,12 @@ class _DonatePageState extends State<DonatePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
+                    Text(
+                      'Support our Mission!',
+                      style: Theme.of(context).textTheme.headlineMedium,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 20),
                     if (_showFullForm)
                       _buildDonorForm(context)
                     else
@@ -238,6 +244,7 @@ class _DonatePageState extends State<DonatePage> {
     final amounts = [10, 25, 50, 100, 250, 500, 1000, 2500, 5000];
     final customAmountController = TextEditingController();
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         GridView.builder(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
