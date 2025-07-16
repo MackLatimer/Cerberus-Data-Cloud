@@ -8,6 +8,10 @@ class HomePageSection extends StatelessWidget {
   final String routePath;
   final Color imageBackgroundColor;
   final bool imageLeft;
+  final Color? textColor;
+  final Color? buttonColor;
+  final Color? buttonTextColor;
+  final Color? backgroundColor;
 
   const HomePageSection({
     super.key,
@@ -17,6 +21,10 @@ class HomePageSection extends StatelessWidget {
     required this.routePath,
     this.imageBackgroundColor = Colors.grey,
     this.imageLeft = true,
+    this.textColor,
+    this.buttonColor,
+    this.buttonTextColor,
+    this.backgroundColor,
   });
 
   @override
@@ -35,7 +43,8 @@ class HomePageSection extends StatelessWidget {
     );
 
     final textWidget = Expanded(
-      child: Padding(
+      child: Container(
+        color: backgroundColor,
         padding: const EdgeInsets.all(24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -43,20 +52,22 @@ class HomePageSection extends StatelessWidget {
           children: <Widget>[
             Text(
               title,
-              style: textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+              style: textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: textColor ?? Colors.black),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 8.0),
             Text(
               summary,
-              style: textTheme.bodyMedium,
+              style: textTheme.bodyMedium?.copyWith(color: textColor ?? Colors.black),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16.0),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: colorScheme.secondary,
-                foregroundColor: colorScheme.onSecondary,
+                backgroundColor: buttonColor ?? colorScheme.secondary,
+                foregroundColor: buttonTextColor ?? colorScheme.onSecondary,
               ),
               onPressed: () {
                 context.go(routePath);

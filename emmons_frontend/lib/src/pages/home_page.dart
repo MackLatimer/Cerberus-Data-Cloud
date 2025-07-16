@@ -63,6 +63,7 @@ class _HomePageState extends State<HomePage> {
                     textAlign: TextAlign.center,
                   ),
                 ),
+                const SizedBox(height: 40),
                 const HomePageSection(
                   title: 'Issues',
                   summary:
@@ -71,6 +72,10 @@ class _HomePageState extends State<HomePage> {
                   routePath: '/issues',
                   imageBackgroundColor: Colors.blueGrey,
                   imageLeft: true,
+                  backgroundColor: Color(0xffa01124),
+                  textColor: Colors.white,
+                  buttonColor: Colors.white,
+                  buttonTextColor: Color(0xff002663),
                 ),
                 const HomePageSection(
                   title: 'About Me',
@@ -89,6 +94,10 @@ class _HomePageState extends State<HomePage> {
                   routePath: '/endorsements',
                   imageBackgroundColor: Colors.amber,
                   imageLeft: true,
+                  backgroundColor: Color(0xff002663),
+                  textColor: Colors.white,
+                  buttonColor: Colors.white,
+                  buttonTextColor: Color(0xffa01124),
                 ),
                 const HomePageSection(
                   title: 'Donate',

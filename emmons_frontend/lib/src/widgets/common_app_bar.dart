@@ -113,7 +113,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
         Expanded(
           child: Center(
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: navItems.map((item) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),

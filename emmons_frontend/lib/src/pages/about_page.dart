@@ -43,30 +43,36 @@ class _AboutPageState extends State<AboutPage> {
               ),
             ),
           ),
-          SliverPadding(
-            padding: const EdgeInsets.all(24.0),
-            sliver: SliverToBoxAdapter(
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 800),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      Text(
-                        'About Me', // Changed text here
-                        style: Theme.of(context).textTheme.headlineMedium,
-                  textAlign: TextAlign.center,
-                ),
+          SliverToBoxAdapter(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
                 const SizedBox(height: 20),
-                // New Biography Content
-                _buildBiographyContent(context),
-                const SizedBox(height: 40),
+                Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 800),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            'About Me', // Changed text here
+                            style: Theme.of(context).textTheme.headlineMedium,
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 20),
+                          // New Biography Content
+                          _buildBiographyContent(context),
+                          const SizedBox(height: 40),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
                 const DonateSection(),
                 const SignupFormWidget(),
               ],
-            ),
-          ),
-        ),
             ),
           ),
           const SliverToBoxAdapter(child: Footer()), // Add Footer here
