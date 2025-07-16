@@ -252,6 +252,9 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
           ],
         ),
       ),
+      ),
+    ),
+    ),
     );
   }
 }
