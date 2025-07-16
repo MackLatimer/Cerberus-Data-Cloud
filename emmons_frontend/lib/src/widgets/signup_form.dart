@@ -132,125 +132,125 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
           child: Form(
             key: _formKey,
             child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text('Join the Movement!', style: textTheme.titleMedium),
-            const SizedBox(height: 20),
-            TextFormField(
-              controller: _firstNameController,
-              decoration: const InputDecoration(labelText: 'First Name'),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your first name';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _lastNameController,
-              decoration: const InputDecoration(labelText: 'Last Name'),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your last name';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
-              keyboardType: TextInputType.emailAddress,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your email';
-                }
-                if (!value.contains('@') || !value.contains('.')) {
-                  return 'Please enter a valid email';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _phoneController,
-              decoration: const InputDecoration(labelText: 'Phone Number'), // Removed "(Optional)"
-              keyboardType: TextInputType.phone,
-            ),
-            const SizedBox(height: 16),
-            CheckboxListTile(
-              title: Text('I endorse Curtis Emmons and allow him to publish my endorsement', style: textTheme.bodyMedium),
-              value: _endorseChecked,
-              onChanged: (bool? value) {
-                setState(() {
-                  _endorseChecked = value ?? false;
-                });
-              },
-              controlAffinity: ListTileControlAffinity.leading,
-              contentPadding: EdgeInsets.zero,
-            ),
-            CheckboxListTile(
-              title: Text('I want to get involved with the campaign!', style: textTheme.bodyMedium),
-              value: _getInvolvedChecked,
-              onChanged: (bool? value) {
-                setState(() {
-                  _getInvolvedChecked = value ?? false;
-                });
-              },
-              controlAffinity: ListTileControlAffinity.leading,
-              contentPadding: EdgeInsets.zero,
-            ),
-            CheckboxListTile( // New checkbox for automated messaging
-              title: Text('I agree to receive automated messaging from Elect Emmons', style: textTheme.bodyMedium),
-              value: _agreedToMessaging,
-              onChanged: (bool? value) {
-                setState(() {
-                  _agreedToMessaging = value ?? false;
-                });
-              },
-              controlAffinity: ListTileControlAffinity.leading,
-              contentPadding: EdgeInsets.zero,
-            ),
-            CheckboxListTile( // New checkbox for emails
-              title: Text('I agree to receive emails from Elect Emmons', style: textTheme.bodyMedium),
-              value: _agreedToEmails,
-              onChanged: (bool? value) {
-                setState(() {
-                  _agreedToEmails = value ?? false;
-                });
-              },
-              controlAffinity: ListTileControlAffinity.leading,
-              contentPadding: EdgeInsets.zero,
-            ),
-            const SizedBox(height: 16),
-            Text( // Disclaimer text
-              'Reply STOP to opt out, HELP for help. Msg & data rates may apply. Frequency may vary.',
-              style: textTheme.bodySmall?.copyWith(fontStyle: FontStyle.italic),
-            ),
-            const SizedBox(height: 24),
-            Center(
-              child: _isLoading
-                  ? const CircularProgressIndicator()
-                  : ElevatedButton(
-                      onPressed: _submitForm,
-                      child: const Text('Sign Up'),
-                    ),
-            ),
-            const SizedBox(height: 16), // Spacing before privacy policy link
-            Center(
-              child: TextButton(
-                onPressed: () {
-                  context.go('/privacy-policy'); // Navigate to Privacy Policy page
-                },
-                child: Text(
-                  'Privacy Policy',
-                  style: textTheme.bodyMedium?.copyWith(decoration: TextDecoration.underline),
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text('Join the Movement!', style: textTheme.titleMedium),
+                const SizedBox(height: 20),
+                TextFormField(
+                  controller: _firstNameController,
+                  decoration: const InputDecoration(labelText: 'First Name'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your first name';
+                    }
+                    return null;
+                  },
                 ),
-              ),
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _lastNameController,
+                  decoration: const InputDecoration(labelText: 'Last Name'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your last name';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _emailController,
+                  decoration: const InputDecoration(labelText: 'Email'),
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your email';
+                    }
+                    if (!value.contains('@') || !value.contains('.')) {
+                      return 'Please enter a valid email';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _phoneController,
+                  decoration: const InputDecoration(labelText: 'Phone Number'), // Removed "(Optional)"
+                  keyboardType: TextInputType.phone,
+                ),
+                const SizedBox(height: 16),
+                CheckboxListTile(
+                  title: Text('I endorse Curtis Emmons and allow him to publish my endorsement', style: textTheme.bodyMedium),
+                  value: _endorseChecked,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      _endorseChecked = value ?? false;
+                    });
+                  },
+                  controlAffinity: ListTileControlAffinity.leading,
+                  contentPadding: EdgeInsets.zero,
+                ),
+                CheckboxListTile(
+                  title: Text('I want to get involved with the campaign!', style: textTheme.bodyMedium),
+                  value: _getInvolvedChecked,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      _getInvolvedChecked = value ?? false;
+                    });
+                  },
+                  controlAffinity: ListTileControlAffinity.leading,
+                  contentPadding: EdgeInsets.zero,
+                ),
+                CheckboxListTile( // New checkbox for automated messaging
+                  title: Text('I agree to receive automated messaging from Elect Emmons', style: textTheme.bodyMedium),
+                  value: _agreedToMessaging,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      _agreedToMessaging = value ?? false;
+                    });
+                  },
+                  controlAffinity: ListTileControlAffinity.leading,
+                  contentPadding: EdgeInsets.zero,
+                ),
+                CheckboxListTile( // New checkbox for emails
+                  title: Text('I agree to receive emails from Elect Emmons', style: textTheme.bodyMedium),
+                  value: _agreedToEmails,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      _agreedToEmails = value ?? false;
+                    });
+                  },
+                  controlAffinity: ListTileControlAffinity.leading,
+                  contentPadding: EdgeInsets.zero,
+                ),
+                const SizedBox(height: 16),
+                Text( // Disclaimer text
+                  'Reply STOP to opt out, HELP for help. Msg & data rates may apply. Frequency may vary.',
+                  style: textTheme.bodySmall?.copyWith(fontStyle: FontStyle.italic),
+                ),
+                const SizedBox(height: 24),
+                Center(
+                  child: _isLoading
+                      ? const CircularProgressIndicator()
+                      : ElevatedButton(
+                          onPressed: _submitForm,
+                          child: const Text('Sign Up'),
+                        ),
+                ),
+                const SizedBox(height: 16), // Spacing before privacy policy link
+                Center(
+                  child: TextButton(
+                    onPressed: () {
+                      context.go('/privacy-policy'); // Navigate to Privacy Policy page
+                    },
+                    child: Text(
+                      'Privacy Policy',
+                      style: textTheme.bodyMedium?.copyWith(decoration: TextDecoration.underline),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
       ),
     );
   }
