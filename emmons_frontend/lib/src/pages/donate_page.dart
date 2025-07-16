@@ -97,7 +97,7 @@ class _DonatePageState extends State<DonatePage> {
                         style: Theme.of(context).textTheme.headlineMedium,
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 24.0),
                 if (_showFullForm)
                   _buildDonorForm(context)
                 else
