@@ -4,63 +4,71 @@ class HighProfileEndorsementCard extends StatelessWidget {
   final String name;
   final String quote;
   final String imagePath;
+  final bool imageLeft;
   final Color? backgroundColor;
   final Color? textColor;
-  final bool imageLeft;
 
   const HighProfileEndorsementCard({
     super.key,
     required this.name,
     required this.quote,
     required this.imagePath,
+    this.imageLeft = true,
     this.backgroundColor,
     this.textColor,
-    this.imageLeft = true,
   });
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    final imageWidget = Flexible(
+    final imageWidget = Expanded(
       child: Container(
-        color: backgroundColor,
-        child: Center(
-          child: Icon(Icons.person, size: 60, color: Colors.white.withOpacity(0.8)),
+        height: 400,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(imagePath),
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );
 
-    final textWidget = Flexible(
+    final textWidget = Expanded(
       child: Container(
+        height: 400,
+        padding: const EdgeInsets.all(16.0),
         color: backgroundColor,
-        padding: const EdgeInsets.all(24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              name,
-              style: textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold, color: textColor ?? Colors.black),
-              textAlign: TextAlign.center,
+              '"$quote"',
+              style: textTheme.titleLarge
+                  ?.copyWith(fontStyle: FontStyle.italic, color: textColor),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 8.0),
             Text(
-              '"${quote}"',
-              style: textTheme.titleMedium?.copyWith(
-                  fontStyle: FontStyle.italic, color: textColor ?? Colors.black),
-              textAlign: TextAlign.center,
+              '- $name',
+              style: textTheme.titleMedium
+                  ?.copyWith(fontWeight: FontWeight.bold, color: textColor),
             ),
           ],
         ),
       ),
     );
 
-    return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: imageLeft ? [imageWidget, textWidget] : [textWidget, imageWidget],
+    return Card(
+      margin: EdgeInsets.zero,
+      elevation: 4.0,
+      child: SizedBox(
+        height: 400,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children:
+              imageLeft ? [imageWidget, textWidget] : [textWidget, imageWidget],
+        ),
       ),
     );
   }
