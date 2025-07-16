@@ -92,7 +92,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
     ];
 
     return AppBar(
-      backgroundColor: colorScheme.primary.withOpacity(_appBarOpacity),
+      backgroundColor: Colors.white.withOpacity(_appBarOpacity),
       elevation: _appBarOpacity > 0 ? 4.0 : 0.0, // Add shadow when not transparent
       title: null, // Set to null because we are using a custom layout
       automaticallyImplyLeading: false,
@@ -119,7 +119,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
                       child: Text(
                         item['label']!,
                         style: textTheme.labelMedium?.copyWith(
-                          color: Colors.white,
+                          color: const Color(0xff002663),
                           fontWeight: FontWeight.bold,
                           fontSize: 24,
                         ),
