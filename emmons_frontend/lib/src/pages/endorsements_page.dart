@@ -68,7 +68,7 @@ class _EndorsementsPageState extends State<EndorsementsPage> {
                   name: 'Jane Doe',
                   quote:
                       'Curtis has the vision and dedication Bell County needs. He has my full support!',
-                  imagePath: 'assets/placeholder_jane.png',
+                  imagePath: 'assets/Emmons_Logo_4_TP.png',
                   backgroundColor: Color(0xffa01124),
                   textColor: Colors.white,
                   imageLeft: true,
@@ -77,13 +77,13 @@ class _EndorsementsPageState extends State<EndorsementsPage> {
                   name: 'John Smith',
                   quote:
                       'I\'ve worked with Curtis for years, and his commitment to our community is unwavering.',
-                  imagePath: 'assets/placeholder_john.png',
+                  imagePath: 'assets/Emmons_Logo_4_TP.png',
                   imageLeft: false,
                 ),
                 const HighProfileEndorsementCard(
                   name: 'Bob Johnson',
                   quote: 'A true leader for our time.',
-                  imagePath: 'assets/placeholder_bob.png',
+                  imagePath: 'assets/Emmons_Logo_4_TP.png',
                   backgroundColor: Color(0xff002663),
                   textColor: Colors.white,
                   imageLeft: true,
@@ -91,13 +91,13 @@ class _EndorsementsPageState extends State<EndorsementsPage> {
                 const HighProfileEndorsementCard(
                   name: 'Susan Williams',
                   quote: 'The best choice for Bell County.',
-                  imagePath: 'assets/placeholder_susan.png',
+                  imagePath: 'assets/Emmons_Logo_4_TP.png',
                   imageLeft: false,
                 ),
                 const HighProfileEndorsementCard(
                   name: 'Michael Brown',
                   quote: 'He will get the job done.',
-                  imagePath: 'assets/placeholder_michael.png',
+                  imagePath: 'assets/Emmons_Logo_4_TP.png',
                   backgroundColor: Color(0xffa01124),
                   textColor: Colors.white,
                   imageLeft: true,
@@ -146,9 +146,9 @@ class _EndorsementsPageState extends State<EndorsementsPage> {
                   ],
                 ),
               ),
-          const SliverToBoxAdapter(child: Footer()),
         ],
       ),
+      bottomNavigationBar: const Footer(),
     );
   }
 

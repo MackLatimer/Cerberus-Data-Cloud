@@ -32,17 +32,21 @@ class HomePageSection extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
-    final imageWidget = Flexible(
+    final imageWidget = Expanded(
       child: Container(
-        color: imageBackgroundColor,
-        child: Center(
-          child: Icon(Icons.image, size: 50, color: Colors.white70),
+        height: 400,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(imagePath),
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );
 
-    final textWidget = Flexible(
+    final textWidget = Expanded(
       child: Container(
+        height: 400,
         color: backgroundColor,
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -78,7 +82,8 @@ class HomePageSection extends StatelessWidget {
       ),
     );
 
-    return IntrinsicHeight(
+    return SizedBox(
+      height: 400,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: imageLeft ? [imageWidget, textWidget] : [textWidget, imageWidget],
