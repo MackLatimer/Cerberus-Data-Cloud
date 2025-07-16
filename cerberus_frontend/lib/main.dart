@@ -113,9 +113,8 @@ ThemeData _buildAppTheme() {
       displayMedium: TextStyle(fontFamily: fontLeagueSpartan, fontSize: 45.0, fontWeight: FontWeight.bold, letterSpacing: 0.0, height: 52.0/45.0, color: theme.colorScheme.onSurface),
       displaySmall: TextStyle(fontFamily: fontLeagueSpartan, fontSize: 36.0, fontWeight: FontWeight.bold, letterSpacing: 0.0, height: 44.0/36.0, color: theme.colorScheme.onSurface),
 
-      headlineLarge: TextStyle(fontFamily: fontLeagueSpartan, fontSize: 32.0, fontWeight: FontWeight.bold, letterSpacing: 0.0, height: 40.0/32.0, color: theme.colorScheme.onSurface),
-      headlineMedium: TextStyle(fontFamily: fontLeagueSpartan, fontSize: 28.0, fontWeight: FontWeight.bold, letterSpacing: 0.0, height: 36.0/28.0, color: theme.colorScheme.onSurface),
-      headlineSmall: TextStyle(fontFamily: 'LeagueSpartan', fontSize: 45.0, fontWeight: FontWeight.bold, color: Colors.white),
+      headlineLarge: TextStyle(fontFamily: 'LeagueSpartan', fontSize: 44.0, fontWeight: FontWeight.bold, color: Colors.white),
+      headlineSmall: TextStyle(fontFamily: 'LeagueSpartan', fontSize: 44.0, fontWeight: FontWeight.bold, color: Colors.white),
 
       titleLarge: TextStyle(fontFamily: fontLeagueSpartan, fontSize: 22.0, fontWeight: FontWeight.bold, letterSpacing: 0.0, height: 28.0/22.0, color: theme.colorScheme.onSurface), // Used for AppBar title by default in M3
       titleMedium: TextStyle(fontFamily: fontSignika, fontSize: 18.0, fontWeight: FontWeight.w500, letterSpacing: 0.15, height: 24.0/16.0, color: theme.colorScheme.onSurface),
@@ -185,7 +184,7 @@ class _RootLayoutState extends State<RootLayout> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.asset('assets/Slow Blue Smoke.mov')
+    _controller = VideoPlayerController.asset('assets/Slow_Blue_Smoke.mov')
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the video plays.
         setState(() {});
@@ -238,9 +237,7 @@ class _RootLayoutState extends State<RootLayout> {
                     const SizedBox(width: 20),
                     Text(
                       'Cerberus Campaigns',
-                      style: theme.appBarTheme.titleTextStyle?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: theme.appBarTheme.titleTextStyle,
                     ),
                     const Spacer(),
                     Row(
