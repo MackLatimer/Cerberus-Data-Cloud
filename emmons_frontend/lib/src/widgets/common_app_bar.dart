@@ -94,7 +94,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
     ];
 
     return AppBar(
-      backgroundColor: Colors.white.withOpacity(_appBarOpacity),
+      backgroundColor: Colors.white,
       elevation: _appBarOpacity > 0 ? 4.0 : 0.0, // Add shadow when not transparent
       title: null, // Set to null because we are using a custom layout
       automaticallyImplyLeading: false,

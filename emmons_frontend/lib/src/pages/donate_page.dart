@@ -124,6 +124,7 @@ class _DonatePageState extends State<DonatePage> {
                       style: Theme.of(context).textTheme.titleMedium,
                       textAlign: TextAlign.center,
                     ),
+                    const Footer(),
                   ],
                 ),
               ),
@@ -131,7 +132,6 @@ class _DonatePageState extends State<DonatePage> {
           ),
         ),
       ),
-      bottomNavigationBar: const Footer(),
     );
   }
 
