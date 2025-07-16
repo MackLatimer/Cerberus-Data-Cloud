@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_project/widgets/join_list_section.dart';
 
 class ContactPage extends StatelessWidget {
   const ContactPage({super.key});
@@ -95,6 +96,8 @@ class ContactPage extends StatelessWidget {
             '(512) 767-4324', // Assuming same placeholder number, replace if different
             'Mack@CerberusCampaigns.com',
           ),
+          const SizedBox(height: 24.0),
+          const JoinListSection(),
         ],
       ),
     );
