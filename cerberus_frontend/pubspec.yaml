@@ -30,7 +30,7 @@ flutter:
     - assets/images/
     - assets/fonts/
     - assets/Slow Blue Smoke.mov
-    - assets/Cerberus Favicon.png
+    - assets/Cerberus_Favicon.png
 
   fonts:
     - family: LeagueSpartan
