@@ -68,69 +68,64 @@ class _DonatePageState extends State<DonatePage> {
         title: 'Support the Campaign',
         scrollController: _scrollController,
       ),
-      body: CustomScrollView( // Changed to CustomScrollView
+      body: NestedScrollView(
         controller: _scrollController,
-        slivers: <Widget>[
-          SliverToBoxAdapter(
-            child: Container(
-              height: 300, // Height of the hero image
-              color: Colors.grey[300], // Placeholder color
-              child: Center(
-                child: Text(
-                  'Hero Image: Donate', // Placeholder text
-                  style: Theme.of(context).textTheme.headlineSmall,
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverToBoxAdapter(
+              child: Container(
+                height: 300, // Height of the hero image
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/Hero_Picture_Donate.png'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+          ];
+        },
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 600), // Slightly narrower for focus
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    if (_showFullForm)
+                      _buildDonorForm(context)
+                    else
+                      _buildDonationGrid(context),
+                    const SizedBox(height: 30),
+                    if (!_showFullForm)
+                      Text(
+                        'Contributions to the Curtis Emmons for County Commissioner campaign help us reach voters, share our message, and work towards a better future for Bell County Precinct 4. Every donation, no matter the size, is deeply appreciated and crucial to our success.',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                        textAlign: TextAlign.center,
+                      ),
+                    const SizedBox(height: 40),
+                    if (!_showFullForm)
+                      Text(
+                        'If you prefer to donate by mail, please send a check payable to "Curtis Emmons Campaign" to: [Campaign PO Box or Address Here - Placeholder]',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                        textAlign: TextAlign.center,
+                      ),
+                    const SizedBox(height: 20),
+                    Text(
+                      'Thank you for your generosity!',
+                      style: Theme.of(context).textTheme.titleMedium,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
-          SliverPadding(
-            padding: const EdgeInsets.all(24.0),
-            sliver: SliverToBoxAdapter(
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 600), // Slightly narrower for focus
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      Text(
-                        'Your Support Makes a Difference!',
-                        style: Theme.of(context).textTheme.headlineMedium,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 24.0),
-                if (_showFullForm)
-                  _buildDonorForm(context)
-                else
-                  _buildDonationGrid(context),
-                const SizedBox(height: 30),
-                if (!_showFullForm)
-                  Text(
-                    'Contributions to the Curtis Emmons for County Commissioner campaign help us reach voters, share our message, and work towards a better future for Bell County Precinct 4. Every donation, no matter the size, is deeply appreciated and crucial to our success.',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                    textAlign: TextAlign.center,
-                  ),
-                const SizedBox(height: 40),
-                if (!_showFullForm)
-                  Text(
-                    'If you prefer to donate by mail, please send a check payable to "Curtis Emmons Campaign" to: [Campaign PO Box or Address Here - Placeholder]',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                    textAlign: TextAlign.center,
-                  ),
-                const SizedBox(height: 20),
-                Text(
-                  'Thank you for your generosity!',
-                  style: Theme.of(context).textTheme.titleMedium,
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
         ),
-            ),
-          ),
-          const SliverToBoxAdapter(child: Footer()), // Add Footer here
-        ],
       ),
+      bottomNavigationBar: const Footer(),
     );
   }
 
