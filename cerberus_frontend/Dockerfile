@@ -1,5 +1,5 @@
 # Use a specific version of the Ubuntu
-FROM ubuntu:22.04
+FROM ubuntu:22.04 AS build
 
 # Set non-interactive mode
 ENV DEBIAN_FRONTEND=noninteractive
@@ -35,7 +35,7 @@ RUN flutter build web
 FROM nginx:1.25-alpine
 
 # Copy the built web application from the previous stage
-COPY --from=0 /app/build/web /usr/share/nginx/html
+COPY --from=build /app/build/web /usr/share/nginx/html
 
 # Expose port 80
 EXPOSE 80
