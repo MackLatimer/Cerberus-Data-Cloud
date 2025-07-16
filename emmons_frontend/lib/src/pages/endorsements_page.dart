@@ -29,124 +29,125 @@ class _EndorsementsPageState extends State<EndorsementsPage> {
         title: 'Endorsements',
         scrollController: _scrollController,
       ),
-      body: CustomScrollView(
+      body: NestedScrollView(
         controller: _scrollController,
-        slivers: <Widget>[
-          SliverToBoxAdapter(
-            child: Container(
-              height: 300,
-              color: Colors.grey[300],
-              child: Center(
-                child: Text(
-                  'Hero Image: Endorsements',
-                  style: Theme.of(context).textTheme.headlineSmall,
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverToBoxAdapter(
+              child: Container(
+                height: 300,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/Hero_Picture_Endorsements.png'),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
-          ),
-          SliverToBoxAdapter(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                const SizedBox(height: 40),
-                Text(
-                  'Endorsements',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineMedium
-                      ?.copyWith(fontWeight: FontWeight.bold),
+          ];
+        },
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              const SizedBox(height: 40),
+              Text(
+                'Endorsements',
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineMedium
+                    ?.copyWith(fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 30),
+              Text(
+                'Distinguished Supporters',
+                style: Theme.of(context).textTheme.headlineSmall,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              const HighProfileEndorsementCard(
+                name: 'Jane Doe',
+                quote:
+                    'Curtis has the vision and dedication Bell County needs. He has my full support!',
+                imagePath: 'assets/Endorsement_Picture_1.png',
+                backgroundColor: Color(0xffa01124),
+                textColor: Colors.white,
+                imageLeft: true,
+              ),
+              const HighProfileEndorsementCard(
+                name: 'John Smith',
+                quote:
+                    'I\'ve worked with Curtis for years, and his commitment to our community is unwavering.',
+                imagePath: 'assets/Endorsement_Picture_2.png',
+                imageLeft: false,
+              ),
+              const HighProfileEndorsementCard(
+                name: 'Bob Johnson',
+                quote: 'A true leader for our time.',
+                imagePath: 'assets/Endorsement_Picture_3.png',
+                backgroundColor: Color(0xff002663),
+                textColor: Colors.white,
+                imageLeft: true,
+              ),
+              const HighProfileEndorsementCard(
+                name: 'Susan Williams',
+                quote: 'The best choice for Bell County.',
+                imagePath: 'assets/Endorsement_Picture_4.png',
+                imageLeft: false,
+              ),
+              const HighProfileEndorsementCard(
+                name: 'Michael Brown',
+                quote: 'He will get the job done.',
+                imagePath: 'assets/Endorsement_Picture_5.png',
+                backgroundColor: Color(0xffa01124),
+                textColor: Colors.white,
+                imageLeft: true,
+              ),
+              const SizedBox(height: 40),
+              Text(
+                'Community Endorsers',
+                style: Theme.of(context).textTheme.headlineSmall,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              _buildEndorserList(context, [
+                'Michael Brown',
+                'Emily Davis',
+                'David Wilson',
+                'Sarah Miller',
+                'Robert Garcia',
+                'Linda Rodriguez',
+                'James Martinez',
+                'Patricia Hernandez',
+                'Christopher Lee',
+                'Jessica Gonzalez',
+                'Daniel Walker',
+                'Karen Hall',
+              ]),
+              const SizedBox(height: 40),
+              Text(
+                'Add Your Voice!',
+                style: Theme.of(context).textTheme.headlineSmall,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: Text(
+                  'Show your support for Curtis Emmons by providing your endorsement. Your voice matters!',
+                  style: Theme.of(context).textTheme.bodyLarge,
                   textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 30),
-                Text(
-                  'Distinguished Supporters',
-                  style: Theme.of(context).textTheme.headlineSmall,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 16),
-                const HighProfileEndorsementCard(
-                  name: 'Jane Doe',
-                  quote:
-                      'Curtis has the vision and dedication Bell County needs. He has my full support!',
-                  imagePath: 'assets/Emmons_Logo_4_TP.png',
-                  backgroundColor: Color(0xffa01124),
-                  textColor: Colors.white,
-                  imageLeft: true,
-                ),
-                const HighProfileEndorsementCard(
-                  name: 'John Smith',
-                  quote:
-                      'I\'ve worked with Curtis for years, and his commitment to our community is unwavering.',
-                  imagePath: 'assets/Emmons_Logo_4_TP.png',
-                  imageLeft: false,
-                ),
-                const HighProfileEndorsementCard(
-                  name: 'Bob Johnson',
-                  quote: 'A true leader for our time.',
-                  imagePath: 'assets/Emmons_Logo_4_TP.png',
-                  backgroundColor: Color(0xff002663),
-                  textColor: Colors.white,
-                  imageLeft: true,
-                ),
-                const HighProfileEndorsementCard(
-                  name: 'Susan Williams',
-                  quote: 'The best choice for Bell County.',
-                  imagePath: 'assets/Emmons_Logo_4_TP.png',
-                  imageLeft: false,
-                ),
-                const HighProfileEndorsementCard(
-                  name: 'Michael Brown',
-                  quote: 'He will get the job done.',
-                  imagePath: 'assets/Emmons_Logo_4_TP.png',
-                  backgroundColor: Color(0xffa01124),
-                  textColor: Colors.white,
-                  imageLeft: true,
-                ),
-                const SizedBox(height: 40),
-                Text(
-                  'Community Endorsers',
-                  style: Theme.of(context).textTheme.headlineSmall,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 16),
-                    _buildEndorserList(context, [
-                      'Michael Brown',
-                      'Emily Davis',
-                      'David Wilson',
-                      'Sarah Miller',
-                      'Robert Garcia',
-                      'Linda Rodriguez',
-                      'James Martinez',
-                      'Patricia Hernandez',
-                      'Christopher Lee',
-                      'Jessica Gonzalez',
-                      'Daniel Walker',
-                      'Karen Hall',
-                    ]),
-                    const SizedBox(height: 40),
-                    Text(
-                      'Add Your Voice!',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 8),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                      child: Text(
-                        'Show your support for Curtis Emmons by providing your endorsement. Your voice matters!',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    const DonateSection(),
-                    const SizedBox(height: 40),
-                    const SignupFormWidget(),
-                    const SizedBox(height: 40),
-                  ],
                 ),
               ),
-        ],
+              const SizedBox(height: 20),
+              const DonateSection(),
+              const SizedBox(height: 40),
+              const SignupFormWidget(),
+              const SizedBox(height: 40),
+            ],
+          ),
+        ),
       ),
       bottomNavigationBar: const Footer(),
     );

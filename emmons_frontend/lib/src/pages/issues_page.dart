@@ -24,6 +24,7 @@ class _IssuesPageState extends State<IssuesPage> {
     BuildContext context,
     String title,
     String content, {
+    required String imagePath,
     Color? backgroundColor,
     Color? textColor,
     bool imageLeft = true,
@@ -33,9 +34,9 @@ class _IssuesPageState extends State<IssuesPage> {
     final imageWidget = Expanded(
       child: Container(
         height: 400,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/Emmons_Logo_4_TP.png'),
+            image: AssetImage(imagePath),
             fit: BoxFit.cover,
           ),
         ),
@@ -86,66 +87,71 @@ class _IssuesPageState extends State<IssuesPage> {
         title: 'Issues',
         scrollController: _scrollController,
       ),
-      body: CustomScrollView(
+      body: NestedScrollView(
         controller: _scrollController,
-        slivers: <Widget>[
-          SliverToBoxAdapter(
-            child: Container(
-              height: 300,
-              color: Colors.grey[300],
-              child: Center(
-                child: Text(
-                  'Hero Image: Issues',
-                  style: Theme.of(context).textTheme.headlineSmall,
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverToBoxAdapter(
+              child: Container(
+                height: 300,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/Hero_Picture_Issues.png'),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
+          ];
+        },
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              const SizedBox(height: 40),
+              Text(
+                'Issues',
+                style: Theme.of(context).textTheme.headlineMedium,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 40),
+              _buildIssueSection(
+                context,
+                'Economic Growth & Job Creation',
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Curtis believes in fostering a business-friendly environment that attracts new opportunities and supports local entrepreneurs.',
+                  imagePath: 'assets/Issues_Picture_1.png',
+                backgroundColor: const Color(0xffa01124),
+                textColor: Colors.white,
+                imageLeft: true,
+              ),
+              _buildIssueSection(
+                context,
+                'Community Safety & Emergency Services',
+                'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Ensuring our neighborhoods are safe and our first responders are well-equipped is a top priority.',
+                  imagePath: 'assets/Issues_Picture_2.png',
+                imageLeft: false,
+              ),
+              _buildIssueSection(
+                context,
+                'Infrastructure Development & Maintenance',
+                'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. We must invest in maintaining and improving our roads, bridges, and public utilities to support our growing community.',
+                  imagePath: 'assets/Issues_Picture_3.png',
+                backgroundColor: const Color(0xff002663),
+                textColor: Colors.white,
+                imageLeft: true,
+              ),
+              _buildIssueSection(
+                context,
+                'Fiscal Responsibility & Transparent Governance',
+                'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Curtis is committed to responsible spending of taxpayer dollars and ensuring all county operations are transparent and accountable to the public.',
+                  imagePath: 'assets/Issues_Picture_4.png',
+                imageLeft: false,
+              ),
+              const DonateSection(),
+              const SignupFormWidget(),
+            ],
           ),
-          SliverToBoxAdapter(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                const SizedBox(height: 40),
-                Text(
-                  'Issues',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 40),
-                _buildIssueSection(
-                  context,
-                  'Economic Growth & Job Creation',
-                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Curtis believes in fostering a business-friendly environment that attracts new opportunities and supports local entrepreneurs.',
-                  backgroundColor: const Color(0xffa01124),
-                  textColor: Colors.white,
-                  imageLeft: true,
-                ),
-                _buildIssueSection(
-                  context,
-                  'Community Safety & Emergency Services',
-                  'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Ensuring our neighborhoods are safe and our first responders are well-equipped is a top priority.',
-                  imageLeft: false,
-                ),
-                _buildIssueSection(
-                  context,
-                  'Infrastructure Development & Maintenance',
-                  'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. We must invest in maintaining and improving our roads, bridges, and public utilities to support our growing community.',
-                  backgroundColor: const Color(0xff002663),
-                  textColor: Colors.white,
-                  imageLeft: true,
-                ),
-                _buildIssueSection(
-                  context,
-                  'Fiscal Responsibility & Transparent Governance',
-                  'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Curtis is committed to responsible spending of taxpayer dollars and ensuring all county operations are transparent and accountable to the public.',
-                  imageLeft: false,
-                ),
-                const DonateSection(),
-                const SignupFormWidget(),
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
       bottomNavigationBar: const Footer(),
     );
