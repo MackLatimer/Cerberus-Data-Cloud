@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 import 'package:candidate_website/src/pages/about_page.dart';
 import 'package:candidate_website/src/pages/donate_page.dart';
@@ -43,6 +44,7 @@ final _router = GoRouter(
 void main() {
   // Ensure URL strategy is set for web (removes hashbang #)
   GoRouter.optionURLReflectsImperativeAPIs = true;
+  Stripe.publishableKey = 'pk_live_51QoUvvLiE3PH27cBZ4Nt4532BV0fKKSe5gVG9TTP78yieeoowhCtDy8oWgZKXAOw1Jqm05sWeyee4dUIcyzi25lc00dP9pymbT';
   runApp(const MyApp());
 }
 
