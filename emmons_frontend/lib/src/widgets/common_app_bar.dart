@@ -133,7 +133,41 @@ class _CommonAppBarState extends State<CommonAppBar> {
                 height: 100,
               ),
               // Navigation items on the right
-              navigation,
+              Container(
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(1.0 - opacity),
+                  borderRadius: BorderRadius.circular(15.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.5 * (1.0 - opacity)),
+                      spreadRadius: 1,
+                      blurRadius: 1,
+                      offset: const Offset(2, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: navItems.map((item) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: TextButton(
+                        onPressed: () => context.go(item['path']!),
+                        child: Text(
+                          item['label']!,
+                          style: textTheme.labelMedium?.copyWith(
+                            color: const Color(0xff002663),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
+                          ),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
             ],
           ),
         ),
