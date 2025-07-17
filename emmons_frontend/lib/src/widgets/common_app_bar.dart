@@ -22,6 +22,33 @@ class CommonAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _CommonAppBarState extends State<CommonAppBar> {
+  bool _isScrolled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.scrollController?.addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    widget.scrollController?.removeListener(_scrollListener);
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    if (widget.scrollController != null) {
+      if (widget.scrollController!.offset > 0 && !_isScrolled) {
+        setState(() {
+          _isScrolled = true;
+        });
+      } else if (widget.scrollController!.offset <= 0 && _isScrolled) {
+        setState(() {
+          _isScrolled = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,20 +77,20 @@ class _CommonAppBarState extends State<CommonAppBar> {
             children: <Widget>[
               // Logo on the left
               SvgPicture.asset(
-                'assets/Emmons_Logo_4_TP.svg',
+                'assets/Emmons_Logo_4_TP_Shadow.svg',
                 width: 400,
                 height: 100,
               ),
               // Navigation items on the right
               Container(
-                height: 100,
+                height: 60,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: _isScrolled ? Colors.white.withOpacity(0.0) : Colors.white,
                   borderRadius: const BorderRadius.only(
-                    topRight: Radius.circular(15.0),
-                    bottomRight: Radius.circular(15.0),
+                    topLeft: Radius.circular(15.0),
+                    bottomLeft: Radius.circular(15.0),
                   ),
-                  boxShadow: [
+                  boxShadow: _isScrolled ? [] : [
                     BoxShadow(
                       color: Colors.grey.withOpacity(0.5),
                       spreadRadius: 5,
