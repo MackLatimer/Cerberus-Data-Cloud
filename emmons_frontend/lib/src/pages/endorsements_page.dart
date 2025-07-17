@@ -4,6 +4,7 @@ import 'package:candidate_website/src/widgets/signup_form.dart';
 import 'package:candidate_website/src/widgets/donate_section.dart';
 import 'package:candidate_website/src/widgets/high_profile_endorsement_card.dart';
 import 'package:candidate_website/src/widgets/footer.dart';
+import 'package:candidate_website/src/utils/breakpoint.dart';
 
 class EndorsementsPage extends StatefulWidget {
   const EndorsementsPage({super.key});
@@ -23,6 +24,10 @@ class _EndorsementsPageState extends State<EndorsementsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final windowSize = getWindowSize(context);
+    final isCompact = windowSize == WindowSize.compact;
+    final heroHeight = isCompact ? MediaQuery.of(context).size.height * 0.5 : MediaQuery.of(context).size.height;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: CommonAppBar(
@@ -35,7 +40,7 @@ class _EndorsementsPageState extends State<EndorsementsPage> {
           return <Widget>[
             SliverToBoxAdapter(
               child: Container(
-                height: MediaQuery.of(context).size.height,
+                height: heroHeight,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('assets/Hero_Picture_Endorsements.png'),

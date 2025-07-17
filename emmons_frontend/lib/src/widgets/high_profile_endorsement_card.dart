@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:candidate_website/src/utils/breakpoint.dart';
 
 class HighProfileEndorsementCard extends StatelessWidget {
   final String name;
@@ -21,43 +22,55 @@ class HighProfileEndorsementCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final windowSize = getWindowSize(context);
+    final isCompact = windowSize == WindowSize.compact;
 
-    final imageWidget = Expanded(
-      child: Container(
-        height: 400,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(imagePath),
-            fit: BoxFit.cover,
+    final imageWidget = Container(
+      height: isCompact ? 200 : 400,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(imagePath),
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+
+    final textWidget = Container(
+      height: isCompact ? null : 400,
+      padding: const EdgeInsets.all(16.0),
+      color: backgroundColor,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            '"$quote"',
+            style: textTheme.titleLarge
+                ?.copyWith(fontStyle: FontStyle.italic, color: textColor),
           ),
-        ),
+          const SizedBox(height: 8.0),
+          Text(
+            '- $name',
+            style: textTheme.titleMedium
+                ?.copyWith(fontWeight: FontWeight.bold, color: textColor),
+          ),
+        ],
       ),
     );
 
-    final textWidget = Expanded(
-      child: Container(
-        height: 400,
-        padding: const EdgeInsets.all(16.0),
-        color: backgroundColor,
+    if (isCompact) {
+      return Card(
+        margin: EdgeInsets.zero,
+        elevation: 4.0,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              '"$quote"',
-              style: textTheme.titleLarge
-                  ?.copyWith(fontStyle: FontStyle.italic, color: textColor),
-            ),
-            const SizedBox(height: 8.0),
-            Text(
-              '- $name',
-              style: textTheme.titleMedium
-                  ?.copyWith(fontWeight: FontWeight.bold, color: textColor),
-            ),
-          ],
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [imageWidget, textWidget],
         ),
-      ),
-    );
+      );
+    }
+
+    final imageExpanded = Expanded(child: imageWidget);
+    final textExpanded = Expanded(child: textWidget);
 
     return Card(
       margin: EdgeInsets.zero,
@@ -67,7 +80,7 @@ class HighProfileEndorsementCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children:
-              imageLeft ? [imageWidget, textWidget] : [textWidget, imageWidget],
+              imageLeft ? [imageExpanded, textExpanded] : [textExpanded, imageExpanded],
         ),
       ),
     );
