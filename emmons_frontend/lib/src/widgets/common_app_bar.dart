@@ -50,6 +50,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
     final textTheme = Theme.of(context).textTheme;
     final windowSize = getWindowSize(context);
     final isCompact = windowSize == WindowSize.compact;
+    final isMedium = windowSize == WindowSize.medium;
 
     // Navigation items
     final navItems = [
@@ -82,7 +83,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: navItems.map((item) {
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            padding: EdgeInsets.symmetric(horizontal: isCompact ? 4.0 : 8.0),
             child: TextButton(
               onPressed: () => context.go(item['path']!),
               child: Text(
@@ -90,7 +91,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
                 style: textTheme.labelMedium?.copyWith(
                   color: const Color(0xff002663),
                   fontWeight: FontWeight.bold,
-                  fontSize: 24,
+                  fontSize: isCompact ? 18 : 24,
                 ),
               ),
             ),
@@ -106,8 +107,8 @@ class _CommonAppBarState extends State<CommonAppBar> {
       automaticallyImplyLeading: false,
       flexibleSpace: Center(
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: isCompact
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+          child: isCompact || isMedium
               ? Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
