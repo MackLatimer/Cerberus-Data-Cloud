@@ -4,9 +4,9 @@ enum WindowSize { compact, medium, expanded }
 
 WindowSize getWindowSize(BuildContext context) {
   final width = MediaQuery.of(context).size.width;
-  if (width < 600) {
+  if (width < 800) {
     return WindowSize.compact;
-  } else if (width < 840) {
+  } else if (width < 1190) {
     return WindowSize.medium;
   } else {
     return WindowSize.expanded;
