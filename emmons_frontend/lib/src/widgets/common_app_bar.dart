@@ -38,8 +38,8 @@ class _CommonAppBarState extends State<CommonAppBar> {
     ];
 
     return AppBar(
-      backgroundColor: const Color(0xFFFFFFFF),
-      elevation: 4.0, // Add shadow
+      elevation: 0,
+      backgroundColor: Colors.transparent,
       title: null, // Set to null because we are using a custom layout
       automaticallyImplyLeading: false,
       flexibleSpace: Center(
@@ -49,40 +49,48 @@ class _CommonAppBarState extends State<CommonAppBar> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               // Logo on the left
-              Image.asset(
-                'assets/Emmons_Logo_4_TP.png',
+              SvgPicture.asset(
+                'assets/Emmons_Logo_4_TP.svg',
                 width: 400,
                 height: 100,
               ),
               // Navigation items on the right
-              Expanded(
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(15.0),
-                      bottomLeft: Radius.circular(15.0),
-                    ),
+              Container(
+                height: 100,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(15.0),
+                    bottomRight: Radius.circular(15.0),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: navItems.map((item) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: TextButton(
-                          onPressed: () => context.go(item['path']!),
-                          child: Text(
-                            item['label']!,
-                            style: textTheme.labelMedium?.copyWith(
-                              color: const Color(0xff002663),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 24,
-                            ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: const Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: navItems.map((item) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: TextButton(
+                        onPressed: () => context.go(item['path']!),
+                        child: Text(
+                          item['label']!,
+                          style: textTheme.labelMedium?.copyWith(
+                            color: const Color(0xff002663),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
                           ),
                         ),
-                      );
-                    }).toList(),
-                  ),
+                      ),
+                    );
+                  }).toList(),
                 ),
               ),
             ],
