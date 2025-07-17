@@ -86,50 +86,55 @@ class _DonatePageState extends State<DonatePage> {
           ];
         },
         body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 600), // Slightly narrower for focus
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    const SizedBox(height: 40),
-                    Text(
-                      'Support our Mission!',
-                      style: Theme.of(context).textTheme.headlineMedium,
-                      textAlign: TextAlign.center,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 600), // Slightly narrower for focus
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        const SizedBox(height: 40),
+                        Text(
+                          'Support our Mission!',
+                          style: Theme.of(context).textTheme.headlineMedium,
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 40),
+                        _buildDonationGrid(context),
+                        const SizedBox(height: 30),
+                        if (_showFullForm)
+                          _buildDonorForm(context)
+                        else
+                          Container(),
+                        if (!_showFullForm)
+                          Text(
+                            'Contributions to the Curtis Emmons for County Commissioner campaign help us reach voters, share our message, and work towards a better future for Bell County Precinct 4. Every donation, no matter the size, is deeply appreciated and crucial to our success.',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                            textAlign: TextAlign.center,
+                          ),
+                        const SizedBox(height: 40),
+                        if (!_showFullForm)
+                          Text(
+                            'If you prefer to donate by mail, please send a check payable to "Curtis Emmons Campaign" to: [Campaign PO Box or Address Here - Placeholder]',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            textAlign: TextAlign.center,
+                          ),
+                        const SizedBox(height: 20),
+                        Text(
+                          'Thank you for your generosity!',
+                          style: Theme.of(context).textTheme.titleMedium,
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 40),
-                    if (_showFullForm)
-                      _buildDonorForm(context)
-                    else
-                      _buildDonationGrid(context),
-                    const SizedBox(height: 30),
-                    if (!_showFullForm)
-                      Text(
-                        'Contributions to the Curtis Emmons for County Commissioner campaign help us reach voters, share our message, and work towards a better future for Bell County Precinct 4. Every donation, no matter the size, is deeply appreciated and crucial to our success.',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                        textAlign: TextAlign.center,
-                      ),
-                    const SizedBox(height: 40),
-                    if (!_showFullForm)
-                      Text(
-                        'If you prefer to donate by mail, please send a check payable to "Curtis Emmons Campaign" to: [Campaign PO Box or Address Here - Placeholder]',
-                        style: Theme.of(context).textTheme.bodyMedium,
-                        textAlign: TextAlign.center,
-                      ),
-                    const SizedBox(height: 20),
-                    Text(
-                      'Thank you for your generosity!',
-                      style: Theme.of(context).textTheme.titleMedium,
-                      textAlign: TextAlign.center,
-                    ),
-                    const Footer(),
-                  ],
+                  ),
                 ),
               ),
-            ),
+              const Footer(),
+            ],
           ),
         ),
       ),

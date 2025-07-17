@@ -93,7 +93,7 @@ class _IssuesPageState extends State<IssuesPage> {
           return <Widget>[
             SliverToBoxAdapter(
               child: Container(
-                height: 300,
+                height: MediaQuery.of(context).size.height,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('assets/Hero_Picture_Issues.png'),
