@@ -63,57 +63,41 @@ class _CommonAppBarState extends State<CommonAppBar> {
     double scrollThreshold = 200.0;
     double opacity = (_scrollOffset / scrollThreshold).clamp(0.0, 1.0);
 
-    Widget navigation;
-    if (isCompact) {
-      navigation = PopupMenuButton<String>(
-        onSelected: (String path) => context.go(path),
-        itemBuilder: (BuildContext context) {
-          return navItems.map((item) {
-            return PopupMenuItem<String>(
-              value: item['path'],
-              child: Text(item['label']!),
-            );
-          }).toList();
-        },
-        icon: Icon(Icons.menu, color: const Color(0xff002663)),
-      );
-    } else {
-      navigation = Container(
-        height: 50,
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(1.0 - opacity),
-          borderRadius: BorderRadius.circular(15.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.5 * (1.0 - opacity)),
-              spreadRadius: 5,
-              blurRadius: 5,
-              offset: const Offset(1, 2), // changes position of shadow
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: navItems.map((item) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: TextButton(
-                onPressed: () => context.go(item['path']!),
-                child: Text(
-                  item['label']!,
-                  style: textTheme.labelMedium?.copyWith(
-                    color: const Color(0xff002663),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24,
-                  ),
+    final navigation = Container(
+      height: 50,
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(1.0 - opacity),
+        borderRadius: BorderRadius.circular(15.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.5 * (1.0 - opacity)),
+            spreadRadius: 5,
+            blurRadius: 5,
+            offset: const Offset(1, 2), // changes position of shadow
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: navItems.map((item) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: TextButton(
+              onPressed: () => context.go(item['path']!),
+              child: Text(
+                item['label']!,
+                style: textTheme.labelMedium?.copyWith(
+                  color: const Color(0xff002663),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
                 ),
               ),
-            );
-          }).toList(),
-        ),
-      );
-    }
+            ),
+          );
+        }).toList(),
+      ),
+    );
 
     return AppBar(
       elevation: opacity,
