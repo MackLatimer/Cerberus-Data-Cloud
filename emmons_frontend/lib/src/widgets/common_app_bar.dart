@@ -62,8 +62,8 @@ class _CommonAppBarState extends State<CommonAppBar> {
     double opacity = (_scrollOffset / scrollThreshold).clamp(0.0, 1.0);
 
     return AppBar(
-      elevation: 0,
-      backgroundColor: Colors.transparent,
+      elevation: opacity,
+      backgroundColor: Colors.white.withOpacity(opacity),
       title: null, // Set to null because we are using a custom layout
       automaticallyImplyLeading: false,
       flexibleSpace: Center(
@@ -86,10 +86,10 @@ class _CommonAppBarState extends State<CommonAppBar> {
                   borderRadius: BorderRadius.circular(15.0),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.5 * (1.0 - opacity)),
+                      color: Colors.black.withOpacity(0.5 * (1.0 - opacity)),
                       spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: const Offset(0, 3), // changes position of shadow
+                      blurRadius: 5,
+                      offset: const Offset(1, 2), // changes position of shadow
                     ),
                   ],
                 ),
