@@ -112,11 +112,11 @@ class _HomePageState extends State<HomePage> {
               ),
               const DonateSection(),
               const SignupFormWidget(),
-              const Footer(),
             ],
           ),
         ),
       ),
+      bottomNavigationBar: const Footer(),
     );
   }
 }

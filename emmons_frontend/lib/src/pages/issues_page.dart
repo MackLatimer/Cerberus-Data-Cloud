@@ -149,11 +149,11 @@ class _IssuesPageState extends State<IssuesPage> {
               ),
               const DonateSection(),
               const SignupFormWidget(),
-              const Footer(),
             ],
           ),
         ),
       ),
+      bottomNavigationBar: const Footer(),
     );
   }
 }

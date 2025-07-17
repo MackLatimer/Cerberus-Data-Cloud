@@ -18,11 +18,11 @@ class CommonAppBar extends StatefulWidget implements PreferredSizeWidget {
   _CommonAppBarState createState() => _CommonAppBarState();
 
   @override
-  Size get preferredSize => const Size.fromHeight(300);
+  Size get preferredSize => const Size.fromHeight(150);
 }
 
 class _CommonAppBarState extends State<CommonAppBar> {
-  double _appBarOpacity = 0.0; // Default to transparent
+  double _appBarOpacity = 1.0; // Default to opaque
 
   @override
   void initState() {
@@ -32,8 +32,6 @@ class _CommonAppBarState extends State<CommonAppBar> {
       _appBarOpacity = 0.0;
       widget.scrollController!.addListener(_updateAppBarOpacity);
       WidgetsBinding.instance.addPostFrameCallback((_) => _updateAppBarOpacity());
-    } else {
-      _appBarOpacity = 1.0;
     }
     // If no scrollController is provided, _appBarOpacity remains 1.0 (opaque)
   }
@@ -111,35 +109,24 @@ class _CommonAppBarState extends State<CommonAppBar> {
                 height: 100,
               ),
               // Navigation items on the right
-              Expanded(
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(15.0),
-                      bottomLeft: Radius.circular(15.0),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: navItems.map((item) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: TextButton(
-                          onPressed: () => context.go(item['path']!),
-                          child: Text(
-                            item['label']!,
-                            style: textTheme.labelMedium?.copyWith(
-                              color: const Color(0xff002663),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 24,
-                            ),
-                          ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: navItems.map((item) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: TextButton(
+                      onPressed: () => context.go(item['path']!),
+                      child: Text(
+                        item['label']!,
+                        style: textTheme.labelMedium?.copyWith(
+                          color: const Color(0xff002663),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24,
                         ),
-                      );
-                    }).toList(),
-                  ),
-                ),
+                      ),
+                    ),
+                  );
+                }).toList(),
               ),
             ],
           ),

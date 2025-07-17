@@ -145,11 +145,11 @@ class _EndorsementsPageState extends State<EndorsementsPage> {
               const SizedBox(height: 40),
               const SignupFormWidget(),
               const SizedBox(height: 40),
-              const Footer(),
             ],
           ),
         ),
       ),
+      bottomNavigationBar: const Footer(),
     );
   }
 
