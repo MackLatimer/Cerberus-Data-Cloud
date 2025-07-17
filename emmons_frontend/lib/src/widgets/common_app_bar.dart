@@ -87,9 +87,9 @@ class _CommonAppBarState extends State<CommonAppBar> {
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.5 * (1.0 - opacity)),
-                      spreadRadius: 5,
-                      blurRadius: 5,
-                      offset: const Offset(1, 2), // changes position of shadow
+                      spreadRadius: 1,
+                      blurRadius: 1,
+                      offset: const Offset(2, 3), // changes position of shadow
                     ),
                   ],
                 ),
