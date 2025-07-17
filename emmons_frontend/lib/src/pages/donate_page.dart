@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:candidate_website/src/widgets/common_app_bar.dart';
 import 'package:candidate_website/src/widgets/donate_button.dart'; // Re-using for consistency
 // import 'package:url_launcher/url_launcher.dart'; // For actual donation link later
 import 'package:candidate_website/src/widgets/footer.dart'; // Import the Footer widget
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:http/http.dart' as http;
 
 class DonatePage extends StatefulWidget {
   const DonatePage({super.key});
@@ -15,6 +18,7 @@ class _DonatePageState extends State<DonatePage> {
   final ScrollController _scrollController = ScrollController();
   final _formKey = GlobalKey<FormState>();
   bool _showFullForm = false;
+  int? _selectedAmount;
 
   // Controllers for form fields
   final _firstNameController = TextEditingController();
@@ -32,6 +36,8 @@ class _DonatePageState extends State<DonatePage> {
   // State variables for checkboxes
   bool _agreedToMessaging = false;
   bool _agreedToEmails = false;
+  bool _endorseChecked = false;
+  bool _getInvolvedChecked = false;
 
   @override
   void dispose() {
@@ -74,7 +80,7 @@ class _DonatePageState extends State<DonatePage> {
           return <Widget>[
             SliverToBoxAdapter(
               child: Container(
-                height: 300, // Height of the hero image
+                height: MediaQuery.of(context).size.height, // Height of the hero image
                 decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('assets/Hero_Picture_Donate.png'),
@@ -191,17 +197,146 @@ class _DonatePageState extends State<DonatePage> {
           ),
           const SizedBox(height: 24),
           ElevatedButton(
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                // Process data - for now, just print or show a dialog
-                _showDonationDataDialog(); // This will also need to include new checkbox values
-              }
-            },
+            onPressed: _handlePayPress,
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 16),
               textStyle: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 18),
             ),
             child: const Text('Proceed to Donation'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _handlePayPress() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    // 1. Create a payment intent on the server
+    final paymentIntent = await _createPaymentIntent(_selectedAmount ?? 0, 'usd');
+
+    if (paymentIntent == null) {
+      // Handle error
+      return;
+    }
+
+    // 2. Initialize the payment sheet
+    await Stripe.instance.initPaymentSheet(
+      paymentSheetParameters: SetupPaymentSheetParameters(
+        paymentIntentClientSecret: paymentIntent['client_secret'],
+        merchantDisplayName: 'Emmons for Commissioner',
+      ),
+    );
+
+    // 3. Present the payment sheet
+    await _displayPaymentSheet();
+  }
+
+  Future<Map<String, dynamic>?> _createPaymentIntent(int amount, String currency) async {
+    try {
+      //TODO: Move this to a secure backend
+      final response = await http.post(
+        Uri.parse('https://api.stripe.com/v1/payment_intents'),
+        body: {
+          'amount': (amount * 100).toString(),
+          'currency': currency,
+          'payment_method_types[]': 'card',
+        },
+        headers: {
+          'Authorization': 'Bearer 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',
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      );
+      return json.decode(response.body);
+    } catch (e) {
+      print('Error creating payment intent: $e');
+      return null;
+    }
+  }
+
+  Future<void> _displayPaymentSheet() async {
+    try {
+      await Stripe.instance.presentPaymentSheet();
+      _showPostDonationDialog();
+    } catch (e) {
+      print('Error displaying payment sheet: $e');
+    }
+  }
+
+  void _showPostDonationDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Thank You For Your Donation!'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              const Text('Please provide some additional information:'),
+              TextFormField(
+                controller: _phoneController,
+                decoration: const InputDecoration(labelText: 'Phone Number'),
+                keyboardType: TextInputType.phone,
+              ),
+              TextFormField(
+                controller: _emailController,
+                decoration: const InputDecoration(labelText: 'Email'),
+                keyboardType: TextInputType.emailAddress,
+              ),
+              CheckboxListTile(
+                title: const Text('I endorse Curtis Emmons and allow him to publish my endorsement'),
+                value: _endorseChecked,
+                onChanged: (bool? value) {
+                  setState(() {
+                    _endorseChecked = value ?? false;
+                  });
+                },
+                controlAffinity: ListTileControlAffinity.leading,
+                contentPadding: EdgeInsets.zero,
+              ),
+              CheckboxListTile(
+                title: const Text('I want to get involved with the campaign!'),
+                value: _getInvolvedChecked,
+                onChanged: (bool? value) {
+                  setState(() {
+                    _getInvolvedChecked = value ?? false;
+                  });
+                },
+                controlAffinity: ListTileControlAffinity.leading,
+                contentPadding: EdgeInsets.zero,
+              ),
+              CheckboxListTile(
+                title: const Text('I agree to receive automated messaging from Elect Emmons'),
+                value: _agreedToMessaging,
+                onChanged: (bool? value) {
+                  setState(() {
+                    _agreedToMessaging = value ?? false;
+                  });
+                },
+                controlAffinity: ListTileControlAffinity.leading,
+                contentPadding: EdgeInsets.zero,
+              ),
+              CheckboxListTile(
+                title: const Text('I agree to receive emails from Elect Emmons'),
+                value: _agreedToEmails,
+                onChanged: (bool? value) {
+                  setState(() {
+                    _agreedToEmails = value ?? false;
+                  });
+                },
+                controlAffinity: ListTileControlAffinity.leading,
+                contentPadding: EdgeInsets.zero,
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            child: const Text('Submit'),
+            onPressed: () {
+              // TODO: Submit this additional information to the backend
+              Navigator.of(context).pop();
+            },
           ),
         ],
       ),
@@ -262,12 +397,21 @@ class _DonatePageState extends State<DonatePage> {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
+            final amount = amounts[index];
+            final isSelected = _selectedAmount == amount;
             return ElevatedButton(
               onPressed: () {
                 setState(() {
+                  _selectedAmount = amount;
                   _showFullForm = true;
                 });
               },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: isSelected ? const Color(0xFF002663) : const Color(0xFFA01124),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+              ),
               child: Text('\$${amounts[index]}'),
             );
           },
@@ -296,6 +440,11 @@ class _DonatePageState extends State<DonatePage> {
             ),
           ),
           keyboardType: TextInputType.number,
+          onTap: () {
+            setState(() {
+              _selectedAmount = null;
+            });
+          },
         ),
         const SizedBox(height: 20),
         ElevatedButton(
