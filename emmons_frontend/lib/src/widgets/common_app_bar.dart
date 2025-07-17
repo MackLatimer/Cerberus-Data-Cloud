@@ -22,57 +22,6 @@ class CommonAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _CommonAppBarState extends State<CommonAppBar> {
-  double _appBarOpacity = 0.0; // Default to transparent
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.scrollController != null) {
-      widget.scrollController!.addListener(_updateAppBarOpacity);
-      WidgetsBinding.instance.addPostFrameCallback((_) => _updateAppBarOpacity());
-    }
-  }
-
-  @override
-  void dispose() {
-    if (widget.scrollController != null) {
-      widget.scrollController!.removeListener(_updateAppBarOpacity);
-    }
-    super.dispose();
-  }
-
-  void _updateAppBarOpacity() {
-    if (widget.scrollController != null && widget.scrollController!.hasClients) {
-      final offset = widget.scrollController!.offset;
-      // AppBar starts fully transparent.
-      // Start fading in after scrolling past a small threshold (e.g., 10 pixels).
-      // Becomes fully opaque after scrolling a certain distance (e.g., 200 pixels).
-      const startFadeOffset = 10.0;
-      const endFadeOffset = 200.0;
-
-      double opacity;
-      if (offset <= startFadeOffset) {
-        opacity = 0.0; // Stay transparent if below or at startFadeOffset
-      } else if (offset >= endFadeOffset) {
-        opacity = 1.0; // Fully opaque if at or past endFadeOffset
-      } else {
-        // Calculate opacity during the transition
-        opacity = (offset - startFadeOffset) / (endFadeOffset - startFadeOffset);
-      }
-
-      if (mounted) { // Check if the widget is still in the tree
-        setState(() {
-          _appBarOpacity = opacity.clamp(0.0, 1.0);
-        });
-      }
-    } else if (widget.scrollController == null) {
-      // If no scroll controller, keep it transparent.
-      // This could be adjusted if a different default is needed for non-scrolling pages.
-      if (mounted && _appBarOpacity != 0.0) {
-         // setState(() { _appBarOpacity = 0.0; }); // Or 1.0 if opaque is default
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,8 +38,8 @@ class _CommonAppBarState extends State<CommonAppBar> {
     ];
 
     return AppBar(
-      backgroundColor: const Color(0xFFFFFFFF).withOpacity(_appBarOpacity),
-      elevation: _appBarOpacity > 0 ? 4.0 : 0.0, // Add shadow when not transparent
+      backgroundColor: const Color(0xFFFFFFFF),
+      elevation: 4.0, // Add shadow
       title: null, // Set to null because we are using a custom layout
       automaticallyImplyLeading: false,
       flexibleSpace: Center(
@@ -106,24 +55,35 @@ class _CommonAppBarState extends State<CommonAppBar> {
                 height: 100,
               ),
               // Navigation items on the right
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: navItems.map((item) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: TextButton(
-                      onPressed: () => context.go(item['path']!),
-                      child: Text(
-                        item['label']!,
-                        style: textTheme.labelMedium?.copyWith(
-                          color: const Color(0xff002663),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24,
-                        ),
-                      ),
+              Expanded(
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15.0),
+                      bottomLeft: Radius.circular(15.0),
                     ),
-                  );
-                }).toList(),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: navItems.map((item) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: TextButton(
+                          onPressed: () => context.go(item['path']!),
+                          child: Text(
+                            item['label']!,
+                            style: textTheme.labelMedium?.copyWith(
+                              color: const Color(0xff002663),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24,
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
               ),
             ],
           ),
