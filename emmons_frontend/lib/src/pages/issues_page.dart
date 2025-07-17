@@ -3,6 +3,7 @@ import 'package:candidate_website/src/widgets/common_app_bar.dart';
 import 'package:candidate_website/src/widgets/signup_form.dart';
 import 'package:candidate_website/src/widgets/donate_section.dart';
 import 'package:candidate_website/src/widgets/footer.dart';
+import 'package:candidate_website/src/utils/breakpoint.dart';
 
 class IssuesPage extends StatefulWidget {
   const IssuesPage({super.key});
@@ -30,57 +31,69 @@ class _IssuesPageState extends State<IssuesPage> {
     bool imageLeft = true,
   }) {
     final textTheme = Theme.of(context).textTheme;
+    final windowSize = getWindowSize(context);
+    final isCompact = windowSize == WindowSize.compact;
 
-    final imageWidget = Expanded(
-      child: Container(
-        height: 400,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(imagePath),
-            fit: BoxFit.cover,
+    final imageWidget = Container(
+      height: isCompact ? 200 : 400,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(imagePath),
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+
+    final textWidget = Container(
+      height: isCompact ? null : 400,
+      color: backgroundColor,
+      padding: const EdgeInsets.all(24.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            title,
+            style: textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.bold, color: textColor ?? Colors.black),
+            textAlign: TextAlign.center,
           ),
-        ),
+          const SizedBox(height: 12),
+          Text(
+            content,
+            style:
+                textTheme.bodyLarge?.copyWith(color: textColor ?? Colors.black),
+            textAlign: TextAlign.justify,
+          ),
+        ],
       ),
     );
 
-    final textWidget = Expanded(
-      child: Container(
-        height: 400,
-        color: backgroundColor,
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              title,
-              style: textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold, color: textColor ?? Colors.black),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 12),
-            Text(
-              content,
-              style:
-                  textTheme.bodyLarge?.copyWith(color: textColor ?? Colors.black),
-              textAlign: TextAlign.justify,
-            ),
-          ],
-        ),
-      ),
-    );
+    if (isCompact) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [imageWidget, textWidget],
+      );
+    }
+
+    final imageExpanded = Expanded(child: imageWidget);
+    final textExpanded = Expanded(child: textWidget);
 
     return SizedBox(
       height: 400,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: imageLeft ? [imageWidget, textWidget] : [textWidget, imageWidget],
+        children: imageLeft ? [imageExpanded, textExpanded] : [textExpanded, imageExpanded],
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final windowSize = getWindowSize(context);
+    final isCompact = windowSize == WindowSize.compact;
+    final heroHeight = isCompact ? MediaQuery.of(context).size.height * 0.5 : MediaQuery.of(context).size.height;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: CommonAppBar(
@@ -93,7 +106,7 @@ class _IssuesPageState extends State<IssuesPage> {
           return <Widget>[
             SliverToBoxAdapter(
               child: Container(
-                height: MediaQuery.of(context).size.height,
+                height: heroHeight,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('assets/Hero_Picture_Issues.png'),
