@@ -123,53 +123,32 @@ class _CommonAppBarState extends State<CommonAppBar> {
       flexibleSpace: Center(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              // Logo on the left
-              SvgPicture.asset(
-                'assets/Emmons_Logo_4_TP_Shadow.svg',
-                width: isCompact ? 200 : 400,
-                height: 100,
-              ),
-              // Navigation items on the right
-              Container(
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(1.0 - opacity),
-                  borderRadius: BorderRadius.circular(15.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.5 * (1.0 - opacity)),
-                      spreadRadius: 1,
-                      blurRadius: 1,
-                      offset: const Offset(2, 3), // changes position of shadow
+          child: isCompact
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SvgPicture.asset(
+                      'assets/Emmons_Logo_4_TP_Shadow.svg',
+                      width: 200,
+                      height: 100,
                     ),
+                    const SizedBox(height: 16.0),
+                    navigation,
+                  ],
+                )
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    // Logo on the left
+                    SvgPicture.asset(
+                      'assets/Emmons_Logo_4_TP_Shadow.svg',
+                      width: 400,
+                      height: 100,
+                    ),
+                    // Navigation items on the right
+                    navigation,
                   ],
                 ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: navItems.map((item) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: TextButton(
-                        onPressed: () => context.go(item['path']!),
-                        child: Text(
-                          item['label']!,
-                          style: textTheme.labelMedium?.copyWith(
-                            color: const Color(0xff002663),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 24,
-                          ),
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ),
-            ],
-          ),
         ),
       ),
       actions: widget.actions,
