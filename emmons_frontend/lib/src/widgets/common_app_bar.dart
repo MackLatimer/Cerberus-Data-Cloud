@@ -22,7 +22,7 @@ class CommonAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _CommonAppBarState extends State<CommonAppBar> {
-  bool _isScrolled = false;
+  double _scrollOffset = 0.0;
 
   @override
   void initState() {
@@ -38,15 +38,9 @@ class _CommonAppBarState extends State<CommonAppBar> {
 
   void _scrollListener() {
     if (widget.scrollController != null) {
-      if (widget.scrollController!.offset > 0 && !_isScrolled) {
-        setState(() {
-          _isScrolled = true;
-        });
-      } else if (widget.scrollController!.offset <= 0 && _isScrolled) {
-        setState(() {
-          _isScrolled = false;
-        });
-      }
+      setState(() {
+        _scrollOffset = widget.scrollController!.offset;
+      });
     }
   }
 
@@ -63,6 +57,9 @@ class _CommonAppBarState extends State<CommonAppBar> {
       {'label': 'Endorsements', 'path': '/endorsements'},
       {'label': 'Donate', 'path': '/donate'},
     ];
+
+    double scrollThreshold = 200.0;
+    double opacity = (_scrollOffset / scrollThreshold).clamp(0.0, 1.0);
 
     return AppBar(
       elevation: 0,
@@ -83,16 +80,13 @@ class _CommonAppBarState extends State<CommonAppBar> {
               ),
               // Navigation items on the right
               Container(
-                height: 60,
+                height: 50,
                 decoration: BoxDecoration(
-                  color: _isScrolled ? Colors.white.withOpacity(0.0) : Colors.white,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(15.0),
-                    bottomLeft: Radius.circular(15.0),
-                  ),
-                  boxShadow: _isScrolled ? [] : [
+                  color: Colors.white.withOpacity(1.0 - opacity),
+                  borderRadius: BorderRadius.circular(15.0),
+                  boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
+                      color: Colors.grey.withOpacity(0.5 * (1.0 - opacity)),
                       spreadRadius: 5,
                       blurRadius: 7,
                       offset: const Offset(0, 3), // changes position of shadow
