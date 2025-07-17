@@ -22,18 +22,15 @@ class CommonAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _CommonAppBarState extends State<CommonAppBar> {
-  double _appBarOpacity = 1.0; // Default to opaque
+  double _appBarOpacity = 0.0; // Default to transparent
 
   @override
   void initState() {
     super.initState();
     if (widget.scrollController != null) {
-      // If there's a scroll controller, start transparent for overlap effect
-      _appBarOpacity = 0.0;
       widget.scrollController!.addListener(_updateAppBarOpacity);
       WidgetsBinding.instance.addPostFrameCallback((_) => _updateAppBarOpacity());
     }
-    // If no scrollController is provided, _appBarOpacity remains 1.0 (opaque)
   }
 
   @override
@@ -92,7 +89,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
     ];
 
     return AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.white.withOpacity(_appBarOpacity),
       elevation: _appBarOpacity > 0 ? 4.0 : 0.0, // Add shadow when not transparent
       title: null, // Set to null because we are using a custom layout
       automaticallyImplyLeading: false,
