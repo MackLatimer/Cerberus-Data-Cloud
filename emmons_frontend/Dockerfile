@@ -15,9 +15,18 @@ RUN flutter pub get
 # Copy the rest of the frontend application code
 COPY . .
 
+# Define build arguments that can be passed in from cloudbuild.yaml
+ARG API_BASE_URL
+ARG CAMPAIGN_ID
+ARG STRIPE_PUBLISHABLE_KEY
+
 # Build the web application
 # Using --release for a production build
-RUN flutter build web --release
+# Pass the build arguments as compile-time variables to the Flutter app
+RUN flutter build web --release \
+    --dart-define=API_BASE_URL=${API_BASE_URL} \
+    --dart-define=CAMPAIGN_ID=${CAMPAIGN_ID} \
+    --dart-define=STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
 
 # Stage 2: Serve the built web application with Nginx
 FROM nginx:1.25-alpine

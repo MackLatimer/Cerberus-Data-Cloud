@@ -22,3 +22,6 @@ cerberus_frontend/build/
 # IDE configuration
 .idea/
 .vscode/
+
+# Environment variables should not be uploaded
+**/.env

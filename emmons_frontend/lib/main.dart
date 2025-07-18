@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:candidate_website/src/pages/about_page.dart';
 import 'package:candidate_website/src/pages/donate_page.dart';
@@ -42,14 +41,15 @@ final _router = GoRouter(
   ],
 );
 
-Future<void> main() async {
-  // Ensure widgets are initialized before loading env
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  // Load environment variables
-  await dotenv.load(fileName: ".env");
   // Ensure URL strategy is set for web (removes hashbang #)
   GoRouter.optionURLReflectsImperativeAPIs = true;
-  Stripe.publishableKey = dotenv.env['STRIPE_PUBLISHABLE_KEY'] ?? 'your_fallback_key';
+  // Initialize Stripe with the key from compile-time variables.
+  Stripe.publishableKey = const String.fromEnvironment(
+    'STRIPE_PUBLISHABLE_KEY',
+    defaultValue: 'pk_test_YOUR_FALLBACK_TEST_KEY_HERE', // Fallback for local dev
+  );
   runApp(const MyApp());
 }
 

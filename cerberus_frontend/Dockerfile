@@ -25,11 +25,21 @@ RUN flutter build web --release
 # Use a small, secure Nginx image for serving the static files.
 FROM nginx:1.25-alpine
 
+# Install gettext package which provides the 'envsubst' utility
+RUN apk --no-cache add gettext
+
 # Copy the built web application from the previous stage
 COPY --from=build /app/build/web /usr/share/nginx/html
+
+# Copy the Nginx configuration template
+COPY nginx.conf.template /etc/nginx/conf.d/default.conf.template
+
+# Copy and make the startup script executable
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
 
 # Expose port 80
 EXPOSE 80
 
-# Start Nginx in the foreground so the container keeps running
-CMD ["nginx", "-g", "daemon off;"]
+# Command to run the startup script
+CMD ["/start.sh"]

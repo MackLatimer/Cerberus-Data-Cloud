@@ -43,6 +43,11 @@ steps:
     waitFor: ['pnpm-install']
     args: [
       'build',
+      # Pass production values as build arguments to the Dockerfile
+      # These are defined in the substitutions block below.
+      '--build-arg', 'API_BASE_URL=${_API_BASE_URL}',
+      '--build-arg', 'CAMPAIGN_ID=${_CAMPAIGN_ID}',
+      '--build-arg', 'STRIPE_PUBLISHABLE_KEY=${_STRIPE_PUBLISHABLE_KEY}',
       '-t', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/emmons-frontend:latest', # Updated to Artifact Registry
       '-f', 'Dockerfile', # Use the Dockerfile in its specific directory
       '.'
@@ -54,6 +59,13 @@ images:
   - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:v1'
   - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/cerberus-frontend:latest'
   - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/emmons-frontend:latest'
+
+# Define substitutions for production configuration
+substitutions:
+  _API_BASE_URL: 'https://campaigns-api-885603051818.us-south1.run.app/api/v1'
+  _CAMPAIGN_ID: '1'
+  # This is a public key, but for best practice with secrets, consider using Secret Manager.
+  _STRIPE_PUBLISHABLE_KEY: 'pk_live_51QoUvvLiE3PH27cBZ4Nt4532BV0fKKSe5gVG9TTP78yieeoowhCtDy8oWgZKXAOw1Jqm05sWeyee4dUIcyzi25lc00dP9pymbT'
 
 # Specify the service account for Cloud Build to use for executing these steps
 # Ensure this service account has 'Artifact Registry Writer' role for the project or specifically for the 'cerberus-images' repository.

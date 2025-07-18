@@ -41,7 +41,6 @@ dependencies:
   go_router: ^15.1.2 # Updated version
   google_fonts: ^6.2.1
   url_launcher: ^6.3.1
-  flutter_dotenv: ^5.1.0
   # Using a known stable version as suggested by build logs.
   flutter_stripe: ^10.2.0
 
