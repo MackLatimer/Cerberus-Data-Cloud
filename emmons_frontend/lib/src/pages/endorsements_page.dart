@@ -12,7 +12,7 @@ class EndorsementsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return PageScaffoldWithHero(
       pageTitle: 'Endorsements',
-      heroImagePath: 'assets/Hero_Picture_Endorsements.png',
+      heroImagePath: 'assets/images/Hero_Picture_Endorsements.png',
       body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -37,7 +37,7 @@ class EndorsementsPage extends StatelessWidget {
                 name: 'Jane Doe',
                 quote:
                     'Curtis has the vision and dedication Bell County needs. He has my full support!',
-                imagePath: 'assets/Endorsement_Picture_1.png',
+                imagePath: 'assets/images/Endorsement_Picture_1.png',
                 backgroundColor: Color(0xffa01124),
                 textColor: Colors.white,
                 imageLeft: true,
@@ -46,13 +46,13 @@ class EndorsementsPage extends StatelessWidget {
                 name: 'John Smith',
                 quote:
                     'I\'ve worked with Curtis for years, and his commitment to our community is unwavering.',
-                imagePath: 'assets/Endorsement_Picture_2.png',
+                imagePath: 'assets/images/Endorsement_Picture_2.png',
                 imageLeft: false,
               ),
               const HighProfileEndorsementCard(
                 name: 'Bob Johnson',
                 quote: 'A true leader for our time.',
-                imagePath: 'assets/Endorsement_Picture_3.png',
+                imagePath: 'assets/images/Endorsement_Picture_3.png',
                 backgroundColor: Color(0xff002663),
                 textColor: Colors.white,
                 imageLeft: true,
@@ -60,13 +60,13 @@ class EndorsementsPage extends StatelessWidget {
               const HighProfileEndorsementCard(
                 name: 'Susan Williams',
                 quote: 'The best choice for Bell County.',
-                imagePath: 'assets/Endorsement_Picture_4.png',
+                imagePath: 'assets/images/Endorsement_Picture_4.png',
                 imageLeft: false,
               ),
               const HighProfileEndorsementCard(
                 name: 'Michael Brown',
                 quote: 'He will get the job done.',
-                imagePath: 'assets/Endorsement_Picture_5.png',
+                imagePath: 'assets/images/Endorsement_Picture_5.png',
                 backgroundColor: Color(0xffa01124),
                 textColor: Colors.white,
                 imageLeft: true,

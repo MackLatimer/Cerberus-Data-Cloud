@@ -12,7 +12,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return PageScaffoldWithHero(
       pageTitle: 'Curtis Emmons for Bell County Precinct 4',
-      heroImagePath: 'assets/Hero_Picture_Home.png',
+      heroImagePath: 'assets/images/Hero_Picture_Home.png',
       body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -37,7 +37,7 @@ class HomePage extends StatelessWidget {
                 title: 'Issues',
                 summary:
                     'Learn about the key issues Curtis is focused on to improve our precinct.',
-                imagePath: 'assets/Summary_Picture_Issues.png',
+                imagePath: 'assets/images/Summary_Picture_Issues.png',
                 routePath: '/issues',
                 imageBackgroundColor: Colors.blueGrey,
                 imageLeft: true,
@@ -50,7 +50,7 @@ class HomePage extends StatelessWidget {
                 title: 'About Me',
                 summary:
                     'Discover more about Curtis Emmons, his background, and his vision for Bell County.',
-                imagePath: 'assets/Summary_Picture_About.png',
+                imagePath: 'assets/images/Summary_Picture_About.png',
                 routePath: '/about',
                 imageBackgroundColor: Colors.teal,
                 imageLeft: false,
@@ -59,7 +59,7 @@ class HomePage extends StatelessWidget {
                 title: 'Endorsements',
                 summary:
                     'See who is endorsing Curtis and learn how you can add your support.',
-                imagePath: 'assets/Summary_Picture_Endorsements.png',
+                imagePath: 'assets/images/Summary_Picture_Endorsements.png',
                 routePath: '/endorsements',
                 imageBackgroundColor: Colors.amber,
                 imageLeft: true,
@@ -72,7 +72,7 @@ class HomePage extends StatelessWidget {
                 title: 'Donate',
                 summary:
                     'Support the campaign financially and help us make a difference.',
-                imagePath: 'assets/Summary_Picture_Donate.png',
+                imagePath: 'assets/images/Summary_Picture_Donate.png',
                 routePath: '/donate',
                 imageBackgroundColor: Colors.green,
                 imageLeft: false,

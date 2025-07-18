@@ -79,7 +79,7 @@ class _DonatePageState extends State<DonatePage> {
                 height: MediaQuery.of(context).size.height, // Height of the hero image
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/Hero_Picture_Donate.png'),
+                    image: AssetImage('assets/images/Hero_Picture_Donate.png'),
                     fit: BoxFit.cover,
                   ),
                 ),

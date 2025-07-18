@@ -11,7 +11,7 @@ class AboutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return PageScaffoldWithHero(
       pageTitle: 'About Me',
-      heroImagePath: 'assets/Hero_Picture_About.png',
+      heroImagePath: 'assets/images/Hero_Picture_About.png',
       body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -46,7 +46,7 @@ class AboutPage extends StatelessWidget {
                                 padding: const EdgeInsets.all(8.0),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(15.0),
-                                  child: Image.asset('assets/About_Picture_Business.png', fit: BoxFit.cover)),
+                                  child: Image.asset('assets/images/About_Picture_Business.png', fit: BoxFit.cover)),
                               ),
                             ),
                             Expanded(
@@ -54,7 +54,7 @@ class AboutPage extends StatelessWidget {
                                 padding: const EdgeInsets.all(8.0),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(15.0),
-                                  child: Image.asset('assets/About_Picture_Self.png', fit: BoxFit.cover)),
+                                  child: Image.asset('assets/images/About_Picture_Self.png', fit: BoxFit.cover)),
                               ),
                             ),
                           ],
@@ -65,7 +65,7 @@ class AboutPage extends StatelessWidget {
                             padding: const EdgeInsets.all(8.0),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(15.0),
-                              child: Image.asset('assets/Summary_Picture_About.png', height: 200, fit: BoxFit.cover)),
+                              child: Image.asset('assets/images/Summary_Picture_About.png', height: 200, fit: BoxFit.cover)),
                           ),
                         ),
                       ],

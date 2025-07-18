@@ -79,7 +79,7 @@ class IssuesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return PageScaffoldWithHero(
       pageTitle: 'Issues',
-      heroImagePath: 'assets/Hero_Picture_Issues.png',
+      heroImagePath: 'assets/images/Hero_Picture_Issues.png',
       body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -95,7 +95,7 @@ class IssuesPage extends StatelessWidget {
                 context,
                 'Economic Growth & Job Creation',
                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Curtis believes in fostering a business-friendly environment that attracts new opportunities and supports local entrepreneurs.',
-                  imagePath: 'assets/Issues_Picture_1.png',
+                  imagePath: 'assets/images/Issues_Picture_1.png',
                 backgroundColor: const Color(0xffa01124),
                 textColor: Colors.white,
                 imageLeft: true,
@@ -104,14 +104,14 @@ class IssuesPage extends StatelessWidget {
                 context,
                 'Community Safety & Emergency Services',
                 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Ensuring our neighborhoods are safe and our first responders are well-equipped is a top priority.',
-                  imagePath: 'assets/Issues_Picture_2.png',
+                  imagePath: 'assets/images/Issues_Picture_2.png',
                 imageLeft: false,
               ),
               _buildIssueSection(
                 context,
                 'Infrastructure Development & Maintenance',
                 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. We must invest in maintaining and improving our roads, bridges, and public utilities to support our growing community.',
-                  imagePath: 'assets/Issues_Picture_3.png',
+                  imagePath: 'assets/images/Issues_Picture_3.png',
                 backgroundColor: const Color(0xff002663),
                 textColor: Colors.white,
                 imageLeft: true,
@@ -120,7 +120,7 @@ class IssuesPage extends StatelessWidget {
                 context,
                 'Fiscal Responsibility & Transparent Governance',
                 'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Curtis is committed to responsible spending of taxpayer dollars and ensuring all county operations are transparent and accountable to the public.',
-                  imagePath: 'assets/Issues_Picture_4.png',
+                  imagePath: 'assets/images/Issues_Picture_4.png',
                 imageLeft: false,
               ),
               const DonateSection(),
