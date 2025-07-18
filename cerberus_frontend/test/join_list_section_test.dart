@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:cerberus_frontend/widgets/join_list_section.dart';
+import 'package:cerberus_frontend/lib/widgets/join_list_section.dart';
 
 void main() {
   testWidgets('JoinListSection renders correctly and shows validation messages', (WidgetTester tester) async {
