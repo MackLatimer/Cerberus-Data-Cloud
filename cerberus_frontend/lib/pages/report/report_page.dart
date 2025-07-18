@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 // Used for checking platform for base URL
+import 'dart:async';
 import 'dart:math' show min; // For substring
 import 'package:intl/intl.dart'; // For date formatting
 import 'package:url_launcher/url_launcher.dart'; // For PDF links
@@ -45,6 +46,7 @@ class _ReportPageState extends State<ReportPage> {
   // Email subscription state variables
   final _emailController = TextEditingController();
   bool _isSubscribing = false;
+  Timer? _debounce;
 
   // ExpansionTile states
   bool _isFilterExpanded = false;
@@ -68,6 +70,7 @@ class _ReportPageState extends State<ReportPage> {
   @override
   void dispose() {
     _emailController.dispose();
+    _debounce?.cancel();
     super.dispose();
   }
 
@@ -367,7 +370,7 @@ class _ReportPageState extends State<ReportPage> {
               Text(_error!, textAlign: TextAlign.center, style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 16)),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: _fetchReportData, // TODO: This should trigger a filtered search
+                onPressed: _fetchReportData,
                 child: const Text('Retry'),
               )
             ],
@@ -485,10 +488,19 @@ class _ReportPageState extends State<ReportPage> {
         children: <Widget>[
           TextField(
             onChanged: (value) {
+              if (_debounce?.isActive ?? false) _debounce!.cancel();
+              _debounce = Timer(const Duration(milliseconds: 500), () {
+                setState(() {
+                  _searchKeyword = value;
+                });
+                _fetchReportData();
+              });
+            },
+            onSubmitted: (value) {
               setState(() {
                 _searchKeyword = value;
               });
-              // TODO: Consider debouncing or triggering search on submit
+              _fetchReportData();
             },
             decoration: const InputDecoration(
               labelText: 'Search by keyword',
@@ -599,9 +611,7 @@ class _ReportPageState extends State<ReportPage> {
             ElevatedButton.icon(
                 icon: const Icon(Icons.search_rounded), // Updated icon
                 label: const Text('Apply Filters & Search'),
-                onPressed: () {
-                    _fetchReportData(); // TODO: This should trigger a *filtered* search
-                },
+                onPressed: _fetchReportData,
                 style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 12.0), // Padding from theme is usually sufficient
                 ),
