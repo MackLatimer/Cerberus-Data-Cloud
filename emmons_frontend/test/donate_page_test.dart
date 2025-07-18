@@ -7,27 +7,31 @@ import 'package:http/http.dart' as http;
 
 class MockStripe extends Mock implements Stripe {
   @override
-  Future<void> initPaymentSheet({required PaymentSheetParameters setupParams}) async {
-    return;
+  Future<PaymentSheetPaymentOption?> initPaymentSheet(
+      {required SetupPaymentSheetParameters paymentSheetParameters}) async {
+    return null;
   }
 
   @override
-  Future<void> presentPaymentSheet() async {
-    return;
+  Future<PaymentSheetPaymentOption?> presentPaymentSheet(
+      {PaymentSheetPresentOptions? options}) async {
+    return null;
   }
 }
 
 class MockHttpClient extends Mock implements http.Client {}
 
 void main() {
-  testWidgets('DonatePage has a hero image and a donation grid', (WidgetTester tester) async {
+  testWidgets('DonatePage has a hero image and a donation grid',
+      (WidgetTester tester) async {
     await tester.pumpWidget(const MaterialApp(home: DonatePage()));
 
     expect(find.byType(Image), findsOneWidget);
     expect(find.byType(GridView), findsOneWidget);
   });
 
-  testWidgets('Tapping a donation button selects it and shows the form', (WidgetTester tester) async {
+  testWidgets('Tapping a donation button selects it and shows the form',
+      (WidgetTester tester) async {
     await tester.pumpWidget(const MaterialApp(home: DonatePage()));
 
     final donationButton = find.text('\$10');
@@ -39,14 +43,16 @@ void main() {
     final selectedButton = find.byWidgetPredicate(
       (Widget widget) =>
           widget is ElevatedButton &&
-          widget.style?.backgroundColor?.resolve({}) == const Color(0xFF002663),
+          widget.style?.backgroundColor?.resolve({}) ==
+              const Color(0xFF002663),
     );
     expect(selectedButton, findsOneWidget);
 
     expect(find.byType(Form), findsOneWidget);
   });
 
-  testWidgets('Tapping "Proceed to Donation" shows the payment sheet', (WidgetTester tester) async {
+  testWidgets('Tapping "Proceed to Donation" shows the payment sheet',
+      (WidgetTester tester) async {
     final mockStripe = MockStripe();
     Stripe.instance = mockStripe;
 
