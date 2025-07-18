@@ -22,15 +22,22 @@ RUN flutter build web --release
 # Stage 2: Serve the built web application with Nginx
 FROM nginx:1.25-alpine
 
+# Install gettext package which provides the 'envsubst' utility
+RUN apk --no-cache add gettext
+
 # Copy the built static files from the 'build' stage
 # The output of 'flutter build web' is in 'build/web'
 COPY --from=build /app_src/build/web /usr/share/nginx/html
 
-# Copy a custom Nginx configuration file
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copy the Nginx configuration template
+COPY nginx.conf.template /etc/nginx/conf.d/default.conf.template
+
+# Copy and make the startup script executable
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
 
 # Expose port 80
 EXPOSE 80
 
-# Command to run Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Command to run the startup script
+CMD ["/start.sh"]
