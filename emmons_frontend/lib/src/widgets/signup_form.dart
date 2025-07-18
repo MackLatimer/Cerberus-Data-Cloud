@@ -5,7 +5,9 @@ import 'package:go_router/go_router.dart'; // Import for routing
 import '../config.dart'; // Import the configuration file
 
 class SignupFormWidget extends StatefulWidget {
-  const SignupFormWidget({super.key});
+  final String campaignId;
+
+  const SignupFormWidget({super.key, this.campaignId = currentCampaignId});
 
   @override
   State<SignupFormWidget> createState() => _SignupFormWidgetState();
@@ -43,7 +45,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
       'last_name': _lastNameController.text,
       'email_address': _emailController.text,
       'phone_number': _phoneController.text.isNotEmpty ? _phoneController.text : null,
-      'campaign_id': currentCampaignId, // From config.dart
+      'campaign_id': widget.campaignId, // Use the widget's campaignId
       'interests': {
         'wants_to_endorse': _endorseChecked,
         'wants_to_get_involved': _getInvolvedChecked,

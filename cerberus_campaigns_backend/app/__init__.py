@@ -5,10 +5,10 @@ from . import models as model_module # Import the models module
 
 # Import Blueprints
 from .routes.voters import voters_api_bp, public_api_bp
+from .routes.main import main_bp
+from .routes.auth import auth_bp
+from .routes.campaigns import campaigns_api_bp
 from .api_routes import api_bp
-# from .routes.main import main_bp # Example, if you have one
-# from .routes.auth import auth_bp # Example, for authentication routes
-# from .routes.campaigns import campaigns_api_bp # Example, for campaign routes
 
 def create_app(config_name_override: str = None) -> Flask:
     """
@@ -29,16 +29,10 @@ def create_app(config_name_override: str = None) -> Flask:
     # Register Blueprints
     app.register_blueprint(public_api_bp) #url_prefix is defined in the blueprint
     app.register_blueprint(voters_api_bp) #url_prefix is defined in the blueprint
+    app.register_blueprint(main_bp)
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(campaigns_api_bp)
     app.register_blueprint(api_bp, url_prefix='/api/v1')
-    # Example:
-    # from .routes.main import main_bp
-    # app.register_blueprint(main_bp)
-
-    # from .routes.auth import auth_bp
-    # app.register_blueprint(auth_bp, url_prefix='/auth')
-
-    # from .routes.campaigns import campaigns_api_bp
-    # app.register_blueprint(campaigns_api_bp, url_prefix='/api/v1/campaigns')
 
 
     # Simple default route for now (can be removed if main_bp provides '/')

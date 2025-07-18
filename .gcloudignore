@@ -1,0 +1,24 @@
+# This file specifies files that are *not* uploaded to Google Cloud when
+# deploying. For more information, see `gcloud topic gcloudignore`.
+
+.gcloudignore
+.git
+.gitignore
+
+# Node.js dependencies
+node_modules/
+
+# Monorepo build artifacts and cache
+.turbo/
+
+# Flutter build artifacts
+emmons_frontend/build/
+cerberus_frontend/build/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+
+# IDE configuration
+.idea/
+.vscode/

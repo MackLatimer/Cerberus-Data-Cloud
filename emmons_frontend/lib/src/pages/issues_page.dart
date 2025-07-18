@@ -1,25 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:candidate_website/src/widgets/common_app_bar.dart';
 import 'package:candidate_website/src/widgets/signup_form.dart';
 import 'package:candidate_website/src/widgets/donate_section.dart';
 import 'package:candidate_website/src/widgets/footer.dart';
 import 'package:candidate_website/src/utils/breakpoint.dart';
+import 'package:candidate_website/src/widgets/page_scaffold_with_hero.dart';
 
-class IssuesPage extends StatefulWidget {
+class IssuesPage extends StatelessWidget {
   const IssuesPage({super.key});
-
-  @override
-  IssuesPageState createState() => IssuesPageState();
-}
-
-class IssuesPageState extends State<IssuesPage> {
-  final ScrollController _scrollController = ScrollController();
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
 
   Widget _buildIssueSection(
     BuildContext context,
@@ -90,34 +77,10 @@ class IssuesPageState extends State<IssuesPage> {
 
   @override
   Widget build(BuildContext context) {
-    final windowSize = getWindowSize(context);
-    final isCompact = windowSize == WindowSize.compact;
-    final heroHeight = isCompact ? MediaQuery.of(context).size.height * 0.5 : MediaQuery.of(context).size.height;
-
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: CommonAppBar(
-        title: 'Issues',
-        scrollController: _scrollController,
-      ),
-      body: NestedScrollView(
-        controller: _scrollController,
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            SliverToBoxAdapter(
-              child: Container(
-                height: heroHeight,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/Hero_Picture_Issues.png'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ),
-          ];
-        },
-        body: SingleChildScrollView(
+    return PageScaffoldWithHero(
+      pageTitle: 'Issues',
+      heroImagePath: 'assets/Hero_Picture_Issues.png',
+      body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -166,7 +129,6 @@ class IssuesPageState extends State<IssuesPage> {
             ],
           ),
         ),
-      ),
     );
   }
 }

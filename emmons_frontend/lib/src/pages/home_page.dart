@@ -1,57 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:candidate_website/src/widgets/common_app_bar.dart';
 import 'package:candidate_website/src/widgets/signup_form.dart';
 import 'package:candidate_website/src/widgets/donate_section.dart';
 import 'package:candidate_website/src/widgets/home_page_section.dart';
 import 'package:candidate_website/src/widgets/footer.dart';
-import 'package:candidate_website/src/utils/breakpoint.dart';
+import 'package:candidate_website/src/widgets/page_scaffold_with_hero.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
-  HomePageState createState() => HomePageState();
-}
-
-class HomePageState extends State<HomePage> {
-  final ScrollController _scrollController = ScrollController();
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final windowSize = getWindowSize(context);
-    final isCompact = windowSize == WindowSize.compact;
-    final heroHeight = isCompact ? MediaQuery.of(context).size.height * 0.5 : MediaQuery.of(context).size.height;
-
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: CommonAppBar(
-        title: 'Curtis Emmons for Bell County Precinct 4',
-        scrollController: _scrollController,
-      ),
-      body: NestedScrollView(
-        controller: _scrollController,
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            SliverToBoxAdapter(
-              child: Container(
-                height: heroHeight,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/Hero_Picture_Home.png'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ),
-          ];
-        },
-        body: SingleChildScrollView(
+    return PageScaffoldWithHero(
+      pageTitle: 'Curtis Emmons for Bell County Precinct 4',
+      heroImagePath: 'assets/Hero_Picture_Home.png',
+      body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -121,7 +83,6 @@ class HomePageState extends State<HomePage> {
             ],
           ),
         ),
-      ),
     );
   }
 }

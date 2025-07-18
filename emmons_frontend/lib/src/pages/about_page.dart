@@ -1,51 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:candidate_website/src/widgets/common_app_bar.dart';
 import 'package:candidate_website/src/widgets/signup_form.dart';
 import 'package:candidate_website/src/widgets/donate_section.dart';
 import 'package:candidate_website/src/widgets/footer.dart'; // Import the Footer widget
+import 'package:candidate_website/src/widgets/page_scaffold_with_hero.dart';
 
-class AboutPage extends StatefulWidget {
+class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
 
   @override
-  AboutPageState createState() => AboutPageState();
-}
-
-class AboutPageState extends State<AboutPage> {
-  final ScrollController _scrollController = ScrollController();
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: CommonAppBar(
-        title: 'About Me', // Changed title
-        scrollController: _scrollController,
-      ),
-      body: NestedScrollView(
-        controller: _scrollController,
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            SliverToBoxAdapter(
-              child: Container(
-                height: MediaQuery.of(context).size.height, // Height of the hero image
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/Hero_Picture_About.png'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ),
-          ];
-        },
-        body: SingleChildScrollView(
+    return PageScaffoldWithHero(
+      pageTitle: 'About Me',
+      heroImagePath: 'assets/Hero_Picture_About.png',
+      body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -112,7 +79,6 @@ class AboutPageState extends State<AboutPage> {
             ],
           ),
         ),
-      ),
     );
   }
 }

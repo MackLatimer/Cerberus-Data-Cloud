@@ -1,15 +1,14 @@
-// Configuration for the application
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-// Configuration for the application
+// This file centralizes access to environment variables and other global configurations.
 
-// For local development with Flask backend running on port 5001:
-// const String apiBaseUrl = 'http://127.0.0.1:5001/api/v1';
-// Example for a deployed backend:
-const String apiBaseUrl = 'https://campaigns-api-885603051818.us-south1.run.app/api/v1';
+// API Base URL - Loaded from the .env file.
+// Provides a fallback to a local URL for easy development.
+final String apiBaseUrl = dotenv.env['API_BASE_URL'] ?? 'http://127.0.0.1:5001/api/v1';
 
 // Campaign ID for this specific frontend instance.
-const int currentCampaignId = 1;
+// Loaded from the .env file.
+final String currentCampaignId = dotenv.env['CAMPAIGN_ID'] ?? '1';
 
-// Other global configurations can be added here
-// For example, feature flags, timeouts, etc.
+// Other global configurations can be added here.
 const int defaultNetworkTimeoutSeconds = 30;

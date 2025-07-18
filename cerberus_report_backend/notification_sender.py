@@ -10,8 +10,8 @@ try:
     from sendgrid.helpers.mail import Mail
     SENDGRID_AVAILABLE = True
 except ImportError:
-    SENDGRID_AVAILABLE = False
     logging.warning("SendGrid library not found. Email sending will be disabled.")
+    SENDGRID_AVAILABLE = False
 
 from google.cloud.sql.connector import Connector, IPTypes
 # pg8000 is used by the connector but not directly imported
@@ -33,6 +33,9 @@ if SENDGRID_AVAILABLE:
         logging.error("SENDGRID_API_KEY environment variable not set. Email notifications will fail.")
     if not SENDER_EMAIL:
         logging.error("SENDER_EMAIL environment variable not set. Email notifications will fail.")
+
+# Import the shared database connection utility
+from database import get_db_connection
 
 # Database Configuration (from environment variables, similar to api.py)
 INSTANCE_CONNECTION_NAME = os.environ.get("INSTANCE_CONNECTION_NAME")
@@ -67,28 +70,6 @@ def check_env_vars():
 
     return True
 
-
-def get_db_connection():
-    """Establish a database connection using google-cloud-sqlconnector."""
-    if not all([INSTANCE_CONNECTION_NAME, DB_USER, DB_PASS, DB_NAME]):
-        logging.error("Database environment variables are not fully set. Cannot establish connection.")
-        return None # Explicitly return None
-
-    connector = Connector()
-    try:
-        conn = connector.connect(
-            INSTANCE_CONNECTION_NAME,
-            "pg8000",
-            user=DB_USER,
-            password=DB_PASS,
-            db=DB_NAME,
-            ip_type=IPTypes.PUBLIC
-        )
-        logging.info("Database connection successful.")
-        return conn
-    except Exception as e:
-        logging.error(f"Database connection failed: {e}\n{traceback.format_exc()}")
-        return None # Explicitly return None
 
 
 def send_email_notification(recipient_email: str, subject: str, html_content: str) -> bool:
