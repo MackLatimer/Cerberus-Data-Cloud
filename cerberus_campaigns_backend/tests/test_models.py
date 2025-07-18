@@ -1,5 +1,9 @@
 import pytest
-from app.models import Campaign, Voter, User, Interaction, SurveyQuestion, SurveyResponse, CampaignVoter
+from app.models.campaign import Campaign
+from app.models.voter import Voter, CampaignVoter
+from app.models.user import User
+from app.models.interaction import Interaction
+from app.models.survey import SurveyQuestion, SurveyResponse
 from app.extensions import db as app_db
 from datetime import date, datetime, timezone
 from sqlalchemy.exc import IntegrityError
@@ -7,12 +11,15 @@ from sqlalchemy.exc import IntegrityError
 def is_postgres_db(db_session):
     return "postgresql" in db_session.bind.engine.url.drivername
 
-def test_create_campaign(session):
+def test_create_campaign(session, test_user):
     campaign_name = "Test Campaign 2024"
     start = date(2024, 1, 1)
     end = date(2024, 11, 5)
     description = "This is a test campaign."
-    campaign = Campaign(campaign_name=campaign_name, start_date=start, end_date=end, description=description)
+    campaign = Campaign(
+        campaign_name=campaign_name, start_date=start, end_date=end, 
+        description=description, user_id=test_user.user_id
+    )
     session.add(campaign)
     session.commit()
     assert campaign.campaign_id is not None
@@ -20,18 +27,21 @@ def test_create_campaign(session):
     retrieved_campaign = session.get(Campaign, campaign.campaign_id)
     assert retrieved_campaign == campaign
 
-def test_campaign_name_unique(session):
-    campaign1 = Campaign(campaign_name="Unique Campaign Name")
+def test_campaign_name_unique(session, test_user):
+    campaign1 = Campaign(campaign_name="Unique Campaign Name", user_id=test_user.user_id)
     session.add(campaign1)
     session.commit()
-    campaign2 = Campaign(campaign_name="Unique Campaign Name")
+    campaign2 = Campaign(campaign_name="Unique Campaign Name", user_id=test_user.user_id)
     session.add(campaign2)
     with pytest.raises(IntegrityError):
         session.commit()
     session.rollback()
 
-def test_campaign_to_dict(session):
-    campaign = Campaign(campaign_name="Dict Test Campaign", start_date=date(2023, 1, 1), description="Testing to_dict")
+def test_campaign_to_dict(session, test_user):
+    campaign = Campaign(
+        campaign_name="Dict Test Campaign", start_date=date(2023, 1, 1), 
+        description="Testing to_dict", user_id=test_user.user_id
+    )
     session.add(campaign)
     session.commit()
     campaign_dict = campaign.to_dict()
@@ -75,8 +85,8 @@ def test_voter_email_unique(session):
         session.commit()
     session.rollback()
 
-def test_campaign_voter_association(session):
-    campaign = Campaign(campaign_name="Assoc Test Campaign")
+def test_campaign_voter_association(session, test_user):
+    campaign = Campaign(campaign_name="Assoc Test Campaign", user_id=test_user.user_id)
     voter = Voter(first_name="AssocVoter", last_name="Test", email_address="assoc@example.com")
     session.add_all([campaign, voter])
     session.commit()
@@ -93,18 +103,26 @@ def test_campaign_voter_association(session):
         session.commit()
     session.rollback()
 
-def test_create_interaction(session):
-    campaign = Campaign(campaign_name="Interaction Campaign")
+def test_create_interaction(session, test_user):
+    campaign = Campaign(campaign_name="Interaction Campaign", user_id=test_user.user_id)
     voter = Voter(first_name="Interacting", last_name="Voter", email_address="interact@example.com")
-    user = User(username="logger", password="password")
-    session.add_all([campaign, voter, user])
+    session.add_all([campaign, voter])
     session.commit()
-    interaction = Interaction(voter_id=voter.voter_id, campaign_id=campaign.campaign_id, user_id=user.user_id, interaction_type="Phone Call", outcome="Interested")
+    interaction = Interaction(
+        voter_id=voter.voter_id, 
+        campaign_id=campaign.campaign_id, 
+        user_id=test_user.user_id, 
+        interaction_type="Phone Call", 
+        outcome="Interested"
+    )
     session.add(interaction)
     session.commit()
     assert interaction.interaction_id is not None
 
-def test_create_survey_question(session):
+def test_create_survey_question(session, test_user):
+    campaign = Campaign(campaign_name="Survey Campaign", user_id=test_user.user_id)
+    session.add(campaign)
+    session.commit()
     sq_data = {"question_text": "What is your favorite color?", "question_type": "Multiple Choice"}
     sq_data["possible_answers"] = {"A": "Red", "B": "Blue"}
     question = SurveyQuestion(**sq_data)

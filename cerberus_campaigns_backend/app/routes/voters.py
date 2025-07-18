@@ -1,7 +1,9 @@
 from flask import Blueprint, request, jsonify, current_app
 from ..extensions import db # Assuming auth_required is defined in extensions or another utility
 from .auth import token_required
-from ..models import Voter, Interaction, Campaign, CampaignVoter # Ensure CampaignVoter is imported
+from ..models.voter import Voter, CampaignVoter
+from ..models.interaction import Interaction
+from ..models.campaign import Campaign
 from datetime import datetime, timezone # Import timezone
 import csv
 import io

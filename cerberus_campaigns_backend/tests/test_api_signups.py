@@ -1,9 +1,15 @@
 import pytest
 import json
-from app.models import Voter, Interaction, Campaign, CampaignVoter
+from app.models.voter import Voter, CampaignVoter
+from app.models.interaction import Interaction
+from app.models.campaign import Campaign
+from app.models.user import User
 
-def test_create_signup_success_new_voter(client, session):
-    campaign = Campaign(campaign_name="Test Campaign for Signups")
+def test_create_signup_success_new_voter(client, session, test_user):
+    # A user is required to create a campaign
+    campaign = Campaign(
+        campaign_name="Test Campaign for Signups", user_id=test_user.user_id
+    )
     session.add(campaign)
     session.commit()
 
@@ -24,8 +30,10 @@ def test_create_signup_success_new_voter(client, session):
     campaign_voter_assoc = session.query(CampaignVoter).filter_by(campaign_id=campaign.campaign_id, voter_id=voter.voter_id).first()
     assert campaign_voter_assoc is not None
 
-def test_create_signup_success_existing_voter_by_email(client, session):
-    campaign = Campaign(campaign_name="Signup Campaign Existing Email")
+def test_create_signup_success_existing_voter_by_email(client, session, test_user):
+    campaign = Campaign(
+        campaign_name="Signup Campaign Existing Email", user_id=test_user.user_id
+    )
     existing_voter = Voter(first_name="Existing", last_name="User", email_address="existing.user@example.com", phone_number="0000000000")
     session.add_all([campaign, existing_voter])
     session.commit()
@@ -43,8 +51,10 @@ def test_create_signup_success_existing_voter_by_email(client, session):
     interaction = session.get(Interaction, response_data["interaction_id"])
     assert interaction is not None and "Expressed interest: Get Involved." in interaction.notes
 
-def test_create_signup_missing_required_fields(client, session):
-    campaign = Campaign(campaign_name="Signup Missing Fields Camp")
+def test_create_signup_missing_required_fields(client, session, test_user):
+    campaign = Campaign(
+        campaign_name="Signup Missing Fields Camp", user_id=test_user.user_id
+    )
     session.add(campaign)
     session.commit()
     signup_data = {"first_name": "Test", "campaign_id": campaign.campaign_id}
