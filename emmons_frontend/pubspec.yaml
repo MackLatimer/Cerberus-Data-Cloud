@@ -42,9 +42,8 @@ dependencies:
   google_fonts: ^6.2.1
   url_launcher: ^6.3.1
   flutter_dotenv: ^5.1.0
-  # Pinning to a specific stable version to avoid a bug in 11.5.0
-  # where color properties were accessed incorrectly.
-  flutter_stripe: 11.0.1
+  # Using a known stable version as suggested by build logs.
+  flutter_stripe: ^10.2.0
 
 dev_dependencies:
   flutter_test:
