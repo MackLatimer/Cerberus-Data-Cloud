@@ -1,0 +1,18 @@
+server {
+    # Nginx will listen on the port specified by the PORT environment variable
+    listen ${PORT};
+    server_name localhost;
+
+    # Root directory for the static files
+    root /usr/share/nginx/html;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    location = /index.html {
+        add_header 'Cache-Control' 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0';
+        expires off;
+    }
+}
