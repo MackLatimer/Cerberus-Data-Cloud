@@ -78,7 +78,7 @@ class HomePage extends StatelessWidget {
                 imageLeft: false,
               ),
               const DonateSection(),
-              SignupFormWidget(),
+              SignupFormWidget(), // Already corrected, no change needed
               const Footer(),
             ],
           ),
