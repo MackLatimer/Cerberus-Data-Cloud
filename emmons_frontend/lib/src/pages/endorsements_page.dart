@@ -10,10 +10,10 @@ class EndorsementsPage extends StatefulWidget {
   const EndorsementsPage({super.key});
 
   @override
-  _EndorsementsPageState createState() => _EndorsementsPageState();
+  EndorsementsPageState createState() => EndorsementsPageState();
 }
 
-class _EndorsementsPageState extends State<EndorsementsPage> {
+class EndorsementsPageState extends State<EndorsementsPage> {
   final ScrollController _scrollController = ScrollController();
 
   @override
