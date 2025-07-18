@@ -10,6 +10,10 @@ class Campaign(TimestampMixin, db.Model):
     end_date = db.Column(db.Date, nullable=True)
     description = db.Column(db.Text, nullable=True)
 
+    # Foreign key to the user who owns/manages this campaign
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+    user = db.relationship('User', backref=db.backref('campaigns', lazy='dynamic'))
+
     # Relationships
     # Voters associated with this campaign (through campaign_voters table)
     # campaign_voters is the association table model
@@ -35,6 +39,7 @@ class Campaign(TimestampMixin, db.Model):
             'start_date': self.start_date.isoformat() if self.start_date else None,
             'end_date': self.end_date.isoformat() if self.end_date else None,
             'description': self.description,
+            'user_id': self.user_id,
             'created_at': self.created_at.isoformat() if self.created_at else None,
             'updated_at': self.updated_at.isoformat() if self.updated_at else None
         }

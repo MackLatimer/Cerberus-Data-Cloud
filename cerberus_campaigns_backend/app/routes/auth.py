@@ -2,7 +2,7 @@ import jwt
 from functools import wraps
 from datetime import datetime, timedelta, timezone
 from flask import Blueprint, request, jsonify, current_app
-from ..models import User
+from ..models.user import User
 from ..extensions import bcrypt
 
 auth_bp = Blueprint('auth_bp', __name__, url_prefix='/auth')
@@ -22,7 +22,9 @@ def token_required(f):
         try:
             # Decode the token using the app's secret key
             data = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=["HS256"])
-            current_user = User.query.filter_by(id=data['user_id']).first()
+            # Use .get() for primary key lookup, which is more efficient.
+            # The User model uses `user_id` as its primary key.
+            current_user = User.query.get(data['user_id'])
             if not current_user:
                 return jsonify({'message': 'User not found!'}), 401
         except jwt.ExpiredSignatureError:
@@ -50,7 +52,7 @@ def login():
     if bcrypt.check_password_hash(user.password_hash, auth.get('password')):
         # Generate the JWT
         token = jwt.encode({
-            'user_id': user.id,
+            'user_id': user.user_id,
             'exp': datetime.now(timezone.utc) + timedelta(hours=24) # Token expires in 24 hours
         }, current_app.config['SECRET_KEY'], algorithm="HS256")
 
