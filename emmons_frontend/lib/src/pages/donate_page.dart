@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:candidate_website/src/widgets/common_app_bar.dart';
-import 'package:candidate_website/src/widgets/donate_button.dart'; // Re-using for consistency
+// Re-using for consistency
 // import 'package:url_launcher/url_launcher.dart'; // For actual donation link later
 import 'package:candidate_website/src/widgets/footer.dart'; // Import the Footer widget
 import 'package:flutter_stripe/flutter_stripe.dart';
