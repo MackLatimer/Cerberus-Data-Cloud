@@ -1,37 +1,28 @@
-# Use a specific version of the Ubuntu
-FROM ubuntu:22.04 AS build
+# Stage 1: Build Stage
+# Use a pre-built, versioned Flutter image. This is much faster than installing
+# Flutter from scratch and ensures reproducible builds.
+FROM ghcr.io/cirruslabs/flutter:3.22.1 AS build
 
-# Set non-interactive mode
-ENV DEBIAN_FRONTEND=noninteractive
-
-# Install dependencies
-RUN apt-get update && apt-get install -y \
-    curl \
-    git \
-    unzip \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install Flutter
-RUN git clone https://github.com/flutter/flutter.git /usr/local/flutter
-ENV PATH="/usr/local/flutter/bin:/usr/local/flutter/bin/cache/dart-sdk/bin:${PATH}"
-RUN flutter precache
-
-# Set the working directory
+# Set the application's working directory
 WORKDIR /app
 
-# Copy the pubspec.yaml and pubspec.lock files
+# Copy dependency definition files first to leverage Docker's layer caching.
+# This layer will only be rebuilt if pubspec.yaml or pubspec.lock changes.
 COPY pubspec.* ./
 
-# Get the dependencies
+# Install Flutter dependencies
 RUN flutter pub get
 
-# Copy the rest of the application code
+# Copy the rest of the application source code into the container
 COPY . .
 
-# Build the web application
-RUN flutter build web
+# Build the Flutter web application for production
+RUN flutter build web --release
 
-# Use a production-ready web server
+# ---
+
+# Stage 2: Production Stage
+# Use a small, secure Nginx image for serving the static files.
 FROM nginx:1.25-alpine
 
 # Copy the built web application from the previous stage
@@ -40,5 +31,5 @@ COPY --from=build /app/build/web /usr/share/nginx/html
 # Expose port 80
 EXPOSE 80
 
-# Start the web server
+# Start Nginx in the foreground so the container keeps running
 CMD ["nginx", "-g", "daemon off;"]

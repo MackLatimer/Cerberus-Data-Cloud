@@ -1,22 +1,11 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, g
 from flask_cors import CORS
 import logging
 import traceback
-# from urllib.parse import urlparse # No longer needed
 import os
 import json
-from google.cloud.sql.connector import Connector, IPTypes
-
-# Email Service Configuration (e.g., SendGrid)
-# TODO: Set these environment variables in your deployment environment
-# SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY")
-# SENDER_EMAIL = os.environ.get("SENDER_EMAIL")
-# # Example (if using a different service like AWS SES):
-# # AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
-# # AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
-# # AWS_REGION_NAME = os.environ.get("AWS_REGION_NAME") # e.g., 'us-east-1'
-# # SES_SENDER_EMAIL = os.environ.get("SES_SENDER_EMAIL")
-
+# Import the new database utility functions
+from database import get_db_connection, with_db_connection
 
 # Configure logging
 logging.basicConfig(
@@ -36,46 +25,8 @@ CORS(app, origins=[
     "https://8080-cs-9b9f5209-bdda-4e1f-a989-e1b50ec9ffba.cs-us-central1-pits.cloudshell.dev" # <-- ADDED THIS
 ], supports_credentials=True)
 
-def get_db_connection():
-
-    """Establish a database connection using google-cloud-sqlconnector."""
-    instance_connection_name = os.environ.get("INSTANCE_CONNECTION_NAME") # e.g., your-project:your-region:your-instance
-    db_user = os.environ.get("DB_USER") # e.g., 'postgres'
-    db_pass = os.environ.get("DB_PASS") # Your database password
-    db_name = os.environ.get("DB_NAME") # e.g., 'agenda_data'
-
-    # Validate that all necessary environment variables are set
-    if not all([instance_connection_name, db_user, db_pass, db_name]):
-        missing_vars = [var for var, val in {
-            "INSTANCE_CONNECTION_NAME": instance_connection_name,
-            "DB_USER": db_user,
-            "DB_PASS_is_set": "yes" if db_pass else "no", # Avoid logging password itself
-            "DB_NAME": db_name
-        }.items() if not val or (var == "DB_PASS_is_set" and val == "no")]
-        logging.error(f"Missing database connection environment variables for sqlconnector: {', '.join(missing_vars)}")
-        raise ValueError(f"Missing database configuration for sqlconnector: {', '.join(missing_vars)}")
-
-    connector = Connector()
-
-    try:
-        conn = connector.connect(
-            instance_connection_name,
-            "pg8000",  # <--- DRIVER CHANGED TO PG8000
-            user=db_user,
-            password=db_pass,
-            db=db_name,
-            ip_type=IPTypes.PUBLIC # Or IPTypes.PRIVATE if needed
-            # For pg8000 with cloud-sql-python-connector, DictCursor is typically not needed
-            # as results are often dict-like by default or via connection settings.
-            # If specific cursor behavior is needed, it's handled differently.
-)
-        logging.info("Database connection successful using google-cloud-sqlconnector with pg8000.")
-        return conn
-    except Exception as e:
-        logging.error(f"Database connection failed using google-cloud-sqlconnector: {e}")
-        raise
-
 @app.route('/search', methods=['GET'])
+@with_db_connection
 def search():
     logging.info(f"Search request received with args: {request.args}")
     
@@ -131,28 +82,20 @@ def search():
     logging.info(f"Executing search query: {full_query}")
     logging.info(f"With params: {query_params}")
 
-    conn = None
-    cur = None
     try:
-        conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute(full_query, tuple(query_params))
-        results = cur.fetchall()
-        column_names = [desc[0] for desc in cur.description] # Get column names
-        # Manually construct list of dictionaries
-        items = [dict(zip(column_names, row)) for row in results]
-        logging.info(f"Query returned {len(items)} results.")
-        return jsonify(items)
+        with g.db_conn.cursor() as cur:
+            cur.execute(full_query, tuple(query_params))
+            results = cur.fetchall()
+            column_names = [desc[0] for desc in cur.description]
+            items = [dict(zip(column_names, row)) for row in results]
+            logging.info(f"Query returned {len(items)} results.")
+            return jsonify(items)
     except Exception as e:
         logging.error(f"Error in /search endpoint: {e}\n{traceback.format_exc()}")
         return jsonify({"error": "Internal server error during search"}), 500
-    finally:
-        if cur:
-            cur.close()
-        if conn:
-            conn.close()
 
 @app.route('/subscribe', methods=['POST'])
+@with_db_connection
 def subscribe():
     data = request.get_json()
     if not data:
@@ -167,33 +110,23 @@ def subscribe():
         return jsonify({"error": "Email and valid filter_settings (JSON object) are required"}), 400
         
     logging.info(f"Subscription attempt for {email} with filters: {filter_settings}")
-    conn = None
-    cur = None
     try:
-        conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute(
-            """
-            INSERT INTO subscriptions (email, filter_settings, active)
-            VALUES (%s, %s, TRUE)
-            ON CONFLICT (email)
-            DO UPDATE SET filter_settings = EXCLUDED.filter_settings, active = TRUE
-            """,
-            (email, json.dumps(filter_settings))
-        )
-        conn.commit() # Make sure to commit changes
+        with g.db_conn.cursor() as cur:
+            cur.execute(
+                """
+                INSERT INTO subscriptions (email, filter_settings, active)
+                VALUES (%s, %s, TRUE)
+                ON CONFLICT (email)
+                DO UPDATE SET filter_settings = EXCLUDED.filter_settings, active = TRUE
+                """,
+                (email, json.dumps(filter_settings))
+            )
+        g.db_conn.commit() # Make sure to commit changes
         logging.info(f"Subscription created/updated successfully for {email}")
         return jsonify({"message": "Subscription successful!"}), 201
     except Exception as e:
-        if conn: # Rollback in case of error during transaction
-            conn.rollback()
         logging.error(f"Error in /subscribe endpoint for {email}: {e}\n{traceback.format_exc()}")
         return jsonify({"error": "Internal server error during subscription"}), 500
-    finally:
-        if cur:
-            cur.close()
-        if conn:
-            conn.close()
 
 @app.route('/webhook/order_canceled', methods=['POST'])
 def order_canceled():

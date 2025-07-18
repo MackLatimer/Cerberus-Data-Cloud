@@ -1,5 +1,5 @@
-from flask import Blueprint, request, jsonify
-from ..extensions import db
+from flask import Blueprint, request, jsonify, current_app
+from ..extensions import db # Assuming auth_required is defined in extensions or another utility
 from ..models import Voter, Interaction, Campaign, CampaignVoter # Ensure CampaignVoter is imported
 from datetime import datetime, timezone # Import timezone
 import csv
@@ -125,7 +125,7 @@ def public_create_signup():
 
     except Exception as e:
         db.session.rollback()
-        print(f"Error processing signup: {str(e)}") # Replace with proper logging
+        current_app.logger.error(f"Error processing signup: {str(e)}", exc_info=True)
         # Consider logging e.__traceback__ as well for debugging
         return jsonify({"error": "An internal error occurred. Please try again later."}), 500
 
@@ -151,7 +151,7 @@ def create_voter_via_portal():
         return jsonify(new_voter.to_dict()), 201
     except Exception as e: # Catch more specific exceptions
         db.session.rollback()
-        print(f"Error creating voter: {str(e)}")
+        current_app.logger.error(f"Error creating voter: {str(e)}", exc_info=True)
         return jsonify({"error": "Failed to create voter."}), 500
 
 @voters_api_bp.route('/', methods=['GET'])
@@ -199,7 +199,7 @@ def update_voter_via_portal(voter_id):
         return jsonify(voter.to_dict()), 200
     except Exception as e:
         db.session.rollback()
-        print(f"Error updating voter {voter_id}: {str(e)}")
+        current_app.logger.error(f"Error updating voter {voter_id}: {str(e)}", exc_info=True)
         return jsonify({"error": "Failed to update voter."}), 500
 
 @voters_api_bp.route('/<int:voter_id>', methods=['DELETE'])
@@ -212,7 +212,7 @@ def delete_voter_via_portal(voter_id):
         return jsonify({"message": f"Voter {voter_id} deleted successfully."}), 200
     except Exception as e: # Consider specific exceptions e.g. IntegrityError if voter is referenced
         db.session.rollback()
-        print(f"Error deleting voter {voter_id}: {str(e)}")
+        current_app.logger.error(f"Error deleting voter {voter_id}: {str(e)}", exc_info=True)
         return jsonify({"error": "Failed to delete voter. It might be referenced elsewhere."}), 500
 
 
@@ -220,6 +220,7 @@ def delete_voter_via_portal(voter_id):
 # and needs to be implemented. The public_api_bp /signups endpoint is intentionally public.
 
 @voters_api_bp.route('/upload', methods=['POST'])
+# @auth_required # CRITICAL: This endpoint must be protected
 def upload_voters():
     if 'file' not in request.files:
         return jsonify({"error": "No file part"}), 400
@@ -229,28 +230,37 @@ def upload_voters():
     if file:
         try:
             stream = io.StringIO(file.stream.read().decode("UTF8"), newline=None)
-            csv_input = csv.reader(stream)
-            # Assuming the first row is the header
-            header = next(csv_input)
-            # You might want to map columns to your model fields here
-            # For example: {'First Name': 'first_name', 'Last Name': 'last_name', ...}
-            # This is a simplified example
-            for row in csv_input:
-                # This assumes a specific order of columns, which is fragile.
-                # A more robust solution would use the header to map columns.
-                first_name, last_name, email = row[0], row[1], row[2]
-
+            # Use DictReader to handle columns by name, making it robust
+            # Define expected header names and their corresponding model fields
+            field_map = {
+                'first_name': ['first name', 'firstname', 'first'],
+                'last_name': ['last name', 'lastname', 'last'],
+                'email_address': ['email', 'email address', 'emailaddress']
+            }
+            
+            csv_reader = csv.DictReader(stream)
+            
+            for row in csv_reader:
+                # Normalize row keys (lowercase, strip spaces)
+                normalized_row = {k.lower().strip(): v for k, v in row.items()}
+                
+                # Find data using possible header names
+                first_name = next((normalized_row[h] for h in field_map['first_name'] if h in normalized_row), None)
+                last_name = next((normalized_row[h] for h in field_map['last_name'] if h in normalized_row), None)
+                email = next((normalized_row[h] for h in field_map['email_address'] if h in normalized_row), None)
+                
+                if not all([first_name, last_name, email]):
+                    current_app.logger.warning(f"Skipping row due to missing data: {row}")
+                    continue
+                
                 # Basic data cleaning
-                first_name = first_name.strip().title()
-                last_name = last_name.strip().title()
                 email = email.strip().lower()
-
                 # Check for existing voter
                 voter = Voter.query.filter_by(email_address=email).first()
                 if not voter:
                     voter = Voter(
-                        first_name=first_name,
-                        last_name=last_name,
+                        first_name=first_name.strip().title(),
+                        last_name=last_name.strip().title(),
                         email_address=email,
                     )
                     db.session.add(voter)

@@ -70,6 +70,10 @@ class ProductionConfig(Config):
     if SQLALCHEMY_DATABASE_URI is None and not os.environ.get('FLASK_TESTING_SKIP_DB_CHECK'): # Added for flexibility during build
         raise ValueError("No DATABASE_URL set for production environment and not skipping DB check.")
 
+    # Ensure a real secret key is set for production
+    if Config.SECRET_KEY == 'default_fallback_secret_key_please_change':
+        raise ValueError("SECRET_KEY is not set for production environment.")
+
     # Security enhancements for production
     # SESSION_COOKIE_SECURE = True
     # REMEMBER_COOKIE_SECURE = True
