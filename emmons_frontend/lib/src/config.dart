@@ -8,9 +8,6 @@
 const String apiBaseUrl = 'https://campaigns-api-885603051818.us-south1.run.app/api/v1';
 
 // Campaign ID for this specific frontend instance.
-// This might be useful if the backend needs to know which campaign site is making the request.
-// TODO: Set this to the appropriate campaign ID from your backend's 'campaigns' table
-// For example, if "Emmons-Frontend" corresponds to campaign_id 1 in your database:
 const int currentCampaignId = 1;
 
 // Other global configurations can be added here
