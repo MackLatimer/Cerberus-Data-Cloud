@@ -9,10 +9,10 @@ class IssuesPage extends StatefulWidget {
   const IssuesPage({super.key});
 
   @override
-  _IssuesPageState createState() => _IssuesPageState();
+  IssuesPageState createState() => IssuesPageState();
 }
 
-class _IssuesPageState extends State<IssuesPage> {
+class IssuesPageState extends State<IssuesPage> {
   final ScrollController _scrollController = ScrollController();
 
   @override

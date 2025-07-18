@@ -13,7 +13,7 @@ class DonatePage extends StatefulWidget {
   const DonatePage({super.key, this.httpClient});
 
   @override
-  _DonatePageState createState() => _DonatePageState();
+  DonatePageState createState() => DonatePageState();
 }
 
 class _DonatePageState extends State<DonatePage> {
@@ -65,13 +65,12 @@ class _DonatePageState extends State<DonatePage> {
     super.dispose();
   }
 
-  // Placeholder for actual donation link
-  final String _donationUrl = 'https://placeholder-donation-platform.com/curtis-emmons';
-
   // Future<void> _launchDonationUrl() async {
-  //   if (!await launchUrl(Uri.parse(_donationUrl))) {
+  //   if (!await launchUrl(Uri.parse('https://placeholder-donation-platform.com/curtis-emmons'))) {
   //     // TODO: Handle error - perhaps show a dialog or snackbar
-  //     print('Could not launch $_donationUrl');
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text('Could not launch donation page')),
+  //     );
   //   }
   // }
 
@@ -253,13 +252,15 @@ class _DonatePageState extends State<DonatePage> {
           'payment_method_types[]': 'card',
         },
         headers: {
-          'Authorization': 'Bearer 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',
+          'Authorization': 'Bearer YOUR_STRIPE_SECRET_KEY', // Replace with your actual key
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       );
       return json.decode(response.body);
     } catch (e) {
-      print('Error creating payment intent: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error creating payment intent: $e')),
+      );
       return null;
     }
   }
@@ -269,7 +270,9 @@ class _DonatePageState extends State<DonatePage> {
       await Stripe.instance.presentPaymentSheet();
       _showPostDonationDialog();
     } catch (e) {
-      print('Error displaying payment sheet: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error displaying payment sheet: $e')),
+      );
     }
   }
 
@@ -343,7 +346,24 @@ class _DonatePageState extends State<DonatePage> {
           TextButton(
             child: const Text('Submit'),
             onPressed: () {
-              // TODO: Submit this additional information to the backend
+              // In a real app, you would send this additional information
+              // to your backend for storage and processing.
+              // For example:
+              //
+              // final success = await ApiService.submitAdditionalInfo(
+              //   phone: _phoneController.text,
+              //   email: _emailController.text,
+              //   endorse: _endorseChecked,
+              //   getInvolved: _getInvolvedChecked,
+              //   agreedToMessaging: _agreedToMessaging,
+              //   agreedToEmails: _agreedToEmails,
+              // );
+              //
+              // if (success) {
+              //   Navigator.of(context).pop();
+              // } else {
+              //   // Handle submission error
+              // }
               Navigator.of(context).pop();
             },
           ),
@@ -468,46 +488,4 @@ class _DonatePageState extends State<DonatePage> {
     );
   }
 
-  void _showDonationDataDialog() {
-    // In a real app, you'd send this data to a server or payment processor
-    final formData = {
-      'First Name': _firstNameController.text,
-      'Last Name': _lastNameController.text,
-      'Address': _addressController.text,
-      'Address Line 2': _addressLine2Controller.text,
-      'City': _cityController.text,
-      'State': _stateController.text,
-      'ZIP': _zipController.text,
-      'Email': _emailController.text,
-      'Phone': _phoneController.text,
-      'Employer': _employerController.text,
-      'Occupation': _occupationController.text,
-      'Agreed to Messaging': _agreedToMessaging.toString(),
-      'Agreed to Emails': _agreedToEmails.toString(),
-    };
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Donation Information Received (Placeholder)'),
-        content: SingleChildScrollView(
-          child: ListBody(
-            children: formData.entries
-                .map((entry) => Text('${entry.key}: ${entry.value}'))
-                .toList(),
-          ),
-        ),
-        actions: [
-          TextButton(
-            child: const Text('OK'),
-            onPressed: () {
-              Navigator.of(context).pop();
-              // Optionally, clear form or navigate to a "thank you" or actual payment page
-              // _formKey.currentState?.reset(); // Consider if this is desired UX
-            },
-          ),
-        ],
-      ),
-    );
-  }
 }
