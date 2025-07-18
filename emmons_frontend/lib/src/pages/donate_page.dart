@@ -10,14 +10,29 @@ import 'package:http/http.dart' as http;
 class DonatePage extends StatefulWidget {
   final http.Client? httpClient;
 
-  const DonatePage({super.key, this.httpClient});
+  const DonatePage({super.key});
 
   @override
   DonatePageState createState() => DonatePageState();
+  State<DonatePage> createState() => _DonatePageState();
 }
 
 class _DonatePageState extends State<DonatePage> {
-  http.Client? _httpClient;
+  @override
+  Widget build(BuildContext context) {
+    // This is a placeholder implementation. You should replace this
+    // with your actual UI for the donation page.
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Donate Page'),
+      ),
+      body: const Center(
+        child: Text('Your donation form goes here.'),
+      ),
+    );
+  }
+}
+
 
   @override
   void initState() {
