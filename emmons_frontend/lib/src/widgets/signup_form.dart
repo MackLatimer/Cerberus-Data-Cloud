@@ -5,9 +5,12 @@ import 'package:go_router/go_router.dart'; // Import for routing
 import '../config.dart'; // Import the configuration file
 
 class SignupFormWidget extends StatefulWidget {
-  final String campaignId;
+  // The campaignId is now nullable.
+  final String? campaignId;
 
-  SignupFormWidget({super.key, this.campaignId = currentCampaignId});
+  // The constructor no longer has a non-constant default value.
+  // It can now be correctly called from other widgets.
+  const SignupFormWidget({super.key, this.campaignId});
 
   @override
   State<SignupFormWidget> createState() => _SignupFormWidgetState();
@@ -45,7 +48,8 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
       'last_name': _lastNameController.text,
       'email_address': _emailController.text,
       'phone_number': _phoneController.text.isNotEmpty ? _phoneController.text : null,
-      'campaign_id': widget.campaignId, // Use the widget's campaignId
+      // Use the provided campaignId, or fall back to the one from config.
+      'campaign_id': widget.campaignId ?? currentCampaignId,
       'interests': {
         'wants_to_endorse': _endorseChecked,
         'wants_to_get_involved': _getInvolvedChecked,
