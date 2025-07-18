@@ -8,13 +8,22 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
 
 class DonatePage extends StatefulWidget {
-  const DonatePage({super.key});
+  final http.Client? httpClient;
+
+  const DonatePage({super.key, this.httpClient});
 
   @override
   DonatePageState createState() => DonatePageState();
 }
 
-class DonatePageState extends State<DonatePage> {
+class _DonatePageState extends State<DonatePage> {
+  http.Client? _httpClient;
+
+  @override
+  void initState() {
+    super.initState();
+    _httpClient = widget.httpClient ?? http.Client();
+  }
   final ScrollController _scrollController = ScrollController();
   final _formKey = GlobalKey<FormState>();
   bool _showFullForm = false;
@@ -234,11 +243,8 @@ class DonatePageState extends State<DonatePage> {
 
   Future<Map<String, dynamic>?> _createPaymentIntent(int amount, String currency) async {
     try {
-      // In a real app, you would fetch this from a secure backend.
-      // Do not hardcode your Stripe secret key in a client-side application.
-      // This is a placeholder and should be replaced with a call to your backend
-      // to create a payment intent.
-      final response = await http.post(
+      //TODO: Move this to a secure backend
+      final response = await _httpClient!.post(
         Uri.parse('https://api.stripe.com/v1/payment_intents'),
         body: {
           'amount': (amount * 100).toString(),
