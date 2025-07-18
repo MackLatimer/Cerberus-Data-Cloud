@@ -1,45 +1,54 @@
 steps:
-  # Step 1: Build the Docker image for cerberus_report_backend (agenda-api)
+  # Step 1: Install dependencies for the entire monorepo
+  - name: 'gcr.io/cloud-builders/npm'
+    id: 'pnpm-install'
+    entrypoint: 'npx'
+    args: ['pnpm', 'install']
+
+  # Step 2: Use Turborepo to build all applications.
+  # Turbo will determine which apps need to be rebuilt and use its cache for others.
+  - name: 'gcr.io/cloud-builders/npm'
+    id: 'turbo-build'
+    entrypoint: 'npx'
+    waitFor: ['pnpm-install']
+    args: ['pnpm', 'turbo', 'build']
+
+  # Step 3: Build the Docker images in parallel.
+  # These steps will now be much faster as they use the artifacts from the 'turbo-build' step.
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build-report-backend'
     dir: 'cerberus_report_backend'
-    waitFor: ['-']
+    waitFor: ['turbo-build']
     args: [
       'build',
       '-t', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/agenda-api:v1', # Updated to Artifact Registry
       '-f', 'Dockerfile',
       '.'
     ]
-
-  # Step 2: Build the Docker image for cerberus_campaigns_backend (campaigns-api)
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build-campaigns-backend'
     dir: 'cerberus_campaigns_backend' # Change working directory to the backend's root
-    waitFor: ['-']
+    waitFor: ['turbo-build']
     args: [
       'build',
       '-t', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:v1', # Updated to Artifact Registry
       '-f', 'Dockerfile', # Dockerfile is now in the current context
       '.' # Build context is now cerberus_campaigns_backend
     ]
-
-  # Step 3: Build the Docker image for cerberus_frontend (web-frontend)
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build-cerberus-frontend'
     dir: 'cerberus_frontend'
-    waitFor: ['-']
+    waitFor: ['turbo-build']
     args: [
       'build',
       '-t', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/cerberus-frontend:latest', # Updated to Artifact Registry
       '-f', 'Dockerfile', # Use the Dockerfile in its specific directory
       '.'
     ]
-
-  # Step 4: Build the Docker image for emmons_frontend (web-frontend)
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build-emmons-frontend'
     dir: 'emmons_frontend'
-    waitFor: ['-']
+    waitFor: ['turbo-build']
     args: [
       'build',
       '-t', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/emmons-frontend:latest', # Updated to Artifact Registry

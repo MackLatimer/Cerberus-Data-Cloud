@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify, current_app
 from ..extensions import db # Assuming auth_required is defined in extensions or another utility
+from .auth import token_required
 from ..models import Voter, Interaction, Campaign, CampaignVoter # Ensure CampaignVoter is imported
 from datetime import datetime, timezone # Import timezone
 import csv
@@ -133,7 +134,7 @@ def public_create_signup():
 # --- CRUD for Voters (example, intended for internal portal, requires auth) ---
 
 @voters_api_bp.route('/', methods=['POST'])
-# @auth_required # Placeholder for actual authentication decorator
+@token_required
 def create_voter_via_portal():
     data = request.get_json()
     if not data:
@@ -155,7 +156,7 @@ def create_voter_via_portal():
         return jsonify({"error": "Failed to create voter."}), 500
 
 @voters_api_bp.route('/', methods=['GET'])
-# @auth_required
+@token_required
 def list_voters_via_portal():
     # Add pagination, filtering, sorting
     page = request.args.get('page', 1, type=int)
@@ -176,13 +177,13 @@ def list_voters_via_portal():
     }), 200
 
 @voters_api_bp.route('/<int:voter_id>', methods=['GET'])
-# @auth_required
+@token_required
 def get_voter_detail_via_portal(voter_id):
     voter = Voter.query.get_or_404(voter_id)
     return jsonify(voter.to_dict()), 200
 
 @voters_api_bp.route('/<int:voter_id>', methods=['PUT'])
-# @auth_required
+@token_required
 def update_voter_via_portal(voter_id):
     voter = Voter.query.get_or_404(voter_id)
     data = request.get_json()
@@ -203,7 +204,7 @@ def update_voter_via_portal(voter_id):
         return jsonify({"error": "Failed to update voter."}), 500
 
 @voters_api_bp.route('/<int:voter_id>', methods=['DELETE'])
-# @auth_required
+@token_required
 def delete_voter_via_portal(voter_id):
     voter = Voter.query.get_or_404(voter_id)
     try:
@@ -220,7 +221,7 @@ def delete_voter_via_portal(voter_id):
 # and needs to be implemented. The public_api_bp /signups endpoint is intentionally public.
 
 @voters_api_bp.route('/upload', methods=['POST'])
-# @auth_required # CRITICAL: This endpoint must be protected
+@token_required # CRITICAL: This endpoint must be protected
 def upload_voters():
     if 'file' not in request.files:
         return jsonify({"error": "No file part"}), 400

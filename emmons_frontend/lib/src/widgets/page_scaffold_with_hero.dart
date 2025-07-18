@@ -43,7 +43,17 @@ class _PageScaffoldWithHeroState extends State<PageScaffoldWithHero> {
         controller: _scrollController,
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
-            SliverToBoxAdapter(child: SizedBox(height: heroHeight)),
+            SliverToBoxAdapter(
+              child: Container(
+                height: heroHeight,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(widget.heroImagePath),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
           ];
         },
         body: widget.body,
