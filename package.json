@@ -1,0 +1,21 @@
+{
+  "name": "cerberus-data-cloud-monorepo",
+  "private": true,
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "clean": "turbo clean"
+  },
+  "devDependencies": {
+    "@repo/eslint-config-custom": "workspace:*",
+    "@repo/tsconfig": "workspace:*",
+    "prettier": "^3.3.3",
+    "turbo": "latest"
+  },
+  "packageManager": "pnpm@9.6.0",
+  "engines": {
+    "node": ">=18"
+  }
+}
