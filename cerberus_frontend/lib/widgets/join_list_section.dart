@@ -106,7 +106,7 @@ class _JoinListSectionState extends State<JoinListSection> {
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   final response = await http.post(
-                    Uri.parse('/api/v1/signups'),
+                    Uri.parse('http://localhost:5001/api/v1/signups'),
                     headers: <String, String>{
                       'Content-Type': 'application/json; charset=UTF-8',
                     },
