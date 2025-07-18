@@ -8,13 +8,22 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
 
 class DonatePage extends StatefulWidget {
-  const DonatePage({super.key});
+  final http.Client? httpClient;
+
+  const DonatePage({super.key, this.httpClient});
 
   @override
   _DonatePageState createState() => _DonatePageState();
 }
 
 class _DonatePageState extends State<DonatePage> {
+  http.Client? _httpClient;
+
+  @override
+  void initState() {
+    super.initState();
+    _httpClient = widget.httpClient ?? http.Client();
+  }
   final ScrollController _scrollController = ScrollController();
   final _formKey = GlobalKey<FormState>();
   bool _showFullForm = false;
@@ -236,7 +245,7 @@ class _DonatePageState extends State<DonatePage> {
   Future<Map<String, dynamic>?> _createPaymentIntent(int amount, String currency) async {
     try {
       //TODO: Move this to a secure backend
-      final response = await http.post(
+      final response = await _httpClient!.post(
         Uri.parse('https://api.stripe.com/v1/payment_intents'),
         body: {
           'amount': (amount * 100).toString(),

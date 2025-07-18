@@ -54,13 +54,41 @@ void main() {
   testWidgets('Tapping "Proceed to Donation" shows the payment sheet',
       (WidgetTester tester) async {
     final mockStripe = MockStripe();
-    Stripe.instance = mockStripe;
+    final mockHttpClient = MockHttpClient();
+    Stripe.publishableKey = 'pk_test_TYooMQauvdEDq54NiTphI7jx';
 
-    await tester.pumpWidget(const MaterialApp(home: DonatePage()));
+    // Mock the HTTP request to Stripe
+    when(mockHttpClient.post(
+      any,
+      headers: anyNamed('headers'),
+      body: anyNamed('body'),
+    )).thenAnswer((_) async => http.Response(
+          '{"client_secret": "test_client_secret"}',
+          200,
+        ));
+
+    await tester.pumpWidget(MaterialApp(
+        home: DonatePage(
+      httpClient: mockHttpClient,
+    )));
 
     final donationButton = find.text('\$10');
     await tester.tap(donationButton);
     await tester.pump();
+
+    // Fill the form
+    await tester.enterText(find.byType(TextFormField).at(0), 'John');
+    await tester.enterText(find.byType(TextFormField).at(1), 'Doe');
+    await tester.enterText(find.byType(TextFormField).at(2), '123 Main St');
+    await tester.enterText(find.byType(TextFormField).at(3), 'Apt 4B');
+    await tester.enterText(find.byType(TextFormField).at(4), 'Anytown');
+    await tester.enterText(find.byType(TextFormField).at(5), 'CA');
+    await tester.enterText(find.byType(TextFormField).at(6), '12345');
+    await tester.enterText(
+        find.byType(TextFormField).at(7), 'john.doe@example.com');
+    await tester.enterText(find.byType(TextFormField).at(8), '555-555-5555');
+    await tester.enterText(find.byType(TextFormField).at(9), 'Google');
+    await tester.enterText(find.byType(TextFormField).at(10), 'Software Engineer');
 
     final proceedButton = find.text('Proceed to Donation');
     await tester.tap(proceedButton);
