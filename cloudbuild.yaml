@@ -5,20 +5,12 @@ steps:
     entrypoint: 'npx'
     args: ['pnpm', 'install']
 
-  # Step 2: Use Turborepo to build all applications.
-  # Turbo will determine which apps need to be rebuilt and use its cache for others.
-  - name: 'gcr.io/cloud-builders/npm'
-    id: 'turbo-build'
-    entrypoint: 'npx'
-    waitFor: ['pnpm-install']
-    args: ['pnpm', 'turbo', 'build']
-
-  # Step 3: Build the Docker images in parallel.
-  # These steps will now be much faster as they use the artifacts from the 'turbo-build' step.
+  # Step 2: Build the Docker images in parallel.
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build-report-backend'
     dir: 'cerberus_report_backend'
-    waitFor: ['turbo-build']
+    # This build can start as soon as dependencies are installed.
+    waitFor: ['pnpm-install']
     args: [
       'build',
       '-t', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/agenda-api:v1', # Updated to Artifact Registry
@@ -28,7 +20,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build-campaigns-backend'
     dir: 'cerberus_campaigns_backend' # Change working directory to the backend's root
-    waitFor: ['turbo-build']
+    waitFor: ['pnpm-install']
     args: [
       'build',
       '-t', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:v1', # Updated to Artifact Registry
@@ -38,7 +30,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build-cerberus-frontend'
     dir: 'cerberus_frontend'
-    waitFor: ['turbo-build']
+    waitFor: ['pnpm-install']
     args: [
       'build',
       '-t', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/cerberus-frontend:latest', # Updated to Artifact Registry
@@ -48,7 +40,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build-emmons-frontend'
     dir: 'emmons_frontend'
-    waitFor: ['turbo-build']
+    waitFor: ['pnpm-install']
     args: [
       'build',
       '-t', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/emmons-frontend:latest', # Updated to Artifact Registry
