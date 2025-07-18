@@ -133,6 +133,7 @@ class _JoinListSectionState extends State<JoinListSection> {
               child: const Text('Submit'),
             ),
           ],
+          ),
         ),
       ),
     );

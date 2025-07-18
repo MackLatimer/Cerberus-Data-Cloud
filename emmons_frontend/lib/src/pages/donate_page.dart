@@ -231,21 +231,20 @@ class _DonatePageState extends State<DonatePage> {
 
   Future<Map<String, dynamic>?> _createPaymentIntent(int amount, String currency) async {
     try {
-      //TODO: Move this to a secure backend
+      // This now securely calls your backend, which then calls Stripe.
+      // Replace with your actual backend URL.
+      final url = Uri.parse('https://campaigns-api-your-url.a.run.app/api/v1/create-payment-intent');
       final response = await _httpClient!.post(
-        Uri.parse('https://api.stripe.com/v1/payment_intents'),
-        body: {
-          'amount': (amount * 100).toString(),
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          'amount': amount * 100, // Send amount in cents
           'currency': currency,
-          'payment_method_types[]': 'card',
-        },
-        headers: {
-          'Authorization': 'Bearer YOUR_STRIPE_SECRET_KEY', // Replace with your actual key
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
+        }),
       );
       return json.decode(response.body);
-    } catch (e) {
+    } catch (e, s) {
+      debugPrint('Error creating payment intent: $e\n$s');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error creating payment intent: $e')),
       );
