@@ -124,7 +124,7 @@ class IssuesPage extends StatelessWidget {
                 imageLeft: false,
               ),
               const DonateSection(),
-              const SignupFormWidget(),
+              SignupFormWidget(),
               const Footer(),
             ],
           ),

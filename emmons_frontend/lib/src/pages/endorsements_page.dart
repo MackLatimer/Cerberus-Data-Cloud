@@ -110,7 +110,7 @@ class EndorsementsPage extends StatelessWidget {
               const SizedBox(height: 20),
               const DonateSection(),
               const SizedBox(height: 40),
-              const SignupFormWidget(),
+              SignupFormWidget(),
               const SizedBox(height: 40),
               const Footer(),
             ],

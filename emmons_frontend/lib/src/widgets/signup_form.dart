@@ -7,7 +7,7 @@ import '../config.dart'; // Import the configuration file
 class SignupFormWidget extends StatefulWidget {
   final String campaignId;
 
-  const SignupFormWidget({super.key, this.campaignId = currentCampaignId});
+  SignupFormWidget({super.key, this.campaignId = currentCampaignId});
 
   @override
   State<SignupFormWidget> createState() => _SignupFormWidgetState();
