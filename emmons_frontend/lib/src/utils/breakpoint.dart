@@ -6,7 +6,7 @@ WindowSize getWindowSize(BuildContext context) {
   final width = MediaQuery.of(context).size.width;
   if (width < 600) {
     return WindowSize.compact;
-  } else if (width < 840) {
+  } else if (width < 1000) {
     return WindowSize.medium;
   } else {
     return WindowSize.expanded;
