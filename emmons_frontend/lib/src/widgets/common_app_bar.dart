@@ -49,7 +49,8 @@ class _CommonAppBarState extends State<CommonAppBar> {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final windowSize = getWindowSize(context);
-    final isCompact = windowSize == WindowSize.compact;
+    final isMediumOrCompact = windowSize == WindowSize.compact || windowSize == WindowSize.medium;
+    final screenWidth = MediaQuery.of(context).size.width;
 
     // Navigation items
     final navItems = [
@@ -107,13 +108,13 @@ class _CommonAppBarState extends State<CommonAppBar> {
       flexibleSpace: Center(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: isCompact
+          child: isMediumOrCompact
               ? Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     SvgPicture.asset(
                       'assets/Emmons_Logo_4_TP_Shadow.svg',
-                      width: 200,
+                      width: (screenWidth * 0.5).clamp(150, 400),
                       height: 100,
                     ),
                     const SizedBox(height: 16.0),
@@ -126,7 +127,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
                     // Logo on the left
                     SvgPicture.asset(
                       'assets/Emmons_Logo_4_TP_Shadow.svg',
-                      width: 400,
+                      width: (screenWidth * 0.3).clamp(200, 400),
                       height: 100,
                     ),
                     // Navigation items on the right
