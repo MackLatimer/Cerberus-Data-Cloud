@@ -49,7 +49,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final windowSize = getWindowSize(context);
-    final isCompact = windowSize == WindowSize.compact;
+    final isMediumOrCompact = windowSize == WindowSize.compact || windowSize == WindowSize.medium;
 
     // Navigation items
     final navItems = [
@@ -107,7 +107,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
       flexibleSpace: Center(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: isCompact
+          child: isMediumOrCompact
               ? Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
