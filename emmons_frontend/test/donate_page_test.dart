@@ -59,7 +59,7 @@ void main() {
 
     // Mock the HTTP request to Stripe
     when(mockHttpClient.post(
-      any,
+      any as Uri,
       headers: anyNamed('headers'),
       body: anyNamed('body'),
     )).thenAnswer((_) async => http.Response(

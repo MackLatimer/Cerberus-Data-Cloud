@@ -246,6 +246,7 @@ class _DonatePageState extends State<DonatePage> {
       return json.decode(response.body);
     } catch (e, s) {
       debugPrint('Error creating payment intent: $e\n$s');
+      if (!mounted) return null;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error creating payment intent: $e')),
       );
@@ -256,11 +257,15 @@ class _DonatePageState extends State<DonatePage> {
   Future<void> _displayPaymentSheet() async {
     try {
       await Stripe.instance.presentPaymentSheet();
-      _showPostDonationDialog();
+      if (mounted) {
+        _showPostDonationDialog();
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error displaying payment sheet: $e')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error displaying payment sheet: $e')),
+        );
+      }
     }
   }
 
