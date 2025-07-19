@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
@@ -15,6 +16,13 @@ class _UploadPageState extends State<UploadPage> {
   bool _isLoading = false;
 
   void _pickFile() async {
+    if (kIsWeb) {
+      // Show a message to the user that file picking is not supported on web
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('File picking is not supported on the web.')),
+      );
+      return;
+    }
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
