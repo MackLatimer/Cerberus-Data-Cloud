@@ -1,8 +1,11 @@
+import 'package:flutter/gestures.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
+import 'package:candidate_website/src/config.dart';
 import 'package:candidate_website/src/pages/about_page.dart';
 import 'package:candidate_website/src/pages/donate_page.dart';
 import 'package:candidate_website/src/pages/endorsements_page.dart';
@@ -45,11 +48,8 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   // Ensure URL strategy is set for web (removes hashbang #)
   GoRouter.optionURLReflectsImperativeAPIs = true;
-  // Initialize Stripe with the key from compile-time variables.
-  Stripe.publishableKey = const String.fromEnvironment(
-    'STRIPE_PUBLISHABLE_KEY',
-    defaultValue: 'pk_test_YOUR_FALLBACK_TEST_KEY_HERE', // Fallback for local dev
-  );
+  // Initialize Stripe with the key from the configuration file.
+  Stripe.publishableKey = stripePublishableKey;
   runApp(const MyApp());
 }
 
@@ -126,6 +126,9 @@ class MyApp extends StatelessWidget {
         ),
       ),
       routerConfig: _router,
+      scrollBehavior: const MaterialScrollBehavior().copyWith(
+        dragDevices: PointerDeviceKind.values.toSet(),
+      ),
     );
   }
 }

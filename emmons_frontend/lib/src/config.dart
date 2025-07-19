@@ -13,5 +13,11 @@ const String currentCampaignId = String.fromEnvironment(
   defaultValue: '1', // Fallback for local dev
 );
 
+// Stripe Publishable Key - Loaded from compile-time variables.
+const String stripePublishableKey = String.fromEnvironment(
+  'STRIPE_PUBLISHABLE_KEY',
+  defaultValue: 'pk_test_YOUR_FALLBACK_TEST_KEY_HERE', // Fallback for local dev
+);
+
 // Other global configurations can be added here.
 const int defaultNetworkTimeoutSeconds = 30;
