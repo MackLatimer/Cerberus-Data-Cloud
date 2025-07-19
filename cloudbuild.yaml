@@ -6,10 +6,14 @@ steps:
     waitFor: ['-']
     args: [
       'build',
+      '--build-arg', 'BUILDKIT_INLINE_CACHE=1',
       '-t', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/agenda-api:v1', # Updated to Artifact Registry
       '-f', 'Dockerfile',
       '.'
     ]
+    volumes:
+      - name: 'pip-cache'
+        path: '/root/.cache/pip'
 
   # Step 2: Build the Docker image for cerberus_campaigns_backend (campaigns-api)
   - name: 'gcr.io/cloud-builders/docker'
@@ -18,10 +22,14 @@ steps:
     waitFor: ['-']
     args: [
       'build',
+      '--build-arg', 'BUILDKIT_INLINE_CACHE=1',
       '-t', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:v1', # Updated to Artifact Registry
       '-f', 'Dockerfile', # Dockerfile is now in the current context
       '.' # Build context is now cerberus_campaigns_backend
     ]
+    volumes:
+      - name: 'pip-cache'
+        path: '/root/.cache/pip'
 
   # Step 3: Build the Docker image for cerberus_frontend (web-frontend)
   - name: 'gcr.io/cloud-builders/docker'
@@ -30,10 +38,14 @@ steps:
     waitFor: ['-']
     args: [
       'build',
+      '--build-arg', 'BUILDKIT_INLINE_CACHE=1',
       '-t', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/cerberus-frontend:latest', # Updated to Artifact Registry
       '-f', 'Dockerfile', # Use the Dockerfile in its specific directory
       '.'
     ]
+    volumes:
+      - name: 'flutter-cache'
+        path: '/root/.pub-cache'
 
   # Step 4: Build the Docker image for emmons_frontend (web-frontend)
   - name: 'gcr.io/cloud-builders/docker'
@@ -42,10 +54,14 @@ steps:
     waitFor: ['-']
     args: [
       'build',
+      '--build-arg', 'BUILDKIT_INLINE_CACHE=1',
       '-t', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/emmons-frontend:latest', # Updated to Artifact Registry
       '-f', 'Dockerfile', # Use the Dockerfile in its specific directory
       '.'
     ]
+    volumes:
+      - name: 'flutter-cache'
+        path: '/root/.pub-cache'
 
 # List of images to be pushed to Artifact Registry
 images:
