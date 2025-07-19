@@ -50,6 +50,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
     final textTheme = Theme.of(context).textTheme;
     final windowSize = getWindowSize(context);
     final isCompact = windowSize == WindowSize.compact;
+    final isMedium = windowSize == WindowSize.medium;
 
     // Navigation items
     final navItems = [
@@ -77,25 +78,28 @@ class _CommonAppBarState extends State<CommonAppBar> {
           ),
         ],
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: navItems.map((item) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: TextButton(
-              onPressed: () => context.go(item['path']!),
-              child: Text(
-                item['label']!,
-                style: textTheme.labelMedium?.copyWith(
-                  color: const Color(0xff002663),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
+      child: Container(
+        width: isCompact ? 280 : null,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: navItems.map((item) {
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: isCompact ? 1.0 : 8.0),
+              child: TextButton(
+                onPressed: () => context.go(item['path']!),
+                child: Text(
+                  item['label']!,
+                  style: textTheme.labelMedium?.copyWith(
+                    color: const Color(0xff002663),
+                    fontWeight: FontWeight.bold,
+                    fontSize: isCompact ? 12 : 24,
+                  ),
                 ),
               ),
-            ),
-          );
-        }).toList(),
+            );
+          }).toList(),
+        ),
       ),
     );
 
@@ -107,7 +111,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
       flexibleSpace: Center(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: isCompact
+          child: isCompact || isMedium
               ? Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
