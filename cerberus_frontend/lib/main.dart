@@ -1,8 +1,13 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_project/pages/home_page.dart';
+import 'dart:io' if (dart.library.html) 'dart:html' as html;
 
 void main() {
+  if (kIsWeb) {
+    // Set web-specific configurations if necessary
+  }
   runApp(const CerberusApp());
 }
 
