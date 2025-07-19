@@ -18,7 +18,7 @@ WORKDIR /app
 
 # Install system dependencies that might be needed by Python packages (e.g., PostgreSQL client)
 # psycopg2-binary (common for Flask/PostgreSQL) often needs libpq-dev
-RUN apt-get update && apt-get install -y --no-install-recommends     libpq-dev     build-essential     && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends libpq-dev build-essential && rm -rf /var/lib/apt/lists/*
 
 # Copy the requirements file into the container at /app
 COPY requirements.txt .
