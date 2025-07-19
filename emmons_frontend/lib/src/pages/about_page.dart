@@ -74,7 +74,7 @@ class AboutPage extends StatelessWidget {
                 ),
               ),
               const DonateSection(),
-              SignupFormWidget(), // Already corrected, no change needed
+              const SignupFormWidget(), // Already corrected, no change needed
               const Footer(),
             ],
           ),

@@ -234,7 +234,7 @@ class _DonatePageState extends State<DonatePage> {
       // This now securely calls your backend, which then calls Stripe.
       // Replace with your actual backend URL.
       final url = Uri.parse('https://campaigns-api-your-url.a.run.app/api/v1/create-payment-intent');
-      final response = await _httpClient!.post(
+      final response = await _httpClient.post(
         url,
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
