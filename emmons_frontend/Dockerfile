@@ -3,17 +3,16 @@
 FROM ghcr.io/cirruslabs/flutter:3.22.1 AS build
 
 # Set working directory for Flutter build
-WORKDIR /app_src
+WORKDIR /app
 
-# Copy pubspec.yaml and pubspec.lock first to leverage Docker cache
-COPY pubspec.yaml ./
-COPY pubspec.lock ./
+# Copy the entire emmons_frontend directory to the container
+COPY . /app
+
+# Set the working directory to the emmons_frontend directory
+WORKDIR /app/emmons_frontend
 
 # Get dependencies
 RUN flutter pub get
-
-# Copy the rest of the frontend application code
-COPY . .
 
 # Define build arguments that can be passed in from cloudbuild.yaml
 ARG API_BASE_URL
@@ -36,13 +35,13 @@ RUN apk --no-cache add gettext
 
 # Copy the built static files from the 'build' stage
 # The output of 'flutter build web' is in 'build/web'
-COPY --from=build /app_src/build/web /usr/share/nginx/html
+COPY --from=build /app/emmons_frontend/build/web /usr/share/nginx/html
 
 # Copy the Nginx configuration template
-COPY nginx.conf.template /etc/nginx/conf.d/default.conf.template
+COPY emmons_frontend/nginx.conf.template /etc/nginx/conf.d/default.conf.template
 
 # Copy and make the startup script executable
-COPY start.sh /start.sh
+COPY emmons_frontend/start.sh /start.sh
 RUN chmod +x /start.sh
 
 # Expose port 80
