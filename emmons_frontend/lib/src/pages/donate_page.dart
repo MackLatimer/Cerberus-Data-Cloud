@@ -6,6 +6,7 @@ import 'package:candidate_website/src/widgets/common_app_bar.dart';
 import 'package:candidate_website/src/widgets/footer.dart'; // Import the Footer widget
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
+import 'package:candidate_website/src/config.dart';
 
 class DonatePage extends StatefulWidget {
   final http.Client? httpClient;
@@ -233,7 +234,7 @@ class _DonatePageState extends State<DonatePage> {
     try {
       // This now securely calls your backend, which then calls Stripe.
       // Replace with your actual backend URL.
-      final url = Uri.parse('https://campaigns-api-your-url.a.run.app/api/v1/create-payment-intent');
+      final url = Uri.parse('$apiBaseUrl/create-payment-intent');
       final response = await _httpClient.post(
         url,
         headers: {'Content-Type': 'application/json'},
