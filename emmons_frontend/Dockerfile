@@ -8,9 +8,6 @@ WORKDIR /app
 # Copy the entire emmons_frontend directory to the container
 COPY . /app
 
-# Set the working directory to the emmons_frontend directory
-WORKDIR /app/emmons_frontend
-
 # Get dependencies
 RUN flutter pub get
 
@@ -35,13 +32,13 @@ RUN apk --no-cache add gettext
 
 # Copy the built static files from the 'build' stage
 # The output of 'flutter build web' is in 'build/web'
-COPY --from=build /app/emmons_frontend/build/web /usr/share/nginx/html
+COPY --from=build /app/build/web /usr/share/nginx/html
 
 # Copy the Nginx configuration template
-COPY emmons_frontend/nginx.conf.template /etc/nginx/conf.d/default.conf.template
+COPY nginx.conf.template /etc/nginx/conf.d/default.conf.template
 
 # Copy and make the startup script executable
-COPY emmons_frontend/start.sh /start.sh
+COPY start.sh /start.sh
 RUN chmod +x /start.sh
 
 # Expose port 80
