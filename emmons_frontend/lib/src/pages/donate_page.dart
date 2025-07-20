@@ -35,6 +35,7 @@ class _DonatePageState extends State<DonatePage> {
   bool _agreedToMessaging = false;
   bool _agreedToEmails = false;
   bool _coverTransactionFee = false;
+  bool _showFullForm = false;
 
   @override
   void dispose() {
@@ -340,48 +341,12 @@ class _DonatePageState extends State<DonatePage> {
 
   void _processDonation() async {
     if (_formKey.currentState!.validate()) {
-      final response = await checkout(
-        context,
-        stripePublicKey: _stripePublicKey,
-        stripeSecretKey: _stripeSecretKey,
-        amount: (_selectedAmount! * 100).toString(),
-        currency: 'USD',
+      final response = await redirectToCheckout(
+        context: context,
+        sessionId: 'test_session_id', // Replace with actual session ID from your server
+        publishableKey: _stripePublicKey,
         successUrl: 'https://emmonsforbellcounty.com/success',
-        cancelUrl: 'https://emmonsforbellcounty.com/cancel',
-        billingAddressCollection: 'required',
-        clientReferenceId: 'test_ref_id',
-        customerEmail: _emailController.text,
-        lineItems: [
-          LineItem(
-            priceData: PriceData(
-              currency: 'USD',
-              productData: ProductData(
-                name: 'Donation',
-              ),
-              unitAmountDecimal: (_selectedAmount! * 100).toString(),
-              taxBehavior: 'exclusive',
-            ),
-            quantity: 1,
-            taxRates: _coverTransactionFee ? ['txr_1Jxxxxxxxxxxxx'] : null, // TODO: Replace with actual tax rate ID from Stripe dashboard
-          ),
-        ],
-        mode: 'payment',
-        paymentMethodTypes: const [
-          'card',
-          'cashapp',
-          'us_bank_account'
-        ],
-        metadata: {
-          'first_name': _firstNameController.text,
-          'last_name': _lastNameController.text,
-          'address': _addressController.text,
-          'address_line_2': _addressLine2Controller.text,
-          'city': _cityController.text,
-          'state': _stateController.text,
-          'zip': _zipController.text,
-          'employer': _employerController.text,
-          'occupation': _occupationController.text,
-        },
+        canceledUrl: 'https://emmonsforbellcounty.com/cancel',
       );
 
       if (response.statusCode == 200) {
