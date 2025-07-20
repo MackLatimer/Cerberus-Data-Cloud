@@ -19,7 +19,7 @@ class CommonAppBar extends StatefulWidget implements PreferredSizeWidget {
   _CommonAppBarState createState() => _CommonAppBarState();
 
   @override
-  Size get preferredSize => const Size.fromHeight(206);
+  Size get preferredSize => const Size.fromHeight(366);
 }
 
 class _CommonAppBarState extends State<CommonAppBar> {
