@@ -173,7 +173,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
     return LayoutBuilder(
       builder: (context, constraints) {
         final isCompact = constraints.maxWidth < 600;
-        final appBarHeight = isCompact ? 336.0 : 206.0;
+        final appBarHeight = isCompact ? 366.0 : 206.0;
 
         return AppBar(
           elevation: opacity,
