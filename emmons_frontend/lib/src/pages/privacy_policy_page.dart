@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:candidate_website/src/widgets/dynamic_size_app_bar.dart';
 import 'package:candidate_website/src/widgets/common_app_bar.dart';
 import 'package:candidate_website/src/widgets/footer.dart';
 
@@ -10,8 +11,10 @@ class PrivacyPolicyPage extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      appBar: CommonAppBar(
-        title: 'Privacy Policy', // No scroll controller needed for a static page
+      appBar: DynamicSizeAppBar(
+        child: CommonAppBar(
+          title: 'Privacy Policy', // No scroll controller needed for a static page
+        ),
       ),
       body: CustomScrollView(
         slivers: <Widget>[

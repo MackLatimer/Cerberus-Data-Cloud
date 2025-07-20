@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:candidate_website/src/widgets/dynamic_size_app_bar.dart';
 import 'package:candidate_website/src/widgets/common_app_bar.dart';
 import 'package:candidate_website/src/widgets/donate_button.dart'; // Re-using for consistency
 // import 'package:url_launcher/url_launcher.dart'; // For actual donation link later
@@ -64,9 +65,11 @@ class _DonatePageState extends State<DonatePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: CommonAppBar(
-        title: 'Support the Campaign',
-        scrollController: _scrollController,
+      appBar: DynamicSizeAppBar(
+        child: CommonAppBar(
+          title: 'Donate to the Campaign',
+          scrollController: _scrollController,
+        ),
       ),
       body: NestedScrollView(
         controller: _scrollController,
