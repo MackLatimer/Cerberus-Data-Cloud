@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:candidate_website/src/widgets/dynamic_size_app_bar.dart';
 import 'package:candidate_website/src/widgets/common_app_bar.dart';
 import 'package:candidate_website/src/widgets/signup_form.dart';
 import 'package:candidate_website/src/widgets/donate_section.dart';
@@ -30,9 +31,11 @@ class _EndorsementsPageState extends State<EndorsementsPage> {
 
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: CommonAppBar(
-        title: 'Endorsements',
-        scrollController: _scrollController,
+      appBar: DynamicSizeAppBar(
+        child: CommonAppBar(
+          title: 'Endorsements',
+          scrollController: _scrollController,
+        ),
       ),
       body: NestedScrollView(
         controller: _scrollController,

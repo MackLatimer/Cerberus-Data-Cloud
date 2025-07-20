@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:candidate_website/src/widgets/dynamic_size_app_bar.dart';
 import 'package:candidate_website/src/widgets/common_app_bar.dart';
 import 'package:candidate_website/src/widgets/signup_form.dart';
 import 'package:candidate_website/src/widgets/donate_section.dart';
@@ -24,9 +25,11 @@ class _AboutPageState extends State<AboutPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: CommonAppBar(
-        title: 'About Me', // Changed title
-        scrollController: _scrollController,
+      appBar: DynamicSizeAppBar(
+        child: CommonAppBar(
+          title: 'About Curtis Emmons',
+          scrollController: _scrollController,
+        ),
       ),
       body: NestedScrollView(
         controller: _scrollController,

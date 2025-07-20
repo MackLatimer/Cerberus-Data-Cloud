@@ -19,7 +19,7 @@ class CommonAppBar extends StatefulWidget implements PreferredSizeWidget {
   _CommonAppBarState createState() => _CommonAppBarState();
 
   @override
-  Size get preferredSize => const Size.fromHeight(366);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
 class _CommonAppBarState extends State<CommonAppBar> {
@@ -173,14 +173,13 @@ class _CommonAppBarState extends State<CommonAppBar> {
     return LayoutBuilder(
       builder: (context, constraints) {
         final isCompact = constraints.maxWidth < 600;
-        final appBarHeight = isCompact ? 366.0 : 206.0;
+        final isMedium = constraints.maxWidth < 1000;
 
         return AppBar(
           elevation: opacity,
           backgroundColor: Colors.white.withOpacity(opacity),
           title: null, // Set to null because we are using a custom layout
           automaticallyImplyLeading: false,
-          toolbarHeight: appBarHeight,
           flexibleSpace: Center(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
