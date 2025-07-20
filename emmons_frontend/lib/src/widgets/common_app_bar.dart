@@ -173,7 +173,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
     return LayoutBuilder(
       builder: (context, constraints) {
         final isCompact = constraints.maxWidth < 600;
-        final appBarHeight = isCompact ? 286.0 : 206.0;
+        final appBarHeight = isCompact ? 336.0 : 206.0;
 
         return AppBar(
           elevation: opacity,
@@ -183,7 +183,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
           toolbarHeight: appBarHeight,
           flexibleSpace: Center(
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
               child: isCompact || isMedium
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.center,
