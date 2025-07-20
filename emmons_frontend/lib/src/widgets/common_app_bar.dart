@@ -173,7 +173,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
     return LayoutBuilder(
       builder: (context, constraints) {
         final isCompact = constraints.maxWidth < 600;
-        final appBarHeight = isCompact ? 236.0 : 206.0;
+        final appBarHeight = isCompact ? 286.0 : 206.0;
 
         return AppBar(
           elevation: opacity,
@@ -185,28 +185,21 @@ class _CommonAppBarState extends State<CommonAppBar> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: isCompact || isMedium
-                  ? Container(
-                      padding: isMedium
-                          ? const EdgeInsets.symmetric(vertical: 20.0)
-                          : null,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 20.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            SvgPicture.asset(
-                              'assets/Emmons_Logo_4_TP_Shadow.svg',
-                              width: 200,
-                              height: 100,
-                            ),
-                            const SizedBox(height: 16.0),
-                            if (isCompact)
-                              compactNavigation
-                            else
-                              navigation, // original navigation for medium
-                          ],
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        SvgPicture.asset(
+                          'assets/Emmons_Logo_4_TP_Shadow.svg',
+                          width: 200,
+                          height: 100,
                         ),
-                      ))
+                        const SizedBox(height: 16.0),
+                        if (isCompact)
+                          compactNavigation
+                        else
+                          navigation, // original navigation for medium
+                      ],
+                    )
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
