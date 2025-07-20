@@ -110,8 +110,21 @@ class _CommonAppBarState extends State<CommonAppBar> {
     final compactNavigation = Container(
       height: 100,
       width: 280,
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(1.0 - opacity),
+        borderRadius: BorderRadius.circular(15.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.5 * (1.0 - opacity)),
+            spreadRadius: 1,
+            blurRadius: 1,
+            offset: const Offset(2, 3), // changes position of shadow
+          ),
+        ],
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Row(
             mainAxisSize: MainAxisSize.min,
@@ -157,51 +170,61 @@ class _CommonAppBarState extends State<CommonAppBar> {
       ),
     );
 
-    return AppBar(
-      elevation: opacity,
-      backgroundColor: Colors.white.withOpacity(opacity),
-      title: null, // Set to null because we are using a custom layout
-      automaticallyImplyLeading: false,
-      flexibleSpace: Center(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: isCompact || isMedium
-              ? Container(
-                  padding: isMedium
-                      ? const EdgeInsets.symmetric(vertical: 20.0)
-                      : null,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      SvgPicture.asset(
-                        'assets/Emmons_Logo_4_TP_Shadow.svg',
-                      width: 200,
-                      height: 100,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isCompact = constraints.maxWidth < 600;
+        final appBarHeight = isCompact ? 236.0 : 206.0;
+
+        return AppBar(
+          elevation: opacity,
+          backgroundColor: Colors.white.withOpacity(opacity),
+          title: null, // Set to null because we are using a custom layout
+          automaticallyImplyLeading: false,
+          toolbarHeight: appBarHeight,
+          flexibleSpace: Center(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: isCompact || isMedium
+                  ? Container(
+                      padding: isMedium
+                          ? const EdgeInsets.symmetric(vertical: 20.0)
+                          : null,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            SvgPicture.asset(
+                              'assets/Emmons_Logo_4_TP_Shadow.svg',
+                              width: 200,
+                              height: 100,
+                            ),
+                            const SizedBox(height: 16.0),
+                            if (isCompact)
+                              compactNavigation
+                            else
+                              navigation, // original navigation for medium
+                          ],
+                        ),
+                      ))
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        // Logo on the left
+                        SvgPicture.asset(
+                          'assets/Emmons_Logo_4_TP_Shadow.svg',
+                          width: 400,
+                          height: 100,
+                        ),
+                        // Navigation items on the right
+                        navigation,
+                      ],
                     ),
-                    const SizedBox(height: 16.0),
-                    if (isCompact)
-                      compactNavigation
-                    else
-                      navigation, // original navigation for medium
-                  ],
-                                ),
-                )
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    // Logo on the left
-                    SvgPicture.asset(
-                      'assets/Emmons_Logo_4_TP_Shadow.svg',
-                      width: 400,
-                      height: 100,
-                    ),
-                    // Navigation items on the right
-                    navigation,
-                  ],
-                ),
-        ),
-      ),
-      actions: widget.actions,
+            ),
+          ),
+          actions: widget.actions,
+        );
+      },
     );
   }
 }
