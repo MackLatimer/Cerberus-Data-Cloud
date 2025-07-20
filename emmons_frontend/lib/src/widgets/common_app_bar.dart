@@ -49,8 +49,8 @@ class _CommonAppBarState extends State<CommonAppBar> {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final windowSize = getWindowSize(context);
-    final isCompact =
-        windowSize == WindowSize.compact || windowSize == WindowSize.medium;
+    final isCompact = windowSize == WindowSize.compact;
+    final isMedium = windowSize == WindowSize.medium;
 
     // Navigation items
     final navItems = [
@@ -65,6 +65,10 @@ class _CommonAppBarState extends State<CommonAppBar> {
     double opacity = (_scrollOffset / scrollThreshold).clamp(0.0, 1.0);
 
     final navigation = Container(
+      width: isMedium ? 600 : null,
+      padding: windowSize == WindowSize.expanded
+          ? const EdgeInsets.symmetric(horizontal: 24.0)
+          : const EdgeInsets.symmetric(horizontal: 8.0),
       height: 50,
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(1.0 - opacity),
@@ -80,7 +84,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: navItems.map((item) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -100,6 +104,55 @@ class _CommonAppBarState extends State<CommonAppBar> {
       ),
     );
 
+    final navItemsRow1 = navItems.sublist(0, 3);
+    final navItemsRow2 = navItems.sublist(3, 5);
+
+    final compactNavigation = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: navItemsRow1.map((item) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: TextButton(
+                onPressed: () => context.go(item['path']!),
+                child: Text(
+                  item['label']!,
+                  style: textTheme.labelMedium?.copyWith(
+                    color: const Color(0xff002663),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: navItemsRow2.map((item) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: TextButton(
+                onPressed: () => context.go(item['path']!),
+                child: Text(
+                  item['label']!,
+                  style: textTheme.labelMedium?.copyWith(
+                    color: const Color(0xff002663),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+      ],
+    );
+
     return AppBar(
       elevation: opacity,
       backgroundColor: Colors.white.withOpacity(opacity),
@@ -108,7 +161,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
       flexibleSpace: Center(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: isCompact
+          child: isCompact || isMedium
               ? Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -118,7 +171,10 @@ class _CommonAppBarState extends State<CommonAppBar> {
                       height: 100,
                     ),
                     const SizedBox(height: 16.0),
-                    navigation,
+                    if (isCompact)
+                      compactNavigation
+                    else
+                      navigation, // original navigation for medium
                   ],
                 )
               : Row(
