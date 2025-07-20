@@ -182,7 +182,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
           automaticallyImplyLeading: false,
           flexibleSpace: Center(
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0),
               child: isCompact || isMedium
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.center,
