@@ -49,7 +49,8 @@ class _CommonAppBarState extends State<CommonAppBar> {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final windowSize = getWindowSize(context);
-    final isCompact = windowSize == WindowSize.compact;
+    final isCompact =
+        windowSize == WindowSize.compact || windowSize == WindowSize.medium;
 
     // Navigation items
     final navItems = [
