@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:candidate_website/src/widgets/dynamic_size_app_bar.dart';
 import 'package:candidate_website/src/widgets/common_app_bar.dart';
 import 'package:candidate_website/src/widgets/donate_button.dart'; // Re-using for consistency
-// import 'package:url_launcher/url_launcher.dart'; // For actual donation link later
+import 'package:stripe_checkout/stripe_checkout.dart';
 import 'package:candidate_website/src/widgets/footer.dart'; // Import the Footer widget
 
 class DonatePage extends StatefulWidget {
@@ -15,7 +15,8 @@ class DonatePage extends StatefulWidget {
 class _DonatePageState extends State<DonatePage> {
   final ScrollController _scrollController = ScrollController();
   final _formKey = GlobalKey<FormState>();
-  bool _showFullForm = false;
+  int _currentStep = 0;
+  int? _selectedAmount;
 
   // Controllers for form fields
   final _firstNameController = TextEditingController();
@@ -33,6 +34,7 @@ class _DonatePageState extends State<DonatePage> {
   // State variables for checkboxes
   bool _agreedToMessaging = false;
   bool _agreedToEmails = false;
+  bool _coverTransactionFee = false;
 
   @override
   void dispose() {
@@ -77,7 +79,7 @@ class _DonatePageState extends State<DonatePage> {
           return <Widget>[
             SliverToBoxAdapter(
               child: Container(
-                height: 300, // Height of the hero image
+                height: MediaQuery.of(context).size.height, // Height of the hero image
                 decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('assets/Hero_Picture_Donate.png'),
@@ -106,13 +108,14 @@ class _DonatePageState extends State<DonatePage> {
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 40),
-                        _buildDonationGrid(context),
-                        const SizedBox(height: 30),
-                        if (_showFullForm)
+                        if (_currentStep == 0)
+                          _buildDonationGrid(context)
+                        else if (_currentStep == 1)
                           _buildDonorForm(context)
                         else
-                          Container(),
-                        if (!_showFullForm)
+                          _buildPostDonationForm(context),
+                        const SizedBox(height: 30),
+                        if (_currentStep == 0)
                           Text(
                             'Contributions to the Curtis Emmons for County Commissioner campaign help us reach voters, share our message, and work towards a better future for Bell County Precinct 4. Every donation, no matter the size, is deeply appreciated and crucial to our success.',
                             style: Theme.of(context).textTheme.bodyLarge,
@@ -171,6 +174,17 @@ class _DonatePageState extends State<DonatePage> {
           _buildTextFormField(label: 'Occupation', controller: _occupationController),
           const SizedBox(height: 16),
           CheckboxListTile(
+            title: Text('I\'d like to help cover the transaction fees.', style: Theme.of(context).textTheme.bodyMedium),
+            value: _coverTransactionFee,
+            onChanged: (bool? value) {
+              setState(() {
+                _coverTransactionFee = value ?? false;
+              });
+            },
+            controlAffinity: ListTileControlAffinity.leading,
+            contentPadding: EdgeInsets.zero,
+          ),
+          CheckboxListTile(
             title: Text('I agree to receive automated messaging from Elect Emmons', style: Theme.of(context).textTheme.bodyMedium),
             value: _agreedToMessaging,
             onChanged: (bool? value) {
@@ -194,12 +208,7 @@ class _DonatePageState extends State<DonatePage> {
           ),
           const SizedBox(height: 24),
           ElevatedButton(
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                // Process data - for now, just print or show a dialog
-                _showDonationDataDialog(); // This will also need to include new checkbox values
-              }
-            },
+            onPressed: _processDonation,
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 16),
               textStyle: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 18),
@@ -265,13 +274,21 @@ class _DonatePageState extends State<DonatePage> {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
+            final amount = amounts[index];
+            final isSelected = _selectedAmount == amount;
             return ElevatedButton(
               onPressed: () {
                 setState(() {
-                  _showFullForm = true;
+                  _selectedAmount = amount;
                 });
               },
-              child: Text('\$${amounts[index]}'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: isSelected ? const Color(0xFF002663) : const Color(0xFFA01124),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+              ),
+              child: Text('\$$amount'),
             );
           },
         ),
@@ -299,14 +316,128 @@ class _DonatePageState extends State<DonatePage> {
             ),
           ),
           keyboardType: TextInputType.number,
+          onChanged: (value) {
+            setState(() {
+              _selectedAmount = int.tryParse(value);
+            });
+          },
         ),
         const SizedBox(height: 20),
         ElevatedButton(
           onPressed: () {
             setState(() {
-              _showFullForm = true;
+              _currentStep = 1;
             });
           },
+          child: const Text('Submit'),
+        ),
+      ],
+    );
+  }
+
+  final String _stripePublicKey = 'pk_live_51QoUvvLiE3PH27cBZ4Nt4532BV0fKKSe5gVG9TTP78yieeoowhCtDy8oWgZKXAOw1Jqm05sWeyee4dUIcyzi25lc00dP9pymbT';
+  final String _stripeSecretKey = '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';
+
+  void _processDonation() async {
+    if (_formKey.currentState!.validate()) {
+      final response = await checkout(
+        context,
+        stripePublicKey: _stripePublicKey,
+        stripeSecretKey: _stripeSecretKey,
+        amount: (_selectedAmount! * 100).toString(),
+        currency: 'USD',
+        successUrl: 'https://emmonsforbellcounty.com/success',
+        cancelUrl: 'https://emmonsforbellcounty.com/cancel',
+        billingAddressCollection: 'required',
+        clientReferenceId: 'test_ref_id',
+        customerEmail: _emailController.text,
+        lineItems: [
+          LineItem(
+            priceData: PriceData(
+              currency: 'USD',
+              productData: ProductData(
+                name: 'Donation',
+              ),
+              unitAmountDecimal: (_selectedAmount! * 100).toString(),
+              taxBehavior: 'exclusive',
+            ),
+            quantity: 1,
+            taxRates: _coverTransactionFee ? ['txr_1Jxxxxxxxxxxxx'] : null, // TODO: Replace with actual tax rate ID from Stripe dashboard
+          ),
+        ],
+        mode: 'payment',
+        paymentMethodTypes: const [
+          'card',
+          'cashapp',
+          'us_bank_account'
+        ],
+        metadata: {
+          'first_name': _firstNameController.text,
+          'last_name': _lastNameController.text,
+          'address': _addressController.text,
+          'address_line_2': _addressLine2Controller.text,
+          'city': _cityController.text,
+          'state': _stateController.text,
+          'zip': _zipController.text,
+          'employer': _employerController.text,
+          'occupation': _occupationController.text,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        setState(() {
+          _currentStep = 2;
+        });
+      } else {
+        // Handle error
+      }
+    }
+  }
+
+  Widget _buildPostDonationForm(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Text(
+          'Thank you for your donation!',
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 20),
+        _buildTextFormField(label: 'Phone Number', controller: _phoneController, keyboardType: TextInputType.phone),
+        _buildTextFormField(label: 'Email', controller: _emailController, isRequired: true, keyboardType: TextInputType.emailAddress),
+        const SizedBox(height: 16),
+        CheckboxListTile(
+          title: Text('I agree to receive automated messaging from Elect Emmons', style: Theme.of(context).textTheme.bodyMedium),
+          value: _agreedToMessaging,
+          onChanged: (bool? value) {
+            setState(() {
+              _agreedToMessaging = value ?? false;
+            });
+          },
+          controlAffinity: ListTileControlAffinity.leading,
+          contentPadding: EdgeInsets.zero,
+        ),
+        CheckboxListTile(
+          title: Text('I agree to receive emails from Elect Emmons', style: Theme.of(context).textTheme.bodyMedium),
+          value: _agreedToEmails,
+          onChanged: (bool? value) {
+            setState(() {
+              _agreedToEmails = value ?? false;
+            });
+          },
+          controlAffinity: ListTileControlAffinity.leading,
+          contentPadding: EdgeInsets.zero,
+        ),
+        const SizedBox(height: 24),
+        ElevatedButton(
+          onPressed: () {
+            // Handle submission of post-donation data
+          },
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            textStyle: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 18),
+          ),
           child: const Text('Submit'),
         ),
       ],
