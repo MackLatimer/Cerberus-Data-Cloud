@@ -19,7 +19,7 @@ class CommonAppBar extends StatefulWidget implements PreferredSizeWidget {
   _CommonAppBarState createState() => _CommonAppBarState();
 
   @override
-  Size get preferredSize => const Size.fromHeight(150);
+  Size get preferredSize => const Size.fromHeight(206);
 }
 
 class _CommonAppBarState extends State<CommonAppBar> {
@@ -168,7 +168,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
           child: isCompact || isMedium
               ? Container(
                   padding: isMedium
-                      ? const EdgeInsets.symmetric(vertical: 10.0)
+                      ? const EdgeInsets.symmetric(vertical: 20.0)
                       : null,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
