@@ -166,11 +166,15 @@ class _CommonAppBarState extends State<CommonAppBar> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: isCompact || isMedium
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SvgPicture.asset(
-                      'assets/Emmons_Logo_4_TP_Shadow.svg',
+              ? Container(
+                  padding: isMedium
+                      ? const EdgeInsets.symmetric(vertical: 10.0)
+                      : null,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SvgPicture.asset(
+                        'assets/Emmons_Logo_4_TP_Shadow.svg',
                       width: 200,
                       height: 100,
                     ),
@@ -180,6 +184,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
                     else
                       navigation, // original navigation for medium
                   ],
+                                ),
                 )
               : Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
