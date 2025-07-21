@@ -10,9 +10,9 @@ class PrivacyPolicyPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    return Scaffold(
+    return const Scaffold(
       appBar: DynamicSizeAppBar(
-        child: CommonAppBar(
+        child: const CommonAppBar(
           title: 'Privacy Policy', // No scroll controller needed for a static page
         ),
       ),

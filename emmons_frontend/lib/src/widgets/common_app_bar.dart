@@ -16,13 +16,13 @@ class CommonAppBar extends StatefulWidget implements PreferredSizeWidget {
   });
 
   @override
-  _CommonAppBarState createState() => _CommonAppBarState();
+  CommonAppBarState createState() => CommonAppBarState();
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
-class _CommonAppBarState extends State<CommonAppBar> {
+class CommonAppBarState extends State<CommonAppBar> {
   double _scrollOffset = 0.0;
 
   @override
@@ -49,7 +49,6 @@ class _CommonAppBarState extends State<CommonAppBar> {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final windowSize = getWindowSize(context);
-    final isCompact = windowSize == WindowSize.compact;
     final isMedium = windowSize == WindowSize.medium;
 
     // Navigation items
@@ -71,11 +70,11 @@ class _CommonAppBarState extends State<CommonAppBar> {
           : const EdgeInsets.symmetric(horizontal: 8.0),
       height: 50,
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(1.0 - opacity),
+        color: Colors.white.withAlpha((255 * (1.0 - opacity)).toInt()),
         borderRadius: BorderRadius.circular(15.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.5 * (1.0 - opacity)),
+            color: Colors.black.withAlpha((255 * 0.5 * (1.0 - opacity)).toInt()),
             spreadRadius: 1,
             blurRadius: 1,
             offset: const Offset(2, 3), // changes position of shadow
@@ -111,11 +110,11 @@ class _CommonAppBarState extends State<CommonAppBar> {
       height: 100,
       width: 280,
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(1.0 - opacity),
+        color: Colors.white.withAlpha((255 * (1.0 - opacity)).toInt()),
         borderRadius: BorderRadius.circular(15.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.5 * (1.0 - opacity)),
+            color: Colors.black.withAlpha((255 * 0.5 * (1.0 - opacity)).toInt()),
             spreadRadius: 1,
             blurRadius: 1,
             offset: const Offset(2, 3), // changes position of shadow
@@ -177,7 +176,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
 
         return AppBar(
           elevation: opacity,
-          backgroundColor: Colors.white.withOpacity(opacity),
+          backgroundColor: Colors.white.withAlpha((255 * opacity).toInt()),
           title: null, // Set to null because we are using a custom layout
           automaticallyImplyLeading: false,
           flexibleSpace: Center(
