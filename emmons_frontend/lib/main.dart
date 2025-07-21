@@ -40,9 +40,13 @@ final _router = GoRouter(
   ],
 );
 
+import 'package:flutter_stripe/flutter_stripe.dart';
+
 void main() {
   // Ensure URL strategy is set for web (removes hashbang #)
   GoRouter.optionURLReflectsImperativeAPIs = true;
+  WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = 'pk_live_51QoUvvLiE3PH27cBZ4Nt4532BV0fKKSe5gVG9TTP78yieeoowhCtDy8oWgZKXAOw1Jqm05sWeyee4dUIcyzi25lc00dP9pymbT';
   runApp(const MyApp());
 }
 
