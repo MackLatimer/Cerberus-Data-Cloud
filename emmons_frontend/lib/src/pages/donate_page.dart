@@ -337,13 +337,11 @@ class _DonatePageState extends State<DonatePage> {
     );
   }
 
-  final String _stripePublicKey = 'pk_live_51QoUvvLiE3PH27cBZ4Nt4532BV0fKKSe5gVG9TTP78yieeoowhCtDy8oWgZKXAOw1Jqm05sWeyee4dUIcyzi25lc00dP9pymbT';
-
   void _processDonation() async {
     if (_formKey.currentState!.validate()) {
       final String? sessionId = await StripeService.createCheckoutSession(
         _selectedAmount.toString(),
-        _stripePublicKey,
+        stripePublicKey,
       );
 
       if (sessionId != null) {
