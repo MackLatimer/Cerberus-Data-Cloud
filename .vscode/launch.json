@@ -1,0 +1,48 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "cerberus_frontend",
+            "cwd": "cerberus_frontend",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "cerberus_frontend (profile mode)",
+            "cwd": "cerberus_frontend",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "cerberus_frontend (release mode)",
+            "cwd": "cerberus_frontend",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "emmons_frontend",
+            "cwd": "emmons_frontend",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "emmons_frontend (profile mode)",
+            "cwd": "emmons_frontend",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "emmons_frontend (release mode)",
+            "cwd": "emmons_frontend",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
