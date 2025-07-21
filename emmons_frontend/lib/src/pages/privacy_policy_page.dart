@@ -31,10 +31,10 @@ class PrivacyPolicyPage extends StatelessWidget {
             title: 'Privacy Policy', // No scroll controller needed for a static page
           ),
         ),
-        body: CustomScrollView(
+        body: const CustomScrollView(
           slivers: <Widget>[
             SliverPadding(
-            padding: const EdgeInsets.all(24.0),
+            padding: EdgeInsets.all(24.0),
             sliver: SliverToBoxAdapter(
               child: Center(
                 child: ConstrainedBox(
