@@ -349,15 +349,15 @@ class _DonatePageState extends State<DonatePage> {
         canceledUrl: 'https://emmonsforbellcounty.com/cancel',
       );
 
-      if (response.error == null) {
+      if (response.sessionId != null) {
         setState(() {
           _currentStep = 2;
         });
       } else {
         // Handle error
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: ${response.error!.message}'),
+          const SnackBar(
+            content: Text('Error: Donation failed'),
           ),
         );
       }
