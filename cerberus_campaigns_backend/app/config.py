@@ -21,6 +21,7 @@ else:
 class Config:
     """Base configuration."""
     SECRET_KEY = os.environ.get('SECRET_KEY', 'default_fallback_secret_key_please_change')
+    STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     DEBUG = False
     TESTING = False

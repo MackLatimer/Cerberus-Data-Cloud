@@ -16,3 +16,5 @@ const int currentCampaignId = 1;
 // Other global configurations can be added here
 // For example, feature flags, timeouts, etc.
 const int defaultNetworkTimeoutSeconds = 30;
+
+const String stripePublicKey = 'pk_test_51QoUvvLiE3PH27cBRO2pBOUFm2g3E51i656V4841i3iL4I2zUnEaRPO2u2zJkLpHUqYV3z3z3z3z3z3z3z3z3z3';
