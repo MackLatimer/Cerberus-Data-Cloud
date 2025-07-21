@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:candidate_website/src/widgets/dynamic_size_app_bar.dart';
 import 'package:candidate_website/src/widgets/common_app_bar.dart';
 import 'package:candidate_website/src/widgets/donate_button.dart'; // Re-using for consistency
-import 'package:stripe_checkout/stripe_checkout.dart';
+import 'package:candidate_website/src/network/stripe_service.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:candidate_website/src/widgets/footer.dart'; // Import the Footer widget
 
 class DonatePage extends StatefulWidget {
@@ -337,22 +338,29 @@ class _DonatePageState extends State<DonatePage> {
   }
 
   final String _stripePublicKey = 'pk_live_51QoUvvLiE3PH27cBZ4Nt4532BV0fKKSe5gVG9TTP78yieeoowhCtDy8oWgZKXAOw1Jqm05sWeyee4dUIcyzi25lc00dP9pymbT';
-  final String _stripeSecretKey = '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';
 
   void _processDonation() async {
     if (_formKey.currentState!.validate()) {
-      final response = await redirectToCheckout(
-        context: context,
-        sessionId: 'test_session_id', // Replace with actual session ID from your server
-        publishableKey: _stripePublicKey,
-        successUrl: 'https://emmonsforbellcounty.com/success',
-        canceledUrl: 'https://emmonsforbellcounty.com/cancel',
+      final String? sessionId = await StripeService.createCheckoutSession(
+        _selectedAmount.toString(),
+        _stripePublicKey,
       );
 
-      if (response.sessionId != null) {
-        setState(() {
-          _currentStep = 2;
-        });
+      if (sessionId != null) {
+        final url = 'https://checkout.stripe.com/pay/$sessionId';
+        if (await canLaunch(url)) {
+          await launch(url);
+          setState(() {
+            _currentStep = 2;
+          });
+        } else {
+          // Handle error
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Error: Could not launch donation page'),
+            ),
+          );
+        }
       } else {
         // Handle error
         ScaffoldMessenger.of(context).showSnackBar(
