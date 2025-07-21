@@ -5,6 +5,7 @@ import 'package:candidate_website/src/widgets/donate_button.dart'; // Re-using f
 import 'package:candidate_website/src/network/stripe_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:candidate_website/src/widgets/footer.dart'; // Import the Footer widget
+import 'package:candidate_website/src/config.dart';
 
 class DonatePage extends StatefulWidget {
   const DonatePage({super.key});
@@ -339,9 +340,20 @@ class _DonatePageState extends State<DonatePage> {
 
   void _processDonation() async {
     if (_formKey.currentState!.validate()) {
+      // Ensure a donation amount has been selected.
+      if (_selectedAmount == null || _selectedAmount! <= 0) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Please select a valid donation amount.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return; // Stop the process if no amount is selected
+      }
+
       final String? sessionId = await StripeService.createCheckoutSession(
         _selectedAmount.toString(),
-        stripePublicKey,
+        stripePublicKey, // Now correctly referencing the imported constant
       );
 
       if (sessionId != null) {
