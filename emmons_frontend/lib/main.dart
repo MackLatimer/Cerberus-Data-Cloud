@@ -8,6 +8,7 @@ import 'package:candidate_website/src/pages/endorsements_page.dart';
 import 'package:candidate_website/src/pages/home_page.dart';
 import 'package:candidate_website/src/pages/issues_page.dart';
 import 'package:candidate_website/src/pages/privacy_policy_page.dart'; // Import the new page
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 // Define the routes for the application
 final _router = GoRouter(
@@ -39,8 +40,6 @@ final _router = GoRouter(
     ),
   ],
 );
-
-import 'package:flutter_stripe/flutter_stripe.dart';
 
 void main() {
   // Ensure URL strategy is set for web (removes hashbang #)
