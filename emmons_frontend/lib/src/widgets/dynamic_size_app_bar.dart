@@ -7,17 +7,17 @@ class DynamicSizeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const DynamicSizeAppBar({super.key, required this.child});
 
   @override
-  Size get preferredSize => const Size.fromHeight(306); // Max height as a fallback.
-
-  @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     double height;
 
+    // extended
     if (width > 1000) {
       height = 206;
+    // medium
     } else if (width > 600) {
       height = 266;
+    // compact
     } else {
       height = 306;
     }
