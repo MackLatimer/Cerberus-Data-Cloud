@@ -184,8 +184,8 @@ class IssuesPageState extends State<IssuesPage> {
             ],
           ),
         ),
-        ),
       ),
-    );
+      );
+    });
   }
 }

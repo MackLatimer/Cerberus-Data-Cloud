@@ -150,9 +150,9 @@ class DonatePageState extends State<DonatePage> {
             ],
           ),
         ),
-        ),
       ),
-    );
+      );
+    });
   }
 
   void _processDonation() async {

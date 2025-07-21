@@ -130,8 +130,8 @@ class AboutPageState extends State<AboutPage> {
             ],
           ),
         ),
-        ),
       ),
-    );
+      );
+    });
   }
 }

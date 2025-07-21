@@ -172,9 +172,9 @@ class EndorsementsPageState extends State<EndorsementsPage> {
             ],
           ),
         ),
-        ),
       ),
-    );
+      );
+    });
   }
 
   Widget _buildEndorserList(BuildContext context, List<String> endorsers) {
