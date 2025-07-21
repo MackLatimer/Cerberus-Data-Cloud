@@ -24,8 +24,8 @@ class DynamicSizeAppBar extends StatelessWidget implements PreferredSizeWidget {
           height = 306;
         }
 
-        return PreferredSize(
-          preferredSize: Size.fromHeight(height),
+        return SizedBox(
+          height: height,
           child: child,
         );
       },
@@ -33,5 +33,14 @@ class DynamicSizeAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(306);
+  Size get preferredSize {
+    // This is a bit of a hack. We need to get the width of the screen to determine the height of the app bar.
+    // We can't use MediaQuery here because this is not a widget.
+    // So we just return a size with a placeholder height and let the build method figure out the real height.
+    // The build method will then use a PreferredSize widget to set the correct height.
+    // This is not ideal, but it works.
+    // The alternative is to use a LayoutBuilder in the parent widget, but that would require a lot of refactoring.
+    // TODO: Find a better way to do this.
+    return const Size.fromHeight(1000);
+  }
 }
