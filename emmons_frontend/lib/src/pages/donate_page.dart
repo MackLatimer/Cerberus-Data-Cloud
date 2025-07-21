@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:candidate_website/src/widgets/dynamic_size_app_bar.dart';
 import 'package:candidate_website/src/widgets/common_app_bar.dart';
-import 'package:candidate_website/src/network/stripe_service.dart';
-import 'package:candidate_website/src/widgets/donation_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:candidate_website/src/widgets/footer.dart'; // Import the Footer widget
 import 'package:candidate_website/src/config.dart';
@@ -82,8 +80,6 @@ class DonatePageState extends State<DonatePage> {
                           style: Theme.of(context).textTheme.headlineMedium,
                           textAlign: TextAlign.center,
                         ),
-                        const SizedBox(height: 40),
-                        const DonationWidget(),
                         const SizedBox(height: 40),
                         Text(
                           'If you prefer to donate by mail, please send a check payable to "Curtis Emmons Campaign" to: [Campaign PO Box or Address Here - Placeholder]',
