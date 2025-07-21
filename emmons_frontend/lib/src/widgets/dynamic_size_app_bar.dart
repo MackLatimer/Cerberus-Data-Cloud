@@ -14,12 +14,12 @@ class DynamicSizeAppBar extends StatelessWidget implements PreferredSizeWidget {
     final width = MediaQuery.of(context).size.width;
     double height;
 
-    if (width < 600) {
-      height = 306;
-    } else if (width < 1000) {
+    if (width > 1200) {
+      height = 206;
+    } else if (width > 800) {
       height = 266;
     } else {
-      height = 206;
+      height = 306;
     }
 
     return PreferredSize(
