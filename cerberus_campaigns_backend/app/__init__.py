@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from .config import get_config_by_name, current_config_name, Config # Import Config for type hinting if needed
 from .extensions import init_extensions, db # db needed for shell context
 from . import models as model_module # Import the models module
@@ -24,6 +25,8 @@ def create_app(config_name_override: str = None) -> Flask:
 
     app = Flask(__name__)
     app.config.from_object(get_config_by_name(effective_config_name))
+
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
 
     stripe.api_key = app.config['STRIPE_SECRET_KEY']
 
