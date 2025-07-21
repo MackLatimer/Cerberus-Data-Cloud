@@ -10,15 +10,30 @@ class PrivacyPolicyPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    return Scaffold(
-      appBar: DynamicSizeAppBar(
-        child: CommonAppBar(
-          title: 'Privacy Policy', // No scroll controller needed for a static page
+    return LayoutBuilder(builder: (context, constraints) {
+      final width = constraints.maxWidth;
+      double appBarHeight;
+
+      // extended
+      if (width > 1000) {
+        appBarHeight = 206;
+        // medium
+      } else if (width > 600) {
+        appBarHeight = 266;
+        // compact
+      } else {
+        appBarHeight = 306;
+      }
+      return Scaffold(
+        appBar: DynamicSizeAppBar(
+          height: appBarHeight,
+          child: CommonAppBar(
+            title: 'Privacy Policy', // No scroll controller needed for a static page
+          ),
         ),
-      ),
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverPadding(
+        body: CustomScrollView(
+          slivers: <Widget>[
+            SliverPadding(
             padding: const EdgeInsets.all(24.0),
             sliver: SliverToBoxAdapter(
               child: Center(

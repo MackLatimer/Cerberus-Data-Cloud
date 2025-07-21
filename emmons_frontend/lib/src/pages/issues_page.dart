@@ -95,16 +95,31 @@ class IssuesPageState extends State<IssuesPage> {
     final isCompact = windowSize == WindowSize.compact;
     final heroHeight = isCompact ? MediaQuery.of(context).size.height * 0.5 : MediaQuery.of(context).size.height;
 
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: DynamicSizeAppBar(
-        child: CommonAppBar(
-          title: 'Key Issues',
-          scrollController: _scrollController,
+    return LayoutBuilder(builder: (context, constraints) {
+      final width = constraints.maxWidth;
+      double appBarHeight;
+
+      // extended
+      if (width > 1000) {
+        appBarHeight = 206;
+        // medium
+      } else if (width > 600) {
+        appBarHeight = 266;
+        // compact
+      } else {
+        appBarHeight = 306;
+      }
+      return Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: DynamicSizeAppBar(
+          height: appBarHeight,
+          child: CommonAppBar(
+            title: 'Key Issues',
+            scrollController: _scrollController,
+          ),
         ),
-      ),
-      body: NestedScrollView(
-        controller: _scrollController,
+        body: NestedScrollView(
+          controller: _scrollController,
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
             SliverToBoxAdapter(

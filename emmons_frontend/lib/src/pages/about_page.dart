@@ -23,16 +23,31 @@ class AboutPageState extends State<AboutPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: DynamicSizeAppBar(
-        child: CommonAppBar(
-          title: 'About Curtis Emmons',
-          scrollController: _scrollController,
+    return LayoutBuilder(builder: (context, constraints) {
+      final width = constraints.maxWidth;
+      double appBarHeight;
+
+      // extended
+      if (width > 1000) {
+        appBarHeight = 206;
+        // medium
+      } else if (width > 600) {
+        appBarHeight = 266;
+        // compact
+      } else {
+        appBarHeight = 306;
+      }
+      return Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: DynamicSizeAppBar(
+          height: appBarHeight,
+          child: CommonAppBar(
+            title: 'About Curtis Emmons',
+            scrollController: _scrollController,
+          ),
         ),
-      ),
-      body: NestedScrollView(
-        controller: _scrollController,
+        body: NestedScrollView(
+          controller: _scrollController,
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
             SliverToBoxAdapter(
