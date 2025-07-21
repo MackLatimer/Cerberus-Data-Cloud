@@ -172,6 +172,7 @@ class EndorsementsPageState extends State<EndorsementsPage> {
             ],
           ),
         ),
+        ),
       ),
     );
   }
