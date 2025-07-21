@@ -63,13 +63,13 @@ class DonatePageState extends State<DonatePage> {
 
       // extended
       if (width > 1000) {
-        appBarHeight = 206;
+        appBarHeight = 156;
         // medium
       } else if (width > 600) {
-        appBarHeight = 266;
+        appBarHeight = 216;
         // compact
       } else {
-        appBarHeight = 306;
+        appBarHeight = 256;
       }
       return Scaffold(
         extendBodyBehindAppBar: true,
