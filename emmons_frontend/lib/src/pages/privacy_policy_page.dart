@@ -63,6 +63,7 @@ class PrivacyPolicyPage extends StatelessWidget {
           const SliverToBoxAdapter(child: Footer()),
         ],
       ),
-    );
+      );
+    });
   }
 }

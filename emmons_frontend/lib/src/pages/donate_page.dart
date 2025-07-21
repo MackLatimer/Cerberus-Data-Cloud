@@ -150,7 +150,104 @@ class DonatePageState extends State<DonatePage> {
             ],
           ),
         ),
+        ),
       ),
+    );
+  }
+
+  void _processDonation() async {
+    if (_formKey.currentState!.validate()) {
+      // Ensure a donation amount has been selected.
+      if (_selectedAmount == null || _selectedAmount! <= 0) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Please select a valid donation amount.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return; // Stop the process if no amount is selected
+      }
+
+      final String? sessionId = await StripeService.createCheckoutSession(
+        _selectedAmount.toString(),
+        stripePublicKey, // Now correctly referencing the imported constant
+      );
+
+      if (sessionId != null) {
+        final url = Uri.parse('https://checkout.stripe.com/pay/$sessionId');
+        if (await canLaunchUrl(url)) {
+          await launchUrl(url);
+          setState(() {
+            _currentStep = 2;
+          });
+        } else {
+          // Handle error
+          if (!mounted) return;
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Error: Could not launch donation page'),
+            ),
+          );
+        }
+      } else {
+        // Handle error
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Error: Donation failed'),
+          ),
+        );
+      }
+    }
+  }
+
+  Widget _buildPostDonationForm(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Text(
+          'Thank you for your donation!',
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 20),
+        _buildTextFormField(label: 'Phone Number', controller: _phoneController, keyboardType: TextInputType.phone),
+        _buildTextFormField(label: 'Email', controller: _emailController, isRequired: true, keyboardType: TextInputType.emailAddress),
+        const SizedBox(height: 16),
+        CheckboxListTile(
+          title: Text('I agree to receive automated messaging from Elect Emmons', style: Theme.of(context).textTheme.bodyMedium),
+          value: _agreedToMessaging,
+          onChanged: (bool? value) {
+            setState(() {
+              _agreedToMessaging = value ?? false;
+            });
+          },
+          controlAffinity: ListTileControlAffinity.leading,
+          contentPadding: EdgeInsets.zero,
+        ),
+        CheckboxListTile(
+          title: Text('I agree to receive emails from Elect Emmons', style: Theme.of(context).textTheme.bodyMedium),
+          value: _agreedToEmails,
+          onChanged: (bool? value) {
+            setState(() {
+              _agreedToEmails = value ?? false;
+            });
+          },
+          controlAffinity: ListTileControlAffinity.leading,
+          contentPadding: EdgeInsets.zero,
+        ),
+        const SizedBox(height: 24),
+        ElevatedButton(
+          onPressed: () {
+            // Handle submission of post-donation data
+          },
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            textStyle: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 18),
+          ),
+          child: const Text('Submit'),
+        ),
+      ],
     );
   }
 
@@ -336,102 +433,6 @@ class DonatePageState extends State<DonatePage> {
               _currentStep = 1;
             });
           },
-          child: const Text('Submit'),
-        ),
-      ],
-    );
-  }
-
-  void _processDonation() async {
-    if (_formKey.currentState!.validate()) {
-      // Ensure a donation amount has been selected.
-      if (_selectedAmount == null || _selectedAmount! <= 0) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Please select a valid donation amount.'),
-            backgroundColor: Colors.red,
-          ),
-        );
-        return; // Stop the process if no amount is selected
-      }
-
-      final String? sessionId = await StripeService.createCheckoutSession(
-        _selectedAmount.toString(),
-        stripePublicKey, // Now correctly referencing the imported constant
-      );
-
-      if (sessionId != null) {
-        final url = Uri.parse('https://checkout.stripe.com/pay/$sessionId');
-        if (await canLaunchUrl(url)) {
-          await launchUrl(url);
-          setState(() {
-            _currentStep = 2;
-          });
-        } else {
-          // Handle error
-          if (!mounted) return;
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Error: Could not launch donation page'),
-            ),
-          );
-        }
-      } else {
-        // Handle error
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Error: Donation failed'),
-          ),
-        );
-      }
-    }
-  }
-
-  Widget _buildPostDonationForm(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        Text(
-          'Thank you for your donation!',
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 20),
-        _buildTextFormField(label: 'Phone Number', controller: _phoneController, keyboardType: TextInputType.phone),
-        _buildTextFormField(label: 'Email', controller: _emailController, isRequired: true, keyboardType: TextInputType.emailAddress),
-        const SizedBox(height: 16),
-        CheckboxListTile(
-          title: Text('I agree to receive automated messaging from Elect Emmons', style: Theme.of(context).textTheme.bodyMedium),
-          value: _agreedToMessaging,
-          onChanged: (bool? value) {
-            setState(() {
-              _agreedToMessaging = value ?? false;
-            });
-          },
-          controlAffinity: ListTileControlAffinity.leading,
-          contentPadding: EdgeInsets.zero,
-        ),
-        CheckboxListTile(
-          title: Text('I agree to receive emails from Elect Emmons', style: Theme.of(context).textTheme.bodyMedium),
-          value: _agreedToEmails,
-          onChanged: (bool? value) {
-            setState(() {
-              _agreedToEmails = value ?? false;
-            });
-          },
-          controlAffinity: ListTileControlAffinity.leading,
-          contentPadding: EdgeInsets.zero,
-        ),
-        const SizedBox(height: 24),
-        ElevatedButton(
-          onPressed: () {
-            // Handle submission of post-donation data
-          },
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            textStyle: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 18),
-          ),
           child: const Text('Submit'),
         ),
       ],
