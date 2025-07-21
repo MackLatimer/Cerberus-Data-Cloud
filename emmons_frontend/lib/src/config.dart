@@ -16,4 +16,4 @@ const int currentCampaignId = 1;
 // For example, feature flags, timeouts, etc.
 const int defaultNetworkTimeoutSeconds = 30;
 
-const String stripePublicKey = 'pk_test_51QoUvvLiE3PH27cBRO2pBOUFm2g3E51i656V4841i3iL4I2zUnEaRPO2u2zJkLpHUqYV3z3z3z3z3z3z3z3z3z3';
+const String stripePublicKey = 'pk_live_51QoUvvLiE3PH27cBZ4Nt4532BV0fKKSe5gVG9TTP78yieeoowhCtDy8oWgZKXAOw1Jqm05sWeyee4dUIcyzi25lc00dP9pymbT';
