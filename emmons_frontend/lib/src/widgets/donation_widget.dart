@@ -56,7 +56,6 @@ class _DonationWidgetState extends State<DonationWidget> {
           ),
           customFlow: true,
           allowsDelayedPaymentMethods: true,
-          merchantCountryCode: 'US',
           testEnv: true,
           googlePay: const PaymentSheetGooglePay(merchantCountryCode: 'US', testEnv: true),
           applePay: const PaymentSheetApplePay(merchantCountryCode: 'US'),
