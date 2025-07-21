@@ -54,9 +54,7 @@ class JoinListSection extends StatelessWidget {
             ),
             const SizedBox(height: 16.0),
             ElevatedButton(
-              onPressed: () {
-                // TODO: Implement submit functionality
-              },
+              onPressed: () {},
               child: const Text('Submit'),
             ),
           ],

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:candidate_website/src/widgets/dynamic_size_app_bar.dart';
 import 'package:candidate_website/src/widgets/common_app_bar.dart';
-import 'package:candidate_website/src/widgets/donate_button.dart'; // Re-using for consistency
 import 'package:candidate_website/src/network/stripe_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:candidate_website/src/widgets/footer.dart'; // Import the Footer widget
@@ -11,10 +10,10 @@ class DonatePage extends StatefulWidget {
   const DonatePage({super.key});
 
   @override
-  _DonatePageState createState() => _DonatePageState();
+  DonatePageState createState() => DonatePageState();
 }
 
-class _DonatePageState extends State<DonatePage> {
+class DonatePageState extends State<DonatePage> {
   final ScrollController _scrollController = ScrollController();
   final _formKey = GlobalKey<FormState>();
   int _currentStep = 0;
@@ -37,7 +36,7 @@ class _DonatePageState extends State<DonatePage> {
   bool _agreedToMessaging = false;
   bool _agreedToEmails = false;
   bool _coverTransactionFee = false;
-  bool _showFullForm = false;
+  final bool _showFullForm = false;
 
   @override
   void dispose() {
@@ -55,16 +54,6 @@ class _DonatePageState extends State<DonatePage> {
     _occupationController.dispose();
     super.dispose();
   }
-
-  // Placeholder for actual donation link
-  final String _donationUrl = 'https://placeholder-donation-platform.com/curtis-emmons';
-
-  // Future<void> _launchDonationUrl() async {
-  //   if (!await launchUrl(Uri.parse(_donationUrl))) {
-  //     // TODO: Handle error - perhaps show a dialog or snackbar
-  //     print('Could not launch $_donationUrl');
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -357,14 +346,15 @@ class _DonatePageState extends State<DonatePage> {
       );
 
       if (sessionId != null) {
-        final url = 'https://checkout.stripe.com/pay/$sessionId';
-        if (await canLaunch(url)) {
-          await launch(url);
+        final url = Uri.parse('https://checkout.stripe.com/pay/$sessionId');
+        if (await canLaunchUrl(url)) {
+          await launchUrl(url);
           setState(() {
             _currentStep = 2;
           });
         } else {
           // Handle error
+          if (!mounted) return;
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Error: Could not launch donation page'),
@@ -373,6 +363,7 @@ class _DonatePageState extends State<DonatePage> {
         }
       } else {
         // Handle error
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Error: Donation failed'),
@@ -429,49 +420,6 @@ class _DonatePageState extends State<DonatePage> {
           child: const Text('Submit'),
         ),
       ],
-    );
-  }
-
-  void _showDonationDataDialog() {
-    // In a real app, you'd send this data to a server or payment processor
-    final formData = {
-      'First Name': _firstNameController.text,
-      'Last Name': _lastNameController.text,
-      'Address': _addressController.text,
-      'Address Line 2': _addressLine2Controller.text,
-      'City': _cityController.text,
-      'State': _stateController.text,
-      'ZIP': _zipController.text,
-      'Email': _emailController.text,
-      'Phone': _phoneController.text,
-      'Employer': _employerController.text,
-      'Occupation': _occupationController.text,
-      'Agreed to Messaging': _agreedToMessaging.toString(),
-      'Agreed to Emails': _agreedToEmails.toString(),
-    };
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Donation Information Received (Placeholder)'),
-        content: SingleChildScrollView(
-          child: ListBody(
-            children: formData.entries
-                .map((entry) => Text('${entry.key}: ${entry.value}'))
-                .toList(),
-          ),
-        ),
-        actions: [
-          TextButton(
-            child: const Text('OK'),
-            onPressed: () {
-              Navigator.of(context).pop();
-              // Optionally, clear form or navigate to a "thank you" or actual payment page
-              // _formKey.currentState?.reset(); // Consider if this is desired UX
-            },
-          ),
-        ],
-      ),
     );
   }
 }

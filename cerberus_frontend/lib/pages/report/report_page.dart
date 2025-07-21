@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'dart:io' show Platform; // Used for checking platform for base URL
 import 'dart:math' show min; // For substring
 import 'package:intl/intl.dart'; // For date formatting
 import 'package:url_launcher/url_launcher.dart'; // For PDF links
@@ -367,7 +366,7 @@ class _ReportPageState extends State<ReportPage> {
               Text(_error!, textAlign: TextAlign.center, style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 16)),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: _fetchReportData, // TODO: This should trigger a filtered search
+                onPressed: _fetchReportData,
                 child: const Text('Retry'),
               )
             ],
@@ -488,7 +487,6 @@ class _ReportPageState extends State<ReportPage> {
               setState(() {
                 _searchKeyword = value;
               });
-              // TODO: Consider debouncing or triggering search on submit
             },
             decoration: const InputDecoration(
               labelText: 'Search by keyword',
@@ -600,7 +598,7 @@ class _ReportPageState extends State<ReportPage> {
                 icon: const Icon(Icons.search_rounded), // Updated icon
                 label: const Text('Apply Filters & Search'),
                 onPressed: () {
-                    _fetchReportData(); // TODO: This should trigger a *filtered* search
+                    _fetchReportData();
                 },
                 style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 12.0), // Padding from theme is usually sufficient
