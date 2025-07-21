@@ -8,23 +8,30 @@ class DynamicSizeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    double height;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final width = constraints.maxWidth;
+        double height;
 
-    // extended
-    if (width > 1000) {
-      height = 206;
-    // medium
-    } else if (width > 600) {
-      height = 266;
-    // compact
-    } else {
-      height = 306;
-    }
+        // extended
+        if (width > 1000) {
+          height = 206;
+        // medium
+        } else if (width > 600) {
+          height = 266;
+        // compact
+        } else {
+          height = 306;
+        }
 
-    return PreferredSize(
-      preferredSize: Size.fromHeight(height),
-      child: child,
+        return PreferredSize(
+          preferredSize: Size.fromHeight(height),
+          child: child,
+        );
+      },
     );
   }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(306);
 }
