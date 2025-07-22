@@ -39,7 +39,7 @@ class _DonationWidgetState extends State<DonationWidget> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://127.0.0.1:5000/donate'), // Assuming backend is running locally
+        Uri.parse('http://127.0.0.1:5001/donate'), // Assuming backend is running locally
         headers: {'Content-Type': 'application/json'},
         body: json.encode({'amount': amount}),
       );
