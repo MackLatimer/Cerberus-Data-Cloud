@@ -6,6 +6,7 @@ import 'package:intl/intl.dart'; // For date formatting
 import 'package:url_launcher/url_launcher.dart'; // For PDF links
 import 'package:report_feature/src/models/agenda_item.dart';
 import 'package:shared_ui/shared_ui.dart';
+import 'package:shared_ui/src/config.dart';
 
 class ReportPage extends StatefulWidget {
   const ReportPage({super.key});

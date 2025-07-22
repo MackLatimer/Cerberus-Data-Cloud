@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:candidate_website/src/widgets/dynamic_size_app_bar.dart';
-import 'package:candidate_website/src/widgets/common_app_bar.dart';
-import 'package:candidate_website/src/widgets/signup_form.dart';
-import 'package:candidate_website/src/widgets/donate_section.dart';
-import 'package:candidate_website/src/widgets/footer.dart';
-import 'package:candidate_website/src/utils/breakpoint.dart';
+import 'package:shared_ui/src/utils/breakpoint.dart';
+import 'package:shared_ui/src/widgets/common_app_bar.dart';
+import 'package:shared_ui/src/widgets/footer.dart';
+import 'package:shared_ui/src/widgets/signup_form.dart';
+import '../widgets/donate_section.dart';
+import '../widgets/dynamic_size_app_bar.dart';
 
 class IssuesPage extends StatefulWidget {
   const IssuesPage({super.key});

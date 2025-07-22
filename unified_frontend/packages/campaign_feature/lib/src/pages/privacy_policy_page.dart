@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:candidate_website/src/widgets/dynamic_size_app_bar.dart';
-import 'package:candidate_website/src/widgets/common_app_bar.dart';
-import 'package:candidate_website/src/widgets/footer.dart';
+import 'package:shared_ui/src/widgets/common_app_bar.dart';
+import 'package:shared_ui/src/widgets/footer.dart';
+import '../widgets/dynamic_size_app_bar.dart';
 
 class PrivacyPolicyPage extends StatelessWidget {
   const PrivacyPolicyPage({super.key});

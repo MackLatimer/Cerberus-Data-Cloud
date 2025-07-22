@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_ui/src/utils/breakpoint.dart';
 
 class CommonAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
@@ -20,8 +21,6 @@ class CommonAppBar extends StatefulWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
-
-import 'package:shared_ui/src/utils/breakpoint.dart';
 
 class CommonAppBarState extends State<CommonAppBar> {
   double _scrollOffset = 0.0;
