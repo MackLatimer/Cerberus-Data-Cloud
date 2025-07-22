@@ -1,9 +1,0 @@
-requests
-beautifulsoup4
-pdfplumber
-Flask
-Flask-CORS
-gunicorn
-cloud-sql-python-connector~=1.18.2
-pg8000>=1.29.0,<2.0.0
-sendgrid>=6.0.0,<7.0.0

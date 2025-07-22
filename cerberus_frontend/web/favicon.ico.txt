@@ -1,4 +1,0 @@
-This is a placeholder for the actual favicon.ico file.
-For Flutter web, this would typically replace web/favicon.png,
-and web/index.html would be updated to reference:
-<link rel="icon" type="image/x-icon" href="favicon.ico"/>
