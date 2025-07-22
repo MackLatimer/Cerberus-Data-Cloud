@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:candidate_website/src/utils/breakpoint.dart';
+import 'package:shared_ui/src/utils/breakpoint.dart';
 
 class HighProfileEndorsementCard extends StatelessWidget {
   final String name;

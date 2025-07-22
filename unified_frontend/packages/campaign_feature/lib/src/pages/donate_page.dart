@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:candidate_website/src/widgets/dynamic_size_app_bar.dart';
-import 'package:candidate_website/src/widgets/common_app_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:candidate_website/src/widgets/footer.dart'; // Import the Footer widget
-import 'package:candidate_website/src/config.dart';
-import 'package:candidate_website/src/widgets/donation_widget.dart';
+import 'package:shared_ui/src/widgets/common_app_bar.dart';
+import 'package:shared_ui/src/widgets/footer.dart';
+import '../widgets/donation_widget.dart';
+import '../widgets/dynamic_size_app_bar.dart';
 
 class DonatePage extends StatefulWidget {
   const DonatePage({super.key});
