@@ -125,7 +125,7 @@ class AboutPageState extends State<AboutPage> {
                 ),
               ),
               const DonateSection(),
-              const SignupFormWidget(),
+              const SignupForm(),
               const Footer(),
             ],
           ),
