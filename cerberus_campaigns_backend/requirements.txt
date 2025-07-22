@@ -1,0 +1,13 @@
+Flask==2.3.3
+SQLAlchemy==2.0.23
+Flask-SQLAlchemy==3.1.1
+psycopg2-binary==2.9.9
+python-dotenv==1.0.0
+Flask-Migrate==4.0.5 # For database migrations
+Flask-Bcrypt==1.0.1 # For password hashing
+PyJWT==2.8.0 # For token-based authentication (optional, but good for APIs)
+gunicorn==21.2.0 # WSGI server for deployment
+pytest==7.4.4 # For running tests
+pytest-flask==1.3.0 # For Flask specific test fixtures
+Flask-CORS==4.0.0 # For Cross-Origin Resource Sharing
+stripe==2.60.0
