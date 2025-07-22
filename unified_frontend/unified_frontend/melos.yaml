@@ -1,0 +1,5 @@
+name: unified_frontend
+
+packages:
+  - app
+  - packages/**

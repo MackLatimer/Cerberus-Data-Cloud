@@ -1,0 +1,23 @@
+name: campaign_feature
+description: A feature-specific package for the Emmons campaign.
+
+environment:
+  sdk: '>=3.3.4 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  shared_ui:
+    path: ../shared_ui
+  go_router: ^14.6.2
+  google_fonts: ^6.2.1
+  flutter_riverpod: ^2.6.1
+  http: ^1.2.1
+  url_launcher: ^6.3.1
+  flutter_stripe: ^10.1.1
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
