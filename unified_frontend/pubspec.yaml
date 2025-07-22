@@ -8,11 +8,11 @@ dependencies:
   flutter:
     sdk: flutter
   campaign_feature:
-    path: ../packages/campaign_feature
+    path: packages/campaign_feature
   data_portal_feature:
-    path: ../packages/data_portal_feature
+    path: packages/data_portal_feature
   report_feature:
-    path: ../packages/report_feature
+    path: packages/report_feature
   go_router: ^14.6.2
 
 dev_dependencies:
