@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:campaign_feature/campaign_feature.dart';
 import 'package:data_portal_feature/data_portal_feature.dart';
 import 'package:report_feature/report_feature.dart';
+import 'package:shared_ui/shared_ui.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,9 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       routerConfig: _router,
       title: 'Unified Frontend',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: AppTheme.lightTheme,
     );
   }
 }
