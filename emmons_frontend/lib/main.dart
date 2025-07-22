@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:candidate_website/src/pages/about_page.dart';
+import 'package:candidate_website/src/pages/coming_soon_page.dart';
 import 'package:candidate_website/src/pages/donate_page.dart';
 import 'package:candidate_website/src/pages/endorsements_page.dart';
 import 'package:candidate_website/src/pages/home_page.dart';
@@ -13,8 +14,12 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 
 // Define the routes for the application
 final _router = GoRouter(
-  initialLocation: '/',
+  initialLocation: '/coming-soon',
   routes: [
+    GoRoute(
+      path: '/coming-soon',
+      pageBuilder: (context, state) => const NoTransitionPage(child: ComingSoonPage()),
+    ),
     GoRoute(
       path: '/',
       pageBuilder: (context, state) => const NoTransitionPage(child: HomePage()),
