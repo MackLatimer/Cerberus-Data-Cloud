@@ -1,0 +1,20 @@
+name: data_portal_feature
+description: A feature-specific package for the Cerberus data portal.
+
+environment:
+  sdk: '>=3.3.4 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  shared_ui:
+    path: ../shared_ui
+  go_router: ^14.6.2
+  file_picker: ^8.0.0+1
+  http: ^1.2.1
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
