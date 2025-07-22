@@ -166,7 +166,7 @@ class EndorsementsPageState extends State<EndorsementsPage> {
               const SizedBox(height: 20),
               const DonateSection(),
               const SizedBox(height: 40),
-              const SignupFormWidget(),
+              const SignupForm(),
               const SizedBox(height: 40),
               const Footer(),
             ],

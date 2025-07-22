@@ -179,7 +179,7 @@ class IssuesPageState extends State<IssuesPage> {
                 imageLeft: false,
               ),
               const DonateSection(),
-              const SignupFormWidget(),
+              const SignupForm(),
               const Footer(),
             ],
           ),
