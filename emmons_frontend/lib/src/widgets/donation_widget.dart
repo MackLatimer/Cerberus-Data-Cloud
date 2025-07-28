@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:emmons_frontend/src/config.dart';
+import 'package:candidate_website/src/config.dart';
 
 class DonationWidget extends StatefulWidget {
   const DonationWidget({super.key});
