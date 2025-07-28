@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:candidate_website/src/config.dart';
 
 class DonationWidget extends StatefulWidget {
   const DonationWidget({super.key});
@@ -39,7 +40,7 @@ class _DonationWidgetState extends State<DonationWidget> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://127.0.0.1:5001/donate'), // Assuming backend is running locally
+        Uri.parse('https://campaigns-api-885603051818.us-south1.run.app/donate'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({'amount': amount}),
       );
