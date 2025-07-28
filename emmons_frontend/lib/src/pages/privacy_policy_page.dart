@@ -27,7 +27,7 @@ class PrivacyPolicyPage extends StatelessWidget {
       return Scaffold(
         appBar: DynamicSizeAppBar(
           height: appBarHeight,
-          child: CommonAppBar(
+          child: const CommonAppBar(
             title: 'Privacy Policy', // No scroll controller needed for a static page
           ),
         ),
@@ -60,7 +60,7 @@ class PrivacyPolicyPage extends StatelessWidget {
               ),
             ),
           ),
-          SliverToBoxAdapter(child: Footer()),
+          const SliverToBoxAdapter(child: Footer()),
         ],
       ),
       );

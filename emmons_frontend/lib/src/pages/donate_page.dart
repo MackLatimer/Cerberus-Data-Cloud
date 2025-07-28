@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:candidate_website/src/widgets/dynamic_size_app_bar.dart';
 import 'package:candidate_website/src/widgets/common_app_bar.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:candidate_website/src/widgets/footer.dart'; // Import the Footer widget
-import 'package:candidate_website/src/config.dart';
 import 'package:candidate_website/src/widgets/donation_widget.dart';
 
 class DonatePage extends StatefulWidget {
