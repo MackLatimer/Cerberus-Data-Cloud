@@ -40,7 +40,7 @@ class _DonationWidgetState extends State<DonationWidget> {
 
     try {
       final response = await http.post(
-        Uri.parse('$apiBaseUrl/donate'),
+        Uri.parse('https://campaigns-api-885603051818.us-south1.run.app/donate'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({'amount': amount}),
       );
