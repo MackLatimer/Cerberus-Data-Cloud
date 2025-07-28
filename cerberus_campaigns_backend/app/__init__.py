@@ -26,7 +26,10 @@ def create_app(config_name_override: str = None) -> Flask:
     app = Flask(__name__)
     app.config.from_object(get_config_by_name(effective_config_name))
 
-    CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
+    CORS(app, resources={
+        r"/api/*": {"origins": "*"},
+        r"/donate": {"origins": "*"}
+    }, supports_credentials=True)
 
     stripe.api_key = app.config['STRIPE_SECRET_KEY']
 
