@@ -64,12 +64,16 @@ class _DonationWidgetState extends State<DonationWidget> {
       await Stripe.instance.presentPaymentSheet();
 
       // Handle post-payment flow
-      _showPostDonationDialog();
+      if (mounted) {
+        _showPostDonationDialog();
+      }
 
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $e')),
+        );
+      }
     }
   }
 
