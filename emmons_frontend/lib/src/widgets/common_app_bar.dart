@@ -187,9 +187,9 @@ class CommonAppBarState extends State<CommonAppBar> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         SvgPicture.asset(
-                    'assets/images/Emmons_Logo_4_TP_Shadow.svg',
-                    height: 50,
-                  ),
+                          'assets/images/Emmons_Logo_4.svg',
+                          height: 50,
+                        ),
                         const SizedBox(height: 16.0),
                         if (isCompact)
                           compactNavigation
@@ -202,7 +202,7 @@ class CommonAppBarState extends State<CommonAppBar> {
                       children: <Widget>[
                         // Logo on the left
                         SvgPicture.asset(
-                          'assets/images/Emmons_Logo_4_TP_Shadow.svg',
+                          'assets/images/Emmons_Logo_4.svg',
                           width: 400,
                           height: 100,
                         ),
