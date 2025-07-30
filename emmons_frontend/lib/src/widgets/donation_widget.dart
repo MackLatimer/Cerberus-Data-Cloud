@@ -121,13 +121,105 @@ class _DonationWidgetState extends State<DonationWidget> {
     }
   }
 
+  Future<void> _displayPaymentSheet() async {
+    try {
+      // 1. Initialize Payment Sheet
+      await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+          paymentIntentClientSecret: _paymentIntentClientSecret!,
+          merchantDisplayName: 'Emmons for Office',
+          customerId: _customerId,
+          customerEphemeralKeySecret: null, // Not needed for web
+          setupIntentClientSecret: _isRecurring ? _paymentIntentClientSecret : null, // Use PI client secret for SetupIntent if recurring
+          style: Theme.of(context).brightness == Brightness.dark ? ThemeMode.dark : ThemeMode.light,
+          billingDetails: BillingDetails(
+            email: _emailController.text,
+            phone: _phoneNumberController.text,
+            address: Address(
+              line1: _addressLine1Controller.text,
+              line2: _addressLine2Controller.text,
+              city: _cityController.text,
+              state: _stateController.text,
+              postalCode: _zipController.text,
+              country: 'US',
+            ),
+          ),
+        ),
+      );
+
+      // 2. Present Payment Sheet
+      await Stripe.instance.presentPaymentSheet();
+
+      // Payment successful, proceed to save details
+      _saveDonorDetailsToBackend();
+    } on StripeException catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Stripe Error: ${e.error.localizedMessage}')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('An unexpected error occurred: $e')),
+        );
+      }
+    }
+  }
+
+  Future<void> _saveDonorDetailsToBackend() async {
+    try {
+      final response = await http.post(
+        Uri.parse('$apiBaseUrl/update-donation-details'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          'payment_intent_id': _paymentIntentId,
+          'first_name': _firstNameController.text,
+          'last_name': _lastNameController.text,
+          'address_line1': _addressLine1Controller.text,
+          'address_line2': _addressLine2Controller.text,
+          'address_city': _cityController.text,
+          'address_state': _stateController.text,
+          'address_zip': _zipController.text,
+          'employer': _employerController.text,
+          'occupation': _occupationController.text,
+          'email': _emailController.text,
+          'phone_number': _phoneNumberController.text,
+          'is_recurring': _isRecurring,
+          'covers_fees': _coversFees,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        setState(() {
+          _currentStep = 2; // Move to contact details
+        });
+      } else {
+        throw json.decode(response.body)['error'] ?? 'Failed to save donor details.';
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error saving donor details: $e')),
+        );
+      }
+    }
+  }
+
   Future<void> _confirmPaymentAndSaveDetails() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
 
+    if (kIsWeb) {
+      // For web, payment is handled by PaymentSheet, which is triggered by _displayPaymentSheet
+      // This method will now only save donor details after the payment sheet is successful.
+      _saveDonorDetailsToBackend();
+      return;
+    }
+
     try {
-      // 1. Confirm Payment with Stripe
+      // For non-web, confirm payment directly
       final paymentIntent = await Stripe.instance.confirmPayment(
         paymentIntentClientSecret: _paymentIntentClientSecret!,
         data: const PaymentMethodParams.card(
@@ -139,35 +231,7 @@ class _DonationWidgetState extends State<DonationWidget> {
       );
 
       if (paymentIntent.status == PaymentIntentsStatus.Succeeded) {
-        // 2. Save Donor Details to Backend
-        final response = await http.post(
-          Uri.parse('$apiBaseUrl/update-donation-details'),
-          headers: {'Content-Type': 'application/json'},
-          body: json.encode({
-            'payment_intent_id': _paymentIntentId,
-            'first_name': _firstNameController.text,
-            'last_name': _lastNameController.text,
-            'address_line1': _addressLine1Controller.text,
-            'address_line2': _addressLine2Controller.text,
-            'address_city': _cityController.text,
-            'address_state': _stateController.text,
-            'address_zip': _zipController.text,
-            'employer': _employerController.text,
-            'occupation': _occupationController.text,
-            'email': _emailController.text, // Ensure email is sent here too
-            'phone_number': _phoneNumberController.text, // Ensure phone is sent here too
-            'is_recurring': _isRecurring,
-            'covers_fees': _coversFees,
-          }),
-        );
-
-        if (response.statusCode == 200) {
-          setState(() {
-            _currentStep = 2; // Move to contact details
-          });
-        } else {
-          throw json.decode(response.body)['error'] ?? 'Failed to save donor details.';
-        }
+        _saveDonorDetailsToBackend();
       } else {
         throw 'Payment failed: ${paymentIntent.status}';
       }
@@ -337,11 +401,10 @@ class _DonationWidgetState extends State<DonationWidget> {
               validator: (value) => value!.isEmpty ? 'Required' : null,
             ),
             const SizedBox(height: 20),
-            if (kIsWeb) // Conditionally render CardField for web
-              const Text(
-                'Card input is not available on web. Please use a mobile device or consider donating via mail.',
-                style: TextStyle(color: Colors.red),
-                textAlign: TextAlign.center,
+            if (kIsWeb) // Conditionally render PaymentSheet for web
+              ElevatedButton(
+                onPressed: _displayPaymentSheet,
+                child: const Text('Enter Payment Details'),
               )
             else
               CardField(
