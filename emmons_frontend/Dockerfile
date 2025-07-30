@@ -17,7 +17,7 @@ COPY . .
 
 # Build the web application
 # Using --release for a production build
-RUN flutter build web --release
+RUN flutter build web --profile
 
 # Stage 2: Serve the built web application with Nginx
 FROM nginx:1.25-alpine
