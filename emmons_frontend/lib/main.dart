@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
     const Color backgroundColor = Color(0xFFFFFFFF); // Black
     const Color textColor = Color(0xFF000000); // White
 
-    final TextTheme appTextTheme = TextTheme(
+    const TextTheme appTextTheme = TextTheme(
       displayLarge: TextStyle(fontFamily: 'BebasNeue', fontSize: 152, color: textColor, fontWeight: FontWeight.bold),
       displayMedium: TextStyle(fontFamily: 'BebasNeue', fontSize: 122, color: textColor, fontWeight: FontWeight.bold),
       displaySmall: TextStyle(fontFamily: 'BebasNeue', fontSize: 98, color: textColor, fontWeight: FontWeight.bold),
