@@ -36,11 +36,14 @@ The Cerberus system is composed of the following main components:
 
 ## Directory Structure
 
+*   `.dockerignore`: Docker ignore file.
+*   `cloudbuild.yaml`: Configuration for Google Cloud Build.
+*   `.pytest_cache/`: Directory for pytest cache.
+*   `.vscode/`: VS Code configuration files.
 *   `cerberus_campaigns_backend/`: Contains the Flask backend for campaign and voter data.
 *   `cerberus_frontend/`: Contains the Flutter frontend for the data portal and Cerberus Report page.
 *   `cerberus_report_backend/`: Contains the Flask backend for scraping and serving public agenda data.
 *   `emmons_frontend/`: Contains the Flutter frontend for a specific campaign.
-*   `cloudbuild.yaml`: Configuration for Google Cloud Build.
 
 ## Getting Started
 
