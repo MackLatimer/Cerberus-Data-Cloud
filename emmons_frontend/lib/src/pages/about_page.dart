@@ -116,7 +116,7 @@ class AboutPageState extends State<AboutPage> {
                             padding: const EdgeInsets.all(8.0),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(15.0),
-                              child: Image.asset('assets/images/Summary_Picture_About.png', height: 200, fit: BoxFit.cover)),
+                              child: Image.asset('assets/images/About_Picture_Family.png', height: 200, fit: BoxFit.cover)),
                           ),
                         ),
                       ],
