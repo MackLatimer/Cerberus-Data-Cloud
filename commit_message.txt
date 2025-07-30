@@ -1,1 +1,0 @@
-feat: Rename image assets and update references in emmons_frontend
