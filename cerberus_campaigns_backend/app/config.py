@@ -39,7 +39,7 @@ class DevelopmentConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', f"sqlite:///{os.path.join(project_root, 'dev.db')}")
     # For local development, ensure the Cloud SQL proxy is running if connecting to Cloud SQL
     # Or use a local PostgreSQL instance:
-    # SQLALCHEMY_DATABASE_URI = "postgresql://campaign_user:local_password@localhost:5432/campaign_data"
+    # SQLALCHEMY_DATABASE_URI = "postgresql+psycopg://campaign_user:local_password@localhost:5432/campaign_data"
 
 
 class TestingConfig(Config):
