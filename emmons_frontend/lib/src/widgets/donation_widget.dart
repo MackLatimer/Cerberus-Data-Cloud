@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:candidate_website/src/config.dart';
 import 'package:go_router/go_router.dart';
 
@@ -129,7 +128,7 @@ class _DonationWidgetState extends State<DonationWidget> {
     try {
       // 1. Confirm Payment with Stripe
       final paymentIntent = await Stripe.instance.confirmPayment(
-        paymentIntentClientSecret: _paymentIntentClientSecret!,
+        _paymentIntentClientSecret!,
         data: PaymentMethodParams.card(
           paymentMethodData: PaymentMethodData(
             billingDetails: BillingDetails(
