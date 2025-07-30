@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:candidate_website/src/config.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter/foundation.dart';
 
 class DonationWidget extends StatefulWidget {
   const DonationWidget({super.key});
@@ -17,7 +18,7 @@ class _DonationWidgetState extends State<DonationWidget> {
   String? _selectedAmount;
   final TextEditingController _customAmountController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  final _cardFormController = CardFormEditController();
+  final _cardFormController = CardEditController();
 
   // Stripe related
   String? _paymentIntentClientSecret;
@@ -128,22 +129,12 @@ class _DonationWidgetState extends State<DonationWidget> {
     try {
       // 1. Confirm Payment with Stripe
       final paymentIntent = await Stripe.instance.confirmPayment(
-        _paymentIntentClientSecret!,
-        data: PaymentMethodParams.card(
-          paymentMethodData: PaymentMethodData(
-            billingDetails: BillingDetails(
-              email: _emailController.text,
-              phone: _phoneNumberController.text,
-              address: Address(
-                line1: _addressLine1Controller.text,
-                line2: _addressLine2Controller.text,
-                city: _cityController.text,
-                state: _stateController.text,
-                postalCode: _zipController.text,
-                country: 'US',
-              ),
-            ),
-          ),
+        paymentIntentClientSecret: _paymentIntentClientSecret!,
+        data: const PaymentMethodParams.card(
+          paymentMethodData: PaymentMethodData(),
+        ),
+        options: const PaymentMethodOptions(
+          setupFutureUsage: PaymentIntentsFutureUsage.OffSession,
         ),
       );
 
@@ -346,12 +337,19 @@ class _DonationWidgetState extends State<DonationWidget> {
               validator: (value) => value!.isEmpty ? 'Required' : null,
             ),
             const SizedBox(height: 20),
-            CardFormField(
-              controller: _cardFormController,
-              onCardChanged: (card) {
-                // Handle card changes if needed
-              },
-            ),
+            if (kIsWeb) // Conditionally render CardField for web
+              const Text(
+                'Card input is not available on web. Please use a mobile device or consider donating via mail.',
+                style: TextStyle(color: Colors.red),
+                textAlign: TextAlign.center,
+              )
+            else
+              CardField(
+                controller: _cardFormController,
+                onCardChanged: (card) {
+                  // Handle card changes if needed
+                },
+              ),
             const SizedBox(height: 20),
             CheckboxListTile(
               title: const Text('Cover transaction fees?'),

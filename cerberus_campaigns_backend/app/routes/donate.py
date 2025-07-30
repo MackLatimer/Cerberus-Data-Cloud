@@ -68,32 +68,7 @@ def create_payment_intent():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@donate_bp.route('/confirm-payment-intent', methods=['POST'])
-def confirm_payment_intent():
-    data = request.get_json()
-    payment_intent_id = data.get('paymentIntentId')
-    payment_method_id = data.get('paymentMethodId') # From frontend after card details are entered
 
-    if not payment_intent_id or not payment_method_id:
-        return jsonify({'error': 'Payment Intent ID and Payment Method ID are required'}), 400
-
-    try:
-        stripe.api_key = current_app.config['STRIPE_SECRET_KEY']
-        intent = stripe.PaymentIntent.confirm(
-            payment_intent_id,
-            payment_method=payment_method_id
-        )
-        return jsonify({
-            'status': intent.status,
-            'paymentIntentId': intent.id
-        })
-    except stripe.error.CardError as e:
-        # Display error to the user (e.g., insufficient funds)
-        return jsonify({'error': e.user_message}), 400
-    except stripe.error.StripeError as e:
-        return jsonify({'error': str(e)}), 400
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
 
 @donate_bp.route('/stripe-webhook', methods=['POST'])
 def stripe_webhook():
@@ -259,6 +234,8 @@ def update_donation_details():
                 city=donation.address_city,
                 state=donation.address_state,
                 zip_code=donation.address_zip,
+                employer=donation.employer,
+                occupation=donation.occupation,
                 contact_email=donation.contact_email,
                 contact_phone=donation.contact_phone,
                 contact_mail=donation.contact_mail,
@@ -275,6 +252,8 @@ def update_donation_details():
             voter.city = donation.address_city
             voter.state = donation.address_state
             voter.zip_code = donation.address_zip
+            voter.employer = donation.employer
+            voter.occupation = donation.occupation
             voter.contact_email = donation.contact_email
             voter.contact_phone = donation.contact_phone
             voter.contact_mail = donation.contact_mail

@@ -51,6 +51,16 @@ CREATE TABLE voters (
     phone_number VARCHAR(20) UNIQUE,
     email_address VARCHAR(255) UNIQUE,
 
+    -- Employer and Occupation
+    employer VARCHAR(255),
+    occupation VARCHAR(255),
+
+    -- Contact preferences (checkboxes)
+    contact_email BOOLEAN DEFAULT FALSE,
+    contact_phone BOOLEAN DEFAULT FALSE,
+    contact_mail BOOLEAN DEFAULT FALSE,
+    contact_sms BOOLEAN DEFAULT FALSE,
+
     -- Voter Registration Information
     registration_status VARCHAR(50), -- e.g., 'Registered', 'Not Registered', 'Pending'
     voter_registration_id VARCHAR(100) UNIQUE, -- State-specific ID

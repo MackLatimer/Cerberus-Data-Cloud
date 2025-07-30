@@ -27,6 +27,10 @@ class Voter(TimestampMixin, db.Model):
     phone_number = db.Column(db.String(20), unique=True, nullable=True, index=True)
     email_address = db.Column(db.String(255), unique=True, nullable=True, index=True)
 
+    # Employer and Occupation
+    employer = db.Column(db.String(255), nullable=True)
+    occupation = db.Column(db.String(255), nullable=True)
+
     # Contact preferences (checkboxes)
     contact_email = db.Column(db.Boolean, default=False)
     contact_phone = db.Column(db.Boolean, default=False)

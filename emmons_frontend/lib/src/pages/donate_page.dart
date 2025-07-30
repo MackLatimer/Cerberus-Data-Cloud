@@ -24,12 +24,12 @@ class DonatePageState extends State<DonatePage> {
   }
 
   Future<void> _initializeStripe() async {
+    Stripe.publishableKey = 'pk_live_51QoUvvLiE3PH27cBZ4Nt4532BV0fKKSe5gVG9TTP78yieeoowhCtDy8oWgZKXAOw1Jqm05sWeyee4dUIcyzi25lc00dP9pymbT';
     if (kIsWeb) {
-      Stripe.publishableKey = 'pk_live_51QoUvvLiE3PH27cBZ4Nt4532BV0fKKSe5gVG9TTP78yieeoowhCtDy8oWgZKXAOw1Jqm05sWeyee4dUIcyzi25lc00dP9pymbT';
+      // Stripe.merchantIdentifier and applySettings are not supported on web
+    } else {
       Stripe.merchantIdentifier = 'merchant.com.cerberus.emmons';
       await Stripe.instance.applySettings();
-    } else {
-      Stripe.publishableKey = 'pk_live_51QoUvvLiE3PH27cBZ4Nt4532BV0fKKSe5gVG9TTP78yieeoowhCtDy8oWgZKXAOw1Jqm05sWeyee4dUIcyzi25lc00dP9pymbT';
     }
     if (mounted) {
       setState(() {
