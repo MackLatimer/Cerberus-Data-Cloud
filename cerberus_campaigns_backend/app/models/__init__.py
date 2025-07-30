@@ -9,6 +9,7 @@ from .user import User
 from .voter import Voter, CampaignVoter
 from .interaction import Interaction
 from .survey import SurveyQuestion, SurveyResponse
+from .donation import Donation # Moved this import here
 
 # You can define an __all__ variable if you want to specify
 # what `from .models import *` should import.
@@ -20,7 +21,7 @@ __all__ = [
     'Interaction',
     'SurveyQuestion',
     'SurveyResponse',
-    # Add other model names here as they are created
+    'Donation', # Only the string name here
 ]
 
 # It's also a good place to import the `db` instance if models need it directly,

@@ -27,6 +27,12 @@ class Voter(TimestampMixin, db.Model):
     phone_number = db.Column(db.String(20), unique=True, nullable=True, index=True)
     email_address = db.Column(db.String(255), unique=True, nullable=True, index=True)
 
+    # Contact preferences (checkboxes)
+    contact_email = db.Column(db.Boolean, default=False)
+    contact_phone = db.Column(db.Boolean, default=False)
+    contact_mail = db.Column(db.Boolean, default=False)
+    contact_sms = db.Column(db.Boolean, default=False)
+
     # Voter Registration Information
     registration_status = db.Column(db.String(50), nullable=True)
     voter_registration_id = db.Column(db.String(100), unique=True, nullable=True, index=True)
@@ -74,6 +80,10 @@ class Voter(TimestampMixin, db.Model):
             'precinct': self.precinct,
             'phone_number': self.phone_number,
             'email_address': self.email_address,
+            'contact_email': self.contact_email,
+            'contact_phone': self.contact_phone,
+            'contact_mail': self.contact_mail,
+            'contact_sms': self.contact_sms,
             'registration_status': self.registration_status,
             'voter_registration_id': self.voter_registration_id,
             'registration_date': self.registration_date.isoformat() if self.registration_date else None,

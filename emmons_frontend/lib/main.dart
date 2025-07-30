@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
@@ -10,7 +9,7 @@ import 'package:candidate_website/src/pages/endorsements_page.dart';
 import 'package:candidate_website/src/pages/home_page.dart';
 import 'package:candidate_website/src/pages/issues_page.dart';
 import 'package:candidate_website/src/pages/privacy_policy_page.dart'; // Import the new page
-import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:candidate_website/src/pages/post_donation_details_page.dart';
 
 // Define the routes for the application
 final _router = GoRouter(
@@ -44,6 +43,10 @@ final _router = GoRouter(
       path: '/privacy-policy',
       pageBuilder: (context, state) => const NoTransitionPage(child: PrivacyPolicyPage()),
     ),
+    GoRoute(
+      path: '/post-donation-details',
+      pageBuilder: (context, state) => NoTransitionPage(child: PostDonationDetailsPage(sessionId: state.uri.queryParameters['session_id'])),
+    ),
   ],
 );
 
@@ -51,9 +54,7 @@ void main() {
   // Ensure URL strategy is set for web (removes hashbang #)
   GoRouter.optionURLReflectsImperativeAPIs = true;
   WidgetsFlutterBinding.ensureInitialized();
-  if (!kIsWeb) {
-    Stripe.publishableKey = 'pk_live_51QoUvvLiE3PH27cBZ4Nt4532BV0fKKSe5gVG9TTP78yieeoowhCtDy8oWgZKXAOw1Jqm05sWeyee4dUIcyzi25lc00dP9pymbT';
-  }
+
   runApp(const MyApp());
 }
 
