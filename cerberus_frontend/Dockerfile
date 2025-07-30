@@ -1,5 +1,5 @@
 # Use a specific version of the Flutter SDK
-FROM ghcr.io/cirruslabs/flutter:3.22.2 AS build
+FROM ghcr.io/cirruslabs/flutter:3.32.8 AS build
 
 # Set the working directory
 WORKDIR /app
