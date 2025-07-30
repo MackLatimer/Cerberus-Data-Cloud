@@ -70,7 +70,7 @@ class _PostDonationDetailsPageState extends State<PostDonationDetailsPage> {
 
       try {
         final response = await http.post(
-          Uri.parse('http://127.0.0.1:5001/api/v1/update-donation-details'), // Use your backend URL
+          Uri.parse('https://campaigns-api-885603051818.us-south1.run.app/api/v1/update-donation-details'), // Use your backend URL
           headers: {'Content-Type': 'application/json'},
           body: json.encode(data),
         );

@@ -90,7 +90,7 @@ class _DonationWidgetState extends State<DonationWidget> {
 
     try {
       final response = await http.post(
-        Uri.parse('$apiBaseUrl/create-payment-intent'),
+        Uri.parse('https://campaigns-api-885603051818.us-south1.run.app/api/v1/create-payment-intent'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'amount': amount,
@@ -170,7 +170,7 @@ class _DonationWidgetState extends State<DonationWidget> {
   Future<void> _saveDonorDetailsToBackend() async {
     try {
       final response = await http.post(
-        Uri.parse('$apiBaseUrl/update-donation-details'),
+        Uri.parse('https://campaigns-api-885603051818.us-south1.run.app/api/v1/update-donation-details'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'payment_intent_id': _paymentIntentId,
@@ -257,7 +257,7 @@ class _DonationWidgetState extends State<DonationWidget> {
 
     try {
       final response = await http.post(
-        Uri.parse('$apiBaseUrl/update-donation-details'),
+        Uri.parse('https://campaigns-api-885603051818.us-south1.run.app/api/v1/update-donation-details'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'payment_intent_id': _paymentIntentId,
