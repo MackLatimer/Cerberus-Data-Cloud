@@ -55,7 +55,7 @@ class AboutPageState extends State<AboutPage> {
                 height: MediaQuery.of(context).size.height, // Height of the hero image
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/Hero_Picture_About.png'),
+                    image: AssetImage('assets/images/Hero_Picture_About.png'),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -97,7 +97,7 @@ class AboutPageState extends State<AboutPage> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(15.0),
-                                  child: Image.asset('assets/About_Picture_Business.png', fit: BoxFit.cover)),
+                                  child: Image.asset('assets/images/About_Picture_Business.png', fit: BoxFit.cover)),
                               ),
                             ),
                             Expanded(
@@ -105,7 +105,7 @@ class AboutPageState extends State<AboutPage> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(15.0),
-                                  child: Image.asset('assets/About_Picture_Self.png', fit: BoxFit.cover)),
+                                  child: Image.asset('assets/images/About_Picture_Self.png', fit: BoxFit.cover)),
                               ),
                             ),
                           ],
@@ -116,7 +116,7 @@ class AboutPageState extends State<AboutPage> {
                             padding: const EdgeInsets.all(8.0),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(15.0),
-                              child: Image.asset('assets/Summary_Picture_About.png', height: 200, fit: BoxFit.cover)),
+                              child: Image.asset('assets/images/Summary_Picture_About.png', height: 200, fit: BoxFit.cover)),
                           ),
                         ),
                       ],
