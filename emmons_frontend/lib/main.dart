@@ -12,7 +12,7 @@ import 'package:candidate_website/src/pages/post_donation_details_page.dart';
 
 // Define the routes for the application
 final _router = GoRouter(
-  initialLocation: '/coming-soon',
+  initialLocation: '/',
   routes: [
     GoRoute(
       path: '/coming-soon',
