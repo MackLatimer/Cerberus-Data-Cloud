@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:candidate_website/src/pages/about_page.dart';
@@ -69,21 +68,21 @@ class MyApp extends StatelessWidget {
     const Color textColor = Color(0xFF000000); // White
 
     final TextTheme appTextTheme = TextTheme(
-      displayLarge: GoogleFonts.bebasNeue(fontSize: 152, color: textColor, fontWeight: FontWeight.bold),
-      displayMedium: GoogleFonts.bebasNeue(fontSize: 122, color: textColor, fontWeight: FontWeight.bold),
-      displaySmall: GoogleFonts.bebasNeue(fontSize: 98, color: textColor, fontWeight: FontWeight.bold),
-      headlineLarge: GoogleFonts.bebasNeue(fontSize: 78, color: textColor, fontWeight: FontWeight.bold),
-      headlineMedium: GoogleFonts.bebasNeue(fontSize: 62, color: textColor, fontWeight: FontWeight.bold),
-      headlineSmall: GoogleFonts.bebasNeue(fontSize: 50, color: textColor, fontWeight: FontWeight.bold),
-      titleLarge: GoogleFonts.bebasNeue(fontSize: 40, color: textColor, fontWeight: FontWeight.bold),
-      titleMedium: GoogleFonts.bebasNeue(fontSize: 32, color: textColor, fontWeight: FontWeight.bold),
-      titleSmall: GoogleFonts.bebasNeue(fontSize: 25, color: textColor, fontWeight: FontWeight.bold),
-      bodyLarge: GoogleFonts.tinos(fontSize: 20, color: textColor),
-      bodyMedium: GoogleFonts.tinos(fontSize: 16, color: textColor),
-      bodySmall: GoogleFonts.tinos(fontSize: 12.8, color: textColor),
-      labelLarge: GoogleFonts.bebasNeue(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold), // White for buttons on colored background
-      labelMedium: GoogleFonts.bebasNeue(fontSize: 16, fontWeight: FontWeight.bold),
-      labelSmall: GoogleFonts.bebasNeue(fontSize: 12.8, fontWeight: FontWeight.bold),
+      displayLarge: TextStyle(fontFamily: 'BebasNeue', fontSize: 152, color: textColor, fontWeight: FontWeight.bold),
+      displayMedium: TextStyle(fontFamily: 'BebasNeue', fontSize: 122, color: textColor, fontWeight: FontWeight.bold),
+      displaySmall: TextStyle(fontFamily: 'BebasNeue', fontSize: 98, color: textColor, fontWeight: FontWeight.bold),
+      headlineLarge: TextStyle(fontFamily: 'BebasNeue', fontSize: 78, color: textColor, fontWeight: FontWeight.bold),
+      headlineMedium: TextStyle(fontFamily: 'BebasNeue', fontSize: 62, color: textColor, fontWeight: FontWeight.bold),
+      headlineSmall: TextStyle(fontFamily: 'BebasNeue', fontSize: 50, color: textColor, fontWeight: FontWeight.bold),
+      titleLarge: TextStyle(fontFamily: 'BebasNeue', fontSize: 40, color: textColor, fontWeight: FontWeight.bold),
+      titleMedium: TextStyle(fontFamily: 'BebasNeue', fontSize: 32, color: textColor, fontWeight: FontWeight.bold),
+      titleSmall: TextStyle(fontFamily: 'BebasNeue', fontSize: 25, color: textColor, fontWeight: FontWeight.bold),
+      bodyLarge: TextStyle(fontFamily: 'Tinos', fontSize: 20, color: textColor),
+      bodyMedium: TextStyle(fontFamily: 'Tinos', fontSize: 16, color: textColor),
+      bodySmall: TextStyle(fontFamily: 'Tinos', fontSize: 12.8, color: textColor),
+      labelLarge: TextStyle(fontFamily: 'BebasNeue', fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold), // White for buttons on colored background
+      labelMedium: TextStyle(fontFamily: 'BebasNeue', fontSize: 16, fontWeight: FontWeight.bold),
+      labelSmall: TextStyle(fontFamily: 'BebasNeue', fontSize: 12.8, fontWeight: FontWeight.bold),
     );
 
     return MaterialApp.router(
