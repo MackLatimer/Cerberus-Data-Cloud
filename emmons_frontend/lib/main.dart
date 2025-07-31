@@ -129,7 +129,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         textButtonTheme: TextButtonThemeData(
-          style: TextButton.from(
+          style: TextButton.styleFrom(
             foregroundColor: secondaryColor, // Use secondary color for text buttons for contrast
             textStyle: appTextTheme.labelMedium?.copyWith(color: secondaryColor),
           ),
