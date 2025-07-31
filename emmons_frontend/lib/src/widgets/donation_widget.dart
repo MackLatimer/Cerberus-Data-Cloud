@@ -251,7 +251,7 @@ class _DonationWidgetState extends State<DonationWidget> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error processing payment: $e')),
+          SnackBar(content: Text('An unexpected error occurred: $e')),
         );
       }
     }
@@ -331,7 +331,7 @@ class _DonationWidgetState extends State<DonationWidget> {
                     ),
                   ),
                   child: Text(
-                    '\$$amount',
+                    '\$amount',
                     style: const TextStyle(color: Colors.white),
                   ),
                 );
@@ -343,7 +343,7 @@ class _DonationWidgetState extends State<DonationWidget> {
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
                 labelText: 'Custom Amount',
-                prefixText: '\$',
+                prefixText: '\,
               ),
               onChanged: (value) {
                 setState(() {

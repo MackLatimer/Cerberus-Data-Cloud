@@ -1,6 +1,6 @@
 # Stage 1: Build the Flutter application
 # Using the latest stable Flutter image
-FROM ghcr.io/cirruslabs/flutter:3.32.5 AS build
+FROM ghcr.io/cirruslabs/flutter:stable AS build
 
 # Set working directory for Flutter build
 WORKDIR /app_src

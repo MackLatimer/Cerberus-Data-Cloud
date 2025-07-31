@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_web_plugins/flutter_web_plugins.dart'; // Import for setUrlStrategy
 
 import 'package:candidate_website/src/pages/about_page.dart';
 import 'package:candidate_website/src/pages/coming_soon_page.dart';
@@ -15,10 +14,6 @@ import 'package:candidate_website/src/pages/post_donation_details_page.dart';
 final _router = GoRouter(
   initialLocation: '/coming-soon',
   routes: [
-    GoRoute(
-      path: '/',
-      redirect: (_, __) => '/home',
-    ),
     GoRoute(
       path: '/home',
       pageBuilder: (context, state) => const NoTransitionPage(child: HomePage()),
@@ -55,8 +50,7 @@ final _router = GoRouter(
 );
 
 void main() {
-  // Use hash-based URL strategy for web
-  setUrlStrategy(const HashUrlStrategy());
+  // Ensure URL strategy is set for web (removes hashbang #)
   GoRouter.optionURLReflectsImperativeAPIs = true;
   WidgetsFlutterBinding.ensureInitialized();
 
