@@ -68,6 +68,7 @@ flutter:
   assets:
     - assets/ # This will include emmons_frontend/assets/CurtisEmmonsRepublicanPrimarySquare.png
               # and any other files directly under emmons_frontend/assets/
+    - assets/images/
     - assets/fonts/ # This will include emmons_frontend/assets/fonts/BebasNeue-Regular.ttf
                     # and any other files directly under emmons_frontend/assets/fonts/
 
