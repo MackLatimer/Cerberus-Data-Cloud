@@ -19,6 +19,10 @@ COPY . .
 # Using --release for a production build
 RUN flutter build web --release
 
+# Move the asset manifests to the correct location
+RUN mv /app_src/build/web/assets/AssetManifest.json /app_src/build/web/
+RUN mv /app_src/build/web/assets/FontManifest.json /app_src/build/web/
+
 # Stage 2: Serve the built web application with Nginx
 FROM nginx:1.25-alpine
 
