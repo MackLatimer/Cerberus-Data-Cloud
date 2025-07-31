@@ -67,7 +67,13 @@ class ProductionConfig(Config):
     """Production configuration."""
     DEBUG = False
     # Ensure DATABASE_URL is correctly set in the production environment
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+    _db_url = os.environ.get('DATABASE_URL')
+    if _db_url and _db_url.startswith('postgresql://'):
+        # Replace postgresql:// with postgresql+psycopg:// to ensure psycopg driver is used
+        SQLALCHEMY_DATABASE_URI = _db_url.replace('postgresql://', 'postgresql+psycopg://', 1)
+    else:
+        SQLALCHEMY_DATABASE_URI = _db_url
+
     if SQLALCHEMY_DATABASE_URI is None and not os.environ.get('FLASK_TESTING_SKIP_DB_CHECK'): # Added for flexibility during build
         raise ValueError("No DATABASE_URL set for production environment and not skipping DB check.")
 

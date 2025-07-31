@@ -61,7 +61,7 @@ class HomePageState extends State<HomePage> {
                 height: heroHeight,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/images/Emmons_Home_Hero.png'),
+                    image: AssetImage('images/Emmons_Home_Hero.png'),
                     fit: BoxFit.cover,
                   ),
                 ),
