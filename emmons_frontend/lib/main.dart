@@ -15,6 +15,10 @@ final _router = GoRouter(
   initialLocation: '/coming-soon',
   routes: [
     GoRoute(
+      path: '/',
+      redirect: (_, __) => '/home',
+    ),
+    GoRoute(
       path: '/home',
       pageBuilder: (context, state) => const NoTransitionPage(child: HomePage()),
     ),

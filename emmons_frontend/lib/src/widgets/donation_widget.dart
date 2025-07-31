@@ -410,6 +410,20 @@ class _DonationWidgetState extends State<DonationWidget> {
               decoration: const InputDecoration(labelText: 'Occupation'),
               validator: (value) => value!.isEmpty ? 'Required' : null,
             ),
+            const SizedBox(height: 10),
+            TextFormField(
+              controller: _emailController,
+              decoration: const InputDecoration(labelText: 'Email'),
+              keyboardType: TextInputType.emailAddress,
+              validator: (value) => value!.isEmpty ? 'Required' : null,
+            ),
+            const SizedBox(height: 10),
+            TextFormField(
+              controller: _phoneNumberController,
+              decoration: const InputDecoration(labelText: 'Phone Number'),
+              keyboardType: TextInputType.phone,
+              validator: (value) => value!.isEmpty ? 'Required' : null,
+            ),
             const SizedBox(height: 20),
             if (kIsWeb) // Conditionally render PaymentSheet for web
               ElevatedButton(
@@ -448,19 +462,6 @@ class _DonationWidgetState extends State<DonationWidget> {
               child: const Text('Submit Payment'),
             ),
           ] else if (_currentStep == 2) ...[
-            TextFormField(
-              controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
-              keyboardType: TextInputType.emailAddress,
-              validator: (value) => value!.isEmpty ? 'Required' : null,
-            ),
-            const SizedBox(height: 10),
-            TextFormField(
-              controller: _phoneNumberController,
-              decoration: const InputDecoration(labelText: 'Phone Number'),
-              keyboardType: TextInputType.phone,
-              validator: (value) => value!.isEmpty ? 'Required' : null,
-            ),
             const SizedBox(height: 20),
             CheckboxListTile(
               title: const Text('Contact me via Email'),
