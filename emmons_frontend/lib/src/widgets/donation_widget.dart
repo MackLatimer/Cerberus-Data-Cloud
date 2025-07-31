@@ -199,6 +199,9 @@ class _DonationWidgetState extends State<DonationWidget> {
           _currentStep = 2; // Move to contact details
         });
       } else {
+        if (kDebugMode) {
+          print(response.body);
+        }
         throw json.decode(response.body)['error'] ?? 'Failed to save donor details.';
       }
     } catch (e) {
@@ -279,6 +282,9 @@ class _DonationWidgetState extends State<DonationWidget> {
           context.go('/post-donation-details'); // Navigate to success page
         }
       } else {
+        if (kDebugMode) {
+          print(response.body);
+        }
         throw json.decode(response.body)['error'] ?? 'Failed to save contact details.';
       }
     } catch (e) {
