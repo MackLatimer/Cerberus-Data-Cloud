@@ -19,7 +19,7 @@ COPY . .
 
 # Build the web application
 # Using --release for a production build
-RUN flutter build web --release
+RUN flutter build web --release --web-renderer html
 
 # List the contents of the build directory for diagnostics
 RUN ls -lR /app_src/build/web
