@@ -27,8 +27,12 @@ def create_app(config_name_override: str = None) -> Flask:
     app.config.from_object(get_config_by_name(effective_config_name))
 
     CORS(app, resources={
-        r"/api/*": {"origins": "*"},
-        r"/donate": {"origins": "https://electemmons.com"}
+        r"/api/*": {
+            "origins": [
+                "http://localhost:5001",
+                "https://emmons-frontend-885603051818.us-south1.run.app"
+            ]
+        }
     }, supports_credentials=True)
 
     stripe.api_key = app.config['STRIPE_SECRET_KEY']
