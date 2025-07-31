@@ -1,6 +1,6 @@
 # Stage 1: Build the Flutter application
-# Using ghcr.io/cirruslabs/flutter image
-FROM ghcr.io/cirruslabs/flutter:3.32.8 AS build
+# Using the latest stable Flutter image
+FROM ghcr.io/cirruslabs/flutter:stable AS build
 
 # Set working directory for Flutter build
 WORKDIR /app_src
@@ -17,7 +17,7 @@ COPY . .
 
 # Build the web application
 # Using --release for a production build
-RUN flutter build web --profile
+RUN flutter build web --release
 
 # Stage 2: Serve the built web application with Nginx
 FROM nginx:1.25-alpine
