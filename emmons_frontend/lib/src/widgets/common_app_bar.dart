@@ -188,6 +188,21 @@ class CommonAppBarState extends State<CommonAppBar> {
                       children: <Widget>[
                         SvgPicture.asset(
                           'images/Emmons_Logo_4.svg',
+                          height: 50,
+                        ),
+                        const SizedBox(height: 16.0),
+                        if (isCompact)
+                          compactNavigation
+                        else
+                          navigation, // original navigation for medium
+                      ],
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        // Logo on the left
+                        SvgPicture.asset(
+                          'images/Emmons_Logo_4.svg',
                           width: 400,
                           height: 100,
                         ),

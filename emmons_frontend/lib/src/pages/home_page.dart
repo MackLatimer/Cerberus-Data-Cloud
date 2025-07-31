@@ -93,7 +93,7 @@ class HomePageState extends State<HomePage> {
                 title: 'Issues',
                 summary:
                     'Learn about the key issues Curtis is focused on to improve our precinct.',
-                imagePath: 'assets/images/Emmons_Home_Issues_Preview.png',
+                imagePath: 'images/Emmons_Home_Issues_Preview.png',
                 routePath: '/issues',
                 imageBackgroundColor: Colors.blueGrey,
                 imageLeft: true,
@@ -106,7 +106,7 @@ class HomePageState extends State<HomePage> {
                 title: 'About Me',
                 summary:
                     'Discover more about Curtis Emmons, his background, and his vision for Bell County.',
-                imagePath: 'assets/images/Emmons_Home_About_Preview.png',
+                imagePath: 'images/Emmons_Home_About_Preview.png',
                 routePath: '/about',
                 imageBackgroundColor: Colors.teal,
                 imageLeft: false,
@@ -115,7 +115,7 @@ class HomePageState extends State<HomePage> {
                 title: 'Endorsements',
                 summary:
                     'See who is endorsing Curtis and learn how you can add your support.',
-                imagePath: 'assets/images/Emmons_Home_Endorsements_Preview.png',
+                imagePath: 'images/Emmons_Home_Endorsements_Preview.png',
                 routePath: '/endorsements',
                 imageBackgroundColor: Colors.amber,
                 imageLeft: true,
@@ -128,7 +128,7 @@ class HomePageState extends State<HomePage> {
                 title: 'Donate',
                 summary:
                     'Support the campaign financially and help us make a difference.',
-                imagePath: 'assets/images/Emmons_Home_Donate_Preview.png',
+                imagePath: 'images/Emmons_Home_Donate_Preview.png',
                 routePath: '/donate',
                 imageBackgroundColor: Colors.green,
                 imageLeft: false,
