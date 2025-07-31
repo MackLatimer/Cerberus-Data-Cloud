@@ -5,9 +5,11 @@ FROM ghcr.io/cirruslabs/flutter:stable AS build
 # Set working directory for Flutter build
 WORKDIR /app_src
 
-# Copy pubspec.yaml and pubspec.lock first to leverage Docker cache
+# Copy pubspec.yaml first to leverage Docker cache
 COPY pubspec.yaml ./
-COPY pubspec.lock ./
+
+# Remove the lock file to force a fresh dependency resolution
+RUN rm -f pubspec.lock
 
 # Get dependencies
 RUN flutter pub get
@@ -19,10 +21,8 @@ COPY . .
 # Using --release for a production build
 RUN flutter build web --release
 
-# Correct the file structure after the build
-RUN mv /app_src/build/web/assets/AssetManifest.json /app_src/build/web/
-RUN mv /app_src/build/web/assets/FontManifest.json /app_src/build/web/
-RUN mv /app_src/build/web/assets/assets/* /app_src/build/web/assets/
+# List the contents of the build directory for diagnostics
+RUN ls -lR /app_src/build/web
 
 # Stage 2: Serve the built web application with Nginx
 FROM nginx:1.25-alpine
