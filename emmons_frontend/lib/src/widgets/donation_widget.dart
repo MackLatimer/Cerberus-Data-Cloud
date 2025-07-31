@@ -111,6 +111,9 @@ class _DonationWidgetState extends State<DonationWidget> {
           _currentStep = 1; // Move to donor details and payment
         });
       } else {
+        if (kDebugMode) {
+          print(response.body);
+        }
         throw responseData['error'] ?? 'Failed to create payment intent.';
       }
     } catch (e) {
