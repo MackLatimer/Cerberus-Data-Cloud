@@ -15,10 +15,6 @@ final _router = GoRouter(
   initialLocation: '/',
   routes: [
     GoRoute(
-      path: '/coming-soon',
-      pageBuilder: (context, state) => const NoTransitionPage(child: ComingSoonPage()),
-    ),
-    GoRoute(
       path: '/',
       pageBuilder: (context, state) => const NoTransitionPage(child: HomePage()),
     ),
@@ -133,22 +129,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-// Simple placeholder page to verify routing - This can be removed now
-// class PlaceholderPage extends StatelessWidget {
-//   final String title;
-//   const PlaceholderPage({super.key, required this.title});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(title, style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white)),
-//          automaticallyImplyLeading: false, // Usually false for top-level routes if using a custom nav bar
-//       ),
-//       body: Center(
-//         child: Text('This is the $title', style: Theme.of(context).textTheme.headlineSmall),
-//       ),
-//     );
-//   }
-// }
