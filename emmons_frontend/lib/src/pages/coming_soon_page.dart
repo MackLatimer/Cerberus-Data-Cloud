@@ -43,7 +43,7 @@ class ComingSoonPage extends StatelessWidget {
             bottom: 10,
             right: 10,
             child: InkWell(
-              onTap: () => context.go('/'),
+              onTap: () => context.go('/home'),
               child: Container(
                 width: 50,
                 height: 50,

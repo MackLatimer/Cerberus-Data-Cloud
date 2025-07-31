@@ -12,11 +12,15 @@ import 'package:candidate_website/src/pages/post_donation_details_page.dart';
 
 // Define the routes for the application
 final _router = GoRouter(
-  initialLocation: '/',
+  initialLocation: '/coming-soon',
   routes: [
     GoRoute(
-      path: '/',
+      path: '/home',
       pageBuilder: (context, state) => const NoTransitionPage(child: HomePage()),
+    ),
+    GoRoute(
+      path: '/coming-soon',
+      pageBuilder: (context, state) => const NoTransitionPage(child: ComingSoonPage()),
     ),
     GoRoute(
       path: '/issues',
