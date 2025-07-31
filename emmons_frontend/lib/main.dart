@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_web_plugins/flutter_web_plugins.dart'; // Import for setUrlStrategy
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:candidate_website/src/config.dart';
 
 import 'package:candidate_website/src/pages/about_page.dart';
 import 'package:candidate_website/src/pages/coming_soon_page.dart';
@@ -8,57 +10,19 @@ import 'package:candidate_website/src/pages/donate_page.dart';
 import 'package:candidate_website/src/pages/endorsements_page.dart';
 import 'package:candidate_website/src/pages/home_page.dart';
 import 'package:candidate_website/src/pages/issues_page.dart';
-import 'package:candidate_website/src/pages/privacy_policy_page.dart'; // Import the new page
+import 'package:candidate_website/src/pages/privacy_policy_page.dart';
 import 'package:candidate_website/src/pages/post_donation_details_page.dart';
 
-// Define the routes for the application
-final _router = GoRouter(
-  initialLocation: '/coming-soon',
-  routes: [
-    GoRoute(
-      path: '/',
-      redirect: (_, __) => '/home',
-    ),
-    GoRoute(
-      path: '/home',
-      pageBuilder: (context, state) => const NoTransitionPage(child: HomePage()),
-    ),
-    GoRoute(
-      path: '/coming-soon',
-      pageBuilder: (context, state) => const NoTransitionPage(child: ComingSoonPage()),
-    ),
-    GoRoute(
-      path: '/issues',
-      pageBuilder: (context, state) => const NoTransitionPage(child: IssuesPage()),
-    ),
-    GoRoute(
-      path: '/about',
-      pageBuilder: (context, state) => const NoTransitionPage(child: AboutPage()),
-    ),
-    GoRoute(
-      path: '/endorsements',
-      pageBuilder: (context, state) => const NoTransitionPage(child: EndorsementsPage()),
-    ),
-    GoRoute(
-      path: '/donate',
-      pageBuilder: (context, state) => const NoTransitionPage(child: DonatePage()),
-    ),
-    GoRoute( // Add Privacy Policy route
-      path: '/privacy-policy',
-      pageBuilder: (context, state) => const NoTransitionPage(child: PrivacyPolicyPage()),
-    ),
-    GoRoute(
-      path: '/post-donation-details',
-      pageBuilder: (context, state) => NoTransitionPage(child: PostDonationDetailsPage(sessionId: state.uri.queryParameters['session_id'])),
-    ),
-  ],
-);
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-void main() {
+  // Set Stripe publishable key
+  Stripe.publishableKey = stripePublicKey;
+  await Stripe.instance.applySettings();
+
   // Use hash-based URL strategy for web
   setUrlStrategy(const HashUrlStrategy());
   GoRouter.optionURLReflectsImperativeAPIs = true;
-  WidgetsFlutterBinding.ensureInitialized();
 
   runApp(const MyApp());
 }
@@ -68,6 +32,48 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final router = GoRouter(
+      initialLocation: '/coming-soon',
+      routes: [
+        GoRoute(
+          path: '/',
+          redirect: (_, __) => '/home',
+        ),
+        GoRoute(
+          path: '/home',
+          builder: (context, state) => const HomePage(),
+        ),
+        GoRoute(
+          path: '/coming-soon',
+          builder: (context, state) => const ComingSoonPage(),
+        ),
+        GoRoute(
+          path: '/issues',
+          builder: (context, state) => const IssuesPage(),
+        ),
+        GoRoute(
+          path: '/about',
+          builder: (context, state) => const AboutPage(),
+        ),
+        GoRoute(
+          path: '/endorsements',
+          builder: (context, state) => const EndorsementsPage(),
+        ),
+        GoRoute(
+          path: '/donate',
+          builder: (context, state) => const DonatePage(),
+        ),
+        GoRoute(
+          path: '/privacy-policy',
+          builder: (context, state) => const PrivacyPolicyPage(),
+        ),
+        GoRoute(
+          path: '/post-donation-details',
+          builder: (context, state) => PostDonationDetailsPage(sessionId: state.uri.queryParameters['session_id']),
+        ),
+      ],
+    );
+
     const Color primaryColor = Color(0xFF002663); // Dark Blue
     const Color secondaryColor = Color(0xFFA01124); // Red
     const Color backgroundColor = Color(0xFFFFFFFF); // Black
@@ -135,7 +141,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      routerConfig: _router,
+      routerConfig: router,
     );
   }
 }
