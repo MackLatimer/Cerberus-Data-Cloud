@@ -51,10 +51,21 @@ class _DonationWidgetState extends State<DonationWidget> {
   void initState() {
     super.initState();
     if (kIsWeb) {
-      _stripeService = StripeService(stripePublicKey);
-      _stripeService.init().then((_) {
-        setState(() {
-          _stripeInitialized = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _stripeService = StripeService(stripePublicKey);
+        _stripeService.init().then((_) {
+          if (mounted) {
+            setState(() {
+              _stripeInitialized = true;
+            });
+          }
+        }).catchError((e) {
+          print("Error initializing Stripe: $e");
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Error loading payment provider. Please refresh the page.')),
+            );
+          }
         });
       });
     }
