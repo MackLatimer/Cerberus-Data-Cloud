@@ -1,6 +1,4 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:candidate_website/src/widgets/dynamic_size_app_bar.dart';
 import 'package:candidate_website/src/widgets/common_app_bar.dart';
 import 'package:candidate_website/src/widgets/footer.dart';
@@ -15,24 +13,6 @@ class DonatePage extends StatefulWidget {
 
 class DonatePageState extends State<DonatePage> {
   final ScrollController _scrollController = ScrollController();
-  bool _stripeInitialized = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _initializeStripe();
-  }
-
-  Future<void> _initializeStripe() async {
-    Stripe.publishableKey = 'pk_live_51QoUvvLiE3PH27cBZ4Nt4532BV0fKKSe5gVG9TTP78yieeoowhCtDy8oWgZKXAOw1Jqm05sWeyee4dUIcyzi25lc00dP9pymbT';
-    Stripe.merchantIdentifier = 'merchant.com.cerberus.emmons';
-    await Stripe.instance.applySettings();
-    if (mounted) {
-      setState(() {
-        _stripeInitialized = true;
-      });
-    }
-  }
 
   @override
   void dispose() {
@@ -97,9 +77,7 @@ class DonatePageState extends State<DonatePage> {
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 40),
-                          _stripeInitialized
-                              ? const DonationWidget()
-                              : const Center(child: CircularProgressIndicator()),
+                          const DonationWidget(),
                           const SizedBox(height: 40),
                           Text(
                             'If you prefer to donate by mail, please send a check payable to "Curtis Emmons Campaign" to: [Campaign PO Box or Address Here - Placeholder]',

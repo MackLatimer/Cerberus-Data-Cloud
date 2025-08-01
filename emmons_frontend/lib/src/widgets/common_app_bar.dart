@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:candidate_website/src/utils/breakpoint.dart';
 
 class CommonAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -186,10 +186,7 @@ class CommonAppBarState extends State<CommonAppBar> {
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        SvgPicture.asset(
-                          'images/Emmons_Logo_4.svg',
-                          height: 50,
-                        ),
+                        const Text('Emmons for Office', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 16.0),
                         if (isCompact)
                           compactNavigation
@@ -201,11 +198,7 @@ class CommonAppBarState extends State<CommonAppBar> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         // Logo on the left
-                        SvgPicture.asset(
-                          'images/Emmons_Logo_4.svg',
-                          width: 400,
-                          height: 100,
-                        ),
+                        const Text('Emmons for Office', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                         // Navigation items on the right
                         navigation,
                       ],

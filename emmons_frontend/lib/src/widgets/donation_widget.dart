@@ -1,11 +1,13 @@
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart'; // Added for kIsWeb
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:go_router/go_router.dart'; // Added for context.go
-
-
+import 'package:go_router/go_router.dart';
+import 'package:candidate_website/src/config.dart';
+import 'package:candidate_website/src/services/stripe_service.dart';
+import 'package:candidate_website/src/widgets/stripe_element.dart';
+import 'dart:js' as js;
 
 class DonationWidget extends StatefulWidget {
   const DonationWidget({super.key});
@@ -15,51 +17,48 @@ class DonationWidget extends StatefulWidget {
 }
 
 class _DonationWidgetState extends State<DonationWidget> {
-  int _currentStep = 0; // 0: amount, 1: donor/payment, 2: contact
-  String? _selectedAmount;
+  int? _selectedAmount;
   final TextEditingController _customAmountController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-  final _cardFormController = CardEditController();
-
-  // Stripe related
-  String? _paymentIntentClientSecret;
+  int _step = 1;
   String? _paymentIntentId;
-  String? _customerId;
+  String? _clientSecret;
 
-  // Donor details
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _addressLine1Controller = TextEditingController();
   final TextEditingController _addressLine2Controller = TextEditingController();
-  final TextEditingController _cityController = TextEditingController();
-  final TextEditingController _stateController = TextEditingController();
-  final TextEditingController _zipController = TextEditingController();
+  final TextEditingController _addressCityController = TextEditingController();
+  final TextEditingController _addressStateController = TextEditingController();
+  final TextEditingController _addressZipController = TextEditingController();
   final TextEditingController _employerController = TextEditingController();
   final TextEditingController _occupationController = TextEditingController();
-
-  // Contact details
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+
+  bool _coverFees = false;
+  bool _isRecurring = false;
   bool _contactEmail = false;
   bool _contactPhone = false;
   bool _contactMail = false;
   bool _contactSms = false;
 
-  // Checkboxes
-  bool _coversFees = false;
-  bool _isRecurring = false;
+  late final StripeService _stripeService;
+  StripeElement? _cardElement;
+  bool _stripeInitialized = false;
 
-  final List<String> _donationAmounts = [
-    '10',
-    '25',
-    '50',
-    '100',
-    '250',
-    '500',
-    '1000',
-    '2500',
-    '5000',
-  ];
+  @override
+  void initState() {
+    super.initState();
+    if (kIsWeb) {
+      _stripeService = StripeService(stripePublicKey);
+      _stripeService.init().then((_) {
+        setState(() {
+          _stripeInitialized = true;
+        });
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -68,110 +67,89 @@ class _DonationWidgetState extends State<DonationWidget> {
     _lastNameController.dispose();
     _addressLine1Controller.dispose();
     _addressLine2Controller.dispose();
-    _cityController.dispose();
-    _stateController.dispose();
-    _zipController.dispose();
+    _addressCityController.dispose();
+    _addressStateController.dispose();
+    _addressZipController.dispose();
     _employerController.dispose();
     _occupationController.dispose();
     _emailController.dispose();
-    _phoneNumberController.dispose();
-    _cardFormController.dispose();
+    _phoneController.dispose();
     super.dispose();
   }
 
   Future<void> _createPaymentIntent() async {
-    if (_selectedAmount == null && _customAmountController.text.isEmpty) {
+    final amount = _selectedAmount ?? int.tryParse(_customAmountController.text);
+    if (amount == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select or enter a donation amount.')),
+        const SnackBar(content: Text('Please select or enter an amount')),
       );
       return;
     }
-
-    final amount = _selectedAmount ?? _customAmountController.text;
 
     try {
       final response = await http.post(
         Uri.parse('https://campaigns-api-885603051818.us-south1.run.app/api/v1/create-payment-intent'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
-          'amount': amount,
+          'amount': amount.toString(),
+          'currency': 'usd',
           'is_recurring': _isRecurring,
-          'covers_fees': _coversFees,
-          'email': _emailController.text, // Pass email for customer creation if recurring
+          'covers_fees': _coverFees,
+          'email': _emailController.text,
         }),
       );
 
-      final responseData = json.decode(response.body);
-
       if (response.statusCode == 200) {
+        final data = json.decode(response.body);
         setState(() {
-          _paymentIntentClientSecret = responseData['clientSecret'];
-          _paymentIntentId = responseData['paymentIntentId'];
-          _customerId = responseData['customerId'];
-          _currentStep = 1; // Move to donor details and payment
+          _clientSecret = data['clientSecret'];
+          _paymentIntentId = data['paymentIntentId'];
+          _step = 2;
         });
       } else {
-        if (kDebugMode) {
-          print(response.body);
-        }
-        throw responseData['error'] ?? 'Failed to create payment intent.';
-      }
-    } catch (e) {
-      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error creating payment intent: $e')),
+          SnackBar(content: Text('Failed to create payment intent: ${response.body}')),
         );
       }
-    }
-  }
-
-  Future<void> _displayPaymentSheet() async {
-    try {
-      // 1. Initialize Payment Sheet
-      await Stripe.instance.initPaymentSheet(
-        paymentSheetParameters: SetupPaymentSheetParameters(
-          paymentIntentClientSecret: _paymentIntentClientSecret!,
-          merchantDisplayName: 'Emmons for Office',
-          customerId: _customerId,
-          customerEphemeralKeySecret: null, // Not needed for web
-          setupIntentClientSecret: _isRecurring ? _paymentIntentClientSecret : null, // Use PI client secret for SetupIntent if recurring
-          style: Theme.of(context).brightness == Brightness.dark ? ThemeMode.dark : ThemeMode.light,
-          billingDetails: BillingDetails(
-            email: _emailController.text,
-            phone: _phoneNumberController.text,
-            address: Address(
-              line1: _addressLine1Controller.text,
-              line2: _addressLine2Controller.text,
-              city: _cityController.text,
-              state: _stateController.text,
-              postalCode: _zipController.text,
-              country: 'US',
-            ),
-          ),
-        ),
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error creating payment intent: $e')),
       );
-
-      // 2. Present Payment Sheet
-      await Stripe.instance.presentPaymentSheet();
-
-      // Payment successful, proceed to save details
-      _saveDonorDetailsToBackend();
-    } on StripeException catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Stripe Error: ${e.error.localizedMessage}')),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('An unexpected error occurred: $e')),
-        );
-      }
     }
   }
 
-  Future<void> _saveDonorDetailsToBackend() async {
+  Future<void> _handlePayment() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    if (_clientSecret == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Payment intent not created')),
+      );
+      return;
+    }
+
+    try {
+      final result = await _stripeService.confirmPayment(_clientSecret!, _cardElement!.element);
+
+      if (result.hasProperty('error')) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Payment failed: ${result['error']['message']}')),
+        );
+      } else {
+        setState(() {
+          _step = 3;
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error processing payment: $e')),
+      );
+    }
+  }
+
+  Future<void> _submitDetails() async {
     try {
       final response = await http.post(
         Uri.parse('https://campaigns-api-885603051818.us-south1.run.app/api/v1/update-donation-details'),
@@ -182,94 +160,13 @@ class _DonationWidgetState extends State<DonationWidget> {
           'last_name': _lastNameController.text,
           'address_line1': _addressLine1Controller.text,
           'address_line2': _addressLine2Controller.text,
-          'address_city': _cityController.text,
-          'address_state': _stateController.text,
-          'address_zip': _zipController.text,
+          'address_city': _addressCityController.text,
+          'address_state': _addressStateController.text,
+          'address_zip': _addressZipController.text,
           'employer': _employerController.text,
           'occupation': _occupationController.text,
           'email': _emailController.text,
-          'phone_number': _phoneNumberController.text,
-          'is_recurring': _isRecurring,
-          'covers_fees': _coversFees,
-        }),
-      );
-
-      if (response.statusCode == 200) {
-        setState(() {
-          _currentStep = 2; // Move to contact details
-        });
-      } else {
-        if (kDebugMode) {
-          print(response.body);
-        }
-        throw json.decode(response.body)['error'] ?? 'Failed to save donor details.';
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error saving donor details: $e')),
-        );
-      }
-    }
-  }
-
-  Future<void> _confirmPaymentAndSaveDetails() async {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
-
-    if (kIsWeb) {
-      // For web, payment is handled by PaymentSheet, which is triggered by _displayPaymentSheet
-      // This method will now only save donor details after the payment sheet is successful.
-      _saveDonorDetailsToBackend();
-      return;
-    }
-
-    try {
-      // For non-web, confirm payment directly
-      final paymentIntent = await Stripe.instance.confirmPayment(
-        paymentIntentClientSecret: _paymentIntentClientSecret!,
-        data: const PaymentMethodParams.card(
-          paymentMethodData: PaymentMethodData(),
-        ),
-        options: const PaymentMethodOptions(
-          setupFutureUsage: PaymentIntentsFutureUsage.OffSession,
-        ),
-      );
-
-      if (paymentIntent.status == PaymentIntentsStatus.Succeeded) {
-        _saveDonorDetailsToBackend();
-      } else {
-        throw 'Payment failed: ${paymentIntent.status}';
-      }
-    } on StripeException catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Stripe Error: ${e.error.localizedMessage}')),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('An unexpected error occurred: $e')),
-        );
-      }
-    }
-  }
-
-  Future<void> _saveContactDetails() async {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
-
-    try {
-      final response = await http.post(
-        Uri.parse('https://campaigns-api-885603051818.us-south1.run.app/api/v1/update-donation-details'),
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({
-          'payment_intent_id': _paymentIntentId,
-          'email': _emailController.text,
-          'phone_number': _phoneNumberController.text,
+          'phone_number': _phoneController.text,
           'contact_email': _contactEmail,
           'contact_phone': _contactPhone,
           'contact_mail': _contactMail,
@@ -278,232 +175,250 @@ class _DonationWidgetState extends State<DonationWidget> {
       );
 
       if (response.statusCode == 200) {
-        if (mounted) {
-          context.go('/post-donation-details'); // Navigate to success page
-        }
-      } else {
-        if (kDebugMode) {
-          print(response.body);
-        }
-        throw json.decode(response.body)['error'] ?? 'Failed to save contact details.';
-      }
-    } catch (e) {
-      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error saving contact details: $e')),
+          const SnackBar(content: Text('Thank you for your donation!')),
+        );
+        context.go('/home');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to submit details: ${response.body}')),
         );
       }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error submitting details: $e')),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (!_stripeInitialized) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 500),
+      child: _buildCurrentStep(),
+    );
+  }
+
+  Widget _buildCurrentStep() {
+    switch (_step) {
+      case 1:
+        return _buildAmountStep();
+      case 2:
+        return _buildDetailsStep();
+      case 3:
+        return _buildContactStep();
+      default:
+        return Container();
+    }
+  }
+
+  Widget _buildAmountStep() {
+    return Column(
+      key: const ValueKey<int>(1),
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Wrap(
+          spacing: 10,
+          runSpacing: 10,
+          alignment: WrapAlignment.center,
+          children: [25, 50, 100, 250, 500, 1000]
+              .map((amount) => ChoiceChip(
+                    label: Text('\$$amount'),
+                    selected: _selectedAmount == amount,
+                    onSelected: (selected) {
+                      setState(() {
+                        _selectedAmount = selected ? amount : null;
+                        if (selected) {
+                          _customAmountController.clear();
+                        }
+                      });
+                    },
+                  ))
+              .toList(),
+        ),
+        const SizedBox(height: 20),
+        TextField(
+          controller: _customAmountController,
+          decoration: const InputDecoration(
+            labelText: 'Custom Amount',
+            prefixText: '\$',
+          ),
+          keyboardType: TextInputType.number,
+          onChanged: (value) {
+            setState(() {
+              _selectedAmount = null;
+            });
+          },
+        ),
+        const SizedBox(height: 20),
+        ElevatedButton(
+          onPressed: _createPaymentIntent,
+          child: const Text('Continue'),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDetailsStep() {
+    if (_cardElement == null && _stripeService.elements != null) {
+      _cardElement = StripeElement(_stripeService.elements!.callMethod('create', ['card']));
+      Future.delayed(const Duration(milliseconds: 100), () {
+        _cardElement?.mount('#card-element');
+      });
+    }
     return Form(
-      key: _formKey,
+      key: const ValueKey<int>(2),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (_currentStep == 0) ...[
-            GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                childAspectRatio: 2.5,
-              ),
-              itemCount: _donationAmounts.length,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                final amount = _donationAmounts[index];
-                final isSelected = _selectedAmount == amount;
-                return ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      _selectedAmount = amount;
-                      _customAmountController.clear();
-                    });
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: isSelected ? const Color(0xFF002663) : const Color(0xFFA01124),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                  child: Text(
-                    '\$amount',
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: 20),
-            TextFormField(
-              controller: _customAmountController,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                labelText: 'Custom Amount',
-                prefixText: ',
-              ),
-              onChanged: (value) {
-                setState(() {
-                  _selectedAmount = null;
-                });
-              },
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _createPaymentIntent,
-              child: const Text('Donate Now'),
-            ),
-          ] else if (_currentStep == 1) ...[
-            TextFormField(
-              controller: _firstNameController,
-              decoration: const InputDecoration(labelText: 'First Name'),
-              validator: (value) => value!.isEmpty ? 'Required' : null,
-            ),
-            const SizedBox(height: 10),
-            TextFormField(
-              controller: _lastNameController,
-              decoration: const InputDecoration(labelText: 'Last Name'),
-              validator: (value) => value!.isEmpty ? 'Required' : null,
-            ),
-            const SizedBox(height: 10),
-            TextFormField(
-              controller: _addressLine1Controller,
-              decoration: const InputDecoration(labelText: 'Address Line 1'),
-              validator: (value) => value!.isEmpty ? 'Required' : null,
-            ),
-            const SizedBox(height: 10),
-            TextFormField(
-              controller: _addressLine2Controller,
-              decoration: const InputDecoration(labelText: 'Address Line 2 (Optional)'),
-            ),
-            const SizedBox(height: 10),
-            TextFormField(
-              controller: _cityController,
-              decoration: const InputDecoration(labelText: 'City'),
-              validator: (value) => value!.isEmpty ? 'Required' : null,
-            ),
-            const SizedBox(height: 10),
-            TextFormField(
-              controller: _stateController,
-              decoration: const InputDecoration(labelText: 'State'),
-              validator: (value) => value!.isEmpty ? 'Required' : null,
-            ),
-            const SizedBox(height: 10),
-            TextFormField(
-              controller: _zipController,
-              decoration: const InputDecoration(labelText: 'Zip Code'),
-              keyboardType: TextInputType.number,
-              validator: (value) => value!.isEmpty ? 'Required' : null,
-            ),
-            const SizedBox(height: 10),
-            TextFormField(
-              controller: _employerController,
-              decoration: const InputDecoration(labelText: 'Employer'),
-              validator: (value) => value!.isEmpty ? 'Required' : null,
-            ),
-            const SizedBox(height: 10),
-            TextFormField(
-              controller: _occupationController,
-              decoration: const InputDecoration(labelText: 'Occupation'),
-              validator: (value) => value!.isEmpty ? 'Required' : null,
-            ),
-            const SizedBox(height: 20),
-            if (kIsWeb) // Conditionally render PaymentSheet for web
-              ElevatedButton(
-                onPressed: _displayPaymentSheet,
-                child: const Text('Enter Payment Details'),
-              )
-            else
-              CardField(
-                controller: _cardFormController,
-                onCardChanged: (card) {
-                  // Handle card changes if needed
-                },
-              ),
-            const SizedBox(height: 20),
-            CheckboxListTile(
-              title: const Text('Cover transaction fees?'),
-              value: _coversFees,
-              onChanged: (bool? value) {
-                setState(() {
-                  _coversFees = value!;
-                });
-              },
-            ),
-            CheckboxListTile(
-              title: const Text('Make this a recurring payment?'),
-              value: _isRecurring,
-              onChanged: (bool? value) {
-                setState(() {
-                  _isRecurring = value!;
-                });
-              },
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _confirmPaymentAndSaveDetails,
-              child: const Text('Submit Payment'),
-            ),
-          ] else if (_currentStep == 2) ...[
-            TextFormField(
-              controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
-              keyboardType: TextInputType.emailAddress,
-              validator: (value) => value!.isEmpty ? 'Required' : null,
-            ),
-            const SizedBox(height: 10),
-            TextFormField(
-              controller: _phoneNumberController,
-              decoration: const InputDecoration(labelText: 'Phone Number'),
-              keyboardType: TextInputType.phone,
-              validator: (value) => value!.isEmpty ? 'Required' : null,
-            ),
-            const SizedBox(height: 20),
-            CheckboxListTile(
-              title: const Text('Contact me via Email'),
-              value: _contactEmail,
-              onChanged: (bool? value) {
-                setState(() {
-                  _contactEmail = value!;
-                });
-              },
-            ),
-            CheckboxListTile(
-              title: const Text('Contact me via Phone'),
-              value: _contactPhone,
-              onChanged: (bool? value) {
-                setState(() {
-                  _contactPhone = value!;
-                });
-              },
-            ),
-            CheckboxListTile(
-              title: const Text('Contact me via Mail'),
-              value: _contactMail,
-              onChanged: (bool? value) {
-                setState(() {
-                  _contactMail = value!;
-                });
-              },
-            ),
-            CheckboxListTile(
-              title: const Text('Contact me via SMS'),
-              value: _contactSms,
-              onChanged: (bool? value) {
-                setState(() {
-                  _contactSms = value!;
-                });
-              },
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _saveContactDetails,
-              child: const Text('Complete Donation'),
-            ),
-          ],
+          TextFormField(
+            controller: _firstNameController,
+            decoration: const InputDecoration(labelText: 'First Name'),
+            validator: (value) => value!.isEmpty ? 'Please enter your first name' : null,
+          ),
+          TextFormField(
+            controller: _lastNameController,
+            decoration: const InputDecoration(labelText: 'Last Name'),
+            validator: (value) => value!.isEmpty ? 'Please enter your last name' : null,
+          ),
+          TextFormField(
+            controller: _addressLine1Controller,
+            decoration: const InputDecoration(labelText: 'Address Line 1'),
+            validator: (value) => value!.isEmpty ? 'Please enter your address' : null,
+          ),
+          TextFormField(
+            controller: _addressLine2Controller,
+            decoration: const InputDecoration(labelText: 'Address Line 2 (Optional)'),
+          ),
+          TextFormField(
+            controller: _addressCityController,
+            decoration: const InputDecoration(labelText: 'City'),
+            validator: (value) => value!.isEmpty ? 'Please enter your city' : null,
+          ),
+          TextFormField(
+            controller: _addressStateController,
+            decoration: const InputDecoration(labelText: 'State'),
+            validator: (value) => value!.isEmpty ? 'Please enter your state' : null,
+          ),
+          TextFormField(
+            controller: _addressZipController,
+            decoration: const InputDecoration(labelText: 'Zip Code'),
+            validator: (value) => value!.isEmpty ? 'Please enter your zip code' : null,
+          ),
+          TextFormField(
+            controller: _employerController,
+            decoration: const InputDecoration(labelText: 'Employer'),
+            validator: (value) => value!.isEmpty ? 'Please enter your employer' : null,
+          ),
+          TextFormField(
+            controller: _occupationController,
+            decoration: const InputDecoration(labelText: 'Occupation'),
+            validator: (value) => value!.isEmpty ? 'Please enter your occupation' : null,
+          ),
+          const SizedBox(height: 20),
+          SizedBox(
+            height: 50,
+            child: HtmlElementView(viewType: 'card-element'),
+          ),
+          const SizedBox(height: 20),
+          CheckboxListTile(
+            title: const Text('Cover transaction fees'),
+            value: _coverFees,
+            onChanged: (value) {
+              setState(() {
+                _coverFees = value!;
+              });
+            },
+          ),
+          CheckboxListTile(
+            title: const Text('Make this a recurring monthly donation'),
+            value: _isRecurring,
+            onChanged: (value) {
+              setState(() {
+                _isRecurring = value!;
+              });
+            },
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: _handlePayment,
+            child: const Text('Submit Payment'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildContactStep() {
+    return Form(
+      key: const ValueKey<int>(3),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          TextFormField(
+            controller: _emailController,
+            decoration: const InputDecoration(labelText: 'Email'),
+            keyboardType: TextInputType.emailAddress,
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please enter your email';
+              }
+              if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)) {
+                return 'Please enter a valid email address';
+              }
+              return null;
+            },
+          ),
+          TextFormField(
+            controller: _phoneController,
+            decoration: const InputDecoration(labelText: 'Phone Number'),
+            keyboardType: TextInputType.phone,
+          ),
+          const SizedBox(height: 20),
+          CheckboxListTile(
+            title: const Text('Contact me via Email'),
+            value: _contactEmail,
+            onChanged: (value) {
+              setState(() {
+                _contactEmail = value!;
+              });
+            },
+          ),
+          CheckboxListTile(
+            title: const Text('Contact me via Phone Call'),
+            value: _contactPhone,
+            onChanged: (value) {
+              setState(() {
+                _contactPhone = value!;
+              });
+            },
+          ),
+          CheckboxListTile(
+            title: const Text('Contact me via Mail'),
+            value: _contactMail,
+            onChanged: (value) {
+              setState(() {
+                _contactMail = value!;
+              });
+            },
+          ),
+          CheckboxListTile(
+            title: const Text('Contact me via SMS'),
+            value: _contactSms,
+            onChanged: (value) {
+              setState(() {
+                _contactSms = value!;
+              });
+            },
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: _submitDetails,
+            child: const Text('Submit'),
+          ),
         ],
       ),
     );

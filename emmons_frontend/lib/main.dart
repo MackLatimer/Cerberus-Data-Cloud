@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart'; // Import for setUrlStrategy
-import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:candidate_website/src/config.dart';
+import 'dart:ui_web' as ui;
+import 'dart:js' as js;
+import 'package:candidate_website/src/widgets/stripe_element.dart';
 
 import 'package:candidate_website/src/pages/about_page.dart';
 import 'package:candidate_website/src/pages/coming_soon_page.dart';
@@ -11,18 +12,18 @@ import 'package:candidate_website/src/pages/endorsements_page.dart';
 import 'package:candidate_website/src/pages/home_page.dart';
 import 'package:candidate_website/src/pages/issues_page.dart';
 import 'package:candidate_website/src/pages/privacy_policy_page.dart';
-import 'package:candidate_website/src/pages/post_donation_details_page.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
 
-  // Set Stripe publishable key
-  Stripe.publishableKey = stripePublicKey;
-  await Stripe.instance.applySettings();
-
+void main() {
   // Use hash-based URL strategy for web
   setUrlStrategy(const HashUrlStrategy());
   GoRouter.optionURLReflectsImperativeAPIs = true;
+
+  // ignore: undefined_prefixed_name
+  ui.platformViewRegistry.registerViewFactory(
+    'card-element',
+    (int viewId) => StripeElement(js.context['elements'].create('card')).element,
+  );
 
   runApp(const MyApp());
 }
@@ -67,10 +68,7 @@ class MyApp extends StatelessWidget {
           path: '/privacy-policy',
           builder: (context, state) => const PrivacyPolicyPage(),
         ),
-        GoRoute(
-          path: '/post-donation-details',
-          builder: (context, state) => PostDonationDetailsPage(sessionId: state.uri.queryParameters['session_id']),
-        ),
+        
       ],
     );
 
@@ -145,4 +143,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
