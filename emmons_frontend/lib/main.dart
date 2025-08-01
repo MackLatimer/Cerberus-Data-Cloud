@@ -74,20 +74,6 @@ class MyApp extends StatelessWidget {
       ],
     );
 
-void main() {
-  // Use hash-based URL strategy for web
-  setUrlStrategy(const HashUrlStrategy());
-  GoRouter.optionURLReflectsImperativeAPIs = true;
-  WidgetsFlutterBinding.ensureInitialized();
-
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
     const Color primaryColor = Color(0xFF002663); // Dark Blue
     const Color secondaryColor = Color(0xFFA01124); // Red
     const Color backgroundColor = Color(0xFFFFFFFF); // Black
@@ -159,3 +145,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
