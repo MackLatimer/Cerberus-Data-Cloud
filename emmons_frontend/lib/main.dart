@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart'; // Import for setUrlStrategy
 
 import 'package:candidate_website/src/pages/about_page.dart';
 import 'package:candidate_website/src/pages/coming_soon_page.dart';
@@ -7,13 +8,17 @@ import 'package:candidate_website/src/pages/donate_page.dart';
 import 'package:candidate_website/src/pages/endorsements_page.dart';
 import 'package:candidate_website/src/pages/home_page.dart';
 import 'package:candidate_website/src/pages/issues_page.dart';
-import 'package:candidate_website/src/pages/privacy_policy_page.dart'; // Import the new page
+import 'package:candidate_website/src/pages/privacy_policy_page.dart';
 import 'package:candidate_website/src/pages/post_donation_details_page.dart';
 
 // Define the routes for the application
 final _router = GoRouter(
   initialLocation: '/coming-soon',
   routes: [
+    GoRoute(
+      path: '/',
+      redirect: (_, __) => '/home',
+    ),
     GoRoute(
       path: '/home',
       pageBuilder: (context, state) => const NoTransitionPage(child: HomePage()),
@@ -50,7 +55,8 @@ final _router = GoRouter(
 );
 
 void main() {
-  // Ensure URL strategy is set for web (removes hashbang #)
+  // Use hash-based URL strategy for web
+  setUrlStrategy(const HashUrlStrategy());
   GoRouter.optionURLReflectsImperativeAPIs = true;
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -129,7 +135,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      routerConfig: _router,
+      routerConfig: router,
     );
   }
 }
