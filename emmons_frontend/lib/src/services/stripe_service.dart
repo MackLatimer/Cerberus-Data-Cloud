@@ -39,12 +39,13 @@ class StripeService {
     return js_util.promiseToFuture<js.JsObject>(paymentMethodPromise);
   }
 
-  Future<js.JsObject> confirmPayment(String clientSecret, js.JsObject card) async {
+  Future<js.JsObject> confirmPayment(String clientSecret, js.JsObject card, Map<String, dynamic> billingDetails) async {
     final paymentResultPromise = _stripe!.callMethod('confirmCardPayment', [
       clientSecret,
       js.JsObject.jsify({
         'payment_method': {
           'card': card,
+          'billing_details': billingDetails,
         }
       })
     ]);

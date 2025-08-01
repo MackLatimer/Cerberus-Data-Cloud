@@ -131,7 +131,25 @@ class _DonationWidgetState extends State<DonationWidget> {
     }
 
     try {
-      final result = await _stripeService.confirmPayment(_clientSecret!, _cardElement!.element);
+      final billingDetails = {
+        'name': '${_firstNameController.text} ${_lastNameController.text}',
+        'email': _emailController.text,
+        'phone': _phoneController.text,
+        'address': {
+          'line1': _addressLine1Controller.text,
+          'line2': _addressLine2Controller.text,
+          'city': _addressCityController.text,
+          'state': _addressStateController.text,
+          'postal_code': _addressZipController.text,
+          'country': 'US',
+        },
+      };
+
+      final result = await _stripeService.confirmPayment(
+        _clientSecret!,
+        _cardElement!.element,
+        billingDetails,
+      );
 
       if (result.hasProperty('error')) {
         ScaffoldMessenger.of(context).showSnackBar(
