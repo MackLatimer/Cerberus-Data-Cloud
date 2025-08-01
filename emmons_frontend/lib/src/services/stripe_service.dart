@@ -12,28 +12,17 @@ class StripeService {
 
   Future<void> init() async {
     final completer = Completer<void>();
-    const maxRetries = 50; // 5 seconds timeout (50 * 100ms)
-    int retries = 0;
 
     Timer.periodic(const Duration(milliseconds: 100), (timer) {
       if (js_util.hasProperty(js.context, 'Stripe')) {
         timer.cancel();
         final stripeJs = js_util.getProperty(js.context, 'Stripe');
         if (stripeJs != null) {
-          print("Stripe.js loaded successfully.");
           _stripe = js.JsObject(stripeJs, [publishableKey]);
           _elements = _stripe?.callMethod('elements');
           completer.complete();
         } else {
-          print("Stripe.js object is null.");
-          completer.completeError('Stripe.js object is null');
-        }
-      } else {
-        retries++;
-        if (retries > maxRetries) {
-          timer.cancel();
-          print("Timed out waiting for Stripe.js to load.");
-          completer.completeError('Timed out waiting for Stripe.js to load.');
+          completer.completeError('Stripe.js not loaded');
         }
       }
     });
