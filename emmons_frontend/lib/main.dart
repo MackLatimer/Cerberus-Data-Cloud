@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart'; // Import for setUrlStrategy
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 import 'package:candidate_website/src/pages/about_page.dart';
 import 'package:candidate_website/src/pages/coming_soon_page.dart';

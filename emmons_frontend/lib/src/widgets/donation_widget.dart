@@ -343,7 +343,7 @@ class _DonationWidgetState extends State<DonationWidget> {
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
                 labelText: 'Custom Amount',
-                prefixText: '\,
+                prefixText: ',
               ),
               onChanged: (value) {
                 setState(() {
