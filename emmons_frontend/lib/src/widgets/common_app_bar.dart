@@ -186,7 +186,11 @@ class CommonAppBarState extends State<CommonAppBar> {
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        const Text('Emmons for Office', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                        Image.asset(
+                          'assets/images/Emmons_Logo_4.png',
+                          width: 400,
+                          height: 100,
+                        ),
                         const SizedBox(height: 16.0),
                         if (isCompact)
                           compactNavigation
@@ -198,7 +202,11 @@ class CommonAppBarState extends State<CommonAppBar> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         // Logo on the left
-                        const Text('Emmons for Office', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                        Image.asset(
+                          'assets/images/Emmons_Logo_4.png',
+                          width: 400,
+                          height: 100,
+                        ),
                         // Navigation items on the right
                         navigation,
                       ],
