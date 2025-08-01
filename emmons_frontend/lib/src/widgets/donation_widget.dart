@@ -7,7 +7,6 @@ import 'package:go_router/go_router.dart';
 import 'package:candidate_website/src/config.dart';
 import 'package:candidate_website/src/services/stripe_service.dart';
 import 'package:candidate_website/src/widgets/stripe_element.dart';
-import 'dart:js' as js;
 
 class DonationWidget extends StatefulWidget {
   const DonationWidget({super.key});

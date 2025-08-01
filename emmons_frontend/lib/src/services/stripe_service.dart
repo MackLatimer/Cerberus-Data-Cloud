@@ -1,4 +1,3 @@
-import 'dart:html';
 import 'dart:js' as js;
 import 'dart:js_util' as js_util;
 import 'dart:async';
@@ -13,19 +12,18 @@ class StripeService {
   Future<void> init() async {
     final completer = Completer<void>();
 
-    Timer.periodic(const Duration(milliseconds: 100), (timer) {
-      if (js_util.hasProperty(js.context, 'Stripe')) {
-        timer.cancel();
-        final stripeJs = js_util.getProperty(js.context, 'Stripe');
-        if (stripeJs != null) {
-          _stripe = js.JsObject(stripeJs, [publishableKey]);
-          _elements = _stripe?.callMethod('elements');
-          completer.complete();
-        } else {
-          completer.completeError('Stripe.js not loaded');
-        }
+    js_util.setProperty(js.context, 'onStripeLoaded', js.allowInterop(() {
+      final stripeJs = js_util.getProperty(js.context, 'Stripe');
+      if (stripeJs != null) {
+        _stripe = js.JsObject(stripeJs, [publishableKey]);
+        _elements = _stripe?.callMethod('elements');
+        completer.complete();
+        print('Stripe.js loaded and initialized.');
+      } else {
+        completer.completeError('Stripe.js not loaded');
+        print('Error: Stripe.js not loaded.');
       }
-    });
+    }));
 
     return completer.future;
   }
