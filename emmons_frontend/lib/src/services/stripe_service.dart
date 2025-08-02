@@ -3,6 +3,12 @@ import 'dart:js_interop';
 
 import 'package:web/web.dart' as html;
 
+// Define an extension type for html.Window to expose JS properties
+extension type WindowProps(JSObject _) {
+  external JSObject get Stripe; // Assuming Stripe is a global JS object
+  external set onStripeLoaded(JSFunction value);
+}
+
 @JS('Stripe')
 @staticInterop
 class StripeJS {
@@ -39,15 +45,16 @@ class StripeService {
 
   Future<void> init() async {
     final completer = Completer<void>();
-        (html.window as JSObject).setProperty('onStripeLoaded'.toJS, () {
-      if ((html.window as JSObject).hasProperty('Stripe'.toJS)) {
+    // Use the extension type for property access
+    setProperty(html.window, 'onStripeLoaded'.toJS, (JSFunction () {
+      if (hasProperty(html.window, 'Stripe'.toJS)) {
         _stripe = StripeJS(publishableKey);
         _elements = _stripe?.elements();
         completer.complete();
       } else {
         completer.completeError('Stripe.js not loaded');
       }
-    });
+    }).toJS;
     return completer.future;
   }
 
