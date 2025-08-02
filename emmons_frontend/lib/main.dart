@@ -19,13 +19,13 @@ void main() {
   setUrlStrategy(const HashUrlStrategy());
   GoRouter.optionURLReflectsImperativeAPIs = true;
 
-  // // ignore: undefined_prefixed_name
-  // ui.platformViewRegistry.registerViewFactory(
-  //   'card-element',
-  //       (int viewId) => StripeElement((globalThis as JSObject).getProperty('elements'.toJS as JSAny).callMethod('create'.toJS, ['card'.toJS as JSAny])).element,
-  // );
+    // ignore: undefined_prefixed_name
+  ui.platformViewRegistry.registerViewFactory(
+    'card-element',
+        (int viewId) => StripeElement((globalThis as JSObject).getProperty('elements'.toJS as JSAny).callMethod('create'.toJS, ['card'.toJS as JSAny])).element,
+  );
 
-  print(globalThis.toString());
+  
 
   runApp(const MyApp());
 }

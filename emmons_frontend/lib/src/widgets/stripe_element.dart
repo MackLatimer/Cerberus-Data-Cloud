@@ -1,18 +1,18 @@
-import 'dart:js' as js;
+import 'dart:js_interop';
 
 class StripeElement {
-  final js.JsObject element;
+  final JSObject element;
 
   StripeElement(this.element);
 
   void mount(String selector) {
-    element.callMethod('mount', [selector]);
+    element.callMethod('mount'.toJS, [selector.toJS]);
   }
 
-  Future<js.JsObject> createPaymentMethod() async {
-    final result = await js.context.callMethod('stripe.createPaymentMethod', [
-      js.JsObject.jsify({'type': 'card', 'card': element})
-    ]);
+  Future<JSObject> createPaymentMethod() async {
+    final result = await (globalThis as JSObject).getProperty('stripe'.toJS).callMethod('createPaymentMethod'.toJS, [
+      <String, JSAny?>{'type': 'card'.toJS, 'card': element}.toJS,
+    ]).toPromise.toFuture;
     return result;
   }
 }

@@ -1,52 +1,63 @@
-import 'dart:js' as js;
-import 'dart:js_util' as js_util;
 import 'dart:async';
+import 'dart:js_interop';
+
+@JS()
+external JSObject get stripe;
+
+extension type StripeJSObject(JSObject _ref) implements JSObject {
+  external JSObject callMethod(String methodName, [JSAny? arg1, JSAny? arg2]);
+  external JSObject elements();
+  external JSPromise createPaymentMethod(JSObject options);
+  external JSPromise confirmCardPayment(String clientSecret, JSObject options);
+}
+
+extension type ElementsJSObject(JSObject _ref) implements JSObject {
+  external JSObject create(String type, [JSObject? options]);
+}
 
 class StripeService {
   final String publishableKey;
-  js.JsObject? _stripe;
-  js.JsObject? _elements;
+  StripeJSObject? _stripe;
+  ElementsJSObject? _elements;
 
   StripeService(this.publishableKey);
 
   Future<void> init() async {
     final completer = Completer<void>();
 
-    js_util.setProperty(js.context, 'onStripeLoaded', js.allowInterop(() {
-      final stripeJs = js_util.getProperty(js.context, 'Stripe');
-      if (stripeJs != null) {
-        _stripe = js.JsObject(stripeJs, [publishableKey]);
-        _elements = _stripe?.callMethod('elements');
+    setProperty(globalThis, 'onStripeLoaded'.toJS, (() {
+      final stripeJs = getProperty(globalThis, 'Stripe'.toJS);
+      if (stripeJs.isDefinedAndNotNull) {
+        _stripe = (stripeJs as JSFunction).callAsConstructor<StripeJSObject>([publishableKey.toJS]);
+        _elements = _stripe?.elements() as ElementsJSObject?;
         completer.complete();
-        print('Stripe.js loaded and initialized.');
       } else {
         completer.completeError('Stripe.js not loaded');
-        print('Error: Stripe.js not loaded.');
       }
-    }));
+    }).toJS);
 
     return completer.future;
   }
 
-  js.JsObject? get elements => _elements;
+  ElementsJSObject? get elements => _elements;
 
-  Future<js.JsObject> createPaymentMethod(js.JsObject card) async {
-    final paymentMethodPromise = _stripe!.callMethod('createPaymentMethod', [
-      js.JsObject.jsify({'type': 'card', 'card': card})
-    ]);
-    return js_util.promiseToFuture<js.JsObject>(paymentMethodPromise);
+  Future<JSObject> createPaymentMethod(JSObject card) async {
+    final paymentMethodPromise = _stripe!.createPaymentMethod(
+      <String, JSAny?>{'type'.toJS: 'card'.toJS, 'card'.toJS: card}.toJS,
+    );
+    return await promiseToFuture(paymentMethodPromise);
   }
 
-  Future<js.JsObject> confirmPayment(String clientSecret, js.JsObject card, Map<String, dynamic> billingDetails) async {
-    final paymentResultPromise = _stripe!.callMethod('confirmCardPayment', [
-      clientSecret,
-      js.JsObject.jsify({
-        'payment_method': {
-          'card': card,
-          'billing_details': billingDetails,
-        }
-      })
-    ]);
-    return js_util.promiseToFuture<js.JsObject>(paymentResultPromise);
+  Future<JSObject> confirmPayment(String clientSecret, JSObject card, Map<String, dynamic> billingDetails) async {
+    final paymentResultPromise = _stripe!.confirmCardPayment(
+      clientSecret.toJS,
+      <String, JSAny?>{
+        'payment_method'.toJS: <String, JSAny?>{
+          'card'.toJS: card,
+          'billing_details'.toJS: billingDetails.toJSBox,
+        }.toJS,
+      }.toJS,
+    );
+    return await promiseToFuture(paymentResultPromise);
   }
 }
