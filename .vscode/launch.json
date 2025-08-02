@@ -2,19 +2,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "emmons_frontend",
+            "name": "Emmons Web",
             "cwd": "emmons_frontend",
             "request": "launch",
             "type": "dart",
             "program": "lib/main.dart",
-            "flutterMode": "debug",
+            "flutterMode": "debug"
         },
         {
-            "name": "cerberus_campaigns_backend",
+            "name": "Cerberus Campaigns Backend",
             "type": "debugpy",
             "request": "launch",
             "module": "flask",
-            "program": "run.py",
             "cwd": "cerberus_campaigns_backend",
             "args": ["run", "--no-debugger"],
             "env": {
