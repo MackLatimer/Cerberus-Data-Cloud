@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:candidate_website/src/widgets/common_app_bar.dart';
+import 'package:emmons_frontend/src/widgets/common_app_bar.dart';
 
 class DynamicSizeAppBar extends StatelessWidget implements PreferredSizeWidget {
   final CommonAppBar child;

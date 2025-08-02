@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:candidate_website/src/widgets/dynamic_size_app_bar.dart';
-import 'package:candidate_website/src/widgets/common_app_bar.dart';
-import 'package:candidate_website/src/widgets/footer.dart';
-import 'package:candidate_website/src/widgets/donation_widget.dart';
+import 'package:emmons_frontend/src/widgets/dynamic_size_app_bar.dart';
+import 'package:emmons_frontend/src/widgets/common_app_bar.dart';
+import 'package:emmons_frontend/src/widgets/footer.dart';
+import 'package:emmons_frontend/src/widgets/donation_widget.dart';
 
 class DonatePage extends StatefulWidget {
   const DonatePage({super.key});

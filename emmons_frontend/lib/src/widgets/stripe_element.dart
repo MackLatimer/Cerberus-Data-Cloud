@@ -1,24 +1,32 @@
 import 'dart:js_interop';
 
+@JS()
+@staticInterop
+extension type StripeElementJS(JSObject _ref) implements JSObject {
+  external void mount(String selector);
+  external void unmount();
+  external void clear();
+  external void destroy();
+}
 
 class StripeElement {
-  final JSObject element;
+  final StripeElementJS element;
 
   StripeElement(this.element);
 
   void mount(String selector) {
-    element.callMethod('mount'.toJS, selector.toJS);
+    element.mount(selector);
   }
 
   void unmount() {
-    element.callMethod('unmount'.toJS);
+    element.unmount();
   }
 
   void clear() {
-    element.callMethod('clear'.toJS);
+    element.clear();
   }
 
   void destroy() {
-    element.callMethod('destroy'.toJS);
+    element.destroy();
   }
 }

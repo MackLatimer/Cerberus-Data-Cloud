@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:candidate_website/src/widgets/dynamic_size_app_bar.dart';
-import 'package:candidate_website/src/widgets/common_app_bar.dart';
-import 'package:candidate_website/src/widgets/signup_form.dart';
-import 'package:candidate_website/src/widgets/donate_section.dart';
-import 'package:candidate_website/src/widgets/footer.dart'; // Import the Footer widget
+import 'package:emmons_frontend/src/widgets/dynamic_size_app_bar.dart';
+import 'package:emmons_frontend/src/widgets/common_app_bar.dart';
+import 'package:emmons_frontend/src/widgets/signup_form.dart';
+import 'package:emmons_frontend/src/widgets/donate_section.dart';
+import 'package:emmons_frontend/src/widgets/footer.dart'; // Import the Footer widget
 
 class AboutPage extends StatefulWidget {
   const AboutPage({super.key});

@@ -1,4 +1,4 @@
-"""import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart'; // Import for setUrlStrategy
 import 'dart:ui_web' as ui show platformViewRegistry;
@@ -23,13 +23,13 @@ void main() {
   // ignore: undefined_prefixed_name
   ui.platformViewRegistry.registerViewFactory(
     'card-element',
-    (int viewId) => StripeElement((stripe.getProperty('elements'.toJS) as JSObject)
-            .callMethod('create'.toJS, 'card'.toJS as JSAny))
+    (int viewId) => StripeElement(
+            (stripe.elements() as JSObject).create('card'.toJS) as JSObject)
         .element,
   );
 
   runApp(const MyApp());
-}""
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

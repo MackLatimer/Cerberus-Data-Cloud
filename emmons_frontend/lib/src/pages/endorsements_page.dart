@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:candidate_website/src/widgets/dynamic_size_app_bar.dart';
-import 'package:candidate_website/src/widgets/common_app_bar.dart';
-import 'package:candidate_website/src/widgets/signup_form.dart';
-import 'package:candidate_website/src/widgets/donate_section.dart';
-import 'package:candidate_website/src/widgets/high_profile_endorsement_card.dart';
-import 'package:candidate_website/src/widgets/footer.dart';
-import 'package:candidate_website/src/utils/breakpoint.dart';
+import 'package:emmons_frontend/src/widgets/dynamic_size_app_bar.dart';
+import 'package:emmons_frontend/src/widgets/common_app_bar.dart';
+import 'package:emmons_frontend/src/widgets/signup_form.dart';
+import 'package:emmons_frontend/src/widgets/donate_section.dart';
+import 'package:emmons_frontend/src/widgets/high_profile_endorsement_card.dart';
+import 'package:emmons_frontend/src/widgets/footer.dart';
+import 'package:emmons_frontend/src/utils/breakpoint.dart';
 
 class EndorsementsPage extends StatefulWidget {
   const EndorsementsPage({super.key});

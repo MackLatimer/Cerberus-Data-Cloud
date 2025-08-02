@@ -1,24 +1,27 @@
 import 'dart:async';
 import 'dart:js_interop';
 
-
-@JS()
+@JS('Stripe')
 @staticInterop
-extension type StripeJSObject(JSObject _ref) implements JSObject {
-  external JSObject elements();
+class StripeJS {
+  external factory StripeJS(String publishableKey);
+}
+
+extension StripeJSExtension on StripeJS {
+  external ElementsJSObject elements();
   external JSPromise createPaymentMethod(JSObject options);
   external JSPromise confirmCardPayment(String clientSecret, JSObject options);
 }
 
 @JS()
 @staticInterop
-extension type ElementsJSObject(JSObject _ref) implements JSObject {
+class ElementsJSObject {
   external JSObject create(String type, [JSObject? options]);
 }
 
 class StripeService {
   final String publishableKey;
-  StripeJSObject? _stripe;
+  StripeJS? _stripe;
   ElementsJSObject? _elements;
 
   StripeService(this.publishableKey);
@@ -27,10 +30,9 @@ class StripeService {
     final completer = Completer<void>();
     final self = globalContext.getProperty<JSFunction>('onStripeLoaded'.toJS);
     self.callAsFunction(null, () {
-      final stripeJs = globalContext.getProperty<JSFunction>('Stripe'.toJS);
-      if (stripeJs.isDefinedAndNotNull) {
-        _stripe = stripeJs.callAsConstructor<StripeJSObject>(publishableKey.toJS);
-        _elements = _stripe?.elements() as ElementsJSObject?;
+      if (globalContext.has('Stripe'.toJS)) {
+        _stripe = StripeJS(publishableKey);
+        _elements = _stripe?.elements();
         completer.complete();
       } else {
         completer.completeError('Stripe.js not loaded');
@@ -43,21 +45,22 @@ class StripeService {
 
   Future<JSObject> createPaymentMethod(JSObject card) async {
     final paymentMethodPromise = _stripe!.createPaymentMethod(
-      jsify({'type': 'card', 'card': card}) as JSObject,
+      {'type': 'card', 'card': card}.jsify() as JSObject,
     );
-    return await paymentMethodPromise.toFuture.then((value) => value as JSObject);
+    return await paymentMethodPromise.toDart as JSObject;
   }
 
-  Future<JSObject> confirmPayment(String clientSecret, JSObject card, Map<String, dynamic> billingDetails) async {
+  Future<JSObject> confirmPayment(
+      String clientSecret, JSObject card, Map<String, dynamic> billingDetails) async {
     final paymentResultPromise = _stripe!.confirmCardPayment(
       clientSecret,
-      jsify({
+      {
         'payment_method': {
           'card': card,
           'billing_details': billingDetails,
         },
-      }) as JSObject,
+      }.jsify() as JSObject,
     );
-    return await paymentResultPromise.toFuture.then((value) => value as JSObject);
+    return await paymentResultPromise.toDart as JSObject;
   }
 }

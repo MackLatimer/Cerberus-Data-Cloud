@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:candidate_website/src/widgets/donate_button.dart';
-import 'package:candidate_website/src/utils/breakpoint.dart';
+import 'package:emmons_frontend/src/widgets/donate_button.dart';
+import 'package:emmons_frontend/src/utils/breakpoint.dart';
 
 class DonateSection extends StatelessWidget {
   const DonateSection({super.key});

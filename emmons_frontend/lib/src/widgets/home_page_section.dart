@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:candidate_website/src/utils/breakpoint.dart';
+import 'package:emmons_frontend/src/utils/breakpoint.dart';
 
 class HomePageSection extends StatelessWidget {
   final String title;

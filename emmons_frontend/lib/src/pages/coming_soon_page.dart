@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:candidate_website/src/widgets/donation_widget.dart';
+import 'package:emmons_frontend/src/widgets/donation_widget.dart';
 
 class ComingSoonPage extends StatelessWidget {
   const ComingSoonPage({super.key});
