@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart'; // Import for setUrlStrategy
-import 'dart:ui_web' as ui show HashUrlStrategy, platformViewRegistry;
-import 'dart:js_interop' as js_interop;
+import 'dart:ui_web' as ui show platformViewRegistry;
+import 'dart:js_interop';
 import 'package:candidate_website/src/widgets/stripe_element.dart';
 import 'package:candidate_website/src/pages/about_page.dart';
 import 'package:candidate_website/src/pages/coming_soon_page.dart';
@@ -12,19 +12,21 @@ import 'package:candidate_website/src/pages/home_page.dart';
 import 'package:candidate_website/src/pages/issues_page.dart';
 import 'package:candidate_website/src/pages/privacy_policy_page.dart';
 
+@JS()
+external JSAny get stripe;
 
 void main() {
   // Use hash-based URL strategy for web
   setUrlStrategy(const HashUrlStrategy());
   GoRouter.optionURLReflectsImperativeAPIs = true;
 
-    // ignore: undefined_prefixed_name
+  // ignore: undefined_prefixed_name
   ui.platformViewRegistry.registerViewFactory(
     'card-element',
-                        (int viewId) => StripeElement((js_interop.getProperty(js_interop.globalThis, 'elements'.toJS) as js_interop.JSObject).callMethod('create'.toJS, ['card'.toJS as js_interop.JSAny])).element,
+    (int viewId) => StripeElement((stripe.getProperty('elements'.toJS) as JSObject)
+            .callMethod('create'.toJS, 'card'.toJS as JSAny))
+        .element,
   );
-
-  
 
   runApp(const MyApp());
 }

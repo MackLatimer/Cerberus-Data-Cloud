@@ -5,7 +5,6 @@ import 'dart:js_interop';
 external JSObject get stripe;
 
 extension type StripeJSObject(JSObject _ref) implements JSObject {
-  external JSObject callMethod(String methodName, [JSAny? arg1, JSAny? arg2]);
   external JSObject elements();
   external JSPromise createPaymentMethod(JSObject options);
   external JSPromise confirmCardPayment(String clientSecret, JSObject options);
@@ -25,16 +24,16 @@ class StripeService {
   Future<void> init() async {
     final completer = Completer<void>();
 
-    js_interop.setProperty(js_interop.globalThis, 'onStripeLoaded'.toJS, (() {
-      final stripeJs = js_interop.getProperty(js_interop.globalThis, 'Stripe'.toJS);
+    globalContext.setProperty('onStripeLoaded'.toJS, () {
+      final stripeJs = globalContext.getProperty('Stripe'.toJS);
       if (stripeJs.isDefinedAndNotNull) {
-        _stripe = js_interop.callAsConstructor<StripeJSObject>(stripeJs as js_interop.JSFunction, [publishableKey.toJS]);
+        _stripe = stripeJs.callAsConstructor<StripeJSObject>(publishableKey.toJS);
         _elements = _stripe?.elements() as ElementsJSObject?;
         completer.complete();
       } else {
         completer.completeError('Stripe.js not loaded');
       }
-    }).toJS);
+    }.toJS);
 
     return completer.future;
   }
@@ -43,21 +42,21 @@ class StripeService {
 
   Future<JSObject> createPaymentMethod(JSObject card) async {
     final paymentMethodPromise = _stripe!.createPaymentMethod(
-      <String, JSAny?>{'type'.toJS: 'card'.toJS, 'card'.toJS: card}.toJS,
+      jsify({'type': 'card', 'card': card}) as JSObject,
     );
-    return await promiseToFuture(paymentMethodPromise);
+    return await paymentMethodPromise.toFuture;
   }
 
   Future<JSObject> confirmPayment(String clientSecret, JSObject card, Map<String, dynamic> billingDetails) async {
     final paymentResultPromise = _stripe!.confirmCardPayment(
-      clientSecret.toJS,
-      <String, JSAny?>{
-        'payment_method': <String, JSAny?>{
+      clientSecret,
+      jsify({
+        'payment_method': {
           'card': card,
-          'billing_details': billingDetails.toJSBox,
-        }.toJS,
-      }.toJS,
+          'billing_details': billingDetails,
+        },
+      }) as JSObject,
     );
-    return await promiseToFuture(paymentResultPromise);
+    return await paymentResultPromise.toFuture;
   }
 }

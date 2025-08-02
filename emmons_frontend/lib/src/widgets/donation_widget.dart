@@ -1,13 +1,13 @@
 
 import 'package:flutter/foundation.dart';
-import 'dart:js_interop' as js_interop;
+import 'dart:js_interop';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:go_router/go_router.dart';
-import 'package:candidate_website/src/config.dart';
-import 'package:candidate_website/src/services/stripe_service.dart';
-import 'package:candidate_website/src/widgets/stripe_element.dart';
+import 'package:emmons_frontend/src/config.dart';
+import 'package:emmons_frontend/src/services/stripe_service.dart';
+import 'package:emmons_frontend/src/widgets/stripe_element.dart';
 
 class DonationWidget extends StatefulWidget {
   const DonationWidget({super.key});
@@ -80,9 +80,11 @@ class _DonationWidgetState extends State<DonationWidget> {
   Future<void> _createPaymentIntent() async {
     final amount = _selectedAmount ?? int.tryParse(_customAmountController.text);
     if (amount == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select or enter an amount')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please select or enter an amount')),
+        );
+      }
       return;
     }
 
@@ -116,9 +118,11 @@ class _DonationWidgetState extends State<DonationWidget> {
         }
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error creating payment intent: $e')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error creating payment intent: $e')),
+        );
+      }
     }
   }
 
@@ -128,9 +132,11 @@ class _DonationWidgetState extends State<DonationWidget> {
     }
 
     if (_clientSecret == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Payment intent not created')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Payment intent not created')),
+        );
+      }
       return;
     }
 
@@ -155,10 +161,12 @@ class _DonationWidgetState extends State<DonationWidget> {
         billingDetails,
       );
 
-      if (js_interop.hasProperty(result, 'error'.toJS)) {
+      if (result.hasProperty('error'.toJS)) {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Payment failed: ${(js_interop.getProperty(js_interop.getProperty(result, 'error'.toJS) as js_interop.JSObject, 'message'.toJS) as js_interop.JSString).toDartString()}')),
+          SnackBar(
+              content: Text(
+                  'Payment failed: ${result.getProperty('error'.toJS).getProperty('message'.toJS).dartString}')),
         );
       } else {
         if (!mounted) return;
@@ -167,9 +175,11 @@ class _DonationWidgetState extends State<DonationWidget> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error processing payment: $e')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error processing payment: $e')),
+        );
+      }
     }
   }
 
@@ -213,9 +223,11 @@ class _DonationWidgetState extends State<DonationWidget> {
         }
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error submitting details: $e')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error submitting details: $e')),
+        );
+      }
     }
   }
 
@@ -254,7 +266,7 @@ class _DonationWidgetState extends State<DonationWidget> {
           alignment: WrapAlignment.center,
           children: [25, 50, 100, 250, 500, 1000]
               .map((amount) => ChoiceChip(
-                    label: Text('\$$amount'),
+                    label: Text('\$amount'),
                     selected: _selectedAmount == amount,
                     onSelected: (selected) {
                       setState(() {
@@ -272,7 +284,8 @@ class _DonationWidgetState extends State<DonationWidget> {
           controller: _customAmountController,
           decoration: const InputDecoration(
             labelText: 'Custom Amount',
-            prefixText: '\$',
+            prefixText: '\
+,
           ),
           keyboardType: TextInputType.number,
           onChanged: (value) {
@@ -292,7 +305,7 @@ class _DonationWidgetState extends State<DonationWidget> {
 
   Widget _buildDetailsStep() {
     if (_cardElement == null && _stripeService.elements != null) {
-      _cardElement = StripeElement(_stripeService.elements!.create('card'.toJS));
+      _cardElement = StripeElement(_stripeService.elements!.create('card'));
       Future.delayed(const Duration(milliseconds: 100), () {
         _cardElement?.mount('#card-element');
       });
