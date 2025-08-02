@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart'; // Import for setUrlStrategy
-import 'dart:ui_web' as ui;
+import 'dart:ui_web' as ui show HashUrlStrategy, platformViewRegistry;
 import 'dart:js_interop';
 import 'package:candidate_website/src/widgets/stripe_element.dart';
-
 import 'package:candidate_website/src/pages/about_page.dart';
 import 'package:candidate_website/src/pages/coming_soon_page.dart';
 import 'package:candidate_website/src/pages/donate_page.dart';
@@ -22,7 +21,7 @@ void main() {
     // ignore: undefined_prefixed_name
   ui.platformViewRegistry.registerViewFactory(
     'card-element',
-        (int viewId) => StripeElement((globalThis as JSObject).getProperty('elements'.toJS as JSAny).callMethod('create'.toJS, ['card'.toJS as JSAny])).element,
+        (int viewId) => StripeElement((getProperty(globalThis, 'elements'.toJS) as JSObject).callMethod('create'.toJS, ['card'.toJS as JSAny])).element,
   );
 
   

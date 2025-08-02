@@ -52,9 +52,9 @@ class StripeService {
     final paymentResultPromise = _stripe!.confirmCardPayment(
       clientSecret.toJS,
       <String, JSAny?>{
-        'payment_method'.toJS: <String, JSAny?>{
-          'card'.toJS: card,
-          'billing_details'.toJS: billingDetails.toJSBox,
+        'payment_method': <String, JSAny?>{
+          'card': card,
+          'billing_details': billingDetails.toJSBox,
         }.toJS,
       }.toJS,
     );
