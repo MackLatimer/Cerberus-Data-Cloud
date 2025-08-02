@@ -159,12 +159,12 @@ class _DonationWidgetState extends State<DonationWidget> {
         billingDetails,
       );
 
-      if (result.hasProperty('error'.toJS)) {
+      if ((result as JSAny).hasProperty('error'.toJS)) {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
               content: Text(
-                  'Payment failed: ${result.getProperty('error'.toJS).getProperty('message'.toJS).toDart}'))),
+                  'Payment failed: ${(result.getProperty('error'.toJS) as JSObject).getProperty('message'.toJS).toDart}')))),
         );
       } else {
         if (!mounted) return;

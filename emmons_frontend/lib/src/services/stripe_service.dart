@@ -39,16 +39,15 @@ class StripeService {
 
   Future<void> init() async {
     final completer = Completer<void>();
-    final self = (html.window as JSAny).getProperty<JSFunction>('onStripeLoaded'.toJS);
-    self.callAsFunction(null, () {
-      if ((html.window as JSAny).hasProperty('Stripe'.toJS)) {
+        (html.window as JSObject).setProperty('onStripeLoaded'.toJS, () {
+      if ((html.window as JSObject).hasProperty('Stripe'.toJS)) {
         _stripe = StripeJS(publishableKey);
         _elements = _stripe?.elements();
         completer.complete();
       } else {
         completer.completeError('Stripe.js not loaded');
       }
-    }.toJS);
+    });
     return completer.future;
   }
 
