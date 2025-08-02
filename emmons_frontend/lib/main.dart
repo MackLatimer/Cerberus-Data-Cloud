@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart'; // Import for setUrlStrategy
 import 'dart:ui_web' as ui show platformViewRegistry;
 import 'dart:js_interop';
-import 'package:emmons_frontend/src/widgets/stripe_element.dart';
+import 'package:web/web.dart';
 import 'package:emmons_frontend/src/pages/about_page.dart';
 import 'package:emmons_frontend/src/pages/coming_soon_page.dart';
 import 'package:emmons_frontend/src/pages/donate_page.dart';
@@ -23,9 +23,12 @@ void main() {
   // ignore: undefined_prefixed_name
   ui.platformViewRegistry.registerViewFactory(
     'card-element',
-    (int viewId) => StripeElement(
-            (stripe.elements() as JSObject).create('card'.toJS) as JSObject)
-        .element,
+    (int viewId) {
+      final element = HTMLDivElement()
+        ..id = 'card-element'
+        ..style.border = 'none';
+      return element;
+    },
   );
 
   runApp(const MyApp());

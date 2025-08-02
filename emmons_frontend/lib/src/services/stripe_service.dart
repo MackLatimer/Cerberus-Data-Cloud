@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:js_interop';
 
+import 'package:web/web.dart' as html;
+
 @JS('Stripe')
 @staticInterop
 class StripeJS {
@@ -16,7 +18,16 @@ extension StripeJSExtension on StripeJS {
 @JS()
 @staticInterop
 class ElementsJSObject {
-  external JSObject create(String type, [JSObject? options]);
+  external StripeElementJS create(String type, [JSObject? options]);
+}
+
+@JS()
+@staticInterop
+class StripeElementJS {
+  external void mount(String selector);
+  external void unmount();
+  external void clear();
+  external void destroy();
 }
 
 class StripeService {
@@ -28,9 +39,9 @@ class StripeService {
 
   Future<void> init() async {
     final completer = Completer<void>();
-    final self = globalContext.getProperty<JSFunction>('onStripeLoaded'.toJS);
+    final self = (html.window as JSAny).getProperty<JSFunction>('onStripeLoaded'.toJS);
     self.callAsFunction(null, () {
-      if (globalContext.has('Stripe'.toJS)) {
+      if ((html.window as JSAny).hasProperty('Stripe'.toJS)) {
         _stripe = StripeJS(publishableKey);
         _elements = _stripe?.elements();
         completer.complete();
@@ -43,7 +54,7 @@ class StripeService {
 
   ElementsJSObject? get elements => _elements;
 
-  Future<JSObject> createPaymentMethod(JSObject card) async {
+  Future<JSObject> createPaymentMethod(StripeElementJS card) async {
     final paymentMethodPromise = _stripe!.createPaymentMethod(
       {'type': 'card', 'card': card}.jsify() as JSObject,
     );
@@ -51,16 +62,33 @@ class StripeService {
   }
 
   Future<JSObject> confirmPayment(
-      String clientSecret, JSObject card, Map<String, dynamic> billingDetails) async {
+      String clientSecret, StripeElementJS card, Map<String, dynamic> billingDetails) async {
     final paymentResultPromise = _stripe!.confirmCardPayment(
       clientSecret,
-      {
-        'payment_method': {
-          'card': card,
-          'billing_details': billingDetails,
-        },
-      }.jsify() as JSObject,
+      {'payment_method': {'card': card, 'billing_details': billingDetails}}.jsify() as JSObject,
     );
     return await paymentResultPromise.toDart as JSObject;
+  }
+}
+
+class StripeElement {
+  final StripeElementJS element;
+
+  StripeElement(this.element);
+
+  void mount(String selector) {
+    element.mount(selector);
+  }
+
+  void unmount() {
+    element.unmount();
+  }
+
+  void clear() {
+    element.clear();
+  }
+
+  void destroy() {
+    element.destroy();
   }
 }

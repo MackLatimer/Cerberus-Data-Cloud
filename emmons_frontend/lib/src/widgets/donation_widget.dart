@@ -1,12 +1,11 @@
 import 'package:flutter/foundation.dart';
-import 'dart:js_interop';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:go_router/go_router.dart';
 import 'package:emmons_frontend/src/config.dart';
 import 'package:emmons_frontend/src/services/stripe_service.dart';
-import 'package:emmons_frontend/src/widgets/stripe_element.dart';
+import 'dart:js_interop';
 
 class DonationWidget extends StatefulWidget {
   const DonationWidget({super.key});
@@ -160,12 +159,12 @@ class _DonationWidgetState extends State<DonationWidget> {
         billingDetails,
       );
 
-      if (result.hasProperty('error'.toJS).toDart) {
+      if (result.hasProperty('error'.toJS)) {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
               content: Text(
-                  'Payment failed: ${(result.getProperty('error'.toJS) as JSObject).getProperty('message'.toJS).toDart}')),
+                  'Payment failed: ${result.getProperty('error'.toJS).getProperty('message'.toJS).toDart}'))),
         );
       } else {
         if (!mounted) return;
@@ -360,7 +359,7 @@ class _DonationWidgetState extends State<DonationWidget> {
           const SizedBox(height: 20),
           SizedBox(
             height: 50,
-            child: HtmlElementView(viewType: 'card-element'),
+            child: const HtmlElementView(viewType: 'card-element'),
           ),
           const SizedBox(height: 20),
           CheckboxListTile(
