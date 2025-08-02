@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart'; // Import for setUrlStrategy
 import 'dart:ui_web' as ui;
-import 'dart:js' as js;
+import 'dart:js_interop';
 import 'package:candidate_website/src/widgets/stripe_element.dart';
 
 import 'package:candidate_website/src/pages/about_page.dart';
@@ -19,11 +19,13 @@ void main() {
   setUrlStrategy(const HashUrlStrategy());
   GoRouter.optionURLReflectsImperativeAPIs = true;
 
-  // ignore: undefined_prefixed_name
-  ui.platformViewRegistry.registerViewFactory(
-    'card-element',
-    (int viewId) => StripeElement(js.context['elements'].create('card')).element,
-  );
+  // // ignore: undefined_prefixed_name
+  // ui.platformViewRegistry.registerViewFactory(
+  //   'card-element',
+  //       (int viewId) => StripeElement((globalThis as JSObject).getProperty('elements'.toJS as JSAny).callMethod('create'.toJS, ['card'.toJS as JSAny])).element,
+  // );
+
+  print(globalThis.toString());
 
   runApp(const MyApp());
 }
