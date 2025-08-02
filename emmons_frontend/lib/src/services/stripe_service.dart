@@ -46,7 +46,7 @@ class StripeService {
   Future<void> init() async {
     final completer = Completer<void>();
     // Use the extension type for property access
-    setProperty(html.window, 'onStripeLoaded'.toJS, (JSFunction () {
+    setProperty(html.window, 'onStripeLoaded'.toJS, (() {
       if (hasProperty(html.window, 'Stripe'.toJS)) {
         _stripe = StripeJS(publishableKey);
         _elements = _stripe?.elements();
