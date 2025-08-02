@@ -1,5 +1,6 @@
 
 import 'package:flutter/foundation.dart';
+import 'dart:js_interop' as js_interop;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -100,15 +101,19 @@ class _DonationWidgetState extends State<DonationWidget> {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        setState(() {
-          _clientSecret = data['clientSecret'];
-          _paymentIntentId = data['paymentIntentId'];
-          _step = 2;
-        });
+        if (mounted) {
+          setState(() {
+            _clientSecret = data['clientSecret'];
+            _paymentIntentId = data['paymentIntentId'];
+            _step = 2;
+          });
+        }
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to create payment intent: ${response.body}')),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to create payment intent: ${response.body}')),
+          );
+        }
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -151,10 +156,12 @@ class _DonationWidgetState extends State<DonationWidget> {
       );
 
       if (js_interop.hasProperty(result, 'error'.toJS)) {
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Payment failed: ${(js_interop.getProperty(result, 'error'.toJS) as js_interop.JSObject).getProperty('message'.toJS).toDartString()}')),
+          SnackBar(content: Text('Payment failed: ${(js_interop.getProperty(js_interop.getProperty(result, 'error'.toJS) as js_interop.JSObject, 'message'.toJS) as js_interop.JSString).toDartString()}')),
         );
       } else {
+        if (!mounted) return;
         setState(() {
           _step = 3;
         });
@@ -192,14 +199,18 @@ class _DonationWidgetState extends State<DonationWidget> {
       );
 
       if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Thank you for your donation!')),
-        );
-        context.go('/home');
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Thank you for your donation!')),
+          );
+          context.go('/home');
+        }
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to submit details: ${response.body}')),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to submit details: ${response.body}')),
+          );
+        }
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -281,7 +292,7 @@ class _DonationWidgetState extends State<DonationWidget> {
 
   Widget _buildDetailsStep() {
     if (_cardElement == null && _stripeService.elements != null) {
-      _cardElement = StripeElement(_stripeService.elements!.callMethod('create', ['card']));
+      _cardElement = StripeElement(_stripeService.elements!.create('card'.toJS));
       Future.delayed(const Duration(milliseconds: 100), () {
         _cardElement?.mount('#card-element');
       });

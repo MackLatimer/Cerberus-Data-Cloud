@@ -25,10 +25,10 @@ class StripeService {
   Future<void> init() async {
     final completer = Completer<void>();
 
-    setProperty(globalThis, 'onStripeLoaded'.toJS, (() {
-      final stripeJs = getProperty(globalThis, 'Stripe'.toJS);
+    js_interop.setProperty(js_interop.globalThis, 'onStripeLoaded'.toJS, (() {
+      final stripeJs = js_interop.getProperty(js_interop.globalThis, 'Stripe'.toJS);
       if (stripeJs.isDefinedAndNotNull) {
-        _stripe = (stripeJs as JSFunction).callAsConstructor<StripeJSObject>([publishableKey.toJS]);
+        _stripe = js_interop.callAsConstructor<StripeJSObject>(stripeJs as js_interop.JSFunction, [publishableKey.toJS]);
         _elements = _stripe?.elements() as ElementsJSObject?;
         completer.complete();
       } else {
