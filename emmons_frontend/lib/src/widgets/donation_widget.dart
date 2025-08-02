@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 import 'dart:js_interop';
 import 'package:flutter/material.dart';
@@ -266,7 +265,7 @@ class _DonationWidgetState extends State<DonationWidget> {
           alignment: WrapAlignment.center,
           children: [25, 50, 100, 250, 500, 1000]
               .map((amount) => ChoiceChip(
-                    label: Text('\$amount'),
+                    label: Text('\$$amount'),
                     selected: _selectedAmount == amount,
                     onSelected: (selected) {
                       setState(() {
@@ -284,8 +283,7 @@ class _DonationWidgetState extends State<DonationWidget> {
           controller: _customAmountController,
           decoration: const InputDecoration(
             labelText: 'Custom Amount',
-            prefixText: '\
-,
+            prefixText: r'$',
           ),
           keyboardType: TextInputType.number,
           onChanged: (value) {
@@ -311,7 +309,7 @@ class _DonationWidgetState extends State<DonationWidget> {
       });
     }
     return Form(
-      key: const ValueKey<int>(2),
+      key: _formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

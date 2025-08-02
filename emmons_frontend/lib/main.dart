@@ -1,16 +1,16 @@
-import 'package:flutter/material.dart';
+"""import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart'; // Import for setUrlStrategy
 import 'dart:ui_web' as ui show platformViewRegistry;
 import 'dart:js_interop';
-import 'package:candidate_website/src/widgets/stripe_element.dart';
-import 'package:candidate_website/src/pages/about_page.dart';
-import 'package:candidate_website/src/pages/coming_soon_page.dart';
-import 'package:candidate_website/src/pages/donate_page.dart';
-import 'package:candidate_website/src/pages/endorsements_page.dart';
-import 'package:candidate_website/src/pages/home_page.dart';
-import 'package:candidate_website/src/pages/issues_page.dart';
-import 'package:candidate_website/src/pages/privacy_policy_page.dart';
+import 'package:emmons_frontend/src/widgets/stripe_element.dart';
+import 'package:emmons_frontend/src/pages/about_page.dart';
+import 'package:emmons_frontend/src/pages/coming_soon_page.dart';
+import 'package:emmons_frontend/src/pages/donate_page.dart';
+import 'package:emmons_frontend/src/pages/endorsements_page.dart';
+import 'package:emmons_frontend/src/pages/home_page.dart';
+import 'package:emmons_frontend/src/pages/issues_page.dart';
+import 'package:emmons_frontend/src/pages/privacy_policy_page.dart';
 
 @JS()
 external JSAny get stripe;
@@ -29,7 +29,7 @@ void main() {
   );
 
   runApp(const MyApp());
-}
+}""
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

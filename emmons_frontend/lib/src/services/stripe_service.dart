@@ -1,15 +1,17 @@
 import 'dart:async';
 import 'dart:js_interop';
 
-@JS()
-external JSObject get stripe;
 
+@JS()
+@staticInterop
 extension type StripeJSObject(JSObject _ref) implements JSObject {
   external JSObject elements();
   external JSPromise createPaymentMethod(JSObject options);
   external JSPromise confirmCardPayment(String clientSecret, JSObject options);
 }
 
+@JS()
+@staticInterop
 extension type ElementsJSObject(JSObject _ref) implements JSObject {
   external JSObject create(String type, [JSObject? options]);
 }
@@ -23,9 +25,9 @@ class StripeService {
 
   Future<void> init() async {
     final completer = Completer<void>();
-
-    globalContext.setProperty('onStripeLoaded'.toJS, () {
-      final stripeJs = globalContext.getProperty('Stripe'.toJS);
+    final self = globalContext.getProperty<JSFunction>('onStripeLoaded'.toJS);
+    self.callAsFunction(null, () {
+      final stripeJs = globalContext.getProperty<JSFunction>('Stripe'.toJS);
       if (stripeJs.isDefinedAndNotNull) {
         _stripe = stripeJs.callAsConstructor<StripeJSObject>(publishableKey.toJS);
         _elements = _stripe?.elements() as ElementsJSObject?;
@@ -34,7 +36,6 @@ class StripeService {
         completer.completeError('Stripe.js not loaded');
       }
     }.toJS);
-
     return completer.future;
   }
 
@@ -44,7 +45,7 @@ class StripeService {
     final paymentMethodPromise = _stripe!.createPaymentMethod(
       jsify({'type': 'card', 'card': card}) as JSObject,
     );
-    return await paymentMethodPromise.toFuture;
+    return await paymentMethodPromise.toFuture.then((value) => value as JSObject);
   }
 
   Future<JSObject> confirmPayment(String clientSecret, JSObject card, Map<String, dynamic> billingDetails) async {
@@ -57,6 +58,6 @@ class StripeService {
         },
       }) as JSObject,
     );
-    return await paymentResultPromise.toFuture;
+    return await paymentResultPromise.toFuture.then((value) => value as JSObject);
   }
 }
