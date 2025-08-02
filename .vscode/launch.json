@@ -3,7 +3,7 @@
     "configurations": [
         {
             "name": "emmons_frontend",
-            "cwd": "$Cerberus-Data-Cloud/emmons_frontend",
+            "cwd": "emmons_frontend",
             "request": "launch",
             "type": "dart",
             "program": "lib/main.dart",
@@ -15,7 +15,7 @@
             "request": "launch",
             "module": "flask",
             "program": "run.py",
-            "cwd": "$Cerberus-Data-Cloud/cerberus_campaigns_backend",
+            "cwd": "cerberus_campaigns_backend",
             "args": ["run", "--no-debugger"],
             "env": {
                 "FLASK_APP": "run.py",
