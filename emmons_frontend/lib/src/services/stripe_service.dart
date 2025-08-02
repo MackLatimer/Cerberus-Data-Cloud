@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:js_interop';
+import 'dart:js_interop_unsafe'; // For hasProperty, getProperty, setProperty
 
 import 'package:web/web.dart' as html;
 
@@ -23,13 +24,17 @@ extension StripeJSExtension on StripeJS {
 
 @JS()
 @staticInterop
-class ElementsJSObject {
+class ElementsJSObject {}
+
+extension ElementsJSObjectExtension on ElementsJSObject {
   external StripeElementJS create(String type, [JSObject? options]);
 }
 
 @JS()
 @staticInterop
-class StripeElementJS {
+class StripeElementJS {}
+
+extension StripeElementJSExtension on StripeElementJS {
   external void mount(String selector);
   external void unmount();
   external void clear();
@@ -46,15 +51,15 @@ class StripeService {
   Future<void> init() async {
     final completer = Completer<void>();
     // Use the extension type for property access
-    setProperty(html.window, 'onStripeLoaded'.toJS, (() {
-      if (hasProperty(html.window, 'Stripe'.toJS)) {
+    html.window.setProperty('onStripeLoaded'.toJS, (() {
+      if (html.window.hasProperty('Stripe'.toJS).toDart) {
         _stripe = StripeJS(publishableKey);
         _elements = _stripe?.elements();
         completer.complete();
       } else {
         completer.completeError('Stripe.js not loaded');
       }
-    }).toJS;
+    }).toJS);
     return completer.future;
   }
 

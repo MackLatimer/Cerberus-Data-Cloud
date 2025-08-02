@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:emmons_frontend/src/config.dart';
 import 'package:emmons_frontend/src/services/stripe_service.dart';
 import 'dart:js_interop';
+import 'dart:js_interop_unsafe' as js_interop_unsafe; // For hasProperty, getProperty
 
 class DonationWidget extends StatefulWidget {
   const DonationWidget({super.key});
@@ -159,12 +160,12 @@ class _DonationWidgetState extends State<DonationWidget> {
         billingDetails,
       );
 
-      if (hasProperty(result, 'error'.toJS)) {
+      if (js_interop_unsafe.hasProperty(result, 'error'.toJS)) {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
               content: Text(
-                  'Payment failed: ${getProperty(getProperty(result, 'error'.toJS), 'message'.toJS).toDart()}')),
+                  'Payment failed: ${js_interop_unsafe.getProperty(js_interop_unsafe.getProperty(result, 'error'.toJS), 'message'.toJS).toDart()}')),
         );
       } else {
         if (!mounted) return;
