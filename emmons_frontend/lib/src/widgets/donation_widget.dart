@@ -6,7 +6,18 @@ import 'package:go_router/go_router.dart';
 import 'package:emmons_frontend/src/config.dart';
 import 'package:emmons_frontend/src/services/stripe_service.dart';
 import 'dart:js_interop';
-import 'dart:js_interop_unsafe' as jsu; // For hasProperty, getProperty
+
+@JS()
+@anonymous
+extension type PaymentResult._(JSObject _) implements JSObject {
+  external JSObject? get error;
+}
+
+@JS()
+@anonymous
+extension type StripeError._(JSObject _) implements JSObject {
+  external String? get message;
+}
 
 class DonationWidget extends StatefulWidget {
   const DonationWidget({super.key});
@@ -160,12 +171,12 @@ class _DonationWidgetState extends State<DonationWidget> {
         billingDetails,
       );
 
-      if (jsu.hasProperty(result, 'error'.toJS)) {
+      if ((result as PaymentResult).error != null) {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
               content: Text(
-                  'Payment failed: ${jsu.getProperty(jsu.getProperty(result, 'error'.toJS), 'message'.toJS).toDart()}')),
+                  'Payment failed: ${(result.error as StripeError?)?.message}'))
         );
       } else {
         if (!mounted) return;
