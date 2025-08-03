@@ -1,40 +1,44 @@
 import 'dart:async';
 import 'dart:js_interop';
-import 'dart:js_interop_unsafe'; // For hasProperty, getProperty, setProperty
+
+
+
 
 import 'package:web/web.dart' as html;
 
 // Define an extension type for html.Window to expose JS properties
-extension type WindowProps(JSObject _) {
-  external JSObject get Stripe; // Assuming Stripe is a global JS object
+@JS()
+@anonymous
+extension type WindowExtension._(JSObject _) implements JSObject {
+  external JSObject? get stripe; // Assuming Stripe is a global JS object
   external set onStripeLoaded(JSFunction value);
 }
 
 @JS('Stripe')
 @staticInterop
-class StripeJS {
-  external factory StripeJS(String publishableKey);
+class StripeJs {
+  external factory StripeJs(String publishableKey);
 }
 
-extension StripeJSExtension on StripeJS {
-  external ElementsJSObject elements();
+extension StripeJsExtension on StripeJs {
+  external ElementsJsObject elements();
   external JSPromise createPaymentMethod(JSObject options);
   external JSPromise confirmCardPayment(String clientSecret, JSObject options);
 }
 
 @JS()
 @staticInterop
-class ElementsJSObject {}
+class ElementsJsObject {}
 
-extension ElementsJSObjectExtension on ElementsJSObject {
-  external StripeElementJS create(String type, [JSObject? options]);
+extension ElementsJsObjectExtension on ElementsJsObject {
+  external StripeElementJs create(String type, [JSObject? options]);
 }
 
 @JS()
 @staticInterop
-class StripeElementJS {}
+class StripeElementJs {}
 
-extension StripeElementJSExtension on StripeElementJS {
+extension StripeElementJsExtension on StripeElementJs {
   external void mount(String selector);
   external void unmount();
   external void clear();
@@ -43,17 +47,17 @@ extension StripeElementJSExtension on StripeElementJS {
 
 class StripeService {
   final String publishableKey;
-  StripeJS? _stripe;
-  ElementsJSObject? _elements;
+  StripeJs? _stripe;
+  ElementsJsObject? _elements;
 
   StripeService(this.publishableKey);
 
   Future<void> init() async {
     final completer = Completer<void>();
     // Use the extension type for property access
-    html.window.setProperty('onStripeLoaded'.toJS, (() {
-      if (html.window.hasProperty('Stripe'.toJS).toDart) {
-        _stripe = StripeJS(publishableKey);
+    (html.window as WindowExtension).onStripeLoaded = (() {
+      if ((html.window as WindowExtension).stripe != null) {
+        _stripe = StripeJs(publishableKey);
         _elements = _stripe?.elements();
         completer.complete();
       } else {
@@ -63,9 +67,9 @@ class StripeService {
     return completer.future;
   }
 
-  ElementsJSObject? get elements => _elements;
+  ElementsJsObject? get elements => _elements;
 
-  Future<JSObject> createPaymentMethod(StripeElementJS card) async {
+  Future<JSObject> createPaymentMethod(StripeElementJs card) async {
     final paymentMethodPromise = _stripe!.createPaymentMethod(
       {'type': 'card', 'card': card}.jsify() as JSObject,
     );
@@ -73,7 +77,7 @@ class StripeService {
   }
 
   Future<JSObject> confirmPayment(
-      String clientSecret, StripeElementJS card, Map<String, dynamic> billingDetails) async {
+      String clientSecret, StripeElementJs card, Map<String, dynamic> billingDetails) async {
     final paymentResultPromise = _stripe!.confirmCardPayment(
       clientSecret,
       {'payment_method': {'card': card, 'billing_details': billingDetails}}.jsify() as JSObject,
@@ -83,7 +87,7 @@ class StripeService {
 }
 
 class StripeElement {
-  final StripeElementJS element;
+  final StripeElementJs element;
 
   StripeElement(this.element);
 

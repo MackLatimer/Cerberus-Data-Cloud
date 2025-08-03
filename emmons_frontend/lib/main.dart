@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart'; // Import for setUrlStrategy
 import 'dart:ui_web' as ui show platformViewRegistry;
-import 'dart:js_interop';
 import 'package:web/web.dart';
 import 'package:emmons_frontend/src/pages/about_page.dart';
 import 'package:emmons_frontend/src/pages/coming_soon_page.dart';
@@ -12,21 +11,19 @@ import 'package:emmons_frontend/src/pages/home_page.dart';
 import 'package:emmons_frontend/src/pages/issues_page.dart';
 import 'package:emmons_frontend/src/pages/privacy_policy_page.dart';
 
-@JS()
-external JSAny get stripe;
+
 
 void main() {
   // Use hash-based URL strategy for web
   setUrlStrategy(const HashUrlStrategy());
   GoRouter.optionURLReflectsImperativeAPIs = true;
 
-  // ignore: undefined_prefixed_name
   ui.platformViewRegistry.registerViewFactory(
     'card-element',
     (int viewId) {
       final element = HTMLDivElement()
         ..id = 'card-element'
-        ..style.border = 'none';
+        ..style.setProperty('border', 'none');
       return element;
     },
   );
@@ -44,7 +41,7 @@ class MyApp extends StatelessWidget {
       routes: [
         GoRoute(
           path: '/',
-          redirect: (_, __) => '/home',
+          redirect: (_, _) => '/home',
         ),
         GoRoute(
           path: '/home',
