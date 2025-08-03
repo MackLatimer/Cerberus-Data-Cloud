@@ -4,6 +4,7 @@ import 'dart:js_interop';
 
 
 
+
 import 'package:web/web.dart' as html;
 
 // Define an extension type for html.Window to expose JS properties
@@ -63,7 +64,7 @@ class StripeService {
       } else {
         completer.completeError('Stripe.js not loaded');
       }
-    }).toJS);
+    }).toJS;
     return completer.future;
   }
 
