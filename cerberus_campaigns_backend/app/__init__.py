@@ -11,8 +11,6 @@ from .routes.donate import donate_bp
 # from .routes.auth import auth_bp # Example, for authentication routes
 # from .routes.campaigns import campaigns_api_bp # Example, for campaign routes
 
-import stripe
-
 def create_app(config_name_override: str = None) -> Flask:
     """
     Application factory function.
@@ -27,11 +25,8 @@ def create_app(config_name_override: str = None) -> Flask:
     app.config.from_object(get_config_by_name(effective_config_name))
 
     CORS(app, resources={
-        r"/api/*": {"origins": "*"},
-        r"/donate": {"origins": "https://electemmons.com"}
+        r"/api/*": {"origins": "*"}
     }, supports_credentials=True)
-
-    stripe.api_key = app.config['STRIPE_SECRET_KEY']
 
     # Initialize extensions
     init_extensions(app)

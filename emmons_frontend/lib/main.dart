@@ -21,12 +21,18 @@ void main() {
   ui.platformViewRegistry.registerViewFactory(
     'card-element',
     (int viewId) {
+      print('registerViewFactory called for card-element');
       final element = HTMLDivElement()
         ..id = 'card-element'
         ..style.setProperty('border', 'none');
       return element;
     },
   );
+
+  FlutterError.onError = (FlutterErrorDetails details) {
+    FlutterError.dumpErrorToConsole(details);
+    // You can also send the error to a reporting service here
+  };
 
   runApp(const MyApp());
 }

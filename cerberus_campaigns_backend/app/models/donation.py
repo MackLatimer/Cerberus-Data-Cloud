@@ -5,10 +5,10 @@ class Donation(db.Model):
     __tablename__ = 'donations'
 
     id = db.Column(db.Integer, primary_key=True)
-    stripe_payment_intent_id = db.Column(db.String(255), unique=True, nullable=False)
     amount = db.Column(db.Float, nullable=False)
     currency = db.Column(db.String(10), default='usd', nullable=False)
     payment_status = db.Column(db.String(50), default='pending', nullable=False)
+    stripe_payment_intent_id = db.Column(db.String(255), unique=True, nullable=False)
     # Donor information (collected after initial payment)
     first_name = db.Column(db.String(100), nullable=True)
     last_name = db.Column(db.String(100), nullable=True)
@@ -27,12 +27,8 @@ class Donation(db.Model):
     contact_mail = db.Column(db.Boolean, default=False)
     contact_sms = db.Column(db.Boolean, default=False)
 
-    # New fields for Stripe Payment Intents and recurring donations
     is_recurring = db.Column(db.Boolean, default=False)
     covers_fees = db.Column(db.Boolean, default=False)
-    stripe_customer_id = db.Column(db.String(255), nullable=True)
-    stripe_payment_intent_id = db.Column(db.String(255), unique=True, nullable=True)
-    stripe_subscription_id = db.Column(db.String(255), unique=True, nullable=True)
 
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

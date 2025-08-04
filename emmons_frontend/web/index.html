@@ -6,23 +6,9 @@
   <base href="/">
   <link rel="icon" href="favicon.ico">
   <meta name="flutter-web-renderer" content="html" />
+  <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
-  <script src="https://js.stripe.com/v3/"></script>
-  <script>
-    function pollForStripe() {
-      if (window.Stripe) {
-        console.log('Stripe object is available.');
-        if (window.onStripeLoaded) {
-          window.onStripeLoaded();
-        }
-      } else {
-        console.log('Stripe object not yet available. Polling again...');
-        setTimeout(pollForStripe, 100); // Poll every 100ms
-      }
-    }
-    pollForStripe();
-  </script>
   <script src="main.dart.js" type="application/javascript"></script>
 </body>
 </html>

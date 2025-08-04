@@ -1,110 +1,118 @@
-import 'dart:async';
 import 'dart:js_interop';
-
-
-
-
-
-import 'package:web/web.dart' as html;
-
-// Define an extension type for html.Window to expose JS properties
-@JS()
-@anonymous
-extension type WindowExtension._(JSObject _) implements JSObject {
-  external JSObject? get stripe; // Assuming Stripe is a global JS object
-  external set onStripeLoaded(JSFunction value);
-}
+import 'dart:html' as html;
 
 @JS('Stripe')
-@staticInterop
-class StripeJs {
-  external factory StripeJs(String publishableKey);
-}
+class Stripe {
+  external Stripe(String publicKey);
 
-extension StripeJsExtension on StripeJs {
-  external ElementsJsObject elements();
-  external JSPromise createPaymentMethod(JSObject options);
-  external JSPromise confirmCardPayment(String clientSecret, JSObject options);
+  external Elements elements();
+  external JSPromise<PaymentIntentResponse> confirmCardPayment(String clientSecret, [ConfirmCardPaymentData? data]);
 }
 
 @JS()
-@staticInterop
-class ElementsJsObject {}
-
-extension ElementsJsObjectExtension on ElementsJsObject {
-  external StripeElementJs create(String type, [JSObject? options]);
+@anonymous
+extension type Elements._(JSObject _) implements JSObject {
+  external Element create(String type, [ElementOptions? options]);
 }
 
 @JS()
-@staticInterop
-class StripeElementJs {}
-
-extension StripeElementJsExtension on StripeElementJs {
+@anonymous
+extension type Element._(JSObject _) implements JSObject {
   external void mount(String selector);
-  external void unmount();
-  external void clear();
   external void destroy();
+  external void on(String event, JSFunction callback);
+}
+
+@JS()
+@anonymous
+extension type ElementOptions._(JSObject _) implements JSObject {
+  external set style(ElementStyle style);
+}
+
+@JS()
+@anonymous
+extension type ElementStyle._(JSObject _) implements JSObject {
+  external set base(ElementStyleBase base);
+}
+
+@JS()
+@anonymous
+extension type ElementStyleBase._(JSObject _) implements JSObject {
+  external set color(String color);
+  external set fontFamily(String fontFamily);
+  external set fontSize(String fontSize);
+  external set fontSmoothing(String fontSmoothing);
+  external set placeholder(String placeholder);
+}
+
+@JS()
+@anonymous
+extension type ConfirmCardPaymentData._(JSObject _) implements JSObject {
+  external set payment_method(PaymentMethod paymentMethod);
+}
+
+@JS()
+@anonymous
+extension type PaymentMethod._(JSObject _) implements JSObject {
+  external set card(Element card);
+  external set billing_details(BillingDetails billingDetails);
+}
+
+@JS()
+@anonymous
+extension type BillingDetails._(JSObject _) implements JSObject {
+  external set name(String name);
+  external set email(String email);
+  external set phone(String phone);
+  external set address(Address address);
+}
+
+@JS()
+@anonymous
+extension type Address._(JSObject _) implements JSObject {
+  external set line1(String line1);
+  external set line2(String line2);
+  external set city(String city);
+  external set state(String state);
+  external set postal_code(String postalCode);
+  external set country(String country);
+}
+
+@JS()
+@anonymous
+extension type PaymentIntentResponse._(JSObject _) implements JSObject {
+  external PaymentIntent? get paymentIntent;
+  external StripeError? get error;
+}
+
+@JS()
+@anonymous
+extension type PaymentIntent._(JSObject _) implements JSObject {
+  external String get id;
+  external String get status;
+}
+
+@JS()
+@anonymous
+extension type StripeError._(JSObject _) implements JSObject {
+  external String get message;
 }
 
 class StripeService {
-  final String publishableKey;
-  StripeJs? _stripe;
-  ElementsJsObject? _elements;
+  late final Stripe _stripe;
 
-  StripeService(this.publishableKey);
-
-  Future<void> init() async {
-    final completer = Completer<void>();
-    // Use the extension type for property access
-    (html.window as WindowExtension).onStripeLoaded = (() {
-      if ((html.window as WindowExtension).stripe != null) {
-        _stripe = StripeJs(publishableKey);
-        _elements = _stripe?.elements();
-        completer.complete();
-      } else {
-        completer.completeError('Stripe.js not loaded');
-      }
-    }).toJS;
-    return completer.future;
+  StripeService(String publicKey) {
+    _stripe = Stripe(publicKey);
   }
 
-  ElementsJsObject? get elements => _elements;
+  Elements get elements => _stripe.elements();
 
-  Future<JSObject> createPaymentMethod(StripeElementJs card) async {
-    final paymentMethodPromise = _stripe!.createPaymentMethod(
-      {'type': 'card', 'card': card}.jsify() as JSObject,
-    );
-    return await paymentMethodPromise.toDart as JSObject;
-  }
-
-  Future<JSObject> confirmPayment(
-      String clientSecret, StripeElementJs card, Map<String, dynamic> billingDetails) async {
-    final paymentResultPromise = _stripe!.confirmCardPayment(
-      clientSecret,
-      {'payment_method': {'card': card, 'billing_details': billingDetails}}.jsify() as JSObject,
-    );
-    return await paymentResultPromise.toDart as JSObject;
-  }
-}
-
-class StripeElement {
-  final StripeElementJs element;
-
-  StripeElement(this.element);
-
-  void mount(String selector) {
-    element.mount(selector);
-  }
-
-  void unmount() {
-    element.unmount();
-  }
-
-  void clear() {
-    element.clear();
-  }
-
-  void destroy() {
-    element.destroy();
+  Future<PaymentIntentResponse> confirmCardPayment(String clientSecret, Element cardElement, BillingDetails billingDetails) {
+    return _stripe.confirmCardPayment(clientSecret, ConfirmCardPaymentData()
+      ..payment_method = (PaymentMethod()
+        ..card = cardElement
+        ..billing_details = billingDetails
+      )
+    ).toDart;
   }
 }
