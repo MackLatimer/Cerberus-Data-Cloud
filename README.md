@@ -7,17 +7,17 @@ This repository hosts a suite of applications designed for campaign management, 
 The Cerberus system is composed of the following main components:
 
 1.  **`cerberus_campaigns_backend`**:
-    *   **Purpose**: This is the central backend for managing voter data, campaign information, interactions, and surveys.
+    *   **Purpose**: This is the central backend for managing voter data, campaign information, interactions, and surveys. It also handles donations via Stripe.
     *   **Technology**: Python (Flask), SQLAlchemy.
     *   **Connections**:
         *   Accessed by `emmons_frontend` for campaign-specific interactions.
         *   Accessed by `cerberus_frontend` for data upload, viewing, and administrative tasks related to campaign data.
 
 2.  **`emmons_frontend`**:
-    *   **Purpose**: A Flutter-based web application representing a specific campaign frontend (e.g., for a candidate named Emmons). It allows users (e.g., volunteers, campaign staff) to interact with voter data relevant to that campaign.
+    *   **Purpose**: A Flutter-based web application representing a specific campaign frontend (e.g., for a candidate named Emmons). It serves as the public-facing website for the campaign.
     *   **Technology**: Flutter.
     *   **Connections**:
-        *   Connects to `cerberus_campaigns_backend` to fetch and submit campaign-specific data. The backend URL is configured in `lib/src/config.dart` (currently `http://127.0.0.1:5001/api/v1`).
+        *   Connects to `cerberus_campaigns_backend` to handle signups and donations.
 
 3.  **`cerberus_frontend`**:
     *   **Purpose**: A Flutter-based web application with multiple roles:
@@ -25,8 +25,8 @@ The Cerberus system is composed of the following main components:
         *   **Cerberus Report Page**: A frontend for the `cerberus_report_backend`, allowing users to search and view publicly available agenda items from municipalities.
     *   **Technology**: Flutter.
     *   **Connections**:
-        *   Connects to `cerberus_campaigns_backend` for data management functionalities (specific API endpoints for this connection need to be defined/verified within the frontend's data services).
-        *   Connects to `cerberus_report_backend` for the "Cerberus Report" feature. The backend URL is configured in `lib/pages/report/report_page.dart` (currently `https://agenda-api-service-885603051818.us-south1.run.app`).
+        *   Connects to `cerberus_campaigns_backend` for data management functionalities.
+        *   Connects to `cerberus_report_backend` for the "Cerberus Report" feature.
 
 4.  **`cerberus_report_backend`**:
     *   **Purpose**: This backend scrapes, stores, and provides an API for public municipal agenda items. It also handles user subscriptions for notifications about new agenda items.

@@ -6,18 +6,20 @@ This Flutter-based web application serves as a multi-purpose frontend within the
 
 1.  **Data Portal**:
     *   **Purpose**: Allows authorized users to upload, view, and manage data stored in the `cerberus_campaigns_backend`. This includes voter lists, campaign details, and potentially other administrative functions.
-    *   **Connection**: Interacts with API endpoints provided by the `cerberus_campaigns_backend`. (Specific API endpoints and data services for this connection need to be implemented/verified within the `lib` directory, possibly under a `services` or `providers` folder).
+    *   **Connection**: Interacts with API endpoints provided by the `cerberus_campaigns_backend`.
 
 2.  **Cerberus Report Page**:
     *   **Purpose**: Provides a user interface for searching, filtering, and viewing publicly available agenda items scraped from various municipalities. It also allows users to subscribe to email notifications for new agenda items matching their filter criteria.
-    *   **Connection**: Interacts with the `cerberus_report_backend`. The backend API URL is configured in `lib/pages/report/report_page.dart` (currently `https://agenda-api-service-885603051818.us-south1.run.app`).
+    *   **Connection**: Interacts with the `cerberus_report_backend`.
 
 ## Technology Stack
 
 *   **Framework**: Flutter
-*   **State Management**: (Verify specific state management solution used, e.g., Provider, Riverpod, BLoC - `go_router` is used for navigation)
 *   **HTTP Client**: `http` package
 *   **Routing**: `go_router`
+*   **File Picking**: `file_picker`
+*   **Video Player**: `video_player`
+*   **Stripe**: `flutter_stripe`
 
 ## Project Structure
 
@@ -29,13 +31,20 @@ This Flutter-based web application serves as a multi-purpose frontend within the
         *   `about/`: About page.
         *   `contact/`: Contact page.
         *   `report/`: Cerberus Report page, including logic for fetching and displaying agenda items.
-        *   (Potentially other pages for data portal functionality, e.g., `data_upload_page.dart`, `voter_view_page.dart`).
+        *   `upload/`: Page for uploading voter data.
     *   `widgets/`: Reusable UI components.
-    *   (Potentially `services/` or `providers/` for business logic and API interactions).
 *   `web/`: Web-specific files, including `index.html`.
 *   `assets/`: Static assets like images and fonts.
 *   `pubspec.yaml`: Flutter project configuration, including dependencies.
 *   `README.md`: This file.
+
+## Pages
+
+*   **Home Page**: The landing page of the application. It provides a brief overview of what Cerberus Campaigns does and includes a call to action to join their email and text list.
+*   **About Page**: Provides more information about Cerberus Campaigns.
+*   **Contact Page**: A page with contact information.
+*   **Report Page**: The "Cerberus Report" feature. It allows users to search and filter public municipal agenda items. It also includes a feature to subscribe to email notifications for new agenda items that match the user's filter criteria. This page interacts with the `cerberus_report_backend`.
+*   **Upload Page**: Provides a user interface for uploading CSV files of voter data. This page interacts with the `cerberus_campaigns_backend`.
 
 ## Setup and Installation
 
@@ -65,8 +74,6 @@ This Flutter-based web application serves as a multi-purpose frontend within the
     ```
     This will launch the application in a Chrome browser. You can replace `chrome` with other supported browsers like `edge`.
 
-    The application will typically be available at `http://localhost:<port_number>`.
-
 ## Building for Deployment (Web)
 
 To create a release build for the web:
@@ -79,20 +86,14 @@ The output will be placed in the `build/web` directory. These files can then be 
 
 *   **`cerberus_report_backend` URL**: Located in `lib/pages/report/report_page.dart`, variable `_apiBaseUrl`.
     ```dart
-    final String _apiBaseUrl = 'https://agenda-api-service-885603051818.us-south1.run.app';
+    final String _apiBaseUrl = 'http://api.cerberus-campaigns.com';
     ```
-*   **`cerberus_campaigns_backend` URL**: The connection to this backend for data portal features needs to be implemented. This would likely involve defining a base URL in a configuration file (e.g., `lib/config.dart` or similar) and using it in services that make API calls.
+*   **`cerberus_campaigns_backend` URL**: Located in `lib/pages/upload/upload_page.dart`.
+    ```dart
+    var uri = Uri.parse('http://127.0.0.1:5001/api/v1/voters/upload');
+    ```
 
 ## Development Notes
 
 *   **CORS**: When developing locally, if the frontend (`flutter run`) and a backend (e.g., a locally running Flask server) are on different ports (e.g., Flutter on `localhost:12345`, Flask on `localhost:5000`), you might encounter CORS (Cross-Origin Resource Sharing) issues. Ensure the backend is configured to allow requests from the Flutter development server's origin.
     *   For Flask backends, this typically involves configuring the `Flask-CORS` extension.
-
-## Contributing
-
-Please refer to the main repository's contributing guidelines.
-When adding new features or pages:
-*   Update routes in `lib/main.dart` if necessary.
-*   Ensure new UI components are responsive and follow the application's design language.
-*   Add any new models to the `lib/models/` directory.
-*   For features interacting with backends, encapsulate API calls in service classes.Tool output for `overwrite_file_with_block`:
