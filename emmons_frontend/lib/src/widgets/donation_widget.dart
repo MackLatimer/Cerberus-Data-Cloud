@@ -1,10 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:go_router/go_router.dart';
-import 'package:emmons_frontend/src/config.dart';
-import 'package:emmons_frontend/src/services/stripe_service.dart' as stripe;
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 class DonationWidget extends StatefulWidget {
   const DonationWidget({super.key});
@@ -14,11 +12,11 @@ class DonationWidget extends StatefulWidget {
 }
 
 class _DonationWidgetState extends State<DonationWidget> {
+  late Future<void> _stripeInitializationFuture;
   int? _selectedAmount;
   final TextEditingController _customAmountController = TextEditingController();
   int _step = 1;
   String? _paymentIntentId;
-  String? _clientSecret;
 
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _firstNameController = TextEditingController();
@@ -40,15 +38,15 @@ class _DonationWidgetState extends State<DonationWidget> {
   bool _contactMail = false;
   bool _contactSms = false;
 
-  late final stripe.StripeService _stripeService;
-  stripe.Element? _cardElement;
-
   @override
   void initState() {
     super.initState();
-    if (kIsWeb) {
-      _stripeService = stripe.StripeService(stripePublicKey);
-    }
+    _stripeInitializationFuture = _initializeStripe();
+  }
+
+  Future<void> _initializeStripe() async {
+    Stripe.publishableKey = 'pk_test_51Rnnfv4brLkKMnfT9dQISZb1hLmvQMVq3nr8Ymb67lqFQ4JwJkTrc92dRUXKYvYs3tSMeYZkTgIkKJxLsOmjqTN800f2UFiJiT';
+    await Stripe.instance.applySettings();
   }
 
   @override
@@ -65,7 +63,6 @@ class _DonationWidgetState extends State<DonationWidget> {
     _occupationController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
-    _cardElement?.destroy();
     super.dispose();
   }
 
@@ -92,10 +89,18 @@ class _DonationWidgetState extends State<DonationWidget> {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
+        final clientSecret = data['clientSecret'];
+        _paymentIntentId = data['paymentIntentId'];
+
+        await Stripe.instance.initPaymentSheet(
+          paymentSheetParameters: SetupPaymentSheetParameters(
+            paymentIntentClientSecret: clientSecret,
+            merchantDisplayName: 'Emmons for Office',
+          ),
+        );
+
         if (mounted) {
           setState(() {
-            _clientSecret = data['clientSecret'];
-            _paymentIntentId = data['paymentIntentId'];
             _step = 2;
           });
         }
@@ -120,54 +125,29 @@ class _DonationWidgetState extends State<DonationWidget> {
       return;
     }
 
-    if (_clientSecret == null || _cardElement == null) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Payment intent not created or card element not ready')),
-        );
-      }
-      return;
-    }
-
     try {
-      final billingDetails = stripe.BillingDetails(
-        name: '${_firstNameController.text} ${_lastNameController.text}',
-        email: _emailController.text,
-        phone: _phoneController.text,
-        address: stripe.Address(
-          line1: _addressLine1Controller.text,
-          line2: _addressLine2Controller.text,
-          city: _addressCityController.text,
-          state: _addressStateController.text,
-          postalCode: _addressZipController.text,
-          country: 'US',
-        ),
-      );
+      await Stripe.instance.presentPaymentSheet();
 
-      final response = await _stripeService.confirmCardPayment(
-        _clientSecret!,
-        _cardElement!,
-        billingDetails,
-      );
-
-      if (response.error != null) {
+      setState(() {
+        _step = 3;
+      });
+    } on Exception catch (e) {
+      if (e is StripeException) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Payment failed: ${response.error!.message}')),
+            SnackBar(
+              content: Text('Error from Stripe: ${e.error.localizedMessage}'),
+            ),
           );
         }
-      } else if (response.paymentIntent?.status == 'succeeded') {
+      } else {
         if (mounted) {
-          setState(() {
-            _step = 3;
-          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Unforeseen error: $e'),
+            ),
+          );
         }
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error processing payment: $e')),
-        );
       }
     }
   }
@@ -222,9 +202,17 @@ class _DonationWidgetState extends State<DonationWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 300),
-      child: _buildStep(),
+    return FutureBuilder(
+      future: _stripeInitializationFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            child: _buildStep(),
+          );
+        }
+        return const Center(child: CircularProgressIndicator());
+      },
     );
   }
 
@@ -289,13 +277,6 @@ class _DonationWidgetState extends State<DonationWidget> {
   }
 
   Widget _buildDetailsStep() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_cardElement == null) {
-        final elements = _stripeService.elements;
-        _cardElement = elements.create('card');
-        _cardElement?.mount('#card-element');
-      }
-    });
     return Form(
       key: _formKey,
       child: Column(
@@ -346,9 +327,9 @@ class _DonationWidgetState extends State<DonationWidget> {
             validator: (value) => value!.isEmpty ? 'Please enter your occupation' : null,
           ),
           const SizedBox(height: 20),
-          SizedBox(
-            height: 50,
-            child: HtmlElementView(viewType: 'card-element'),
+          ElevatedButton(
+            onPressed: _handlePayment,
+            child: const Text('Proceed to Payment'),
           ),
           const SizedBox(height: 20),
           CheckboxListTile(
@@ -368,11 +349,6 @@ class _DonationWidgetState extends State<DonationWidget> {
                 _isRecurring = value!;
               });
             },
-          ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: _handlePayment,
-            child: const Text('Submit Payment'),
           ),
         ],
       ),

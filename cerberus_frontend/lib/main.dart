@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:video_player/video_player.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 import 'pages/home/home_page.dart';
 import 'pages/about/about_page.dart';
@@ -8,7 +9,9 @@ import 'pages/contact/contact_page.dart';
 import 'pages/report/report_page.dart';
 import 'pages/upload/upload_page.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = 'pk_test_51Rnnfv4brLkKMnfT9dQISZb1hLmvQMVq3nr8Ymb67lqFQ4JwJkTrc92dRUXKYvYs3tSMeYZkTgIkKJxLsOmjqTN800f2UFiJiT';
   runApp(const MyApp());
 }
 

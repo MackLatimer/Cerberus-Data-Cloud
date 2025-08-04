@@ -1,15 +1,7 @@
 {
-  "servers": {
-    "stripe": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@stripe/mcp",
-        "--tools=all"
-      ],
-      "env": {
-        "STRIPE_SECRET_KEY": "sk_test_51Rnnfv4brLkKMnfTCZDcoWWlPe1m1DM4PlFi2ahk6mpZXcYNv3wfi5WsyK1zRfWu8Ma2Swr9WzoEBr9BJaDakv1D00rQkIkFpt"
-      }
+  "servers": {"stripe": {
+      "type": "http",
+      "url": "https://mcp.stripe.com"
     }
   }
 }
