@@ -39,7 +39,6 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build-emmons-frontend'
     dir: 'emmons_frontend'
-    waitFor: ['-']
     args: [
       'build',
       '-t', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/emmons-frontend:latest', # Updated to Artifact Registry
