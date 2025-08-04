@@ -4,8 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:go_router/go_router.dart';
 import 'package:emmons_frontend/src/config.dart';
-import 'package:emmons_frontend/src/services/stripe_service.dart';
-import 'dart:html' as html;
+import 'package:emmons_frontend/src/services/stripe_service.dart' as stripe;
 
 class DonationWidget extends StatefulWidget {
   const DonationWidget({super.key});
@@ -41,14 +40,14 @@ class _DonationWidgetState extends State<DonationWidget> {
   bool _contactMail = false;
   bool _contactSms = false;
 
-  late final StripeService _stripeService;
-  Element? _cardElement;
+  late final stripe.StripeService _stripeService;
+  stripe.Element? _cardElement;
 
   @override
   void initState() {
     super.initState();
     if (kIsWeb) {
-      _stripeService = StripeService(stripePublicKey);
+      _stripeService = stripe.StripeService(stripePublicKey);
     }
   }
 
@@ -131,17 +130,19 @@ class _DonationWidgetState extends State<DonationWidget> {
     }
 
     try {
-      final billingDetails = BillingDetails()
-        ..name = '${_firstNameController.text} ${_lastNameController.text}'
-        ..email = _emailController.text
-        ..phone = _phoneController.text
-        ..address = (Address()
-          ..line1 = _addressLine1Controller.text
-          ..line2 = _addressLine2Controller.text
-          ..city = _addressCityController.text
-          ..state = _addressStateController.text
-          ..postal_code = _addressZipController.text
-          ..country = 'US');
+      final billingDetails = stripe.BillingDetails(
+        name: '${_firstNameController.text} ${_lastNameController.text}',
+        email: _emailController.text,
+        phone: _phoneController.text,
+        address: stripe.Address(
+          line1: _addressLine1Controller.text,
+          line2: _addressLine2Controller.text,
+          city: _addressCityController.text,
+          state: _addressStateController.text,
+          postalCode: _addressZipController.text,
+          country: 'US',
+        ),
+      );
 
       final response = await _stripeService.confirmCardPayment(
         _clientSecret!,

@@ -21,7 +21,6 @@ void main() {
   ui.platformViewRegistry.registerViewFactory(
     'card-element',
     (int viewId) {
-      print('registerViewFactory called for card-element');
       final element = HTMLDivElement()
         ..id = 'card-element'
         ..style.setProperty('border', 'none');

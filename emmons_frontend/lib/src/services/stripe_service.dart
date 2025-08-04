@@ -1,10 +1,12 @@
 import 'dart:js_interop';
-import 'dart:html' as html;
 
 @JS('Stripe')
+@staticInterop
 class Stripe {
-  external Stripe(String publicKey);
+  external factory Stripe(String publicKey);
+}
 
+extension StripeExtension on Stripe {
   external Elements elements();
   external JSPromise<PaymentIntentResponse> confirmCardPayment(String clientSecret, [ConfirmCardPaymentData? data]);
 }
@@ -48,14 +50,18 @@ extension type ElementStyleBase._(JSObject _) implements JSObject {
 @JS()
 @anonymous
 extension type ConfirmCardPaymentData._(JSObject _) implements JSObject {
-  external set payment_method(PaymentMethod paymentMethod);
+  external set paymentMethod(PaymentMethod paymentMethod);
+
+  factory ConfirmCardPaymentData({required PaymentMethod paymentMethod}) => ConfirmCardPaymentData._(JSObject())..paymentMethod = paymentMethod;
 }
 
 @JS()
 @anonymous
 extension type PaymentMethod._(JSObject _) implements JSObject {
   external set card(Element card);
-  external set billing_details(BillingDetails billingDetails);
+  external set billingDetails(BillingDetails billingDetails);
+
+  factory PaymentMethod({required Element card, required BillingDetails billingDetails}) => PaymentMethod._(JSObject())..card = card..billingDetails = billingDetails;
 }
 
 @JS()
@@ -65,17 +71,21 @@ extension type BillingDetails._(JSObject _) implements JSObject {
   external set email(String email);
   external set phone(String phone);
   external set address(Address address);
+
+  factory BillingDetails({required String name, required String email, required String phone, required Address address}) => BillingDetails._(JSObject())..name = name..email = email..phone = phone..address = address;
 }
 
 @JS()
 @anonymous
 extension type Address._(JSObject _) implements JSObject {
   external set line1(String line1);
-  external set line2(String line2);
+  external set line2(String? line2);
   external set city(String city);
   external set state(String state);
-  external set postal_code(String postalCode);
+  external set postalCode(String postalCode);
   external set country(String country);
+
+  factory Address({required String line1, String? line2, required String city, required String state, required String postalCode, required String country}) => Address._(JSObject())..line1 = line1..line2 = line2..city = city..state = state..postalCode = postalCode..country = country;
 }
 
 @JS()
@@ -108,11 +118,11 @@ class StripeService {
   Elements get elements => _stripe.elements();
 
   Future<PaymentIntentResponse> confirmCardPayment(String clientSecret, Element cardElement, BillingDetails billingDetails) {
-    return _stripe.confirmCardPayment(clientSecret, ConfirmCardPaymentData()
-      ..payment_method = (PaymentMethod()
-        ..card = cardElement
-        ..billing_details = billingDetails
-      )
-    ).toDart;
+    return _stripe.confirmCardPayment(clientSecret, ConfirmCardPaymentData(
+      paymentMethod: PaymentMethod(
+        card: cardElement,
+        billingDetails: billingDetails,
+      ),
+    )).toDart;
   }
 }
