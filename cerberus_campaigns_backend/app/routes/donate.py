@@ -20,7 +20,7 @@ def create_payment_intent():
         intent = stripe.PaymentIntent.create(
             amount=amount,
             currency=currency,
-            metadata={'integration_check': 'accept_a_payment'},
+            automatic_payment_methods={'enabled': True},
         )
 
         donation_data = {
