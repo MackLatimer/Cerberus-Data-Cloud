@@ -49,4 +49,4 @@ EXPOSE $PORT
 # --access-logfile - : Send access logs to stdout
 # --error-logfile - : Send error logs to stderr
 # These are good for Cloud Run, which collects logs from stdout/stderr.
-CMD gunicorn --bind "0.0.0.0:$PORT" --workers 4 --access-logfile - --error-logfile - run:app
+CMD gunicorn --bind "0.0.0.0:$PORT" --workers 2 --access-logfile - --error-logfile - run:app
