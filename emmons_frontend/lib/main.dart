@@ -21,12 +21,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final router = GoRouter(
-      initialLocation: '/coming-soon',
+      initialLocation: '/home',
       routes: [
-        GoRoute(
-          path: '/',
-          redirect: (_, _) => '/home',
-        ),
         GoRoute(
           path: '/home',
           builder: (context, state) => const HomePage(),
