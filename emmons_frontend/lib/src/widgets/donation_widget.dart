@@ -289,13 +289,13 @@ class _DonationWidgetState extends State<DonationWidget> {
   }
 
   Widget _buildDetailsStep() {
-    if (_cardElement == null) {
-      final elements = _stripeService.elements;
-      _cardElement = elements.create('card');
-      Future.delayed(const Duration(milliseconds: 100), () {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_cardElement == null) {
+        final elements = _stripeService.elements;
+        _cardElement = elements.create('card');
         _cardElement?.mount('#card-element');
-      });
-    }
+      }
+    });
     return Form(
       key: _formKey,
       child: Column(

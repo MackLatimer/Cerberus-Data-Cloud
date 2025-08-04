@@ -50,9 +50,10 @@ extension type ElementStyleBase._(JSObject _) implements JSObject {
 @JS()
 @anonymous
 extension type ConfirmCardPaymentData._(JSObject _) implements JSObject {
-  external set paymentMethod(PaymentMethod paymentMethod);
+  @JS('payment_method')
+  external set payment_method(PaymentMethod payment_method);
 
-  factory ConfirmCardPaymentData({required PaymentMethod paymentMethod}) => ConfirmCardPaymentData._(JSObject())..paymentMethod = paymentMethod;
+  factory ConfirmCardPaymentData({required PaymentMethod payment_method}) => ConfirmCardPaymentData._(JSObject())..payment_method = payment_method;
 }
 
 @JS()
@@ -119,7 +120,7 @@ class StripeService {
 
   Future<PaymentIntentResponse> confirmCardPayment(String clientSecret, Element cardElement, BillingDetails billingDetails) {
     return _stripe.confirmCardPayment(clientSecret, ConfirmCardPaymentData(
-      paymentMethod: PaymentMethod(
+      payment_method: PaymentMethod(
         card: cardElement,
         billingDetails: billingDetails,
       ),

@@ -8,6 +8,7 @@ donate_bp = Blueprint('donate_bp', __name__, url_prefix='/api/v1/donate')
 @donate_bp.route('/create-payment-intent', methods=['POST'])
 def create_payment_intent():
     data = request.get_json()
+    print(f"Received data: {data}")
     amount = data.get('amount')
     currency = data.get('currency', 'usd')
 
@@ -22,11 +23,16 @@ def create_payment_intent():
             metadata={'integration_check': 'accept_a_payment'},
         )
 
-        donation = Donation(
-            amount=amount / 100,  # Convert from cents to dollars
-            currency=currency,
-            stripe_payment_intent_id=intent.id,
-        )
+        donation_data = {
+            'amount': amount / 100,
+            'currency': currency,
+            'stripe_payment_intent_id': intent.id,
+            'payment_status': 'pending'
+        }
+        donation = Donation(**donation_data)
+        
+        print(f"Donation object before commit: {donation.__dict__}")
+
         db.session.add(donation)
         db.session.commit()
 
@@ -37,6 +43,7 @@ def create_payment_intent():
     except stripe.error.StripeError as e:
         return jsonify({'error': str(e)}), 400
     except Exception as e:
+        print(f"Exception during commit: {e}")
         return jsonify({'error': str(e)}), 500
 
 @donate_bp.route('/update-donation-details', methods=['POST'])

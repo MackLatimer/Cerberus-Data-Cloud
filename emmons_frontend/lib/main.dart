@@ -23,7 +23,8 @@ void main() {
     (int viewId) {
       final element = HTMLDivElement()
         ..id = 'card-element'
-        ..style.setProperty('border', 'none');
+        ..style.height = '100%'
+        ..style.width = '100%';
       return element;
     },
   );

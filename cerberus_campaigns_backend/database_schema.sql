@@ -191,3 +191,30 @@ EXECUTE FUNCTION trigger_set_timestamp();
 -- INSERT INTO interactions (voter_id, campaign_id, user_id, interaction_type, outcome, notes) VALUES (1, 1, 1, 'Phone Call', 'Interested', 'Expressed interest in volunteering.');
 
 COMMIT;
+
+CREATE TABLE donations (
+    id SERIAL PRIMARY KEY,
+    amount FLOAT NOT NULL,
+    currency VARCHAR(10) NOT NULL DEFAULT 'usd',
+    payment_status VARCHAR(50) NOT NULL DEFAULT 'pending',
+    stripe_payment_intent_id VARCHAR(255) UNIQUE NOT NULL,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100),
+    address_line1 VARCHAR(255),
+    address_line2 VARCHAR(255),
+    address_city VARCHAR(100),
+    address_state VARCHAR(100),
+    address_zip VARCHAR(20),
+    employer VARCHAR(255),
+    occupation VARCHAR(255),
+    email VARCHAR(255),
+    phone_number VARCHAR(50),
+    contact_email BOOLEAN DEFAULT FALSE,
+    contact_phone BOOLEAN DEFAULT FALSE,
+    contact_mail BOOLEAN DEFAULT FALSE,
+    contact_sms BOOLEAN DEFAULT FALSE,
+    is_recurring BOOLEAN DEFAULT FALSE,
+    covers_fees BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
