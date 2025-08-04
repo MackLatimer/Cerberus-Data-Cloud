@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       routes: [
         GoRoute(
           path: '/',
-          redirect: (_, __) => '/home',
+          redirect: (_, _) => '/home',
         ),
         GoRoute(
           path: '/home',
