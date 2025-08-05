@@ -3,7 +3,7 @@ import 'package:emmons_frontend/src/widgets/dynamic_size_app_bar.dart';
 import 'package:emmons_frontend/src/widgets/common_app_bar.dart';
 import 'package:emmons_frontend/src/widgets/signup_form.dart';
 import 'package:emmons_frontend/src/widgets/donate_section.dart';
-import 'package:emmons_frontend/src/widgets/footer.dart'; // Import the Footer widget
+import 'package:emmons_frontend/src/widgets/footer.dart';
 
 class AboutPage extends StatefulWidget {
   const AboutPage({super.key});
@@ -27,13 +27,10 @@ class AboutPageState extends State<AboutPage> {
       final width = constraints.maxWidth;
       double appBarHeight;
 
-      // extended
       if (width > 1000) {
         appBarHeight = 156;
-        // medium
       } else if (width > 600) {
         appBarHeight = 216;
-        // compact
       } else {
         appBarHeight = 256;
       }
@@ -52,7 +49,7 @@ class AboutPageState extends State<AboutPage> {
           return <Widget>[
             SliverToBoxAdapter(
               child: Container(
-                height: MediaQuery.of(context).size.height, // Height of the hero image
+                height: MediaQuery.of(context).size.height,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('images/Emmons_About_Hero.png'),
@@ -77,13 +74,13 @@ class AboutPageState extends State<AboutPage> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
-                          'About Me', // Changed text here
+                          'About Me',
                           style: Theme.of(context).textTheme.headlineMedium,
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 40),
                         const Text(
-                          'Curtis Emmons is a dedicated public servant with a passion for community development and effective governance. With a background in business and a commitment to fiscal responsibility, Curtis brings a wealth of experience to the table. He is a strong advocate for transparency and accountability in government, and he is committed to working collaboratively to find solutions to the challenges facing our county.\n\nThroughout his career, Curtis has been actively involved in numerous local initiatives, from supporting small businesses to improving public infrastructure. He believes in a common-sense approach to problem-solving and is dedicated to ensuring that the voices of all residents are heard. His vision for the county is one of smart growth, economic prosperity, and a high quality of life for all.\n\nAs a husband and father, Curtis understands the importance of building a strong and vibrant community for future generations. He is a firm believer in the power of collaboration and is committed to working with residents, business leaders, and community organizations to create a better future for our county.',
+                          'Curtis Emmons is a dedicated public servant with a passion for community development and effective governance. With a background in business and a commitment to fiscal responsibility, Curtis brings a wealth of experience to the table. He is a strong advocate for transparency and accountability in government, and he is committed to working collaboratively to find solutions to the challenges facing our county.\n\nThroughout his career, Curtis has been actively involved in numerous local initiatives, from supporting small businesses to improving public infrastructure. He believes in a common-sense approach to problem-solving and is dedicated to ensuring that the voices of all residents are heard. His vision for the county is one of a smart growth, economic prosperity, and a high quality of life for all.\n\nAs a husband and father, Curtis understands the importance of building a strong and vibrant community for future generations. He is a firm believer in the power of collaboration and is committed to working with residents, business leaders, and community organizations to create a better future for our county.',
                           style: TextStyle(fontSize: 18, height: 1.5),
                           textAlign: TextAlign.justify,
                         ),

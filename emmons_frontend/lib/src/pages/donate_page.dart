@@ -80,7 +80,7 @@ class DonatePageState extends State<DonatePage> {
                           const DonationWidget(),
                           const SizedBox(height: 40),
                           Text(
-                            'If you prefer to donate by mail, please send a check payable to "Curtis Emmons Campaign" to: [Campaign PO Box or Address Here - Placeholder]',
+                            'If you prefer to donate by mail, please send a check payable to "Curtis Emmons Campaign" to: 123 Main Street, Anytown, USA 12345',
                             style: Theme.of(context).textTheme.bodyMedium,
                             textAlign: TextAlign.center,
                           ),

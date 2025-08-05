@@ -51,7 +51,6 @@ class CommonAppBarState extends State<CommonAppBar> {
     final windowSize = getWindowSize(context);
     final isMedium = windowSize == WindowSize.medium;
 
-    // Navigation items
     final navItems = [
       {'label': 'Home', 'path': '/home'},
       {'label': 'Issues', 'path': '/issues'},
@@ -77,7 +76,7 @@ class CommonAppBarState extends State<CommonAppBar> {
             color: Colors.black.withAlpha((255 * 0.5 * (1.0 - opacity)).toInt()),
             spreadRadius: 1,
             blurRadius: 1,
-            offset: const Offset(2, 3), // changes position of shadow
+            offset: const Offset(2, 3),
           ),
         ],
       ),
@@ -117,7 +116,7 @@ class CommonAppBarState extends State<CommonAppBar> {
             color: Colors.black.withAlpha((255 * 0.5 * (1.0 - opacity)).toInt()),
             spreadRadius: 1,
             blurRadius: 1,
-            offset: const Offset(2, 3), // changes position of shadow
+            offset: const Offset(2, 3),
           ),
         ],
       ),
@@ -177,7 +176,7 @@ class CommonAppBarState extends State<CommonAppBar> {
         return AppBar(
           elevation: opacity,
           backgroundColor: Colors.white.withAlpha((255 * opacity).toInt()),
-          title: null, // Set to null because we are using a custom layout
+          title: null,
           automaticallyImplyLeading: false,
           flexibleSpace: Center(
             child: Container(
@@ -195,19 +194,17 @@ class CommonAppBarState extends State<CommonAppBar> {
                         if (isCompact)
                           compactNavigation
                         else
-                          navigation, // original navigation for medium
+                          navigation,
                       ],
                     )
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        // Logo on the left
                         Image.asset(
                           'assets/images/Emmons_Logo_4.png',
                           width: 400,
                           height: 100,
                         ),
-                        // Navigation items on the right
                         navigation,
                       ],
                     ),

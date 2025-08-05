@@ -1,13 +1,13 @@
 from ..extensions import db
-from .shared_mixins import TimestampMixin # Only created_at from schema, updated_at is not in schema for interactions
+from .shared_mixins import TimestampMixin
 
-class Interaction(db.Model): # Intentionally not using TimestampMixin if only created_at is needed from schema
+class Interaction(db.Model):
     __tablename__ = 'interactions'
 
     interaction_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     voter_id = db.Column(db.Integer, db.ForeignKey('voters.voter_id', ondelete='CASCADE'), nullable=False, index=True)
     campaign_id = db.Column(db.Integer, db.ForeignKey('campaigns.campaign_id', ondelete='SET NULL'), nullable=True, index=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id', ondelete='SET NULL'), nullable=True) # User who logged interaction
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id', ondelete='SET NULL'), nullable=True)
 
     interaction_type = db.Column(db.String(100), nullable=False, index=True)
     interaction_date = db.Column(db.DateTime(timezone=True), nullable=False, server_default=db.func.now())
@@ -15,18 +15,12 @@ class Interaction(db.Model): # Intentionally not using TimestampMixin if only cr
     notes = db.Column(db.Text, nullable=True)
     duration_minutes = db.Column(db.Integer, nullable=True)
 
-    # `created_at` is defined in the schema with `DEFAULT CURRENT_TIMESTAMP`
-    # SQLAlchemy handles this by not sending a value for created_at on insert if it has a server_default
     created_at = db.Column(db.DateTime(timezone=True), server_default=db.func.now())
-    # `updated_at` is not part of the `interactions` table schema in `database_schema.sql`
-    # If it were, and we wanted auto-update, we'd add it here and ensure the trigger or onupdate logic.
 
-    # Relationships
     voter = db.relationship('Voter', back_populates='interactions')
     campaign = db.relationship('Campaign', back_populates='interactions')
-    user = db.relationship('User', back_populates='interactions') # User who performed/logged interaction
+    user = db.relationship('User', back_populates='interactions')
 
-    # Relationship to SurveyResponses if this interaction was a survey
     survey_responses = db.relationship('SurveyResponse', back_populates='interaction', lazy='dynamic', cascade="all, delete-orphan")
 
     def __repr__(self):
@@ -44,6 +38,4 @@ class Interaction(db.Model): # Intentionally not using TimestampMixin if only cr
             'notes': self.notes,
             'duration_minutes': self.duration_minutes,
             'created_at': self.created_at.isoformat() if self.created_at else None,
-            # 'user_username': self.user.username if self.user else None, # Example of including related data
-            # 'voter_name': f"{self.voter.first_name} {self.voter.last_name}" if self.voter else None # Example
         }

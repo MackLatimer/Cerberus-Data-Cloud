@@ -99,13 +99,10 @@ class IssuesPageState extends State<IssuesPage> {
       final width = constraints.maxWidth;
       double appBarHeight;
 
-      // extended
       if (width > 1000) {
         appBarHeight = 156;
-        // medium
       } else if (width > 600) {
         appBarHeight = 216;
-        // compact
       } else {
         appBarHeight = 256;
       }

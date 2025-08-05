@@ -1,15 +1,11 @@
 from flask import Flask
 from flask_cors import CORS
-from .config import get_config_by_name, current_config_name, Config # Import Config for type hinting if needed
-from .extensions import init_extensions, db # db needed for shell context
-from . import models as model_module # Import the models module
+from .config import get_config_by_name, current_config_name, Config
+from .extensions import init_extensions, db
+from . import models as model_module
 
-# Import Blueprints
 from .routes.voters import voters_api_bp, public_api_bp
 from .routes.donate import donate_bp
-# from .routes.main import main_bp # Example, if you have one
-# from .routes.auth import auth_bp # Example, for authentication routes
-# from .routes.campaigns import campaigns_api_bp # Example, for campaign routes
 
 def create_app(config_name_override: str = None) -> Flask:
     """
@@ -28,44 +24,26 @@ def create_app(config_name_override: str = None) -> Flask:
         r"/api/*": {"origins": "*"}
     }, supports_credentials=True)
 
-    # Initialize extensions
     init_extensions(app)
 
-    # Register Blueprints
-    app.register_blueprint(public_api_bp) #url_prefix is defined in the blueprint
-    app.register_blueprint(voters_api_bp) #url_prefix is defined in the blueprint
+    app.register_blueprint(public_api_bp)
+    app.register_blueprint(voters_api_bp)
     app.register_blueprint(donate_bp)
-    # Example:
-    # from .routes.main import main_bp
-    # app.register_blueprint(main_bp)
 
-    # from .routes.auth import auth_bp
-    # app.register_blueprint(auth_bp, url_prefix='/auth')
-
-    # from .routes.campaigns import campaigns_api_bp
-    # app.register_blueprint(campaigns_api_bp, url_prefix='/api/v1/campaigns')
-
-
-    # Simple default route for now (can be removed if main_bp provides '/')
     @app.route('/health')
     def health_check():
         return "Backend Healthy!", 200
 
-    # Shell context for flask cli
-    # Makes db and models available in `flask shell` without explicit imports
     @app.shell_context_processor
     def make_shell_context():
         context = {'db': db}
-        # Add all models from the models module to the shell context
         if hasattr(model_module, '__all__'):
             for name in model_module.__all__:
                 model_class = getattr(model_module, name, None)
-                if model_class: # Ensure it's actually found
+                if model_class:
                     context[name] = model_class
         else:
-            # Fallback if __all__ is not defined, try to add common ones or inspect module
-            # This part might need adjustment based on how models are structured
-            common_models = ['User', 'Campaign', 'Voter', 'Interaction'] # Add more as needed
+            common_models = ['User', 'Campaign', 'Voter', 'Interaction']
             for model_name in common_models:
                 model_class = getattr(model_module, model_name, None)
                 if model_class:

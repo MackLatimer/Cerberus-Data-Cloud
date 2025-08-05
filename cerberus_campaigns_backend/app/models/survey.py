@@ -1,21 +1,17 @@
 from ..extensions import db
-from .shared_mixins import TimestampMixin # Only created_at from schema for survey_questions
-# from sqlalchemy.dialects.postgresql import JSONB # Replaced with db.JSON
-# Use db.JSON for broader compatibility (SQLite, PostgreSQL etc.)
+from .shared_mixins import TimestampMixin
 
-class SurveyQuestion(db.Model): # Not using TimestampMixin if only created_at needed as per schema
+class SurveyQuestion(db.Model):
     __tablename__ = 'survey_questions'
 
     question_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    campaign_id = db.Column(db.Integer, db.ForeignKey('campaigns.campaign_id', ondelete='CASCADE'), nullable=True) # Optional: campaign-specific
+    campaign_id = db.Column(db.Integer, db.ForeignKey('campaigns.campaign_id', ondelete='CASCADE'), nullable=True)
     question_text = db.Column(db.Text, nullable=False)
-    question_type = db.Column(db.String(50), nullable=False) # e.g., 'Multiple Choice', 'Open Text', 'Rating Scale'
+    question_type = db.Column(db.String(50), nullable=False)
     possible_answers = db.Column(db.JSON, nullable=True)
 
     created_at = db.Column(db.DateTime(timezone=True), server_default=db.func.now())
-    # `updated_at` is not in the schema for this table.
 
-    # Relationships
     campaign = db.relationship('Campaign', back_populates='survey_questions')
     responses = db.relationship('SurveyResponse', back_populates='question', lazy='dynamic', cascade="all, delete-orphan")
 
@@ -32,21 +28,19 @@ class SurveyQuestion(db.Model): # Not using TimestampMixin if only created_at ne
             'created_at': self.created_at.isoformat() if self.created_at else None
         }
 
-class SurveyResponse(db.Model): # Not using TimestampMixin as schema only has `responded_at` (effectively created_at for response)
+class SurveyResponse(db.Model):
     __tablename__ = 'survey_responses'
 
     response_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    interaction_id = db.Column(db.Integer, db.ForeignKey('interactions.interaction_id', ondelete='CASCADE'), nullable=True) # Link to interaction
+    interaction_id = db.Column(db.Integer, db.ForeignKey('interactions.interaction_id', ondelete='CASCADE'), nullable=True)
     voter_id = db.Column(db.Integer, db.ForeignKey('voters.voter_id', ondelete='CASCADE'), nullable=False, index=True)
     question_id = db.Column(db.Integer, db.ForeignKey('survey_questions.question_id', ondelete='CASCADE'), nullable=False, index=True)
 
-    response_value = db.Column(db.Text, nullable=True) # For open text or single choice
-    response_values = db.Column(db.JSON, nullable=True) # For multiple selections
+    response_value = db.Column(db.Text, nullable=True)
+    response_values = db.Column(db.JSON, nullable=True)
 
     responded_at = db.Column(db.DateTime(timezone=True), server_default=db.func.now())
-    # `updated_at` is not in the schema for this table.
 
-    # Relationships
     interaction = db.relationship('Interaction', back_populates='survey_responses')
     voter = db.relationship('Voter', back_populates='survey_responses')
     question = db.relationship('SurveyQuestion', back_populates='responses')

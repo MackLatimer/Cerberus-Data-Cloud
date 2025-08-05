@@ -14,13 +14,10 @@ class PrivacyPolicyPage extends StatelessWidget {
       final width = constraints.maxWidth;
       double appBarHeight;
 
-      // extended
       if (width > 1000) {
         appBarHeight = 206;
-        // medium
       } else if (width > 600) {
         appBarHeight = 266;
-        // compact
       } else {
         appBarHeight = 306;
       }
@@ -28,7 +25,7 @@ class PrivacyPolicyPage extends StatelessWidget {
         appBar: DynamicSizeAppBar(
           height: appBarHeight,
           child: const CommonAppBar(
-            title: 'Privacy Policy', // No scroll controller needed for a static page
+            title: 'Privacy Policy',
           ),
         ),
         body: CustomScrollView(

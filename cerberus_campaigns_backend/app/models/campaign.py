@@ -10,18 +10,12 @@ class Campaign(TimestampMixin, db.Model):
     end_date = db.Column(db.Date, nullable=True)
     description = db.Column(db.Text, nullable=True)
 
-    # Relationships
-    # Voters associated with this campaign (through campaign_voters table)
-    # campaign_voters is the association table model
     voters_association = db.relationship('CampaignVoter', back_populates='campaign', lazy='dynamic', cascade="all, delete-orphan")
 
-    # Interactions associated with this campaign
     interactions = db.relationship('Interaction', back_populates='campaign', lazy='dynamic')
 
-    # Survey questions specific to this campaign
     survey_questions = db.relationship('SurveyQuestion', back_populates='campaign', lazy='dynamic', cascade="all, delete-orphan")
 
-    # Voters that were originally sourced by this campaign
     sourced_voters = db.relationship('Voter', back_populates='source_campaign', lazy='dynamic', foreign_keys='Voter.source_campaign_id')
 
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert'; // For jsonEncode
-import 'package:go_router/go_router.dart'; // Import for routing
-import '../config.dart'; // Import the configuration file
+import 'dart:convert';
+import 'package:go_router/go_router.dart';
+import '../config.dart';
 
 class SignupFormWidget extends StatefulWidget {
   const SignupFormWidget({super.key});
@@ -15,11 +15,10 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
   final _formKey = GlobalKey<FormState>();
   bool _endorseChecked = false;
   bool _getInvolvedChecked = false;
-  bool _agreedToMessaging = false; // New state for messaging opt-in
-  bool _agreedToEmails = false; // New state for email opt-in
-  bool _isLoading = false; // To manage loading state
+  bool _agreedToMessaging = false;
+  bool _agreedToEmails = false;
+  bool _isLoading = false;
 
-  // Controllers for text fields to easily access their values
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -27,41 +26,30 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
 
   Future<void> _submitForm() async {
     if (!_formKey.currentState!.validate()) {
-      return; // Form is not valid
+      return;
     }
 
     setState(() {
       _isLoading = true;
     });
 
-    // Prepare data for submission
-    // This structure should align with what your backend expects.
-    // This is an example, assuming your backend /api/v1/signups or /api/v1/voters
-    // can handle these fields.
     final signupData = {
       'first_name': _firstNameController.text,
       'last_name': _lastNameController.text,
       'email_address': _emailController.text,
       'phone_number': _phoneController.text.isNotEmpty ? _phoneController.text : null,
-      'campaign_id': currentCampaignId, // From config.dart
+      'campaign_id': currentCampaignId,
       'interests': {
         'wants_to_endorse': _endorseChecked,
         'wants_to_get_involved': _getInvolvedChecked,
-        'agreed_to_messaging': _agreedToMessaging, // Add new consent flag
-        'agreed_to_emails': _agreedToEmails, // Add new consent flag
+        'agreed_to_messaging': _agreedToMessaging,
+        'agreed_to_emails': _agreedToEmails,
       },
-      // You might also want to submit this as an interaction
-      // or have the backend create an interaction record.
-      // For example, an interaction of type 'Website Signup'.
       'interaction_type': 'Website Signup',
       'notes': 'Signed up via website form. Endorse: $_endorseChecked, Get Involved: $_getInvolvedChecked',
     };
 
-    // Define the API endpoint.
-    // This could be a generic 'signups' endpoint or directly creating a 'voter'
-    // and logging an 'interaction'. For this example, let's assume a '/signups' endpoint.
-    // Adjust if your backend uses a different structure (e.g. /voters and then /interactions)
-    final url = Uri.parse('https://campaigns-api-885603051818.us-south1.run.app/api/v1/signups'); // Or perhaps '$apiBaseUrl/voters'
+    final url = Uri.parse('https://campaigns-api-885603051818.us-south1.run.app/api/v1/signups');
 
     try {
       final response = await http.post(
@@ -70,10 +58,9 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
         body: jsonEncode(signupData),
       ).timeout(const Duration(seconds: defaultNetworkTimeoutSeconds));
 
-      if (!mounted) return; // Check if the widget is still in the tree
+      if (!mounted) return;
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        // Successfully submitted
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Thank you for signing up!'), backgroundColor: Colors.green),
         );
@@ -85,18 +72,15 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
         setState(() {
           _endorseChecked = false;
           _getInvolvedChecked = false;
-          _agreedToMessaging = false; // Reset new checkbox
-          _agreedToEmails = false; // Reset new checkbox
+          _agreedToMessaging = false;
+          _agreedToEmails = false;
         });
       } else {
-        // Server returned an error
-        // You might want to parse response.body if it contains error details
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error submitting form: ${response.statusCode}. Please try again.'), backgroundColor: Colors.red),
         );
       }
     } catch (e) {
-      // Network error or other exception
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('An error occurred: $e. Please check your connection and try again.'), backgroundColor: Colors.red),
@@ -112,7 +96,6 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
 
   @override
   void dispose() {
-    // Clean up the controllers when the widget is disposed.
     _firstNameController.dispose();
     _lastNameController.dispose();
     _emailController.dispose();
@@ -175,7 +158,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                 const SizedBox(height: 12),
                 TextFormField(
                   controller: _phoneController,
-                  decoration: const InputDecoration(labelText: 'Phone Number'), // Removed "(Optional)"
+                  decoration: const InputDecoration(labelText: 'Phone Number'),
                   keyboardType: TextInputType.phone,
                 ),
                 const SizedBox(height: 16),
@@ -201,7 +184,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                   controlAffinity: ListTileControlAffinity.leading,
                   contentPadding: EdgeInsets.zero,
                 ),
-                CheckboxListTile( // New checkbox for automated messaging
+                CheckboxListTile(
                   title: Text('I agree to receive automated messaging from Elect Emmons', style: textTheme.bodyMedium),
                   value: _agreedToMessaging,
                   onChanged: (bool? value) {
@@ -212,7 +195,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                   controlAffinity: ListTileControlAffinity.leading,
                   contentPadding: EdgeInsets.zero,
                 ),
-                CheckboxListTile( // New checkbox for emails
+                CheckboxListTile(
                   title: Text('I agree to receive emails from Elect Emmons', style: textTheme.bodyMedium),
                   value: _agreedToEmails,
                   onChanged: (bool? value) {
@@ -224,7 +207,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                   contentPadding: EdgeInsets.zero,
                 ),
                 const SizedBox(height: 16),
-                Text( // Disclaimer text
+                Text(
                   'Reply STOP to opt out, HELP for help. Msg & data rates may apply. Frequency may vary.',
                   style: textTheme.bodySmall?.copyWith(fontStyle: FontStyle.italic),
                 ),
@@ -237,11 +220,11 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                           child: const Text('Sign Up'),
                         ),
                 ),
-                const SizedBox(height: 16), // Spacing before privacy policy link
+                const SizedBox(height: 16),
                 Center(
                   child: TextButton(
                     onPressed: () {
-                      context.go('/privacy-policy'); // Navigate to Privacy Policy page
+                      context.go('/privacy-policy');
                     },
                     child: Text(
                       'Privacy Policy',

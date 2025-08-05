@@ -71,6 +71,29 @@ The Cerberus Campaigns Backend is a Python-based Flask application responsible f
 *   **POST /update-donation-details**: Updates a donation with additional details after payment.
 *   **POST /webhook**: Handles Stripe webhooks for payment status updates.
 
+## Configuration Details
+
+The application's configuration is managed through environment variables and the `app/config.py` file. It supports different configurations for development, testing, and production environments, determined by the `FLASK_ENV` environment variable.
+
+### Environment Variables
+
+The application uses a `.env` file to load environment variables. The file is expected to be in the root of the `cerberus_campaigns_backend` directory.
+
+*   `SECRET_KEY`: A strong, unique secret key for Flask session management and security.
+*   `DATABASE_URL`: The connection string for your database.
+    *   **Development**: If not set, it defaults to a local SQLite database (`dev.db`). For connecting to a local PostgreSQL instance, you can use a URL like `postgresql+psycopg://campaign_user:local_password@localhost:5432/campaign_data`. If you are using a Cloud SQL instance, ensure the Cloud SQL proxy is running.
+    *   **Production**: This must be set to the production database URL.
+*   `TEST_DATABASE_URL`: (Optional) A separate database URL for running tests. If not provided, tests will use an in-memory SQLite database, which may not be suitable for testing all PostgreSQL-specific features.
+*   `FLASK_ENV`: Set to `development`, `testing`, or `production`.
+*   `STRIPE_SECRET_KEY`: Your Stripe secret key.
+*   `STRIPE_WEBHOOK_SECRET`: Your Stripe webhook secret.
+
+### Production Configuration Notes
+
+For production deployments, it is recommended to:
+*   Use a production-ready WSGI server like Gunicorn.
+*   Enable security enhancements in the configuration, such as `SESSION_COOKIE_SECURE` and `SESSION_COOKIE_HTTPONLY`.
+
 ## Setup and Installation
 
 1.  **Clone the repository (if you haven't already):**
