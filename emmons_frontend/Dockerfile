@@ -36,15 +36,12 @@ FROM nginx:1.25-alpine
 # The output of 'flutter build web' is in 'build/web'
 COPY --from=build /app_src/build/web /usr/share/nginx/html
 
-# Move the contents of the nested assets directory to the root assets directory
-RUN mv /usr/share/nginx/html/assets/assets/* /usr/share/nginx/html/assets/
-# Remove the now empty nested assets directory
+# Move the contents of the nested assets/assets/fonts directory to the root assets/fonts directory
+RUN mv /usr/share/nginx/html/assets/assets/fonts/* /usr/share/nginx/html/assets/fonts/
+# Remove the now empty nested assets/assets/fonts directory
+RUN rmdir /usr/share/nginx/html/assets/assets/fonts
+# Remove the now empty nested assets/assets directory
 RUN rmdir /usr/share/nginx/html/assets/assets
-
-# Move the contents of the nested fonts directory to the root assets directory
-RUN mv /usr/share/nginx/html/assets/fonts/* /usr/share/nginx/html/assets/fonts/
-# Remove the now empty nested fonts directory
-RUN rmdir /usr/share/nginx/html/assets/fonts
 
 # Copy a custom Nginx configuration file
 COPY nginx.conf /etc/nginx/conf.d/default.conf
