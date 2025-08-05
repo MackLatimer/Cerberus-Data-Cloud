@@ -46,6 +46,19 @@ steps:
       '.'
     ]
 
+  # Step 5: Run Database Migrations
+  - name: 'gcr.io/google-appengine/exec-wrapper'
+    id: 'run-migrations'
+    waitFor: ['build-campaigns-backend']
+    args: [
+      '-i', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:latest',
+      '-e', 'DATABASE_URL=${_DATABASE_URL}',
+      '--',
+      'flask',
+      'db',
+      'upgrade'
+    ]
+
 # List of images to be pushed to Artifact Registry
 images:
   - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/agenda-api:v1'
