@@ -90,3 +90,5 @@ availableSecrets:
     env: 'DB_PASS'
   - versionName: projects/cerberus-data-cloud/secrets/DB_NAME/versions/latest
     env: 'DB_NAME'
+
+# Added a dummy comment to force Cloud Build to re-evaluate this file.
