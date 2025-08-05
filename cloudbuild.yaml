@@ -63,7 +63,7 @@ steps:
       'db',
       'upgrade'
     ]
-    secretEnv: ['DB_USER', 'DB_PASS', 'DB_NAME']
+    
 
 # List of images to be pushed to Artifact Registry
 images:
