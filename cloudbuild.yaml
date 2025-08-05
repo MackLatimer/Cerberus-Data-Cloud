@@ -53,16 +53,17 @@ steps:
     args: [
       '-i', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:latest',
       
-      '-e', 'DB_USER=$$DB_USER',
-      '-e', 'DB_PASS=$$DB_PASS',
-      '-e', 'DB_NAME=$$DB_NAME',
-      '-e', 'DB_CONNECTION_NAME=$$DB_CONNECTION_NAME',
+      '-e', 'DB_USER=${DB_USER}',
+      '-e', 'DB_PASS=${DB_PASS}',
+      '-e', 'DB_NAME=${DB_NAME}',
+      '-e', 'DB_CONNECTION_NAME=${DB_CONNECTION_NAME}',
       '-e', 'FLASK_ENV=production',
       '--',
       'flask',
       'db',
       'upgrade'
     ]
+    secretEnv: ['DB_USER', 'DB_PASS', 'DB_NAME', 'DB_CONNECTION_NAME']
     
 
 # List of images to be pushed to Artifact Registry
