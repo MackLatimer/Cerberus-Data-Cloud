@@ -52,8 +52,8 @@ steps:
     waitFor: ['build-campaigns-backend']
     args: [
       '-i', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:latest',
-      
       '-e', 'FLASK_ENV=production',
+      '-e', 'DATABASE_URL=postgresql+psycopg://$(DB_USER):$(DB_PASS)@/$(DB_NAME)?host=/cloudsql/$(DB_CONNECTION_NAME)',
       '--',
       'flask',
       'db',
