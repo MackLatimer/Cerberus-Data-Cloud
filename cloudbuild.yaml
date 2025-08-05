@@ -57,7 +57,7 @@ steps:
       'db',
       'upgrade'
     ]
-    secretEnv: ['DATABASE_URL']
+    secretEnv: ['DB_CONNECTION_NAME', 'DB_USER', 'DB_PASS', 'DB_NAME']
 
 # List of images to be pushed to Artifact Registry
 images:
@@ -76,5 +76,11 @@ options:
 
 availableSecrets:
   secretManager:
-  - versionName: projects/cerberus-data-cloud/secrets/CAMPAIGNS_DATABASE_URL/versions/latest
-    env: 'DATABASE_URL'
+  - versionName: projects/cerberus-data-cloud/secrets/DB_CONNECTION_NAME/versions/latest
+    env: 'DB_CONNECTION_NAME'
+  - versionName: projects/cerberus-data-cloud/secrets/DB_USER/versions/latest
+    env: 'DB_USER'
+  - versionName: projects/cerberus-data-cloud/secrets/DB_PASS/versions/latest
+    env: 'DB_PASS'
+  - versionName: projects/cerberus-data-cloud/secrets/DB_NAME/versions/latest
+    env: 'DB_NAME'

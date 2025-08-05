@@ -4,5 +4,6 @@ pdfplumber
 Flask
 Flask-CORS
 gunicorn
-cloud-sql-python-connector[psycopg]
+cloud-sql-python-connector
+psycopg[binary]
 sendgrid>=6.0.0,<7.0.0
