@@ -52,7 +52,7 @@ steps:
     waitFor: ['build-campaigns-backend']
     args: [
       '-i', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:latest',
-      '-s', '$DB_CONNECTION_NAME',
+      
       '-e', 'DB_USER=$DB_USER',
       '-e', 'DB_PASS=$DB_PASS',
       '-e', 'DB_NAME=$DB_NAME',
@@ -63,7 +63,7 @@ steps:
       'db',
       'upgrade'
     ]
-    secretEnv: ['DB_CONNECTION_NAME', 'DB_USER', 'DB_PASS', 'DB_NAME']
+    secretEnv: ['DB_USER', 'DB_PASS', 'DB_NAME']
 
 # List of images to be pushed to Artifact Registry
 images:

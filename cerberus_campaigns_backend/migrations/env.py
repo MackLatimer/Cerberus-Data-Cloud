@@ -4,8 +4,20 @@ import logging
 from logging.config import fileConfig
 
 from flask import current_app
+from sqlalchemy import engine_from_config, pool
 
 from alembic import context
+
+# Import the get_db_connection function from your app's config
+import os
+import sys
+from os.path import abspath, dirname
+
+# Add the project root to the sys.path to allow absolute imports
+project_root = abspath(os.path.join(dirname(__file__), '..'))
+sys.path.insert(0, project_root)
+
+from app.config import get_db_connection, ProductionConfig
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -20,11 +32,7 @@ logger = logging.getLogger('alembic.env')
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-config.set_main_option(
-    'sqlalchemy.url',
-    str(current_app.extensions['migrate'].db.get_engine().url).replace(
-        '%', '%%'))
-target_metadata = current_app.extensions['migrate'].db.metadata
+target_metadata = ProductionConfig.SQLALCHEMY_DATABASE_URI # Use the metadata from your models
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
@@ -71,14 +79,21 @@ def run_migrations_online():
                 directives[:] = []
                 logger.info('No changes in schema detected.')
 
-    connectable = current_app.extensions['migrate'].db.get_engine()
+    # Use the get_db_connection from app.config to get a connection
+    connectable = engine_from_config(
+        config.get_section(config.config_ini_section),
+        prefix='sqlalchemy.',
+        poolclass=pool.NullPool,
+        creator=get_db_connection
+    )
 
     with connectable.connect() as connection:
         context.configure(
             connection=connection,
             target_metadata=target_metadata,
             process_revision_directives=process_revision_directives,
-            **current_app.extensions['migrate'].configure_args
+            # Pass the configure_args if needed, but ensure they are compatible
+            # **current_app.extensions['migrate'].configure_args
         )
 
         with context.begin_transaction():
