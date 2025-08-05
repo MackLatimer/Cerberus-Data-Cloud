@@ -39,7 +39,7 @@ class _UploadPageState extends State<UploadPage> {
       _isLoading = true;
     });
 
-    var uri = Uri.parse('http://127.0.0.1:5001/api/v1/voters/upload');
+    var uri = Uri.parse('https://campaigns-api-885603051818.us-south1.run.app/api/v1/voters/upload');
     var request = http.MultipartRequest('POST', uri);
     request.files.add(http.MultipartFile.fromBytes(
       'file',

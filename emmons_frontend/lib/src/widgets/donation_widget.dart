@@ -79,7 +79,7 @@ class _DonationWidgetState extends State<DonationWidget> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://127.0.0.1:5001/api/v1/donate/create-payment-intent'),
+        Uri.parse('https://campaigns-api-885603051818.us-south1.run.app/api/v1/donate/create-payment-intent'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'amount': amount * 100, // Convert to cents
@@ -155,7 +155,7 @@ class _DonationWidgetState extends State<DonationWidget> {
   Future<void> _submitDetails() async {
     try {
       final response = await http.post(
-        Uri.parse('http://127.0.0.1:5001/api/v1/donate/update-donation-details'),
+        Uri.parse('https://campaigns-api-885603051818.us-south1.run.app/api/v1/donate/update-donation-details'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'payment_intent_id': _paymentIntentId,

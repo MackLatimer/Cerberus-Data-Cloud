@@ -61,7 +61,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
     // This could be a generic 'signups' endpoint or directly creating a 'voter'
     // and logging an 'interaction'. For this example, let's assume a '/signups' endpoint.
     // Adjust if your backend uses a different structure (e.g. /voters and then /interactions)
-    final url = Uri.parse('http://127.0.0.1:5001/api/v1/signups'); // Or perhaps '$apiBaseUrl/voters'
+    final url = Uri.parse('https://campaigns-api-885603051818.us-south1.run.app/api/v1/signups'); // Or perhaps '$apiBaseUrl/voters'
 
     try {
       final response = await http.post(
