@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+from google.cloud.sql.connector import Connector, IPTypes
 
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 dotenv_path = os.path.join(project_root, '.env')
@@ -10,6 +11,18 @@ else:
     dotenv_path_repo_root = os.path.join(project_root, '..', '.env')
     if os.path.exists(dotenv_path_repo_root):
         load_dotenv(dotenv_path_repo_root)
+
+def get_db_connection():
+    connector = Connector()
+    connection = connector.connect(
+        os.environ["DB_CONNECTION_NAME"], # e.g. 'project:region:instance'
+        "psycopg2",
+        user=os.environ["DB_USER"],
+        password=os.environ["DB_PASS"],
+        db=os.environ["DB_NAME"],
+        ip_type=IPTypes.PRIVATE if os.environ.get("PRIVATE_IP") else IPTypes.PUBLIC
+    )
+    return connection
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY', 'default_fallback_secret_key_please_change')
@@ -37,19 +50,10 @@ class TestingConfig(Config):
 
 class ProductionConfig(Config):
     DEBUG = False
-    _db_url = os.environ.get('DATABASE_URL')
-    if _db_url:
-        if _db_url.startswith('postgresql+psycopg2://'):
-            SQLALCHEMY_DATABASE_URI = _db_url.replace('postgresql+psycopg2://', 'postgresql+psycopg://', 1)
-        elif _db_url.startswith('postgresql://'):
-            SQLALCHEMY_DATABASE_URI = _db_url.replace('postgresql://', 'postgresql+psycopg://', 1)
-        else:
-            SQLALCHEMY_DATABASE_URI = _db_url
-    else:
-        SQLALCHEMY_DATABASE_URI = None
-
-    if SQLALCHEMY_DATABASE_URI is None and not os.environ.get('FLASK_TESTING_SKIP_DB_CHECK'):
-        raise ValueError("No DATABASE_URL set for production environment and not skipping DB check.")
+    SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://"
+    SQLALCHEMY_ENGINE_OPTIONS = {
+        "creator": get_db_connection
+    }
 
 config_by_name = dict(
     development=DevelopmentConfig,
