@@ -52,6 +52,12 @@ steps:
     waitFor: ['build-campaigns-backend']
     args: [
       '-i', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:latest',
+      '-s', '$DB_CONNECTION_NAME',
+      '-e', 'DB_USER=$DB_USER',
+      '-e', 'DB_PASS=$DB_PASS',
+      '-e', 'DB_NAME=$DB_NAME',
+      '-e', 'DB_CONNECTION_NAME=$DB_CONNECTION_NAME',
+      '-e', 'FLASK_ENV=production',
       '--',
       'flask',
       'db',
