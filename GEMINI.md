@@ -49,70 +49,36 @@ The Cerberus system is composed of the following main components:
 
 Each application directory (`cerberus_campaigns_backend`, `cerberus_frontend`, `cerberus_report_backend`, `emmons_frontend`) contains its own `README.md` file with specific setup instructions, dependencies, and usage guidelines. Please refer to those for details on how to run each component.
 
-## cerberus_campaigns_backend
+## Logic and Flow
 
-The Cerberus Campaigns Backend is a Python-based Flask application responsible for managing all campaign-related data. This includes voter information, campaign details, user interactions, survey responses, and user accounts. It serves as the central data store and API for various frontend applications within the Cerberus ecosystem.
+### `cerberus_campaigns_backend`
 
-**Key Features**
+*   **Framework:** Flask
+*   **Database:** SQLAlchemy with PostgreSQL
+*   **Core Models:**
+    *   `Voter`: Represents a voter with personal information, contact details, and engagement data.
+    *   `Campaign`: Represents a political campaign.
+    *   `User`: Represents a user of the system (e.g., campaign staff).
+    *   `Interaction`: Tracks interactions with voters (e.g., calls, website signups).
+    *   `Donation`: Handles donations, integrating with Stripe for payment processing.
+    *   `Survey`, `SurveyQuestion`, `SurveyResponse`: A system for creating and recording surveys.
+*   **API Endpoints:**
+    *   `/api/v1/voters`: CRUD operations for voters, including a CSV upload feature.
+    *   `/api/v1/signups`: A public endpoint for new voter signups (e.g., from a campaign website).
+    *   `/api/v1/donate`: Handles the creation of Stripe payment intents and webhook for payment confirmation.
+*   **Authentication:** User authentication is handled via JWT.
 
-*   **Voter Management**: Store and retrieve detailed voter profiles.
-*   **Campaign Management**: Handle data for multiple campaigns.
-*   **Interaction Tracking**: Log interactions with voters (e.g., calls, visits).
-*   **Survey Management**: Store and manage survey questions and responses.
-*   **User Authentication**: (Planned/To be verified) Manage user accounts and access control.
-*   **API Endpoints**: Provides RESTful API endpoints for data manipulation and retrieval.
+### `emmons_frontend`
 
-**Technology Stack**
-
-*   **Framework**: Flask
-*   **Database**: PostgreSQL (intended, uses SQLite for local development by default)
-*   **ORM**: SQLAlchemy
-*   **Environment Management**: `python-dotenv`
-
-## cerberus_frontend
-
-This Flutter-based web application serves as a multi-purpose frontend within the Cerberus ecosystem. It provides two main functionalities: a data portal for managing campaign information and the "Cerberus Report" page for accessing public municipal agenda data.
-
-**Key Features**
-
-1.  **Data Portal**:
-    *   **Purpose**: Allows authorized users to upload, view, and manage data stored in the `cerberus_campaigns_backend`. This includes voter lists, campaign details, and potentially other administrative functions.
-    *   **Connection**: Interacts with API endpoints provided by the `cerberus_campaigns_backend`.
-2.  **Cerberus Report Page**:
-    *   **Purpose**: Provides a user interface for searching, filtering, and viewing publicly available agenda items scraped from various municipalities. It also allows users to subscribe to email notifications for new agenda items matching their filter criteria.
-    *   **Connection**: Interacts with the `cerberus_report_backend`.
-
-**Technology Stack**
-
-*   **Framework**: Flutter
-*   **State Management**: (Verify specific state management solution used, e.g., Provider, Riverpod, BLoC - `go_router` is used for navigation)
-*   **HTTP Client**: `http` package
-*   **Routing**: `go_router`
-
-## cerberus_report_backend
-
-This directory contains the Python backend application for Cerberus, including the API, scraper, and notification sender.
-
-## emmons_frontend
-
-This Flutter-based web application serves as the dedicated frontend for the "Emmons for Office" campaign (or a similarly named campaign). It is designed to allow campaign staff, volunteers, and potentially the candidate to interact with voter data, record engagement activities, and manage campaign-specific information.
-
-**Purpose**
-
-The primary goal of this application is to provide a user-friendly interface for campaign operations, connecting directly to the `cerberus_campaigns_backend` to fetch and update data relevant to this specific campaign.
-
-**Key Features (Conceptual / To Be Implemented)**
-
-*   **Voter Lookup**: Search and view profiles of voters assigned to the campaign.
-*   **Interaction Logging**: Record details of voter interactions (e.g., calls, canvassing visits, event attendance).
-*   **Survey Data Entry**: Input responses to campaign surveys.
-*   **Dashboard**: Display key campaign metrics and progress.
-*   **User Roles**: (If applicable) Different views or permissions for various user types (e.g., volunteer, field organizer).
-
-**Technology Stack**
-
-*   **Framework**: Flutter
-*   **State Management**: Riverpod (`flutter_riverpod`)
-*   **HTTP Client**: `http` package
-*   **Routing**: `go_router`
-*   **Styling**: `google_fonts`
+*   **Framework:** Flutter
+*   **State Management:** `flutter_riverpod`
+*   **Routing:** `go_router`
+*   **Key Dependencies:**
+    *   `http`: For making API calls to the backend.
+    *   `flutter_stripe`: For handling Stripe payments on the frontend.
+*   **Core Functionality:**
+    *   The application provides a frontend for a political campaign website.
+    *   It has pages for "Home", "About", "Issues", "Endorsements", and "Donate".
+    *   The "Donate" page integrates with the `cerberus_campaigns_backend` to process donations using Stripe.
+    *   The `config.dart` file stores the Stripe public key and the `currentCampaignId`.
+*   **Connection to Backend:** The frontend communicates with the backend via REST API calls. The base URL for the API is configured in `lib/src/config.dart`.

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:emmons_frontend/src/widgets/donate_button.dart';
+import 'package:go_router/go_router.dart';
 import 'package:emmons_frontend/src/utils/breakpoint.dart';
 
 class DonateSection extends StatelessWidget {
@@ -22,7 +22,10 @@ class DonateSection extends StatelessWidget {
         textAlign: TextAlign.center,
       ),
       SizedBox(height: isCompact ? 20 : 0, width: isCompact ? 0 : 40),
-      const DonateButtonWidget(),
+      ElevatedButton(
+        onPressed: () => context.go('/donate'),
+        child: const Text('Donate Now'),
+      ),
     ];
 
     return Container(
