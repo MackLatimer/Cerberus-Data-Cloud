@@ -46,18 +46,18 @@ steps:
       '.'
     ]
 
-  # Step 5: Run Database Migrations
+  # Step 5: Run Database Migrations using a secret for the DATABASE_URL
   - name: 'gcr.io/google-appengine/exec-wrapper'
     id: 'run-migrations'
     waitFor: ['build-campaigns-backend']
     args: [
       '-i', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:latest',
-      '-e', 'DATABASE_URL=${_DATABASE_URL}',
       '--',
       'flask',
       'db',
       'upgrade'
     ]
+    secretEnv: ['DATABASE_URL']
 
 # List of images to be pushed to Artifact Registry
 images:
@@ -65,6 +65,21 @@ images:
   - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:latest'
   - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/cerberus-frontend:latest'
   - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/emmons-frontend:latest'
+
+# Specify the service account for Cloud Build to use for executing these steps
+# Ensure this service account has 'Artifact Registry Writer' role for the project or specifically for the 'cerberus-images' repository.
+serviceAccount: 'projects/cerberus-data-cloud/serviceAccounts/cerberus-service-account@cerberus-data-cloud.iam.gserviceaccount.com'
+
+# Explicitly set logging options as required when a custom service account is used.
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+# Define the secrets to be used in the build
+secrets:
+- secretEnv:
+    DATABASE_URL:
+      secretName: CAMPAIGNS_DATABASE_URL
+      versionName: latest
 
 # Specify the service account for Cloud Build to use for executing these steps
 # Ensure this service account has 'Artifact Registry Writer' role for the project or specifically for the 'cerberus-images' repository.

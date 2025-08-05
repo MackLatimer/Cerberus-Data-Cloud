@@ -16,6 +16,7 @@ def create_payment_intent():
         return jsonify({'error': 'Amount is required'}), 400
 
     try:
+        print(f"Using Stripe Secret Key: {current_app.config['STRIPE_SECRET_KEY']}")
         stripe.api_key = current_app.config['STRIPE_SECRET_KEY']
         intent = stripe.PaymentIntent.create(
             amount=amount,
