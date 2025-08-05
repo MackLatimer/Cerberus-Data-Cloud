@@ -24,6 +24,9 @@ RUN flutter build web --release
 # List the contents of the build directory for diagnostics
 RUN ls -lR /app_src/build/web
 
+# Verify that main.dart.js exists
+RUN test -f /app_src/build/web/main.dart.js || (echo "main.dart.js not found!" && exit 1)
+
 # Stage 2: Serve the built web application with Nginx
 FROM nginx:1.25-alpine
 
