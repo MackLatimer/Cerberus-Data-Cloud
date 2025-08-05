@@ -14,8 +14,10 @@ RUN rm -f pubspec.lock
 # Get dependencies
 RUN flutter pub get
 
-# Copy the rest of the frontend application code
-COPY . .
+# Copy the rest of the frontend application code, excluding assets/images via .dockerignore
+COPY lib/ ./lib/
+COPY assets/ ./assets/
+COPY web/ ./web/
 
 # Build the web application
 # Using --release for a production build
