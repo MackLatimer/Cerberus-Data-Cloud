@@ -53,7 +53,7 @@ class CommonAppBarState extends State<CommonAppBar> {
 
     // Navigation items
     final navItems = [
-      {'label': 'Home', 'path': '/'},
+      {'label': 'Home', 'path': '/home'},
       {'label': 'Issues', 'path': '/issues'},
       {'label': 'About', 'path': '/about'},
       {'label': 'Endorsements', 'path': '/endorsements'},
