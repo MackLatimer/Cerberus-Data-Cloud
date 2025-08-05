@@ -73,3 +73,8 @@ serviceAccount: 'projects/cerberus-data-cloud/serviceAccounts/cerberus-service-a
 # Explicitly set logging options as required when a custom service account is used.
 options:
   logging: CLOUD_LOGGING_ONLY
+
+availableSecrets:
+  secretManager:
+  - versionName: projects/cerberus-data-cloud/secrets/CAMPAIGNS_DATABASE_URL/versions/latest
+    env: 'DATABASE_URL'
