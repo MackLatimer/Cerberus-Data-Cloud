@@ -46,10 +46,17 @@ steps:
       '.'
     ]
 
-  # Step 5: Run Database Migrations using a secret for the DATABASE_URL
+  # Step 5: Run Cloud SQL Proxy
+  - name: 'gcr.io/cloud-builders/cloud_sql_proxy'
+    id: 'cloud-sql-proxy'
+    waitFor: ['build-campaigns-backend']
+    args: ['-instances=$(DB_CONNECTION_NAME)=unix:/cloudsql/$(DB_CONNECTION_NAME)', '-dir=/cloudsql']
+    secretEnv: ['DB_CONNECTION_NAME']
+
+  # Step 6: Run Database Migrations using a secret for the DATABASE_URL
   - name: 'gcr.io/google-appengine/exec-wrapper'
     id: 'run-migrations'
-    waitFor: ['build-campaigns-backend']
+    waitFor: ['cloud-sql-proxy']
     args: [
       '-i', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:latest',
       '-e', 'FLASK_ENV=production',
