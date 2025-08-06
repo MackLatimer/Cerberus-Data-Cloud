@@ -51,7 +51,7 @@ steps:
     id: 'cloud-sql-proxy'
     waitFor: ['build-campaigns-backend']
     entrypoint: 'bash'
-    args: ['-c', 'cloud-sql-proxy $DB_CONNECTION_NAME --unix-socket=/cloudsql']
+    args: ['-c', 'cloud-sql-proxy $$DB_CONNECTION_NAME --unix-socket=/cloudsql']
     secretEnv: ['DB_CONNECTION_NAME']
 
   # Step 6: Run Database Migrations using a secret for the DATABASE_URL
@@ -61,7 +61,7 @@ steps:
     args: [
       '-i', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:latest',
       '-e', 'FLASK_ENV=production',
-      '-e', 'DATABASE_URL=postgresql+psycopg://$(DB_USER):$(DB_PASS)@/$(DB_NAME)?host=/cloudsql/$(DB_CONNECTION_NAME)',
+      '-e', 'DATABASE_URL=postgresql+psycopg://$$(DB_USER):$$(DB_PASS)@/$$(DB_NAME)?host=/cloudsql/$$(DB_CONNECTION_NAME)',
       '--',
       'flask',
       'db',
