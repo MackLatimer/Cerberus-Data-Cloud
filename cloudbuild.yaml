@@ -98,7 +98,6 @@ steps:
         wget https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.18.0/cloud-sql-proxy.linux.amd64 -O /workspace/cloud_sql_proxy
         chmod +x /workspace/cloud_sql_proxy
         /workspace/cloud_sql_proxy --unix-socket=/cloudsql/ $$DB_CONNECTION_NAME &
-
     secretEnv: ['DB_CONNECTION_NAME']
 
   # Step 7: Run Database Migrations using a secret for the DATABASE_URL
