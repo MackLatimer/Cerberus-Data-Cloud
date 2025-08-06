@@ -1,3 +1,4 @@
+import 'package:emmons_frontend/src/api_config.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -79,7 +80,7 @@ class _DonationWidgetState extends State<DonationWidget> {
 
     try {
       final response = await http.post(
-        Uri.parse('https://campaigns-api-885603051818.us-south1.run.app/api/v1/donate/create-payment-intent'),
+        Uri.parse('$apiBaseUrl/donate/create-payment-intent'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'amount': amount * 100, // Convert to cents
@@ -155,7 +156,7 @@ class _DonationWidgetState extends State<DonationWidget> {
   Future<void> _submitDetails() async {
     try {
       final response = await http.post(
-        Uri.parse('https://campaigns-api-885603051818.us-south1.run.app/api/v1/donate/update-donation-details'),
+        Uri.parse('$apiBaseUrl/donate/update-donation-details'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'payment_intent_id': _paymentIntentId,
@@ -240,7 +241,7 @@ class _DonationWidgetState extends State<DonationWidget> {
           alignment: WrapAlignment.center,
           children: [25, 50, 100, 250, 500, 1000]
               .map((amount) => ChoiceChip(
-                    label: Text('\$$amount'),
+                    label: Text('\$amount'),
                     selected: _selectedAmount == amount,
                     onSelected: (selected) {
                       setState(() {
@@ -258,7 +259,7 @@ class _DonationWidgetState extends State<DonationWidget> {
           controller: _customAmountController,
           decoration: const InputDecoration(
             labelText: 'Custom Amount',
-            prefixText: r'$',
+            prefixText: r',
           ),
           keyboardType: TextInputType.number,
           onChanged: (value) {

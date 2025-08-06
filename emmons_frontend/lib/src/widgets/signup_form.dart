@@ -1,3 +1,4 @@
+import 'package:emmons_frontend/src/api_config.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -49,7 +50,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
       'notes': 'Signed up via website form. Endorse: $_endorseChecked, Get Involved: $_getInvolvedChecked',
     };
 
-    final url = Uri.parse('https://campaigns-api-885603051818.us-south1.run.app/api/v1/signups');
+    final url = Uri.parse('$apiBaseUrl/signups');
 
     try {
       final response = await http.post(

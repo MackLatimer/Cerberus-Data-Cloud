@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
+import '../../api_config.dart';
 
 class UploadPage extends StatefulWidget {
   const UploadPage({super.key});
@@ -39,7 +40,7 @@ class _UploadPageState extends State<UploadPage> {
       _isLoading = true;
     });
 
-    var uri = Uri.parse('https://campaigns-api-885603051818.us-south1.run.app/api/v1/voters/upload');
+    var uri = Uri.parse('$campaignsApiBaseUrl/voters/upload');
     var request = http.MultipartRequest('POST', uri);
     request.files.add(http.MultipartFile.fromBytes(
       'file',
