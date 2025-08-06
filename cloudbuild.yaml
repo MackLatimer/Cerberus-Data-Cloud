@@ -134,6 +134,8 @@ availableSecrets:
   secretManager:
   - versionName: projects/cerberus-data-cloud/secrets/DB_CONNECTION_NAME/versions/latest
     env: 'DB_CONNECTION_NAME'
+  - versionName: projects/cerberus-data-cloud/secrets/DB_CONNECTION_NAME/versions/latest
+    env: 'CLOUD_SQL_INSTANCES'
   - versionName: projects/cerberus-data-cloud/secrets/DB_USER/versions/latest
     env: 'DB_USER'
   - versionName: projects/cerberus-data-cloud/secrets/DB_PASS/versions/latest
