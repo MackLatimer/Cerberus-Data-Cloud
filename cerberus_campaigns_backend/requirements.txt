@@ -12,4 +12,3 @@ stripe==12.3.0
 GeoAlchemy2
 psycopg2-binary
 google-cloud-secret-manager==2.16.2
-pysqlite3
