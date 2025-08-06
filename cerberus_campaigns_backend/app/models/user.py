@@ -12,9 +12,10 @@ class User(TimestampMixin, db.Model):
     last_name = db.Column(db.String(100), nullable=True)
     role = db.Column(db.String(50), default='viewer', nullable=False)
     is_active = db.Column(db.Boolean, default=True, nullable=False)
-    last_login = db.Column(db.DateTime(timezone=True), nullable=True)
+    last_login = db.Column(db.DateTime, nullable=True)
 
-    interactions = db.relationship('Interaction', back_populates='user', lazy='dynamic')
+    person_campaign_interactions = db.relationship('PersonCampaignInteraction', backref='user', lazy=True)
+    positions = db.relationship('Position', backref='current_holder_user', lazy=True)
 
     def __init__(self, username, password, email=None, first_name=None, last_name=None, role='viewer', is_active=True):
         self.username = username

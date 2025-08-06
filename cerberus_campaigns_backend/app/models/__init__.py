@@ -1,17 +1,25 @@
+from .data_source import DataSource
+from .person import Person
+from .party_affiliation_history import PartyAffiliationHistory
+from .person_identifier import PersonIdentifier
+from .address import Address
+from .person_address import PersonAddress
+from .person_email import PersonEmail
+from .person_phone import PersonPhone
+from .person_social_media import PersonSocialMedia
+from .person_employer import PersonEmployer
+from .person_payment_info import PersonPaymentInfo
+from .person_other_contact import PersonOtherContact
+from .voter_history import VoterHistory
+from .survey_result import SurveyResult
+from .person_relationship import PersonRelationship
+from .district import District
+from .address_district import AddressDistrict
 from .campaign import Campaign
-from .user import User
-from .voter import Voter, CampaignVoter
-from .interaction import Interaction
-from .survey import SurveyQuestion, SurveyResponse
+from .person_campaign_interaction import PersonCampaignInteraction
+from .government_body import GovernmentBody
+from .position import Position
 from .donation import Donation
-
-__all__ = [
-    'Campaign',
-    'User',
-    'Voter',
-    'CampaignVoter',
-    'Interaction',
-    'SurveyQuestion',
-    'SurveyResponse',
-    'Donation',
-]
+from .person_merge import PersonMerge
+from .audit_log import AuditLog
+from .backup_log import BackupLog

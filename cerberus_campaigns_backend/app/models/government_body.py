@@ -1,18 +1,16 @@
-from sqlalchemy import Column, Integer, String, Date, TIMESTAMP, Enum, ForeignKey
+from sqlalchemy import Column, Integer, String, TIMESTAMP, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
 from sqlalchemy.dialects.postgresql import JSONB
 
 Base = declarative_base()
 
-class Campaign(Base):
-    __tablename__ = 'campaigns'
+class GovernmentBody(Base):
+    __tablename__ = 'government_bodies'
 
-    campaign_id = Column(Integer, primary_key=True)
-    campaign_name = Column(String(255))
-    start_date = Column(Date)
-    end_date = Column(Date)
-    campaign_type = Column(Enum('Local', 'State', 'Federal', 'Issue', name='campaign_type_enum'))
+    body_id = Column(Integer, primary_key=True)
+    body_name = Column(String(255))
+    jurisdiction = Column(String(100))
     details = Column(JSONB)
     source_id = Column(Integer, ForeignKey('data_sources.source_id'))
     created_at = Column(TIMESTAMP, default=func.current_timestamp())

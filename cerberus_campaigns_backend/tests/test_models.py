@@ -1,18 +1,71 @@
 import pytest
-from app.models import Campaign, Voter, User, Interaction, SurveyQuestion, SurveyResponse, CampaignVoter
+from app.models import Campaign, Person, User, PersonCampaignInteraction, SurveyResult, DataSource, PersonEmail, PersonPhone
 from app.extensions import db as app_db
 from datetime import date, datetime, timezone
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy import text
+from app.config import current_config
+
+PGCRYPTO_SECRET_KEY = current_config.PGCRYPTO_SECRET_KEY
+
+def encrypt_data(data):
+    if data is None: return None
+    return app_db.session.scalar(text("SELECT pgp_sym_encrypt(:data, :key)"), {'data': data, 'key': PGCRYPTO_SECRET_KEY})
+
+def decrypt_data(data):
+    if data is None: return None
+    return app_db.session.scalar(text("SELECT pgp_sym_decrypt(:data, :key)"), {'data': data, 'key': PGCRYPTO_SECRET_KEY})
+
+@pytest.fixture(scope='function')
+def setup_data_source(session):
+    # Ensure a default data source exists for tests
+    data_source = DataSource.query.get(1)
+    if not data_source:
+        data_source = DataSource(source_id=1, source_name="Test Source", source_type="Manual")
+        session.add(data_source)
+        session.commit()
+    return data_source
 
 def is_postgres_db(db_session):
     return "postgresql" in db_session.bind.engine.url.drivername
 
-def test_create_campaign(session):
+import pytest
+from app.models import Campaign, Person, User, PersonCampaignInteraction, SurveyResult, DataSource, PersonEmail, PersonPhone
+from app.extensions import db as app_db
+from datetime import date, datetime, timezone
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy import text
+from app.config import current_config
+
+PGCRYPTO_SECRET_KEY = current_config.PGCRYPTO_SECRET_KEY
+
+def encrypt_data(data):
+    if data is None: return None
+    return app_db.session.scalar(text("SELECT pgp_sym_encrypt(:data, :key)"), {'data': data, 'key': PGCRYPTO_SECRET_KEY})
+
+def decrypt_data(data):
+    if data is None: return None
+    return app_db.session.scalar(text("SELECT pgp_sym_decrypt(:data, :key)"), {'data': data, 'key': PGCRYPTO_SECRET_KEY})
+
+@pytest.fixture(scope='function')
+def setup_data_source(session):
+    # Ensure a default data source exists for tests
+    data_source = DataSource.query.get(1)
+    if not data_source:
+        data_source = DataSource(source_id=1, source_name="Test Source", source_type="Manual")
+        session.add(data_source)
+        session.commit()
+    return data_source
+
+def is_postgres_db(db_session):
+    return "postgresql" in db_session.bind.engine.url.drivername
+
+def test_create_campaign(session, setup_data_source, skip_if_sqlite):
     campaign_name = "Test Campaign 2024"
     start = date(2024, 1, 1)
     end = date(2024, 11, 5)
     description = "This is a test campaign."
-    campaign = Campaign(campaign_name=campaign_name, start_date=start, end_date=end, description=description)
+    campaign = Campaign(campaign_name=campaign_name, start_date=start, end_date=end, description=description, source_id=setup_data_source.source_id)
     session.add(campaign)
     session.commit()
     assert campaign.campaign_id is not None
@@ -20,18 +73,18 @@ def test_create_campaign(session):
     retrieved_campaign = session.get(Campaign, campaign.campaign_id)
     assert retrieved_campaign == campaign
 
-def test_campaign_name_unique(session):
-    campaign1 = Campaign(campaign_name="Unique Campaign Name")
+def test_campaign_name_unique(session, setup_data_source):
+    campaign1 = Campaign(campaign_name="Unique Campaign Name", source_id=setup_data_source.source_id)
     session.add(campaign1)
     session.commit()
-    campaign2 = Campaign(campaign_name="Unique Campaign Name")
+    campaign2 = Campaign(campaign_name="Unique Campaign Name", source_id=setup_data_source.source_id)
     session.add(campaign2)
     with pytest.raises(IntegrityError):
         session.commit()
     session.rollback()
 
-def test_campaign_to_dict(session):
-    campaign = Campaign(campaign_name="Dict Test Campaign", start_date=date(2023, 1, 1), description="Testing to_dict")
+def test_campaign_to_dict(session, setup_data_source):
+    campaign = Campaign(campaign_name="Dict Test Campaign", start_date=date(2023, 1, 1), description="Testing to_dict", source_id=setup_data_source.source_id)
     session.add(campaign)
     session.commit()
     campaign_dict = campaign.to_dict()
@@ -55,77 +108,85 @@ def test_user_username_unique(session):
         session.commit()
     session.rollback()
 
-def test_create_voter(session):
-    voter_data = {"first_name": "John", "last_name": "Doe", "email_address": "john.doe@example.com", "zip_code": "12345"}
-    voter_data["custom_fields"] = {"source": "test_creation"}
-    voter = Voter(**voter_data)
-    session.add(voter)
-    session.commit()
-    assert voter.voter_id is not None
-    assert voter.custom_fields == {"source": "test_creation"}
+def test_create_person(session, setup_data_source):
+    person_data = {"first_name": "John", "last_name": "Doe", "source_id": setup_data_source.source_id}
+    person = Person(**person_data)
+    session.add(person)
+    session.flush()
 
+    email_address = "john.doe@example.com"
+    phone_number = "1234567890"
 
-def test_voter_email_unique(session):
-    voter1 = Voter(first_name="Jane", last_name="Doe", email_address="unique.voter@example.com")
-    session.add(voter1)
+    person_email = PersonEmail(person_id=person.person_id, email=encrypt_data(email_address), email_type="Personal", source_id=setup_data_source.source_id)
+    person_phone = PersonPhone(person_id=person.person_id, phone_number=encrypt_data(phone_number), phone_type="Mobile", source_id=setup_data_source.source_id)
+
+    session.add_all([person_email, person_phone])
     session.commit()
-    voter2 = Voter(first_name="Jim", last_name="Beam", email_address="unique.voter@example.com")
-    session.add(voter2)
+
+    assert person.person_id is not None
+    assert decrypt_data(person_email.email) == email_address
+    assert decrypt_data(person_phone.phone_number) == phone_number
+
+def test_person_email_unique(session, setup_data_source):
+    person1 = Person(first_name="Jane", last_name="Doe", source_id=setup_data_source.source_id)
+    session.add(person1)
+    session.flush()
+    person_email1 = PersonEmail(person_id=person1.person_id, email=encrypt_data("unique.person@example.com"), email_type="Personal", source_id=setup_data_source.source_id)
+    session.add(person_email1)
+    session.commit()
+
+    person2 = Person(first_name="Jim", last_name="Beam", source_id=setup_data_source.source_id)
+    session.add(person2)
+    session.flush()
+    person_email2 = PersonEmail(person_id=person2.person_id, email=encrypt_data("unique.person@example.com"), email_type="Personal", source_id=setup_data_source.source_id)
+    session.add(person_email2)
     with pytest.raises(IntegrityError):
         session.commit()
     session.rollback()
 
-def test_campaign_voter_association(session):
-    campaign = Campaign(campaign_name="Assoc Test Campaign")
-    voter = Voter(first_name="AssocVoter", last_name="Test", email_address="assoc@example.com")
-    session.add_all([campaign, voter])
-    session.commit()
-    campaign_voter_assoc = CampaignVoter(campaign_id=campaign.campaign_id, voter_id=voter.voter_id)
-    session.add(campaign_voter_assoc)
-    session.commit()
-    assert campaign_voter_assoc.campaign_voter_id is not None
-    session.refresh(campaign); session.refresh(voter)
-    assert campaign in [cv.campaign for cv in voter.campaigns_association.all()]
-    assert voter in [cv.voter for cv in campaign.voters_association.all()]
-    duplicate_assoc = CampaignVoter(campaign_id=campaign.campaign_id, voter_id=voter.voter_id)
-    session.add(duplicate_assoc)
-    with pytest.raises(IntegrityError):
-        session.commit()
-    session.rollback()
-
-def test_create_interaction(session):
-    campaign = Campaign(campaign_name="Interaction Campaign")
-    voter = Voter(first_name="Interacting", last_name="Voter", email_address="interact@example.com")
+def test_create_person_campaign_interaction(session, setup_data_source, skip_if_sqlite):
+    campaign = Campaign(campaign_name="Interaction Campaign", source_id=setup_data_source.source_id)
+    person = Person(first_name="Interacting", last_name="Person", source_id=setup_data_source.source_id)
     user = User(username="logger", password="password")
-    session.add_all([campaign, voter, user])
+    session.add_all([campaign, person, user])
     session.commit()
-    interaction = Interaction(voter_id=voter.voter_id, campaign_id=campaign.campaign_id, user_id=user.user_id, interaction_type="Phone Call", outcome="Interested")
+    
+    interaction = PersonCampaignInteraction(
+        person_id=person.person_id,
+        campaign_id=campaign.campaign_id,
+        interaction_type="ContactForm", # Updated to match new ENUM
+        interaction_date=date.today(),
+        amount=100.00,
+        follow_up_needed=True,
+        details={'notes': 'Spoke about policy.'},
+        confidence_score=80,
+        source_id=setup_data_source.source_id
+    )
     session.add(interaction)
     session.commit()
     assert interaction.interaction_id is not None
+    assert interaction.details['notes'] == 'Spoke about policy.'
 
-def test_create_survey_question(session):
-    sq_data = {"question_text": "What is your favorite color?", "question_type": "Multiple Choice"}
-    sq_data["possible_answers"] = {"A": "Red", "B": "Blue"}
-    question = SurveyQuestion(**sq_data)
-    session.add(question)
+def test_create_survey_result(session, setup_data_source, skip_if_sqlite):
+    person = Person(first_name="Survey", last_name="Taker", source_id=setup_data_source.source_id)
+    session.add(person)
     session.commit()
-    assert question.question_id is not None
-    assert question.possible_answers == {"A": "Red", "B": "Blue"}
 
+    survey_data = {
+        "person_id": person.person_id,
+        "survey_date": date.today(),
+        "survey_source": "Website",
+        "responses": {"q1": "answer1", "q2": "answer2"},
+        "confidence_score": 90,
+        "response_time": 120,
+        "survey_channel": "Online",
+        "completion_status": "Complete",
+        "source_id": setup_data_source.source_id
+    }
+    survey_result = SurveyResult(**survey_data)
+    session.add(survey_result)
+    session.commit()
 
-def test_create_survey_response(session):
-    voter = Voter(first_name="Responder", last_name="Test", email_address="responder@example.com")
-    question_data = {"question_text": "Rate your experience (1-5)", "question_type": "Rating Scale"}
-    question_data["possible_answers"] = {"1": "Bad", "5": "Good"}
-    question = SurveyQuestion(**question_data)
-    session.add_all([voter, question])
-    session.commit()
-    sr_data = {"voter_id": voter.voter_id, "question_id": question.question_id, "response_value": "5"}
-    sr_data["response_values"] = ["Opt1", "Opt2"]
-    response = SurveyResponse(**sr_data)
-    session.add(response)
-    session.commit()
-    assert response.response_id is not None
-    assert response.response_value == "5"
-    assert response.response_values == ["Opt1", "Opt2"]
+    assert survey_result.survey_id is not None
+    assert survey_result.responses == {"q1": "answer1", "q2": "answer2"}
+    assert survey_result.search_vector is not None # Should be populated by trigger

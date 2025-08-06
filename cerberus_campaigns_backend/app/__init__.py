@@ -37,17 +37,11 @@ def create_app(config_name_override: str = None) -> Flask:
     @app.shell_context_processor
     def make_shell_context():
         context = {'db': db}
-        if hasattr(model_module, '__all__'):
-            for name in model_module.__all__:
-                model_class = getattr(model_module, name, None)
-                if model_class:
-                    context[name] = model_class
-        else:
-            common_models = ['User', 'Campaign', 'Voter', 'Interaction']
-            for model_name in common_models:
-                model_class = getattr(model_module, model_name, None)
-                if model_class:
-                    context[model_name] = model_class
+        # Dynamically add all models from model_module to the shell context
+        for name in dir(model_module):
+            model_class = getattr(model_module, name)
+            if isinstance(model_class, type) and hasattr(model_class, '__tablename__'):
+                context[name] = model_class
         return context
 
     return app

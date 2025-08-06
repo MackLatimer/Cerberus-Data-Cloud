@@ -28,13 +28,15 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY', 'default_fallback_secret_key_please_change')
     STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
     STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET')
+    PGCRYPTO_SECRET_KEY = os.environ.get('PGCRYPTO_SECRET_KEY', 'a_very_secret_key_for_encryption') # Default for development, change in production
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     DEBUG = False
     TESTING = False
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', f"sqlite:///{os.path.join(project_root, 'dev.db')}")
+    # Ensure DATABASE_URL is set in your .env file for PostgreSQL connection
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', 'postgresql+psycopg2://user:password@localhost:5432/voter_db')
 
 class TestingConfig(Config):
     TESTING = True
@@ -50,7 +52,8 @@ class TestingConfig(Config):
 
 class ProductionConfig(Config):
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://"
+    # For Google Cloud SQL, SQLALCHEMY_DATABASE_URI is handled by the creator function
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', 'postgresql+psycopg2://') # Fallback, should be set via env
     SQLALCHEMY_ENGINE_OPTIONS = {
         "creator": get_db_connection
     }
