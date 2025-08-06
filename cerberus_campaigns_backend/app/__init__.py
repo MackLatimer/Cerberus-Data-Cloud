@@ -2,6 +2,14 @@ from flask import Flask
 from flask_cors import CORS
 from .config import get_config_by_name, current_config_name, Config
 from .extensions import init_extensions, db
+from .models import (
+    DataSource, Person, PartyAffiliationHistory, PersonIdentifier, Address,
+    PersonAddress, PersonEmail, PersonPhone, PersonSocialMedia, PersonEmployer,
+    PersonPaymentInfo, PersonOtherContact, VoterHistory, SurveyResult,
+    PersonRelationship, District, AddressDistrict, Campaign,
+    PersonCampaignInteraction, GovernmentBody, Position, Donation,
+    PersonMerge, AuditLog, BackupLog, User, Voter
+)
 from . import models as model_module
 
 from .routes.voters import voters_api_bp, public_api_bp

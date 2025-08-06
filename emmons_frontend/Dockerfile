@@ -5,11 +5,8 @@ FROM ghcr.io/cirruslabs/flutter:stable AS build
 # Set working directory for Flutter build
 WORKDIR /app_src
 
-# Copy pubspec.yaml first to leverage Docker cache
-COPY pubspec.yaml ./
-
-# Remove the lock file to force a fresh dependency resolution
-RUN rm -f pubspec.lock
+# Copy pubspec.yaml and pubspec.lock to leverage Docker cache
+COPY pubspec.* ./
 
 # Get dependencies
 RUN flutter pub get
@@ -35,11 +32,6 @@ FROM nginx:1.25-alpine
 # Copy the built static files from the 'build' stage
 # The output of 'flutter build web' is in 'build/web'
 COPY --from=build /app_src/build/web /usr/share/nginx/html
-
-# Move all contents from the nested assets directory to the root assets directory
-# and remove the now-empty nested directory structure.
-RUN cp -r /usr/share/nginx/html/assets/assets/* /usr/share/nginx/html/assets/ && \
-    rm -rf /usr/share/nginx/html/assets/assets
 
 # Copy a custom Nginx configuration file
 COPY nginx.conf /etc/nginx/conf.d/default.conf

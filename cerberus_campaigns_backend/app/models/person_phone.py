@@ -1,22 +1,18 @@
-from sqlalchemy import Column, Integer, String, TIMESTAMP, Enum, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.sql import func
+from ..extensions import db
 from .person_identifier import EncryptedString # Reusing the custom type
 
-Base = declarative_base()
-
-class PersonPhone(Base):
+class PersonPhone(db.Model):
     __tablename__ = 'person_phones'
 
-    phone_id = Column(Integer, primary_key=True)
-    person_id = Column(Integer, ForeignKey('persons.person_id', ondelete='CASCADE'), nullable=False)
-    phone_number = Column(EncryptedString, unique=True) # Encrypted
-    phone_type = Column(Enum('Mobile', 'Home', 'Work', 'Other', name='phone_type_enum'))
-    confidence_score = Column(Integer, default=100)
-    is_verified = Column(Boolean, default=False)
-    source_id = Column(Integer, ForeignKey('data_sources.source_id'))
-    created_at = Column(TIMESTAMP, default=func.current_timestamp())
-    updated_at = Column(TIMESTAMP, default=func.current_timestamp(), onupdate=func.current_timestamp())
+    phone_id = db.Column(db.Integer, primary_key=True)
+    person_id = db.Column(db.Integer, db.ForeignKey('persons.person_id', ondelete='CASCADE'), nullable=False)
+    phone_number = db.Column(EncryptedString, unique=True) # Encrypted
+    phone_type = db.Column(db.Enum('Mobile', 'Home', 'Work', 'Other', name='phone_type_enum'))
+    confidence_score = db.Column(db.Integer, default=100)
+    is_verified = db.Column(db.Boolean, default=False)
+    source_id = db.Column(db.Integer, db.ForeignKey('data_sources.source_id'))
+    created_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp())
+    updated_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
 
     def to_dict(self):
         return {

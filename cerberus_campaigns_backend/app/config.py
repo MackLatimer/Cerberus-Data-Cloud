@@ -98,11 +98,12 @@ class TestingConfig(Config):
     """Testing configuration."""
     TESTING = True
     SQLALCHEMY_ECHO = False
-    _test_db_url = os.environ.get('TEST_DATABASE_URL')
-    if not _test_db_url:
-        SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
-    else:
-        SQLALCHEMY_DATABASE_URI = _test_db_url
+    DB_USER = os.environ.get("DB_USER", "test_user")
+    DB_PASS = os.environ.get("DB_PASS", "test_password")
+    DB_HOST = os.environ.get("DB_HOST", "postgres-test-db")
+    DB_PORT = os.environ.get("DB_PORT", "5432")
+    DB_NAME = os.environ.get("DB_NAME", "test_db")
+    SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
     SECRET_KEY = 'test_secret_key_for_flask_testing'
 
 class ProductionConfig(Config):
