@@ -15,44 +15,8 @@ def decrypt_data(data):
     if data is None: return None
     return db.session.scalar(text("SELECT pgp_sym_decrypt(:data, :key)"), {'data': data, 'key': PGCRYPTO_SECRET_KEY})
 
-@pytest.fixture(scope='function')
-def setup_data_source(session):
-    # Ensure a default data source exists for tests
-    data_source = DataSource.query.get(1)
-    if not data_source:
-        data_source = DataSource(source_id=1, source_name="Test Source", source_type="Manual")
-        session.add(data_source)
-        session.commit()
-    return data_source
 
-import pytest
-import json
-from app.models import Person, PersonCampaignInteraction, Campaign, PersonEmail, PersonPhone, DataSource
-from app.extensions import db
-from sqlalchemy import text
-from app.config import current_config
-
-PGCRYPTO_SECRET_KEY = current_config.PGCRYPTO_SECRET_KEY
-
-def encrypt_data(data):
-    if data is None: return None
-    return db.session.scalar(text("SELECT pgp_sym_encrypt(:data, :key)"), {'data': data, 'key': PGCRYPTO_SECRET_KEY})
-
-def decrypt_data(data):
-    if data is None: return None
-    return db.session.scalar(text("SELECT pgp_sym_decrypt(:data, :key)"), {'data': data, 'key': PGCRYPTO_SECRET_KEY})
-
-@pytest.fixture(scope='function')
-def setup_data_source(session):
-    # Ensure a default data source exists for tests
-    data_source = DataSource.query.get(1)
-    if not data_source:
-        data_source = DataSource(source_id=1, source_name="Test Source", source_type="Manual")
-        session.add(data_source)
-        session.commit()
-    return data_source
-
-@pytest.mark.skipif(is_sqlite_db(app), reason="Skipping JSONB/TSVECTOR/Geometry tests on SQLite")
+@pytest.mark.skip_if_sqlite
 def test_create_signup_success_new_voter(client, session, setup_data_source):
     campaign = Campaign(campaign_name="Test Campaign for Signups", source_id=setup_data_source.source_id)
     session.add(campaign)
@@ -84,7 +48,7 @@ def test_create_signup_success_new_voter(client, session, setup_data_source):
     assert interaction is not None
     assert interaction.details['notes'] == "Signed up via API test. Expressed interest: Endorse."
 
-@pytest.mark.skipif(is_sqlite_db(app), reason="Skipping JSONB/TSVECTOR/Geometry tests on SQLite")
+@pytest.mark.skip_if_sqlite
 def test_create_signup_success_existing_voter_by_email(client, session, setup_data_source):
     campaign = Campaign(campaign_name="Signup Campaign Existing Email", source_id=setup_data_source.source_id)
     existing_person = Person(first_name="Existing", last_name="User", source_id=setup_data_source.source_id)

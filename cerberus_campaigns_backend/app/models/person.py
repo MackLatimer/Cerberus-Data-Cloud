@@ -1,37 +1,32 @@
-from sqlalchemy import Column, Integer, String, Date, Boolean, JSON, TIMESTAMP, Enum, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.sql import func
-from sqlalchemy.dialects.postgresql import JSONB
+from ..extensions import db
 
-Base = declarative_base()
-
-class Person(Base):
+class Person(db.Model):
     __tablename__ = 'persons'
 
-    person_id = Column(Integer, primary_key=True)
-    first_name = Column(String(255))
-    last_name = Column(String(255))
-    date_of_birth = Column(Date)
-    gender = Column(Enum('Male', 'Female', 'Non-binary', 'Other', 'Unknown', name='gender_enum'))
-    party_affiliation = Column(String(100))
-    ethnicity = Column(String(100))
-    income_bracket = Column(Enum('Low', 'Middle', 'High', 'Unknown', name='income_bracket_enum'))
-    education_level = Column(String(100))
-    voter_propensity_score = Column(Integer)
-    registration_status = Column(Enum('Active', 'Inactive', 'Purged', name='registration_status_enum'), default='Active')
-    status_change_date = Column(Date)
-    consent_opt_in = Column(Boolean, default=False)
-    duplicate_flag = Column(Boolean, default=False)
-    last_contact_date = Column(Date)
-    ml_tags = Column(JSONB)
-    change_history = Column(JSONB)
-    preferred_contact_method = Column(Enum('Email', 'Phone', 'Mail', 'SocialMedia', 'None', name='preferred_contact_method_enum'))
-    language_preference = Column(String(50))
-    accessibility_needs = Column(String)
-    last_updated_by = Column(String(255))
-    source_id = Column(Integer, ForeignKey('data_sources.source_id'))
-    created_at = Column(TIMESTAMP, default=func.current_timestamp())
-    updated_at = Column(TIMESTAMP, default=func.current_timestamp(), onupdate=func.current_timestamp())
+    person_id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(255))
+    last_name = db.Column(db.String(255))
+    date_of_birth = db.Column(db.Date)
+    gender = db.Column(db.Enum('Male', 'Female', 'Non-binary', 'Other', 'Unknown', name='gender_enum'))
+    party_affiliation = db.Column(db.String(100))
+    ethnicity = db.Column(db.String(100))
+    income_bracket = db.Column(db.Enum('Low', 'Middle', 'High', 'Unknown', name='income_bracket_enum'))
+    education_level = db.Column(db.String(100))
+    voter_propensity_score = db.Column(db.Integer)
+    registration_status = db.Column(db.Enum('Active', 'Inactive', 'Purged', name='registration_status_enum'), default='Active')
+    status_change_date = db.Column(db.Date)
+    consent_opt_in = db.Column(db.Boolean, default=False)
+    duplicate_flag = db.Column(db.Boolean, default=False)
+    last_contact_date = db.Column(db.Date)
+    ml_tags = db.Column(db.JSON)
+    change_history = db.Column(db.JSON)
+    preferred_contact_method = db.Column(db.Enum('Email', 'Phone', 'Mail', 'SocialMedia', 'None', name='preferred_contact_method_enum'))
+    language_preference = db.Column(db.String(50))
+    accessibility_needs = db.Column(db.String)
+    last_updated_by = db.Column(db.String(255))
+    source_id = db.Column(db.Integer, db.ForeignKey('data_sources.source_id'))
+    created_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp())
+    updated_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
 
     def to_dict(self):
         return {

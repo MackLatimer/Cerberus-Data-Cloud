@@ -1,52 +1,93 @@
 steps:
-  # Step 1: Build the Docker image for cerberus_report_backend (agenda-api)
-  - name: 'gcr.io/cloud-builders/docker'
+  # Step 0: Start PostgreSQL for testing
+  - name: 'postgres:13'
+    id: 'postgres-test-db'
+    env:
+      - 'POSTGRES_USER=test_user'
+      - 'POSTGRES_PASSWORD=test_password'
+      - 'POSTGRES_DB=test_db'
+    args: ['-p', '5432']
+
+  # Step 1: Run tests for the backend
+  - name: 'python:3.9-slim'
+    id: 'run-backend-tests'
+    dir: 'cerberus_campaigns_backend'
+    entrypoint: 'sh'
+    waitFor:
+      - 'postgres-test-db'
+    env:
+      - 'DB_USER=test_user'
+      - 'DB_PASS=test_password'
+      - 'DB_HOST=postgres-test-db'
+      - 'DB_PORT=5432'
+      - 'DB_NAME=test_db'
+      - 'FLASK_ENV=testing'
+    args:
+      - '-c'
+      - |
+        apt-get update && apt-get install -y postgresql-client
+        # Wait for Postgres to be ready
+        until pg_isready -h localhost -p 5432 -U test_user; do
+          echo "Waiting for postgres...";
+          sleep 1;
+        done;
+        pip install -r requirements.txt
+        pip install -r requirements-dev.txt
+        pytest
+
+  # Step 2: Build the Docker image for cerberus_report_backend (agenda-api)
+  - name: 'gcr.io/kaniko-project/executor:latest'
     id: 'build-report-backend'
     dir: 'cerberus_report_backend'
     waitFor: ['-']
     args: [
-      'build',
-      '-t', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/agenda-api:v1', # Updated to Artifact Registry
-      '-f', 'Dockerfile',
-      '.'
+      '--destination=us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/agenda-api:$SHORT_SHA',
+      '--cache=true',
+      '--cache-ttl=24h',
+      '--context=.',
+      '--dockerfile=Dockerfile'
     ]
 
-  # Step 2: Build the Docker image for cerberus_campaigns_backend (campaigns-api)
-  - name: 'gcr.io/cloud-builders/docker'
+  # Step 3: Build the Docker image for cerberus_campaigns_backend (campaigns-api)
+  - name: 'gcr.io/kaniko-project/executor:latest'
     id: 'build-campaigns-backend'
-    dir: 'cerberus_campaigns_backend' # Change working directory to the backend's root
+    dir: 'cerberus_campaigns_backend'
     waitFor: ['-']
     args: [
-      'build',
-      '-t', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:latest', # Updated to Artifact Registry
-      '-f', 'Dockerfile', # Dockerfile is now in the current context
-      '.' # Build context is now cerberus_campaigns_backend
+      '--destination=us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:$SHORT_SHA',
+      '--cache=true',
+      '--cache-ttl=24h',
+      '--context=.',
+      '--dockerfile=Dockerfile'
     ]
 
-  # Step 3: Build the Docker image for cerberus_frontend (web-frontend)
-  - name: 'gcr.io/cloud-builders/docker'
+  # Step 4: Build the Docker image for cerberus_frontend (web-frontend)
+  - name: 'gcr.io/kaniko-project/executor:latest'
     id: 'build-cerberus-frontend'
     dir: 'cerberus_frontend'
     waitFor: ['-']
     args: [
-      'build',
-      '-t', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/cerberus-frontend:latest', # Updated to Artifact Registry
-      '-f', 'Dockerfile', # Use the Dockerfile in its specific directory
-      '.'
+      '--destination=us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/cerberus-frontend:$SHORT_SHA',
+      '--cache=true',
+      '--cache-ttl=24h',
+      '--context=.',
+      '--dockerfile=Dockerfile'
     ]
 
-  # Step 4: Build the Docker image for emmons_frontend (web-frontend)
-  - name: 'gcr.io/cloud-builders/docker'
+  # Step 5: Build the Docker image for emmons_frontend (web-frontend)
+  - name: 'gcr.io/kaniko-project/executor:latest'
     id: 'build-emmons-frontend'
     dir: 'emmons_frontend'
+    waitFor: ['-']
     args: [
-      'build',
-      '-t', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/emmons-frontend:latest', # Updated to Artifact Registry
-      '-f', 'Dockerfile', # Use the Dockerfile in its specific directory
-      '.'
+      '--destination=us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/emmons-frontend:$SHORT_SHA',
+      '--cache=true',
+      '--cache-ttl=24h',
+      '--context=.',
+      '--dockerfile=Dockerfile'
     ]
 
-  # Step 5: Run Cloud SQL Proxy
+  # Step 6: Run Cloud SQL Proxy
   - name: 'gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.18.0'
     id: 'cloud-sql-proxy'
     waitFor: ['build-campaigns-backend']
@@ -56,12 +97,12 @@ steps:
       - '/cloud_sql_proxy --unix-socket=/cloudsql $$DB_CONNECTION_NAME'
     secretEnv: ['DB_CONNECTION_NAME']
 
-  # Step 6: Run Database Migrations using a secret for the DATABASE_URL
+  # Step 7: Run Database Migrations using a secret for the DATABASE_URL
   - name: 'gcr.io/google-appengine/exec-wrapper'
     id: 'run-migrations'
     waitFor: ['cloud-sql-proxy']
     args: [
-      '-i', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:latest',
+      '-i', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:$SHORT_SHA',
       '-e', 'FLASK_ENV=production',
       '-e', 'DATABASE_URL=postgresql+psycopg://$$(DB_USER):$$(DB_PASS)@/$$(DB_NAME)?host=/cloudsql/$$(DB_CONNECTION_NAME)',
       '--',
@@ -70,14 +111,13 @@ steps:
       'upgrade'
     ]
     secretEnv: ['DB_USER', 'DB_PASS', 'DB_NAME', 'DB_CONNECTION_NAME']
-    
 
 # List of images to be pushed to Artifact Registry
 images:
-  - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/agenda-api:v1'
-  - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:latest'
-  - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/cerberus-frontend:latest'
-  - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/emmons-frontend:latest'
+  - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/agenda-api:$SHORT_SHA'
+  - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:$SHORT_SHA'
+  - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/cerberus-frontend:$SHORT_SHA'
+  - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/emmons-frontend:$SHORT_SHA'
 
 # Specify the service account for Cloud Build to use for executing these steps
 # Ensure this service account has 'Artifact Registry Writer' role for the project or specifically for the 'cerberus-images' repository.

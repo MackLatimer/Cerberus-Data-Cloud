@@ -1,40 +1,36 @@
-from sqlalchemy import Column, Integer, String, DECIMAL, Boolean, TIMESTAMP, Enum, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.sql import func
+from ..extensions import db
 from .person_identifier import EncryptedString # Reusing the custom type
 
-Base = declarative_base()
-
-class Donation(Base):
+class Donation(db.Model):
     __tablename__ = 'donations'
 
-    id = Column(Integer, primary_key=True)
-    amount = Column(DECIMAL(10,2), nullable=False)
-    currency = Column(String(3), default='USD')
-    payment_status = Column(Enum('succeeded', 'pending', 'failed', 'requires_payment_method', 'requires_confirmation', name='payment_status_enum'), default='pending')
-    stripe_payment_intent_id = Column(String(255), unique=True, nullable=False)
-    first_name = Column(String(255))
-    last_name = Column(String(255))
-    address_line1 = Column(String(255))
-    address_line2 = Column(String(255))
-    address_city = Column(String(100))
-    address_state = Column(String(50))
-    address_zip = Column(String(20))
-    employer = Column(String(255))
-    occupation = Column(String(255))
-    email = Column(EncryptedString) # Encrypted
-    phone_number = Column(EncryptedString) # Encrypted
-    contact_email = Column(Boolean, default=False)
-    contact_phone = Column(Boolean, default=False)
-    contact_mail = Column(Boolean, default=False)
-    contact_sms = Column(Boolean, default=False)
-    is_recurring = Column(Boolean, default=False)
-    covers_fees = Column(Boolean, default=False)
-    person_id = Column(Integer, ForeignKey('persons.person_id', ondelete='SET NULL'))
-    campaign_id = Column(Integer, ForeignKey('campaigns.campaign_id', ondelete='CASCADE'), nullable=False)
-    source_id = Column(Integer, ForeignKey('data_sources.source_id'))
-    created_at = Column(TIMESTAMP, default=func.current_timestamp())
-    updated_at = Column(TIMESTAMP, default=func.current_timestamp(), onupdate=func.current_timestamp())
+    id = db.Column(db.Integer, primary_key=True)
+    amount = db.Column(db.DECIMAL(10,2), nullable=False)
+    currency = db.Column(db.String(3), default='USD')
+    payment_status = db.Column(db.Enum('succeeded', 'pending', 'failed', 'requires_payment_method', 'requires_confirmation', name='payment_status_enum'), default='pending')
+    stripe_payment_intent_id = db.Column(db.String(255), unique=True, nullable=False)
+    first_name = db.Column(db.String(255))
+    last_name = db.Column(db.String(255))
+    address_line1 = db.Column(db.String(255))
+    address_line2 = db.Column(db.String(255))
+    address_city = db.Column(db.String(100))
+    address_state = db.Column(db.String(50))
+    address_zip = db.Column(db.String(20))
+    employer = db.Column(db.String(255))
+    occupation = db.Column(db.String(255))
+    email = db.Column(EncryptedString) # Encrypted
+    phone_number = db.Column(EncryptedString) # Encrypted
+    contact_email = db.Column(db.Boolean, default=False)
+    contact_phone = db.Column(db.Boolean, default=False)
+    contact_mail = db.Column(db.Boolean, default=False)
+    contact_sms = db.Column(db.Boolean, default=False)
+    is_recurring = db.Column(db.Boolean, default=False)
+    covers_fees = db.Column(db.Boolean, default=False)
+    person_id = db.Column(db.Integer, db.ForeignKey('persons.person_id', ondelete='SET NULL'))
+    campaign_id = db.Column(db.Integer, db.ForeignKey('campaigns.campaign_id', ondelete='CASCADE'), nullable=False)
+    source_id = db.Column(db.Integer, db.ForeignKey('data_sources.source_id'))
+    created_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp())
+    updated_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
 
     def to_dict(self):
         return {

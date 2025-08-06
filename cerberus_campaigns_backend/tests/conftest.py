@@ -2,7 +2,6 @@ import pytest
 import os
 
 os.environ['FLASK_ENV'] = 'testing'
-os.environ['FLASK_TESTING_SKIP_DB_CHECK'] = 'True'
 
 from app import create_app
 from app.extensions import db as _db
@@ -31,13 +30,11 @@ def client(app):
 @pytest.fixture(scope='session')
 def db(app):
     with app.app_context():
-        if "sqlite:///:memory:" not in app.config['SQLALCHEMY_DATABASE_URI'] and not app.config.get("SQLALCHEMY_DATABASE_URI", "").startswith("sqlite://"):
-            _db.drop_all()
-        _db.create_all()
+        _db.metadata.drop_all(bind=_db.engine)
+        _db.metadata.create_all(bind=_db.engine)
         yield _db
         _db.session.remove()
-        if "sqlite:///:memory:" not in app.config['SQLALCHEMY_DATABASE_URI'] and not app.config.get("SQLALCHEMY_DATABASE_URI", "").startswith("sqlite://"):
-            _db.drop_all()
+        _db.metadata.drop_all(bind=_db.engine)
 
 @pytest.fixture(scope='function')
 def session(app, db):
@@ -52,8 +49,11 @@ def session(app, db):
             test_db_session.close()
             connection.close()
 
-@pytest.fixture(scope='function')
-def skip_if_sqlite(app):
-    with app.app_context():
+def pytest_configure(config):
+    config.addinivalue_line("markers", "skip_if_sqlite: skip test if using sqlite")
+
+@pytest.fixture(autouse=True)
+def skip_if_sqlite_marker(request, app):
+    if request.node.get_closest_marker('skip_if_sqlite'):
         if app.config.get('SQLALCHEMY_DATABASE_URI', '').startswith('sqlite://'):
-            pytest.skip("Skipping test on SQLite database.")
+            pytest.skip('Skipping test on SQLite database.')

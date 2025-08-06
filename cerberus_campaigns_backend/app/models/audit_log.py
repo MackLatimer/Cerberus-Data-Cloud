@@ -1,19 +1,14 @@
-from sqlalchemy import Column, Integer, String, TIMESTAMP, Enum
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.sql import func
-from sqlalchemy.dialects.postgresql import JSONB
+from ..extensions import db
 
-Base = declarative_base()
-
-class AuditLog(Base):
+class AuditLog(db.Model):
     __tablename__ = 'audit_logs'
 
-    log_id = Column(Integer, primary_key=True)
-    table_name = Column(String(100))
-    record_id = Column(Integer)
-    action_type = Column(Enum('INSERT', 'UPDATE', 'DELETE', name='action_type_enum'))
-    changed_by_user = Column(String(255))
-    ip_address = Column(String(45))
-    session_id = Column(String(100))
-    changes = Column(JSONB)
-    timestamp = Column(TIMESTAMP, default=func.current_timestamp())
+    log_id = db.Column(db.Integer, primary_key=True)
+    table_name = db.Column(db.String(100))
+    record_id = db.Column(db.Integer)
+    action_type = db.Column(db.Enum('INSERT', 'UPDATE', 'DELETE', name='action_type_enum'))
+    changed_by_user = db.Column(db.String(255))
+    ip_address = db.Column(db.String(45))
+    session_id = db.Column(db.String(100))
+    changes = db.Column(db.JSON)
+    timestamp = db.Column(db.TIMESTAMP, default=db.func.current_timestamp())

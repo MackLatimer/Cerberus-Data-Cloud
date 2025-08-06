@@ -23,3 +23,6 @@ from .donation import Donation
 from .person_merge import PersonMerge
 from .audit_log import AuditLog
 from .backup_log import BackupLog
+from .user import User
+from .campaign import Campaign
+from .voter import Voter

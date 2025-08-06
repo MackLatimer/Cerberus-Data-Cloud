@@ -40,8 +40,8 @@ class Voter(TimestampMixin, db.Model):
 
     custom_fields = db.Column(db.JSON, nullable=True)
 
-    source_campaign_id = db.Column(db.Integer, db.ForeignKey('campaigns.campaign_id'), nullable=True)
-    source_campaign = db.relationship('Campaign', back_populates='sourced_voters', foreign_keys=[source_campaign_id])
+    source_campaign_id = db.Column(db.Integer, db.ForeignKey('campaigns.campaign_id', use_alter=True), nullable=True)
+    source_campaign = db.relationship("Campaign", back_populates='sourced_voters', foreign_keys=[source_campaign_id])
 
     campaigns_association = db.relationship('CampaignVoter', back_populates='voter', lazy='dynamic', cascade="all, delete-orphan")
 
@@ -89,7 +89,7 @@ class CampaignVoter(db.Model):
     __tablename__ = 'campaign_voters'
 
     campaign_voter_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    campaign_id = db.Column(db.Integer, db.ForeignKey('campaigns.campaign_id', ondelete='CASCADE'), nullable=False)
+    campaign_id = db.Column(db.Integer, db.ForeignKey('campaigns.campaign_id', ondelete='CASCADE', use_alter=True), nullable=False)
     voter_id = db.Column(db.Integer, db.ForeignKey('voters.voter_id', ondelete='CASCADE'), nullable=False)
     added_at = db.Column(db.DateTime(timezone=True), server_default=db.func.now())
 
