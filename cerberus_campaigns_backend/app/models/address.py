@@ -1,33 +1,29 @@
-from sqlalchemy import Column, Integer, String, Date, DECIMAL, TIMESTAMP, ForeignKey, JSON
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.sql import func
-from sqlalchemy.dialects.postgresql import JSONB
+from ..extensions import db
+from sqlalchemy import JSON
 from geoalchemy2 import Geometry
 
-Base = declarative_base()
-
-class Address(Base):
+class Address(db.Model):
     __tablename__ = 'addresses'
 
-    address_id = Column(Integer, primary_key=True)
-    street = Column(String(255))
-    city = Column(String(100))
-    state = Column(String(50))
-    zip_code = Column(String(20))
-    country = Column(String(50), default='USA')
-    latitude = Column(DECIMAL(10,7))
-    longitude = Column(DECIMAL(10,7))
-    census_block = Column(String(50))
-    ward = Column(String(50))
-    geom = Column(Geometry(geometry_type='POINT', srid=4326))
-    mail_forwarding_info = Column(String)
-    parent_address_id = Column(Integer, ForeignKey('addresses.address_id'))
-    metadata = Column(JSONB)
-    change_history = Column(JSONB)
-    enrichment_status = Column(Enum('Pending', 'Enriched', 'Failed', name='enrichment_status_enum'), default='Pending')
-    property_type = Column(Enum('Residential', 'Commercial', 'Mixed', 'Vacant', name='property_type_enum'))
-    delivery_point_code = Column(String(10))
-    last_validated_date = Column(Date)
-    source_id = Column(Integer, ForeignKey('data_sources.source_id'))
-    created_at = Column(TIMESTAMP, default=func.current_timestamp())
-    updated_at = Column(TIMESTAMP, default=func.current_timestamp(), onupdate=func.current_timestamp())
+    address_id = db.Column(db.Integer, primary_key=True)
+    street = db.Column(db.String(255))
+    city = db.Column(db.String(100))
+    state = db.Column(db.String(50))
+    zip_code = db.Column(db.String(20))
+    country = db.Column(db.String(50), default='USA')
+    latitude = db.Column(db.DECIMAL(10,7))
+    longitude = db.Column(db.DECIMAL(10,7))
+    census_block = db.Column(db.String(50))
+    ward = db.Column(db.String(50))
+    geom = db.Column(Geometry(geometry_type='POINT', srid=4326))
+    mail_forwarding_info = db.Column(db.String)
+    parent_address_id = db.Column(db.Integer, db.ForeignKey('addresses.address_id'))
+    address_metadata = db.Column(db.JSON)
+    change_history = db.Column(db.JSON)
+    enrichment_status = db.Column(db.Enum('Pending', 'Enriched', 'Failed', name='enrichment_status_enum'), default='Pending')
+    property_type = db.Column(db.Enum('Residential', 'Commercial', 'Mixed', 'Vacant', name='property_type_enum'))
+    delivery_point_code = db.Column(db.String(10))
+    last_validated_date = db.Column(db.Date)
+    source_id = db.Column(db.Integer, db.ForeignKey('data_sources.source_id'))
+    created_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp())
+    updated_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())

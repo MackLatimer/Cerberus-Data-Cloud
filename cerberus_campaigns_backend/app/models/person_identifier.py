@@ -1,9 +1,6 @@
-from sqlalchemy import Column, Integer, String, Date, TIMESTAMP, Enum, ForeignKey, TypeDecorator, LargeBinary
-from sqlalchemy.ext.declarative import declarative_base
+from ..extensions import db
+from sqlalchemy import TypeDecorator, LargeBinary
 from sqlalchemy.sql import func, expression
-from sqlalchemy.dialects import postgresql
-
-Base = declarative_base()
 
 class EncryptedString(TypeDecorator):
     impl = LargeBinary
@@ -21,18 +18,18 @@ class EncryptedString(TypeDecorator):
             return func.pgp_sym_decrypt(value, 'your_secret_key').astext
         return value
 
-class PersonIdentifier(Base):
+class PersonIdentifier(db.Model):
     __tablename__ = 'person_identifiers'
 
-    identifier_id = Column(Integer, primary_key=True)
-    person_id = Column(Integer, ForeignKey('persons.person_id', ondelete='CASCADE'), nullable=False)
-    identifier_type = Column(String(50), nullable=False)
-    identifier_value = Column(EncryptedString, unique=True, nullable=False)  # Encrypted
-    confidence_score = Column(Integer, default=100)
-    issue_date = Column(Date)
-    expiration_date = Column(Date)
-    verification_status = Column(Enum('Verified', 'Pending', 'Invalid', name='verification_status_enum'), default='Pending')
-    source_id = Column(Integer, ForeignKey('data_sources.source_id'))
-    source = Column(String(255))
-    created_at = Column(TIMESTAMP, default=func.current_timestamp())
-    updated_at = Column(TIMESTAMP, default=func.current_timestamp(), onupdate=func.current_timestamp())
+    identifier_id = db.Column(db.Integer, primary_key=True)
+    person_id = db.Column(db.Integer, db.ForeignKey('persons.person_id', ondelete='CASCADE'), nullable=False)
+    identifier_type = db.Column(db.String(50), nullable=False)
+    identifier_value = db.Column(EncryptedString, unique=True, nullable=False)  # Encrypted
+    confidence_score = db.Column(db.Integer, default=100)
+    issue_date = db.Column(db.Date)
+    expiration_date = db.Column(db.Date)
+    verification_status = db.Column(db.Enum('Verified', 'Pending', 'Invalid', name='verification_status_enum'), default='Pending')
+    source_id = db.Column(db.Integer, db.ForeignKey('data_sources.source_id'))
+    source = db.Column(db.String(255))
+    created_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp())
+    updated_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())

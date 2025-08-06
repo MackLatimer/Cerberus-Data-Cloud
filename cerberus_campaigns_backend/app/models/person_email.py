@@ -1,22 +1,18 @@
-from sqlalchemy import Column, Integer, String, TIMESTAMP, Enum, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.sql import func
+from ..extensions import db
 from .person_identifier import EncryptedString # Reusing the custom type
 
-Base = declarative_base()
-
-class PersonEmail(Base):
+class PersonEmail(db.Model):
     __tablename__ = 'person_emails'
 
-    email_id = Column(Integer, primary_key=True)
-    person_id = Column(Integer, ForeignKey('persons.person_id', ondelete='CASCADE'), nullable=False)
-    email = Column(EncryptedString, unique=True) # Encrypted
-    email_type = Column(Enum('Personal', 'Work', 'Other', name='email_type_enum'))
-    confidence_score = Column(Integer, default=100)
-    is_verified = Column(Boolean, default=False)
-    source_id = Column(Integer, ForeignKey('data_sources.source_id'))
-    created_at = Column(TIMESTAMP, default=func.current_timestamp())
-    updated_at = Column(TIMESTAMP, default=func.current_timestamp(), onupdate=func.current_timestamp())
+    email_id = db.Column(db.Integer, primary_key=True)
+    person_id = db.Column(db.Integer, db.ForeignKey('persons.person_id', ondelete='CASCADE'), nullable=False)
+    email = db.Column(EncryptedString, unique=True) # Encrypted
+    email_type = db.Column(db.Enum('Personal', 'Work', 'Other', name='email_type_enum'))
+    confidence_score = db.Column(db.Integer, default=100)
+    is_verified = db.Column(db.Boolean, default=False)
+    source_id = db.Column(db.Integer, db.ForeignKey('data_sources.source_id'))
+    created_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp())
+    updated_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
 
     def to_dict(self):
         return {

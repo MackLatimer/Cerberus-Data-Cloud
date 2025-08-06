@@ -1,19 +1,14 @@
-from sqlalchemy import Column, Integer, String, Date, TIMESTAMP, Enum, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.sql import func
-from sqlalchemy.dialects.postgresql import JSONB
+from ..extensions import db
 
-Base = declarative_base()
-
-class Campaign(Base):
+class Campaign(db.Model):
     __tablename__ = 'campaigns'
 
-    campaign_id = Column(Integer, primary_key=True)
-    campaign_name = Column(String(255))
-    start_date = Column(Date)
-    end_date = Column(Date)
-    campaign_type = Column(Enum('Local', 'State', 'Federal', 'Issue', name='campaign_type_enum'))
-    details = Column(JSONB)
-    source_id = Column(Integer, ForeignKey('data_sources.source_id'))
-    created_at = Column(TIMESTAMP, default=func.current_timestamp())
-    updated_at = Column(TIMESTAMP, default=func.current_timestamp(), onupdate=func.current_timestamp())
+    campaign_id = db.Column(db.Integer, primary_key=True)
+    campaign_name = db.Column(db.String(255))
+    start_date = db.Column(db.Date)
+    end_date = db.Column(db.Date)
+    campaign_type = db.Column(db.Enum('Local', 'State', 'Federal', 'Issue', name='campaign_type_enum'))
+    details = db.Column(db.JSON)
+    source_id = db.Column(db.Integer, db.ForeignKey('data_sources.source_id', use_alter=True))
+    created_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp())
+    updated_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())

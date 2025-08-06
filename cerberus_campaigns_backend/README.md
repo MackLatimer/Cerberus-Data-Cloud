@@ -112,6 +112,10 @@ For production deployments, it is recommended to:
     ```bash
     pip install -r requirements.txt
     ```
+    For development, also install the development dependencies:
+    ```bash
+    pip install -r requirements-dev.txt
+    ```
 
 4.  **Configure environment variables:**
     *   Copy `.env.example` to a new file named `.env`:

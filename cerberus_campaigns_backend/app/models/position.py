@@ -1,19 +1,15 @@
-from sqlalchemy import Column, Integer, String, Text, DECIMAL, TIMESTAMP, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.sql import func
+from ..extensions import db
 
-Base = declarative_base()
-
-class Position(Base):
+class Position(db.Model):
     __tablename__ = 'positions'
 
-    position_id = Column(Integer, primary_key=True)
-    body_id = Column(Integer, ForeignKey('government_bodies.body_id', ondelete='CASCADE'), nullable=False)
-    position_title = Column(String(255))
-    term_length = Column(Integer)
-    salary = Column(DECIMAL(10,2))
-    requirements = Column(Text)
-    current_holder_person_id = Column(Integer, ForeignKey('persons.person_id'))
-    source_id = Column(Integer, ForeignKey('data_sources.source_id'))
-    created_at = Column(TIMESTAMP, default=func.current_timestamp())
-    updated_at = Column(TIMESTAMP, default=func.current_timestamp(), onupdate=func.current_timestamp())
+    position_id = db.Column(db.Integer, primary_key=True)
+    body_id = db.Column(db.Integer, db.ForeignKey('government_bodies.body_id', ondelete='CASCADE'), nullable=False)
+    position_title = db.Column(db.String(255))
+    term_length = db.Column(db.Integer)
+    salary = db.Column(db.DECIMAL(10,2))
+    requirements = db.Column(db.Text)
+    current_holder_person_id = db.Column(db.Integer, db.ForeignKey('persons.person_id'))
+    source_id = db.Column(db.Integer, db.ForeignKey('data_sources.source_id'))
+    created_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp())
+    updated_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
