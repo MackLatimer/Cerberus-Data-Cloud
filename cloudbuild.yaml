@@ -46,20 +46,12 @@ steps:
       '.'
     ]
 
-  # Step 5: Debug DB_CONNECTION_NAME
-  - name: 'ubuntu'
-    id: 'debug-db-connection-name'
-    waitFor: ['build-campaigns-backend']
-    entrypoint: 'bash'
-    args: ['-c', 'echo "DB_CONNECTION_NAME: $DB_CONNECTION_NAME"']
-    secretEnv: ['DB_CONNECTION_NAME']
-
-  # Step 6: Run Cloud SQL Proxy
+  # Step 5: Run Cloud SQL Proxy
   - name: 'gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.18.0'
     id: 'cloud-sql-proxy'
-    waitFor: ['debug-db-connection-name']
+    waitFor: ['build-campaigns-backend']
     entrypoint: 'bash'
-    args: ['-c', 'cloud-sql-proxy $DB_CONNECTION_NAME -unix-socket=/cloudsql']
+    args: ['-c', 'cloud-sql-proxy $DB_CONNECTION_NAME --unix-socket=/cloudsql']
     secretEnv: ['DB_CONNECTION_NAME']
 
   # Step 6: Run Database Migrations using a secret for the DATABASE_URL
