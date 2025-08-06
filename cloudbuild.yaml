@@ -91,11 +91,9 @@ steps:
   - name: 'gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.18.0'
     id: 'cloud-sql-proxy'
     waitFor: ['build-campaigns-backend']
-    entrypoint: 'sh'
     args:
-      - '-c'
-      - '/cloud_sql_proxy --unix-socket=/cloudsql $$DB_CONNECTION_NAME'
-    secretEnv: ['DB_CONNECTION_NAME']
+      - '--unix-socket=/cloudsql'
+    secretEnv: ['CLOUD_SQL_INSTANCES']
 
   # Step 7: Run Database Migrations using a secret for the DATABASE_URL
   - name: 'gcr.io/google-appengine/exec-wrapper'
@@ -131,6 +129,8 @@ availableSecrets:
   secretManager:
   - versionName: projects/cerberus-data-cloud/secrets/DB_CONNECTION_NAME/versions/latest
     env: 'DB_CONNECTION_NAME'
+  - versionName: projects/cerberus-data-cloud/secrets/DB_CONNECTION_NAME/versions/latest
+    env: 'CLOUD_SQL_INSTANCES'
   - versionName: projects/cerberus-data-cloud/secrets/DB_USER/versions/latest
     env: 'DB_USER'
   - versionName: projects/cerberus-data-cloud/secrets/DB_PASS/versions/latest
