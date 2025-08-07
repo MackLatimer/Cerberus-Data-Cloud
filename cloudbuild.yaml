@@ -1,13 +1,3 @@
-# YAML anchor for the Kaniko build step
-x-kaniko-build: &kaniko-build
-  name: 'gcr.io/kaniko-project/executor:latest'
-  args:
-    - --destination=us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/${_SERVICE_NAME}:$SHORT_SHA
-    - --cache=true
-    - --cache-ttl=24h
-    - --context=./${_SERVICE_DIR}
-    - --dockerfile=./${_SERVICE_DIR}/Dockerfile
-
 steps:
   # Test steps for backend services, running in parallel
   - name: 'gcr.io/cloud-builders/docker'
@@ -28,33 +18,45 @@ steps:
         pytest
 
   # Build steps for all services, running in parallel with tests
-  - <<: *kaniko-build
+  - name: 'gcr.io/kaniko-project/executor:latest'
     id: 'build-cerberus-campaigns-backend'
     waitFor: ['-']
-    substitutions:
-      _SERVICE_NAME: 'campaigns-api'
-      _SERVICE_DIR: 'cerberus_campaigns_backend'
+    args:
+      - --destination=us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:$SHORT_SHA
+      - --cache=true
+      - --cache-ttl=24h
+      - --context=./cerberus_campaigns_backend
+      - --dockerfile=./cerberus_campaigns_backend/Dockerfile
 
-  - <<: *kaniko-build
+  - name: 'gcr.io/kaniko-project/executor:latest'
     id: 'build-cerberus-report-backend'
     waitFor: ['-']
-    substitutions:
-      _SERVICE_NAME: 'agenda-api'
-      _SERVICE_DIR: 'cerberus_report_backend'
+    args:
+      - --destination=us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/agenda-api:$SHORT_SHA
+      - --cache=true
+      - --cache-ttl=24h
+      - --context=./cerberus_report_backend
+      - --dockerfile=./cerberus_report_backend/Dockerfile
 
-  - <<: *kaniko-build
+  - name: 'gcr.io/kaniko-project/executor:latest'
     id: 'build-cerberus-frontend'
     waitFor: ['-']
-    substitutions:
-      _SERVICE_NAME: 'cerberus-frontend'
-      _SERVICE_DIR: 'cerberus_frontend'
+    args:
+      - --destination=us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/cerberus-frontend:$SHORT_SHA
+      - --cache=true
+      - --cache-ttl=24h
+      - --context=./cerberus_frontend
+      - --dockerfile=./cerberus_frontend/Dockerfile
 
-  - <<: *kaniko-build
+  - name: 'gcr.io/kaniko-project/executor:latest'
     id: 'build-emmons-frontend'
     waitFor: ['-']
-    substitutions:
-      _SERVICE_NAME: 'emmons-frontend'
-      _SERVICE_DIR: 'emmons_frontend'
+    args:
+      - --destination=us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/emmons-frontend:$SHORT_SHA
+      - --cache=true
+      - --cache-ttl=24h
+      - --context=./emmons_frontend
+      - --dockerfile=./emmons_frontend/Dockerfile
 
   # Run database migrations
   - name: 'gcr.io/google-appengine/exec-wrapper'
