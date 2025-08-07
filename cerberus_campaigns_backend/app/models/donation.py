@@ -26,11 +26,17 @@ class Donation(db.Model):
     contact_sms = db.Column(db.Boolean, default=False)
     is_recurring = db.Column(db.Boolean, default=False)
     covers_fees = db.Column(db.Boolean, default=False)
-    person_id = db.Column(db.Integer, db.ForeignKey('persons.person_id', ondelete='SET NULL'))
-    campaign_id = db.Column(db.Integer, db.ForeignKey('campaigns.campaign_id', ondelete='CASCADE'), nullable=False)
-    source_id = db.Column(db.Integer, db.ForeignKey('data_sources.source_id'))
+    person_id = db.Column(db.Integer)
+    campaign_id = db.Column(db.Integer, nullable=False)
+    source_id = db.Column(db.Integer)
     created_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp())
     updated_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
+
+    __table_args__ = (
+        db.ForeignKeyConstraint(['person_id'], ['persons.person_id'], name='fk_donations_person_id', ondelete='SET NULL'),
+        db.ForeignKeyConstraint(['campaign_id'], ['campaigns.campaign_id'], name='fk_donations_campaign_id', ondelete='CASCADE'),
+        db.ForeignKeyConstraint(['source_id'], ['data_sources.source_id'], name='fk_donations_source_id'),
+    )
 
     def to_dict(self):
         return {

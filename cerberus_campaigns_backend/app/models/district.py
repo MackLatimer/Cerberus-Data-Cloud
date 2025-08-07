@@ -12,6 +12,10 @@ class District(db.Model):
     district_code = db.Column(db.String(50))
     election_cycle = db.Column(db.String(50))
     population_estimate = db.Column(db.Integer)
-    source_id = db.Column(db.Integer, db.ForeignKey('data_sources.source_id'))
+    source_id = db.Column(db.Integer)
     created_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp())
     updated_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
+
+    __table_args__ = (
+        db.ForeignKeyConstraint(['source_id'], ['data_sources.source_id'], name='fk_districts_source_id'),
+    )
