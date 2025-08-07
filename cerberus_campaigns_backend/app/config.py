@@ -70,7 +70,7 @@ def get_db_connection():
     connector = Connector()
     connection = connector.connect(
         DB_CONNECTION_NAME,
-        "psycopg2",
+        "psycopg",
         user=DB_USER,
         password=DB_PASS,
         db=DB_NAME,
@@ -92,7 +92,7 @@ class DevelopmentConfig(Config):
     """Development configuration."""
     DEBUG = True
     # In development, you might use a local DB connection string
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', 'postgresql+psycopg2://user:password@localhost:5432/voter_db')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', 'postgresql+psycopg://user:password@localhost:5432/voter_db')
 
 class TestingConfig(Config):
     """Testing configuration."""
@@ -106,14 +106,14 @@ class TestingConfig(Config):
         DB_HOST = os.environ.get("DB_HOST", "localhost")
         DB_PORT = os.environ.get("DB_PORT", "5432")
         DB_NAME = os.environ.get("DB_NAME", "test_db")
-        SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+        SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
     SECRET_KEY = 'test_secret_key_for_flask_testing'
 
 class ProductionConfig(Config):
     """Production configuration."""
     DEBUG = False
     # For Google Cloud SQL, the creator function handles the connection.
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://'
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg://'
     SQLALCHEMY_ENGINE_OPTIONS = {
         "creator": get_db_connection
     }

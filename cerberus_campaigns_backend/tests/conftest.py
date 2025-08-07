@@ -48,3 +48,12 @@ def session(app, db):
             transaction.rollback()
             test_db_session.close()
             connection.close()
+
+def pytest_collection_modifyitems(config, items):
+    # Create an app instance to check the database engine
+    app = create_app()
+    with app.app_context():
+        if 'sqlite' in _db.engine.dialect.name:
+            for item in items:
+                if "skip_if_sqlite" in item.keywords:
+                    item.add_marker(pytest.mark.skip(reason="Test does not run on SQLite"))

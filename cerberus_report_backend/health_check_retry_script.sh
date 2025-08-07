@@ -10,7 +10,7 @@ PY_VERSION_MAJOR=$(python3 -c 'import sys; print(sys.version_info.major)')
 PY_VERSION_MINOR=$(python3 -c 'import sys; print(sys.version_info.minor)')
 USER_SITE_PACKAGES_DIR="$HOME/.local/lib/python$PY_VERSION_MAJOR.$PY_VERSION_MINOR/site-packages"
 
-python3 -m pip install --user --no-cache-dir --force-reinstall flask flask-cors psycopg2-binary cloud-sql-python-connector requests
+python3 -m pip install --user --no-cache-dir --force-reinstall flask flask-cors psycopg[binary] cloud-sql-python-connector requests
 
 # Ensure Python's user install bin directory is in PATH
 export PATH="$HOME/.local/bin:$PATH"

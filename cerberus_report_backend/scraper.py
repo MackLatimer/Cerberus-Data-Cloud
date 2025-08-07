@@ -4,8 +4,8 @@ import pdfplumber
 import time
 from datetime import datetime, timedelta
 import re
-import psycopg2
-from psycopg2.extras import DictCursor
+import psycopg
+from psycopg.rows import dict_row
 from urllib.parse import urlparse, urljoin
 import os
 import json
@@ -29,13 +29,13 @@ def get_db_connection():
     
     url = urlparse(db_url)
     try:
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             database=url.path[1:],
             user=url.username,
             password=url.password,
             host=url.hostname,
             port=url.port,
-            cursor_factory=DictCursor 
+            row_factory=dict_row
         )
         logging.info("Database connection successful.")
         return conn
@@ -948,7 +948,7 @@ def store_agenda_items(conn, agenda_id, parsed_items):
             try:
                 cur.execute("INSERT INTO agenda_items (agenda_id, heading, file_prefix, item_text, category) VALUES (%s, %s, %s, %s, %s) ON CONFLICT ON CONSTRAINT unique_agenda_item_text DO NOTHING", (agenda_id, heading, file_prefix, description, category))
                 if cur.rowcount > 0: items_added_count +=1
-            except psycopg2.Error as e: logging.error(f"DB error storing item for agenda_id {agenda_id}: '{description[:100]}...'. Error: {e}"); conn.rollback()
+            except psycopg.Error as e: logging.error(f"DB error storing item for agenda_id {agenda_id}: '{description[:100]}...'. Error: {e}"); conn.rollback()
             else: conn.commit() 
     logging.info(f"Added {items_added_count} new items for agenda_id {agenda_id}.")
 
@@ -974,7 +974,7 @@ def process_municipality_agendas(db_conn, municipality_record):
         except Exception as e:
             logging.error(f"Error processing agenda {pdf_url} for {mun_name}: {e}\n{traceback.format_exc()}")
             try: db_conn.rollback()
-            except psycopg2.InterfaceError: pass
+            except psycopg.InterfaceError: pass
     try:
         with db_conn.cursor() as cur: cur.execute("UPDATE municipalities SET last_scraped_at = %s WHERE id = %s", (datetime.now(), mun_id))
         db_conn.commit()

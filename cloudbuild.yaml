@@ -70,7 +70,7 @@ steps:
       - '-s'
       - '$$DB_CONNECTION_NAME'
       - '-e'
-      - 'DATABASE_URL=postgresql+psycopg2://$$DB_USER:$$DB_PASS@/$$DB_NAME?host=/cloudsql/$$DB_CONNECTION_NAME'
+      - 'DATABASE_URL=postgresql+psycopg://$$DB_USER:$$DB_PASS@/$$DB_NAME?host=/cloudsql/$$DB_CONNECTION_NAME'
       - '--'
       - 'flask'
       - 'db'

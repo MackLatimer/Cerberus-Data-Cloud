@@ -16,6 +16,5 @@
   "cerberus_campaigns_backend/tests/test_models.py::test_create_survey_result": true,
   "cerberus_campaigns_backend/tests/test_upload.py::test_upload_voters": true,
   "cerberus_campaigns_backend/tests/test_api_signups.py::test_create_signup_no_payload": true,
-  "cerberus_campaigns_backend/tests/test_api_signups.py::test_create_signup_empty_payload": true,
-  "cerberus_campaigns_backend/tests/test_api_signups.py": true
+  "cerberus_campaigns_backend/tests/test_api_signups.py::test_create_signup_empty_payload": true
 }

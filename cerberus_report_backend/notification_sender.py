@@ -1,6 +1,6 @@
 import os
 import json
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone, date
 import logging
 import traceback
 
@@ -226,7 +226,7 @@ def format_html_content(new_items: list) -> str:
         html += f"<p><strong>Municipality:</strong> {item.get('municipality_name', 'N/A')}</p>"
 
         agenda_date = item.get('agenda_date')
-        if isinstance(agenda_date, datetime):
+        if isinstance(agenda_date, (datetime, date)):
             agenda_date_str = agenda_date.strftime('%Y-%m-%d')
         elif isinstance(agenda_date, str): # Should be date object from DB, but good to be safe
             agenda_date_str = agenda_date
