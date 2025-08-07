@@ -3,6 +3,9 @@ from sqlalchemy import LargeBinary, func
 from sqlalchemy.ext.hybrid import hybrid_property
 from ..config import current_config
 
+    def column_expression(self, col):
+        return func.pgp_sym_decrypt(col, self.key, cast_as='text')
+
 class PersonIdentifier(db.Model):
     __tablename__ = 'person_identifiers'
 
@@ -31,7 +34,6 @@ class PersonIdentifier(db.Model):
             self._identifier_value = db.session.scalar(func.pgp_sym_encrypt(value, current_config.PGCRYPTO_SECRET_KEY))
         else:
             self._identifier_value = None
-
     __table_args__ = (
         db.ForeignKeyConstraint(['person_id'], ['persons.person_id'], name='fk_person_identifiers_person_id', ondelete='CASCADE'),
         db.ForeignKeyConstraint(['source_id'], ['data_sources.source_id'], name='fk_person_identifiers_source_id'),

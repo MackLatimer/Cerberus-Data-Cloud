@@ -28,7 +28,6 @@ class PersonEmail(db.Model):
             self._email = db.session.scalar(func.pgp_sym_encrypt(value, current_config.PGCRYPTO_SECRET_KEY))
         else:
             self._email = None
-
     __table_args__ = (
         db.ForeignKeyConstraint(['person_id'], ['persons.person_id'], name='fk_person_emails_person_id', ondelete='CASCADE'),
         db.ForeignKeyConstraint(['source_id'], ['data_sources.source_id'], name='fk_person_emails_source_id'),
