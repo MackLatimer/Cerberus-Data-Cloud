@@ -213,7 +213,6 @@ CREATE TABLE person_other_contacts (
     FOREIGN KEY (source_id) REFERENCES data_sources(source_id)
 );
 
--- 13. Voter History
 -- 13. Survey Results
 CREATE TABLE survey_results (
     survey_id SERIAL PRIMARY KEY,
