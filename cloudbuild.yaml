@@ -111,6 +111,9 @@ steps:
           us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:$SHORT_SHA \
           flask db upgrade
     secretEnv: ['DB_USER', 'DB_PASS', 'DB_NAME', 'DB_CONNECTION_NAME']
+    env:
+      - 'FLASK_ENV=production'
+      - 'DATABASE_URL=postgresql+psycopg://$$(DB_USER):$$(DB_PASS)@/$$(DB_NAME)?host=/cloudsql/$$(DB_CONNECTION_NAME)'
 
 # List of images to be pushed to Artifact Registry
 images:
