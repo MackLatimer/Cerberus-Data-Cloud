@@ -31,12 +31,30 @@ def client(app):
 @pytest.fixture(scope='session')
 def db(app):
     with app.app_context():
+        with _db.engine.connect() as connection:
+            trans = connection.begin()
+            try:
+                connection.execute(text("DROP MATERIALIZED VIEW IF EXISTS voter_turnout_summary CASCADE;"))
+                trans.commit()
+            except Exception as e:
+                print(f"Could not drop materialized view: {e}")
+                trans.rollback()
+
         _db.metadata.drop_all(bind=_db.engine)
         _db.metadata.create_all(bind=_db.engine)
         _db.session.execute(text("CREATE EXTENSION IF NOT EXISTS pgcrypto;"))
         _db.session.commit()
         yield _db
         _db.session.remove()
+
+        with _db.engine.connect() as connection:
+            trans = connection.begin()
+            try:
+                connection.execute(text("DROP MATERIALIZED VIEW IF EXISTS voter_turnout_summary CASCADE;"))
+                trans.commit()
+            except Exception as e:
+                print(f"Could not drop materialized view on teardown: {e}")
+                trans.rollback()
         _db.metadata.drop_all(bind=_db.engine)
 
 @pytest.fixture(scope='function')
