@@ -3,9 +3,6 @@ from sqlalchemy import LargeBinary, func
 from sqlalchemy.ext.hybrid import hybrid_property
 from ..config import current_config
 
-    def column_expression(self, col):
-        return func.pgp_sym_decrypt(col, self.key, cast_as='text')
-
 class PersonIdentifier(db.Model):
     __tablename__ = 'person_identifiers'
 
