@@ -1,142 +1,94 @@
+# YAML anchor for the Kaniko build step
+x-kaniko-build: &kaniko-build
+  name: 'gcr.io/kaniko-project/executor:latest'
+  args:
+    - --destination=us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/${_SERVICE_NAME}:$SHORT_SHA
+    - --cache=true
+    - --cache-ttl=24h
+    - --context=./${_SERVICE_DIR}
+    - --dockerfile=./${_SERVICE_DIR}/Dockerfile
+
 steps:
-  # Step 0: Start PostgreSQL for testing
-  - name: 'postgres:13'
-    id: 'postgres-test-db'
-    env:
-      - 'POSTGRES_USER=test_user'
-      - 'POSTGRES_PASSWORD=test_password'
-      - 'POSTGRES_DB=test_db'
-    args: ['-p', '5432']
-
-  # Step 1: Run tests for the backend
-  - name: 'python:3.9-slim'
-    id: 'run-backend-tests'
+  # Test steps for backend services, running in parallel
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'test-cerberus-campaigns-backend'
     dir: 'cerberus_campaigns_backend'
-    entrypoint: 'sh'
-    waitFor:
-      - 'postgres-test-db'
-    env:
-      - 'DB_USER=test_user'
-      - 'DB_PASS=test_password'
-      - 'DB_HOST=postgres-test-db'
-      - 'DB_PORT=5432'
-      - 'DB_NAME=test_db'
-      - 'FLASK_ENV=testing'
-    args:
-      - '-c'
-      - |
-        apt-get update && apt-get install -y postgresql-client
-        # Wait for Postgres to be ready
-        until pg_isready -h localhost -p 5432 -U test_user; do
-          echo "Waiting for postgres...";
-          sleep 1;
-        done;
-        pip install -r requirements.txt
-        pip install -r requirements-dev.txt
-        pytest
+    waitFor: ['-']
+    args: ['compose', '-f', 'docker-compose.test.yaml', 'up', '--build', '--abort-on-container-exit']
 
-  # Step 2: Build the Docker image for cerberus_report_backend (agenda-api)
-  - name: 'gcr.io/kaniko-project/executor:latest'
-    id: 'build-report-backend'
+  - name: 'python:3.9-slim'
+    id: 'test-cerberus-report-backend'
     dir: 'cerberus_report_backend'
     waitFor: ['-']
-    args: [
-      '--destination=us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/agenda-api:$SHORT_SHA',
-      '--cache=true',
-      '--cache-ttl=24h',
-      '--context=.',
-      '--dockerfile=Dockerfile'
-    ]
-
-  # Step 3: Build the Docker image for cerberus_campaigns_backend (campaigns-api)
-  - name: 'gcr.io/kaniko-project/executor:latest'
-    id: 'build-campaigns-backend'
-    dir: 'cerberus_campaigns_backend'
-    waitFor: ['-']
-    args: [
-      '--destination=us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:$SHORT_SHA',
-      '--cache=true',
-      '--cache-ttl=24h',
-      '--context=.',
-      '--dockerfile=Dockerfile'
-    ]
-
-  # Step 4: Build the Docker image for cerberus_frontend (web-frontend)
-  - name: 'gcr.io/kaniko-project/executor:latest'
-    id: 'build-cerberus-frontend'
-    dir: 'cerberus_frontend'
-    waitFor: ['-']
-    args: [
-      '--destination=us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/cerberus-frontend:$SHORT_SHA',
-      '--cache=true',
-      '--cache-ttl=24h',
-      '--context=.',
-      '--dockerfile=Dockerfile'
-    ]
-
-  # Step 5: Build the Docker image for emmons_frontend (web-frontend)
-  - name: 'gcr.io/kaniko-project/executor:latest'
-    id: 'build-emmons-frontend'
-    dir: 'emmons_frontend'
-    waitFor: ['-']
-    args: [
-      '--destination=us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/emmons-frontend:$SHORT_SHA',
-      '--cache=true',
-      '--cache-ttl=24h',
-      '--context=.',
-      '--dockerfile=Dockerfile'
-    ]
-
-  # Step 6: Run Database Migrations
-  - name: 'gcr.io/cloud-builders/docker'
-    id: 'run-migrations'
-    waitFor: ['build-campaigns-backend']
-    entrypoint: 'bash'
+    entrypoint: 'sh'
     args:
       - '-c'
       - |
-        # Start the Cloud SQL Proxy in the background
-        wget https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.18.0/cloud-sql-proxy.linux.amd64 -O /cloud_sql_proxy
-        chmod +x /cloud_sql_proxy
-        mkdir -p /cloudsql
-        /cloud_sql_proxy --unix-socket=/cloudsql $$DB_CONNECTION_NAME &
-        # Wait for the proxy to be ready
-        sleep 10
-        # Run the database migrations
-        docker run \
-          --network cloudbuild \
-          -v /cloudsql:/cloudsql \
-          -e FLASK_ENV=production \
-          -e DATABASE_URL="postgresql+psycopg://$$(DB_USER):$$(DB_PASS)@/$$(DB_NAME)?host=/cloudsql/$$(DB_CONNECTION_NAME)" \
-          us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:$SHORT_SHA \
-          flask db upgrade
+        pip install -r requirements.txt
+        pytest
+
+  # Build steps for all services, running in parallel with tests
+  - <<: *kaniko-build
+    id: 'build-cerberus-campaigns-backend'
+    waitFor: ['-']
+    substitutions:
+      _SERVICE_NAME: 'campaigns-api'
+      _SERVICE_DIR: 'cerberus_campaigns_backend'
+
+  - <<: *kaniko-build
+    id: 'build-cerberus-report-backend'
+    waitFor: ['-']
+    substitutions:
+      _SERVICE_NAME: 'agenda-api'
+      _SERVICE_DIR: 'cerberus_report_backend'
+
+  - <<: *kaniko-build
+    id: 'build-cerberus-frontend'
+    waitFor: ['-']
+    substitutions:
+      _SERVICE_NAME: 'cerberus-frontend'
+      _SERVICE_DIR: 'cerberus_frontend'
+
+  - <<: *kaniko-build
+    id: 'build-emmons-frontend'
+    waitFor: ['-']
+    substitutions:
+      _SERVICE_NAME: 'emmons-frontend'
+      _SERVICE_DIR: 'emmons_frontend'
+
+  # Run database migrations
+  - name: 'gcr.io/google-appengine/exec-wrapper'
+    id: 'run-migrations'
+    waitFor:
+      - 'build-cerberus-campaigns-backend'
+      - 'test-cerberus-campaigns-backend'
+    args:
+      - '-i'
+      - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:$SHORT_SHA'
+      - '-s'
+      - '$$DB_CONNECTION_NAME'
+      - '-e'
+      - 'DATABASE_URL=postgresql+psycopg2://$$DB_USER:$$DB_PASS@/$$DB_NAME?host=/cloudsql/$$DB_CONNECTION_NAME'
+      - '--'
+      - 'flask'
+      - 'db'
+      - 'upgrade'
     secretEnv: ['DB_USER', 'DB_PASS', 'DB_NAME', 'DB_CONNECTION_NAME']
-    env:
-      - 'FLASK_ENV=production'
-      - 'DATABASE_URL=postgresql+psycopg://$$(DB_USER):$$(DB_PASS)@/$$(DB_NAME)?host=/cloudsql/$$(DB_CONNECTION_NAME)'
 
 # List of images to be pushed to Artifact Registry
 images:
-  - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/agenda-api:$SHORT_SHA'
   - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:$SHORT_SHA'
+  - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/agenda-api:$SHORT_SHA'
   - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/cerberus-frontend:$SHORT_SHA'
   - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/emmons-frontend:$SHORT_SHA'
 
-# Specify the service account for Cloud Build to use for executing these steps
-# Ensure this service account has 'Artifact Registry Writer' role for the project or specifically for the 'cerberus-images' repository.
-serviceAccount: 'projects/cerberus-data-cloud/serviceAccounts/cerberus-service-account@cerberus-data-cloud.iam.gserviceaccount.com'
-
-# Explicitly set logging options as required when a custom service account is used.
-options:
-  logging: CLOUD_LOGGING_ONLY
-
 availableSecrets:
   secretManager:
-  - versionName: projects/cerberus-data-cloud/secrets/DB_CONNECTION_NAME/versions/latest
-    env: 'DB_CONNECTION_NAME'
   - versionName: projects/cerberus-data-cloud/secrets/DB_USER/versions/latest
     env: 'DB_USER'
   - versionName: projects/cerberus-data-cloud/secrets/DB_PASS/versions/latest
     env: 'DB_PASS'
   - versionName: projects/cerberus-data-cloud/secrets/DB_NAME/versions/latest
     env: 'DB_NAME'
+  - versionName: projects/cerberus-data-cloud/secrets/DB_CONNECTION_NAME/versions/latest
+    env: 'DB_CONNECTION_NAME'
