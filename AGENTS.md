@@ -17,7 +17,7 @@ The Cerberus system is composed of the following main components:
 ### 1. `cerberus_campaigns_backend`
 
 *   **Purpose**: This is the central backend for managing voter data, campaign information, interactions, and surveys.
-*   **Technology**: Python (Flask), SQLAlchemy.
+*   **Technology**: Python (Flask), Google Cloud SQL (PostgreSQL).
 *   **Interaction**:
     *   To run the backend, navigate to the `cerberus_campaigns_backend` directory and run `python run.py`.
     *   To run tests, navigate to the `cerberus_campaigns_backend` directory and run `pytest`.
