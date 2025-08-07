@@ -89,14 +89,18 @@ class CampaignVoter(db.Model):
     __tablename__ = 'campaign_voters'
 
     campaign_voter_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    campaign_id = db.Column(db.Integer, db.ForeignKey('campaigns.campaign_id', ondelete='CASCADE', use_alter=True), nullable=False)
-    voter_id = db.Column(db.Integer, db.ForeignKey('voters.voter_id', ondelete='CASCADE'), nullable=False)
+    campaign_id = db.Column(db.Integer, nullable=False)
+    voter_id = db.Column(db.Integer, nullable=False)
     added_at = db.Column(db.DateTime(timezone=True), server_default=db.func.now())
 
     campaign = db.relationship('Campaign', back_populates='voters_association')
     voter = db.relationship('Voter', back_populates='campaigns_association')
 
-    __table_args__ = (db.UniqueConstraint('campaign_id', 'voter_id', name='uq_campaign_voter'),)
+    __table_args__ = (
+        db.ForeignKeyConstraint(['campaign_id'], ['campaigns.campaign_id'], name='fk_campaign_voters_campaign_id', ondelete='CASCADE'),
+        db.ForeignKeyConstraint(['voter_id'], ['voters.voter_id'], name='fk_campaign_voters_voter_id', ondelete='CASCADE'),
+        db.UniqueConstraint('campaign_id', 'voter_id', name='uq_campaign_voter'),
+    )
 
     def __repr__(self):
         return f"<CampaignVoter (Campaign: {self.campaign_id}, Voter: {self.voter_id})>"
