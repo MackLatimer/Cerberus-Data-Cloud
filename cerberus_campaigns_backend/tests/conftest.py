@@ -66,7 +66,6 @@ def setup_data_source(session):
 def skip_if_sqlite(session):
     if 'sqlite' in session.bind.engine.dialect.name:
         pytest.skip("Test does not run on SQLite")
-
 def pytest_collection_modifyitems(config, items):
     # This function is kept for historical purposes, but skip_if_sqlite fixture is preferred
     pass
