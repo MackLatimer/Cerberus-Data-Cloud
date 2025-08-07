@@ -9,10 +9,13 @@ class Campaign(db.Model):
     end_date = db.Column(db.Date)
     campaign_type = db.Column(db.Enum('Local', 'State', 'Federal', 'Issue', name='campaign_type_enum'))
     details = db.Column(db.JSON)
-    source_id = db.Column(db.Integer, db.ForeignKey('data_sources.source_id', use_alter=True))
+    source_id = db.Column(db.Integer)
     created_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp())
     updated_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
 
+    __table_args__ = (
+        db.ForeignKeyConstraint(['source_id'], ['data_sources.source_id'], name='fk_campaigns_source_id'),
+    )
     sourced_voters = db.relationship('Voter', back_populates='source_campaign', foreign_keys='Voter.source_campaign_id')
     voters_association = db.relationship('CampaignVoter', back_populates='campaign')
     interactions = db.relationship('Interaction', back_populates='campaign')

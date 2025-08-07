@@ -6,15 +6,6 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy import text
 from app.config import current_config
 
-PGCRYPTO_SECRET_KEY = current_config.PGCRYPTO_SECRET_KEY
-
-def encrypt_data(data):
-    if data is None: return None
-    return app_db.session.scalar(text("SELECT pgp_sym_encrypt(:data, :key)"), {'data': data, 'key': PGCRYPTO_SECRET_KEY})
-
-def decrypt_data(data):
-    if data is None: return None
-    return app_db.session.scalar(text("SELECT pgp_sym_decrypt(:data, :key)"), {'data': data, 'key': PGCRYPTO_SECRET_KEY})
 
 
 def is_postgres_db(db_session):
@@ -108,28 +99,28 @@ def test_create_person(session, setup_data_source):
     email_address = "john.doe@example.com"
     phone_number = "1234567890"
 
-    person_email = PersonEmail(person_id=person.person_id, email=encrypt_data(email_address), email_type="Personal", source_id=setup_data_source.source_id)
-    person_phone = PersonPhone(person_id=person.person_id, phone_number=encrypt_data(phone_number), phone_type="Mobile", source_id=setup_data_source.source_id)
+    person_email = PersonEmail(person_id=person.person_id, email=email_address, email_type="Personal", source_id=setup_data_source.source_id)
+    person_phone = PersonPhone(person_id=person.person_id, phone_number=phone_number, phone_type="Mobile", source_id=setup_data_source.source_id)
 
     session.add_all([person_email, person_phone])
     session.commit()
 
     assert person.person_id is not None
-    assert decrypt_data(person_email.email) == email_address
-    assert decrypt_data(person_phone.phone_number) == phone_number
+    assert person_email.email == email_address
+    assert person_phone.phone_number == phone_number
 
 def test_person_email_unique(session, setup_data_source):
     person1 = Person(first_name="Jane", last_name="Doe", source_id=setup_data_source.source_id)
     session.add(person1)
     session.flush()
-    person_email1 = PersonEmail(person_id=person1.person_id, email=encrypt_data("unique.person@example.com"), email_type="Personal", source_id=setup_data_source.source_id)
+    person_email1 = PersonEmail(person_id=person1.person_id, email="unique.person@example.com", email_type="Personal", source_id=setup_data_source.source_id)
     session.add(person_email1)
     session.flush()
 
     person2 = Person(first_name="Jim", last_name="Beam", source_id=setup_data_source.source_id)
     session.add(person2)
     session.flush()
-    person_email2 = PersonEmail(person_id=person2.person_id, email=encrypt_data("unique.person@example.com"), email_type="Personal", source_id=setup_data_source.source_id)
+    person_email2 = PersonEmail(person_id=person2.person_id, email="unique.person@example.com", email_type="Personal", source_id=setup_data_source.source_id)
     session.add(person_email2)
     with pytest.raises(IntegrityError):
         session.flush()
@@ -158,12 +149,12 @@ def test_create_person_campaign_interaction(session, setup_data_source, skip_if_
     assert interaction.details['notes'] == 'Spoke about policy.'
 
 def test_create_survey_result(session, setup_data_source, skip_if_sqlite):
-    person = Person(first_name="Survey", last_name="Taker", source_id=setup_data_source.source_id)
-    session.add(person)
+    voter = Voter(first_name="Survey", last_name="Taker", source_campaign_id=setup_data_source.source_id)
+    session.add(voter)
     session.commit()
 
     survey_data = {
-        "person_id": person.person_id,
+        "voter_id": voter.voter_id,
         "survey_date": date.today(),
         "survey_source": "Website",
         "responses": {"q1": "answer1", "q2": "answer2"},
