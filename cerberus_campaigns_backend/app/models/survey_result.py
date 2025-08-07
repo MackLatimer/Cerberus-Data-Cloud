@@ -5,7 +5,8 @@ class SurveyResult(db.Model):
     __tablename__ = 'survey_results'
 
     survey_id = db.Column(db.Integer, primary_key=True)
-    person_id = db.Column(db.Integer, db.ForeignKey('persons.person_id', ondelete='CASCADE'), nullable=False)
+    voter_id = db.Column(db.Integer, db.ForeignKey('voters.voter_id'), nullable=False)
+    interaction_id = db.Column(db.Integer, db.ForeignKey('interactions.interaction_id'), nullable=True)
     survey_date = db.Column(db.Date)
     survey_source = db.Column(db.String(255))
     responses = db.Column(db.JSON)
@@ -17,3 +18,6 @@ class SurveyResult(db.Model):
     source_id = db.Column(db.Integer, db.ForeignKey('data_sources.source_id'))
     created_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp())
     updated_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
+
+    voter = db.relationship('Voter', back_populates='survey_responses')
+    interaction = db.relationship('Interaction', back_populates='survey_responses')
