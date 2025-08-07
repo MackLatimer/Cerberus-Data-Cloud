@@ -72,7 +72,7 @@ The SQLAlchemy models, which should correspond to this schema, are located in `c
 
 Most tables include `created_at` and `updated_at` timestamp columns.
 -   `created_at` typically defaults to `CURRENT_TIMESTAMP`.
--   `updated_at` is managed by a database trigger (`trigger_set_timestamp`) in PostgreSQL that updates the timestamp on any row update. The SQLAlchemy models also specify `onupdate=func.now()` for broader compatibility if the trigger isn't used or for non-PostgreSQL backends.
+-   `updated_at` is managed by a database trigger (`trigger_set_timestamp`) in PostgreSQL that updates the timestamp on any row update. The SQLAlchemy models also specify `onupdate=func.now()`.
 
 ## Migrations
 

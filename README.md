@@ -8,7 +8,7 @@ The Cerberus system is composed of the following main components:
 
 1.  **`cerberus_campaigns_backend`**:
     *   **Purpose**: This is the central backend for managing voter data, campaign information, interactions, and surveys. It also handles donations via Stripe.
-    *   **Technology**: Python (Flask), SQLAlchemy.
+    *   **Technology**: Python (Flask), PostgreSQL with SQLAlchemy.
     *   **Connections**:
         *   Accessed by `emmons_frontend` for campaign-specific interactions.
         *   Accessed by `cerberus_frontend` for data upload, viewing, and administrative tasks related to campaign data.

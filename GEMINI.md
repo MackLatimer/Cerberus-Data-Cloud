@@ -8,7 +8,7 @@ The Cerberus system is composed of the following main components:
 
 1.  **`cerberus_campaigns_backend`**:
     *   **Purpose**: This is the central backend for managing voter data, campaign information, interactions, and surveys.
-    *   **Technology**: Python (Flask), SQLAlchemy.
+    *   **Technology**: Python (Flask), PostgreSQL with SQLAlchemy.
     *   **Connections**:
         *   Accessed by `emmons_frontend` for campaign-specific interactions.
         *   Accessed by `cerberus_frontend` for data upload, viewing, and administrative tasks related to campaign data.
@@ -54,7 +54,7 @@ Each application directory (`cerberus_campaigns_backend`, `cerberus_frontend`, `
 ### `cerberus_campaigns_backend`
 
 *   **Framework:** Flask
-*   **Database:** SQLAlchemy with PostgreSQL
+*   **Database:** PostgreSQL with SQLAlchemy
 *   **Core Models:**
     *   `Voter`: Represents a voter with personal information, contact details, and engagement data.
     *   `Campaign`: Represents a political campaign.

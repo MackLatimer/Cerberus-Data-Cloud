@@ -48,12 +48,3 @@ def session(app, db):
             transaction.rollback()
             test_db_session.close()
             connection.close()
-
-def pytest_configure(config):
-    config.addinivalue_line("markers", "skip_if_sqlite: skip test if using sqlite")
-
-@pytest.fixture(autouse=True)
-def skip_if_sqlite_marker(request, app):
-    if request.node.get_closest_marker('skip_if_sqlite'):
-        if app.config.get('SQLALCHEMY_DATABASE_URI', '').startswith('sqlite://'):
-            pytest.skip('Skipping test on SQLite database.')

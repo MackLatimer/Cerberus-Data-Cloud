@@ -7,8 +7,7 @@ This guide provides instructions for setting up and running the Cerberus backend
 -   Python 3.10+
 -   `pip` (Python package installer)
 -   `git` (for cloning the repository)
--   Access to a PostgreSQL database instance (either local or cloud-based like Google Cloud SQL).
-    -   The application is configured to connect to PostgreSQL. For testing, it can fall back to SQLite, but some features (like JSONB operations) are best tested against PostgreSQL.
+-   Access to a PostgreSQL database instance (either local or cloud-based like Google Cloud SQL). The application requires a PostgreSQL database to run.
 
 ## 1. Clone the Repository
 
@@ -60,12 +59,9 @@ The application uses a `.env` file to manage environment-specific configurations
         -   **For a local PostgreSQL instance:**
             `DATABASE_URL="postgresql://<DB_USER>:<DB_PASSWORD>@localhost:5432/<DB_NAME>"`
             *Example:* `DATABASE_URL="postgresql://campaign_user:localpass@localhost:5432/campaign_data_dev"`
-        -   **For local development with SQLite (fallback, not recommended for full feature testing):**
-            If you don't set `DATABASE_URL`, the `DevelopmentConfig` in `app/config.py` defaults to a local SQLite file (`dev.db`). This is useful for quick starts but won't test PostgreSQL-specific features.
 
-    -   `TEST_DATABASE_URL` (Optional, for running tests):
-        -   If you want tests to run against a separate PostgreSQL test database, set this variable in your environment or `.env` file.
-        -   If not set, tests will default to an in-memory SQLite database (`sqlite:///:memory:`), as configured in `app/config.py` (`TestingConfig`). Note that PostgreSQL-specific JSONB types may not be fully compatible with SQLite.
+    -   `TEST_DATABASE_URL`: (For running tests)
+        -   It is highly recommended to set this to a separate PostgreSQL test database.
 
 ## 5. Database Setup and Migrations
 
@@ -111,7 +107,7 @@ The `FLASK_ENV=development` setting ensures debug mode is active, providing help
 To run the automated tests:
 
 1.  Ensure your virtual environment is active and dependencies (including `pytest`, `pytest-flask`) are installed.
-2.  If you want to test against a specific PostgreSQL test database, make sure `TEST_DATABASE_URL` is set in your environment or `.env` file. Otherwise, tests will use in-memory SQLite.
+2.  Make sure `TEST_DATABASE_URL` is set in your environment or `.env` file to point to your test database.
 3.  From the `cerberus_backend` directory:
     ```bash
     pytest
