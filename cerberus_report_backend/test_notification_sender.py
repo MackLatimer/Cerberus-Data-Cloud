@@ -300,14 +300,18 @@ class TestNotificationSender(unittest.TestCase):
         self.assertEqual(len(args4[1]), 1) # Only one param: last_checked_ts
         self.assertIn(last_checked_ts, args4[1])
 
+    @patch('notification_sender.Mail')
     @patch('notification_sender.SendGridAPIClient')
-    def test_send_email_notification_success(self, mock_sg_client_constructor):
+    def test_send_email_notification_success(self, mock_sg_client_constructor, mock_mail_constructor):
         """Test successful email sending via send_email_notification."""
         mock_sg_instance = MagicMock()
         mock_response = MagicMock()
         mock_response.status_code = 202 # Accepted
         mock_sg_instance.send.return_value = mock_response
         mock_sg_client_constructor.return_value = mock_sg_instance
+
+        mock_mail_instance = MagicMock()
+        mock_mail_constructor.return_value = mock_mail_instance
 
         # Ensure SENDGRID_AVAILABLE is True for this test
         original_sg_available = notification_sender.SENDGRID_AVAILABLE
@@ -323,10 +327,13 @@ class TestNotificationSender(unittest.TestCase):
 
         self.assertTrue(result)
         mock_sg_client_constructor.assert_called_once_with("dummy_key")
-        mock_sg_instance.send.assert_called_once()
-        message_arg = mock_sg_instance.send.call_args[0][0]
-        self.assertEqual(message_arg.to_emails[0].email, "recipient@example.com")
-        self.assertEqual(message_arg.subject.subject, "Test Subject")
+        mock_mail_constructor.assert_called_once_with(
+            from_email="dummy_sender@example.com",
+            to_emails="recipient@example.com",
+            subject="Test Subject",
+            html_content="<p>Hello</p>"
+        )
+        mock_sg_instance.send.assert_called_once_with(mock_mail_instance)
 
         # Restore original values
         notification_sender.SENDGRID_AVAILABLE = original_sg_available
@@ -494,7 +501,7 @@ class TestProcessSubscriptions(unittest.TestCase):
         initial_fetch_call = call("SELECT id, email, filter_settings, last_checked \n            FROM subscriptions \n            WHERE active = TRUE;")
 
         # Filter out the initial fetch call to see if any other execute (like update) was made
-        update_calls = [c for c in self.mock_cursor.execute.call_args_list if c != initial_fetch_call]
+        update_calls = [c for c in self.mock_cursor.execute.call_args_list if "UPDATE subscriptions" in c[0][0]]
         self.assertEqual(len(update_calls), 0, "last_checked should not be updated if no new items and not initial run")
 
     @patch('notification_sender.get_db_connection')

@@ -25,7 +25,7 @@ echo "--- End Diagnostics ---"
 
 echo "Installing Python dependencies using python3 -m pip..."
 python3 -m pip install --user --upgrade pip
-python3 -m pip install --user --no-cache-dir --force-reinstall flask flask-cors psycopg2-binary cloud-sql-python-connector
+python3 -m pip install --user --no-cache-dir --force-reinstall flask flask-cors psycopg[binary] cloud-sql-python-connector
 
 echo "--- Post-install Diagnostics ---"
 echo "pip3 freeze:"
