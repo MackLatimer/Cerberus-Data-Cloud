@@ -18,7 +18,7 @@ The Cerberus Campaigns Backend is a Python-based Flask application responsible f
 ## Technology Stack
 
 *   **Framework**: Flask
-*   **Database**: PostgreSQL (intended, uses SQLite for local development by default)
+*   **Database**: PostgreSQL
 *   **ORM**: SQLAlchemy
 *   **Environment Management**: `python-dotenv`
 *   **Migrations**: Flask-Migrate
@@ -80,10 +80,8 @@ The application's configuration is managed through environment variables and the
 The application uses a `.env` file to load environment variables. The file is expected to be in the root of the `cerberus_campaigns_backend` directory.
 
 *   `SECRET_KEY`: A strong, unique secret key for Flask session management and security.
-*   `DATABASE_URL`: The connection string for your database.
-    *   **Development**: If not set, it defaults to a local SQLite database (`dev.db`). For connecting to a local PostgreSQL instance, you can use a URL like `postgresql+psycopg://campaign_user:local_password@localhost:5432/campaign_data`. If you are using a Cloud SQL instance, ensure the Cloud SQL proxy is running.
-    *   **Production**: This must be set to the production database URL.
-*   `TEST_DATABASE_URL`: (Optional) A separate database URL for running tests. If not provided, tests will use an in-memory SQLite database, which may not be suitable for testing all PostgreSQL-specific features.
+*   `DATABASE_URL`: The connection string for your PostgreSQL database. This is required for the application to run. For connecting to a local PostgreSQL instance, you can use a URL like `postgresql+psycopg://campaign_user:local_password@localhost:5432/campaign_data`. If you are using a Cloud SQL instance, ensure the Cloud SQL proxy is running.
+*   `TEST_DATABASE_URL`: A separate database URL for running tests. It is highly recommended to use a separate database for testing to avoid data conflicts.
 *   `FLASK_ENV`: Set to `development`, `testing`, or `production`.
 *   `STRIPE_SECRET_KEY`: Your Stripe secret key.
 *   `STRIPE_WEBHOOK_SECRET`: Your Stripe webhook secret.
@@ -124,7 +122,7 @@ For production deployments, it is recommended to:
         ```
     *   Edit the `.env` file to set your configurations:
         *   `SECRET_KEY`: A strong, unique secret key for Flask session management and security.
-        *   `DATABASE_URL`: The connection string for your PostgreSQL database (e.g., `postgresql://user:password@host:port/dbname`). For local development, it defaults to a SQLite database (`dev.db`) if `DATABASE_URL` is not set.
+        *   `DATABASE_URL`: The connection string for your PostgreSQL database (e.g., `postgresql://user:password@host:port/dbname`).
         *   `FLASK_ENV`: Set to `development` for development mode, or `production` for production.
         *   `STRIPE_SECRET_KEY`: Your Stripe secret key.
         *   `STRIPE_WEBHOOK_SECRET`: Your Stripe webhook secret.
