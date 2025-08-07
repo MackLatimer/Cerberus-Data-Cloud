@@ -87,26 +87,21 @@ steps:
       '--dockerfile=Dockerfile'
     ]
 
-  # Step 6: Run Cloud SQL Proxy
-  - name: 'gcr.io/cloud-builders/curl'
-    id: 'cloud-sql-proxy'
+  # Step 6: Run Database Migrations with Cloud SQL Proxy
+  - name: 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:$SHORT_SHA'
+    id: 'run-migrations'
     waitFor: ['build-campaigns-backend']
     entrypoint: 'bash'
     args:
       - '-c'
       - |
-        curl -o /workspace/cloud_sql_proxy https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.18.0/cloud-sql-proxy.linux.amd64
-        chmod +x /workspace/cloud_sql_proxy
+        apt-get update && apt-get install -y curl
+        curl -o /cloud_sql_proxy https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.18.0/cloud-sql-proxy.linux.amd64
+        chmod +x /cloud_sql_proxy
         mkdir -p /cloudsql
-        /workspace/cloud_sql_proxy --unix-socket=/cloudsql/ $$DB_CONNECTION_NAME & wait $!
-    secretEnv: ['DB_CONNECTION_NAME']
-
-  # Step 7: Run Database Migrations
-  - name: 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:$SHORT_SHA'
-    id: 'run-migrations'
-    waitFor: ['cloud-sql-proxy']
-    entrypoint: 'flask'
-    args: ['db', 'upgrade']
+        /cloud_sql_proxy --unix-socket=/cloudsql $$DB_CONNECTION_NAME &
+        sleep 5
+        flask db upgrade
     secretEnv: ['DB_USER', 'DB_PASS', 'DB_NAME', 'DB_CONNECTION_NAME']
     env:
       - 'FLASK_ENV=production'
