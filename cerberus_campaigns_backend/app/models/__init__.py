@@ -26,3 +26,4 @@ from .backup_log import BackupLog
 from .user import User
 from .campaign import Campaign
 from .voter import Voter
+from .interaction import Interaction

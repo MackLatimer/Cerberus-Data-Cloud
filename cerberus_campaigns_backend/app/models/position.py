@@ -10,6 +10,7 @@ class Position(db.Model):
     salary = db.Column(db.DECIMAL(10,2))
     requirements = db.Column(db.Text)
     current_holder_person_id = db.Column(db.Integer, db.ForeignKey('persons.person_id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=True)
     source_id = db.Column(db.Integer, db.ForeignKey('data_sources.source_id'))
     created_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp())
     updated_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())

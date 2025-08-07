@@ -49,6 +49,16 @@ def session(app, db):
             test_db_session.close()
             connection.close()
 
+@pytest.fixture(scope='function')
+def setup_data_source(session):
+    # Ensure a default data source exists for tests
+    data_source = session.query(DataSource).get(1)
+    if not data_source:
+        data_source = DataSource(source_id=1, source_name="Test Source", source_type="Manual")
+        session.add(data_source)
+        session.commit()
+    return data_source
+
 def pytest_collection_modifyitems(config, items):
     # Create an app instance to check the database engine
     app = create_app()

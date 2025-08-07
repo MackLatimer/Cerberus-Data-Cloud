@@ -16,15 +16,6 @@ def decrypt_data(data):
     if data is None: return None
     return app_db.session.scalar(text("SELECT pgp_sym_decrypt(:data, :key)"), {'data': data, 'key': PGCRYPTO_SECRET_KEY})
 
-@pytest.fixture(scope='function')
-def setup_data_source(session):
-    # Ensure a default data source exists for tests
-    data_source = DataSource.query.get(1)
-    if not data_source:
-        data_source = DataSource(source_id=1, source_name="Test Source", source_type="Manual")
-        session.add(data_source)
-        session.commit()
-    return data_source
 
 def is_postgres_db(db_session):
     return "postgresql" in db_session.bind.engine.url.drivername
