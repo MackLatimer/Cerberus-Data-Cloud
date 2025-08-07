@@ -2,18 +2,6 @@ import pytest
 import json
 from app.models import Person, PersonCampaignInteraction, Campaign, PersonEmail, PersonPhone, DataSource
 from app.extensions import db
-from sqlalchemy import text
-from app.config import current_config
-
-PGCRYPTO_SECRET_KEY = current_config.PGCRYPTO_SECRET_KEY
-
-def encrypt_data(data):
-    if data is None: return None
-    return db.session.scalar(text("SELECT pgp_sym_encrypt(:data, :key)"), {'data': data, 'key': PGCRYPTO_SECRET_KEY})
-
-def decrypt_data(data):
-    if data is None: return None
-    return db.session.scalar(text("SELECT pgp_sym_decrypt(:data, :key)"), {'data': data, 'key': PGCRYPTO_SECRET_KEY})
 
 
 @pytest.mark.skip_if_sqlite
@@ -38,11 +26,11 @@ def test_create_signup_success_new_voter(client, session, setup_data_source):
 
     person_email = PersonEmail.query.filter_by(person_id=person.person_id).first()
     assert person_email is not None
-    assert decrypt_data(person_email.email) == "new.voter@example.com"
+    assert person_email.email == "new.voter@example.com"
 
     person_phone = PersonPhone.query.filter_by(person_id=person.person_id).first()
     assert person_phone is not None
-    assert decrypt_data(person_phone.phone_number) == "1234567890"
+    assert person_phone.phone_number == "1234567890"
 
     interaction = session.get(PersonCampaignInteraction, response_data["interaction_id"])
     assert interaction is not None
@@ -55,8 +43,8 @@ def test_create_signup_success_existing_voter_by_email(client, session, setup_da
     session.add(existing_person)
     session.flush()
 
-    existing_email = PersonEmail(person_id=existing_person.person_id, email=encrypt_data("existing.user@example.com"), email_type="Personal", source_id=setup_data_source.source_id)
-    existing_phone = PersonPhone(person_id=existing_person.person_id, phone_number=encrypt_data("0000000000"), phone_type="Mobile", source_id=setup_data_source.source_id)
+    existing_email = PersonEmail(person_id=existing_person.person_id, email="existing.user@example.com", email_type="Personal", source_id=setup_data_source.source_id)
+    existing_phone = PersonPhone(person_id=existing_person.person_id, phone_number="0000000000", phone_type="Mobile", source_id=setup_data_source.source_id)
     session.add_all([campaign, existing_email, existing_phone])
     session.commit()
 
