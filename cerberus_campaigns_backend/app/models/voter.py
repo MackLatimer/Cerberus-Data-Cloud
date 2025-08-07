@@ -45,7 +45,7 @@ class Voter(TimestampMixin, db.Model):
 
     campaigns_association = db.relationship('CampaignVoter', back_populates='voter', lazy='dynamic', cascade="all, delete-orphan")
 
-    interactions = db.relationship('Interaction', back_populates='voter', lazy='dynamic', cascade="all, delete-orphan")
+    interactions = db.relationship('Interaction', backref='voter', lazy='dynamic', cascade="all, delete-orphan")
 
     survey_responses = db.relationship('SurveyResult', back_populates='voter', lazy='dynamic', cascade="all, delete-orphan")
 
