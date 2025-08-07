@@ -6,6 +6,7 @@ class PersonCampaignInteraction(db.Model):
     interaction_id = db.Column(db.Integer, primary_key=True)
     person_id = db.Column(db.Integer, db.ForeignKey('persons.person_id', ondelete='CASCADE', use_alter=True), nullable=False)
     campaign_id = db.Column(db.Integer, db.ForeignKey('campaigns.campaign_id', ondelete='CASCADE', use_alter=True), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     interaction_type = db.Column(db.Enum('ContactForm', 'Donation', 'Endorsement', 'Volunteer', 'Other', name='interaction_type_enum'))
     interaction_date = db.Column(db.Date)
     amount = db.Column(db.DECIMAL(10,2))
