@@ -215,9 +215,9 @@ CREATE TABLE person_other_contacts (
 
 -- 13. Voter History
 CREATE TABLE voter_history (
-    history_id SERIAL PRIMARY KEY,
+    history_id SERIAL,
     person_id INT NOT NULL,
-    election_date DATE,
+    election_date DATE NOT NULL,
     election_type VARCHAR(100),
     voted BOOLEAN,
     voting_method VARCHAR(50), -- ENUM('InPerson', 'Mail', 'Absentee', 'Other'),
@@ -227,6 +227,7 @@ CREATE TABLE voter_history (
     source_id INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (election_date, history_id),
     FOREIGN KEY (person_id) REFERENCES persons(person_id) ON DELETE CASCADE,
     FOREIGN KEY (survey_link_id) REFERENCES survey_results(survey_id),
     FOREIGN KEY (source_id) REFERENCES data_sources(source_id)
