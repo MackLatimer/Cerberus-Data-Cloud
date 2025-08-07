@@ -40,8 +40,12 @@ class Voter(TimestampMixin, db.Model):
 
     custom_fields = db.Column(db.JSON, nullable=True)
 
-    source_campaign_id = db.Column(db.Integer, db.ForeignKey('campaigns.campaign_id', use_alter=True), nullable=True)
+    source_campaign_id = db.Column(db.Integer, nullable=True)
     source_campaign = db.relationship("Campaign", back_populates='sourced_voters', foreign_keys='Voter.source_campaign_id')
+
+    __table_args__ = (
+        db.ForeignKeyConstraint(['source_campaign_id'], ['campaigns.campaign_id'], name='fk_voters_source_campaign_id', use_alter=True),
+    )
 
     campaigns_association = db.relationship('CampaignVoter', back_populates='voter', lazy='dynamic', cascade="all, delete-orphan")
 

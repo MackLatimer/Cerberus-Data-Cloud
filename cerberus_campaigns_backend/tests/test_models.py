@@ -1,5 +1,5 @@
 import pytest
-from app.models import Campaign, Person, User, PersonCampaignInteraction, SurveyResult, DataSource, PersonEmail, PersonPhone
+from app.models import Campaign, Person, User, PersonCampaignInteraction, SurveyResult, DataSource, PersonEmail, PersonPhone, Voter
 from app.extensions import db as app_db
 from datetime import date, datetime, timezone
 from sqlalchemy.exc import IntegrityError
@@ -135,6 +135,7 @@ def test_create_person_campaign_interaction(session, setup_data_source, skip_if_
     interaction = PersonCampaignInteraction(
         person_id=person.person_id,
         campaign_id=campaign.campaign_id,
+        user_id=user.user_id,
         interaction_type="ContactForm", # Updated to match new ENUM
         interaction_date=date.today(),
         amount=100.00,
