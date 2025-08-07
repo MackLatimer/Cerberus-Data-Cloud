@@ -2,7 +2,6 @@ from ..extensions import db
 from sqlalchemy import LargeBinary, func, TypeDecorator
 from sqlalchemy.ext.hybrid import hybrid_property
 from ..config import current_config
-
 class EncryptedString(TypeDecorator):
     """A custom type for storing encrypted strings using pgcrypto."""
     impl = LargeBinary
