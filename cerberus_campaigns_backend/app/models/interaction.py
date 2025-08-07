@@ -21,7 +21,7 @@ class Interaction(db.Model):
     campaign = db.relationship('Campaign', back_populates='interactions')
     user = db.relationship('User', back_populates='interactions')
 
-    survey_responses = db.relationship('SurveyResponse', back_populates='interaction', lazy='dynamic', cascade="all, delete-orphan")
+    survey_responses = db.relationship('SurveyResult', back_populates='interaction', lazy='dynamic', cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"<Interaction ID: {self.interaction_id} (Voter: {self.voter_id}, Type: {self.interaction_type})>"

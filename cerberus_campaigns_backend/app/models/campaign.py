@@ -15,3 +15,4 @@ class Campaign(db.Model):
 
     sourced_voters = db.relationship('Voter', back_populates='source_campaign', foreign_keys='Voter.source_campaign_id')
     voters_association = db.relationship('CampaignVoter', back_populates='campaign')
+    interactions = db.relationship('Interaction', back_populates='campaign')

@@ -47,7 +47,7 @@ class Voter(TimestampMixin, db.Model):
 
     interactions = db.relationship('Interaction', back_populates='voter', lazy='dynamic', cascade="all, delete-orphan")
 
-    survey_responses = db.relationship('SurveyResponse', back_populates='voter', lazy='dynamic', cascade="all, delete-orphan")
+    survey_responses = db.relationship('SurveyResult', back_populates='voter', lazy='dynamic', cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"<Voter '{self.first_name} {self.last_name}' (ID: {self.voter_id})>"
