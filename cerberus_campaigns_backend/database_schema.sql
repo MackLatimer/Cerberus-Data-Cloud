@@ -213,28 +213,7 @@ CREATE TABLE person_other_contacts (
     FOREIGN KEY (source_id) REFERENCES data_sources(source_id)
 );
 
--- 13. Voter History
-CREATE TABLE voter_history (
-    history_id SERIAL,
-    person_id INT NOT NULL,
-    election_date DATE NOT NULL,
-    election_type VARCHAR(100),
-    voted BOOLEAN,
-    voting_method VARCHAR(50), -- ENUM('InPerson', 'Mail', 'Absentee', 'Other'),
-    turnout_reason TEXT,
-    survey_link_id INT,
-    details JSONB,
-    source_id INT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (election_date, history_id),
-    FOREIGN KEY (person_id) REFERENCES persons(person_id) ON DELETE CASCADE,
-    FOREIGN KEY (survey_link_id) REFERENCES survey_results(survey_id),
-    FOREIGN KEY (source_id) REFERENCES data_sources(source_id)
-) PARTITION BY RANGE (election_date);
-CREATE INDEX idx_voter_history_date ON voter_history(election_date);
-
--- 14. Survey Results
+-- 13. Survey Results
 CREATE TABLE survey_results (
     survey_id SERIAL PRIMARY KEY,
     person_id INT NOT NULL,
@@ -262,6 +241,27 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 CREATE TRIGGER survey_search_update BEFORE INSERT OR UPDATE ON survey_results FOR EACH ROW EXECUTE FUNCTION survey_search_trigger();
+
+-- 14. Voter History
+CREATE TABLE voter_history (
+    history_id SERIAL,
+    person_id INT NOT NULL,
+    election_date DATE NOT NULL,
+    election_type VARCHAR(100),
+    voted BOOLEAN,
+    voting_method VARCHAR(50), -- ENUM('InPerson', 'Mail', 'Absentee', 'Other'),
+    turnout_reason TEXT,
+    survey_link_id INT,
+    details JSONB,
+    source_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (election_date, history_id),
+    FOREIGN KEY (person_id) REFERENCES persons(person_id) ON DELETE CASCADE,
+    FOREIGN KEY (survey_link_id) REFERENCES survey_results(survey_id),
+    FOREIGN KEY (source_id) REFERENCES data_sources(source_id)
+) PARTITION BY RANGE (election_date);
+CREATE INDEX idx_voter_history_date ON voter_history(election_date);
 
 -- 15. Person Relationships
 CREATE TABLE person_relationships (
