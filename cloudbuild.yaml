@@ -97,6 +97,7 @@ steps:
       - |
         curl -o /workspace/cloud_sql_proxy https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.18.0/cloud-sql-proxy.linux.amd64
         chmod +x /workspace/cloud_sql_proxy
+        mkdir -p /cloudsql
         /workspace/cloud_sql_proxy --unix-socket=/cloudsql/ $$DB_CONNECTION_NAME & wait $!
     secretEnv: ['DB_CONNECTION_NAME']
 
