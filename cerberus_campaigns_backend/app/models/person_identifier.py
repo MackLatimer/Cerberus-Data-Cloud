@@ -2,6 +2,83 @@ from ..extensions import db
 from sqlalchemy import LargeBinary, func, TypeDecorator
 from sqlalchemy.ext.hybrid import hybrid_property
 from ..config import current_config
+class EncryptedString(TypeDecorator):
+    """A custom type for storing encrypted strings using pgcrypto."""
+    impl = LargeBinary
+
+    def __init__(self, *args, **kwargs):
+        super(EncryptedString, self).__init__(*args, **kwargs)
+        self.key = current_config.PGCRYPTO_SECRET_KEY
+
+    def process_bind_param(self, value, dialect):
+        if value is not None:
+            return func.pgp_sym_encrypt(str(value), self.key)
+        return None
+
+class EncryptedString(TypeDecorator):
+    """A custom type for storing encrypted strings using pgcrypto."""
+    impl = LargeBinary
+
+    def __init__(self, *args, **kwargs):
+        super(EncryptedString, self).__init__(*args, **kwargs)
+        self.key = current_config.PGCRYPTO_SECRET_KEY
+
+    def process_bind_param(self, value, dialect):
+        if value is not None:
+            return func.pgp_sym_encrypt(str(value), self.key)
+        return None
+
+class EncryptedString(TypeDecorator):
+    """A custom type for storing encrypted strings using pgcrypto."""
+    impl = LargeBinary
+
+    def __init__(self, *args, **kwargs):
+        super(EncryptedString, self).__init__(*args, **kwargs)
+        self.key = current_config.PGCRYPTO_SECRET_KEY
+
+    def process_bind_param(self, value, dialect):
+        if value is not None:
+            return func.pgp_sym_encrypt(str(value), self.key)
+        return None
+
+class EncryptedString(TypeDecorator):
+    """A custom type for storing encrypted strings using pgcrypto."""
+    impl = LargeBinary
+
+    def __init__(self, *args, **kwargs):
+        super(EncryptedString, self).__init__(*args, **kwargs)
+        self.key = current_config.PGCRYPTO_SECRET_KEY
+
+    def process_bind_param(self, value, dialect):
+        if value is not None:
+            return func.pgp_sym_encrypt(str(value), self.key)
+        return None
+
+class EncryptedString(TypeDecorator):
+    """A custom type for storing encrypted strings using pgcrypto."""
+    impl = LargeBinary
+
+    def __init__(self, *args, **kwargs):
+        super(EncryptedString, self).__init__(*args, **kwargs)
+        self.key = current_config.PGCRYPTO_SECRET_KEY
+
+    def process_bind_param(self, value, dialect):
+        if value is not None:
+            return func.pgp_sym_encrypt(str(value), self.key)
+        return None
+
+class EncryptedString(TypeDecorator):
+    """A custom type for storing encrypted strings using pgcrypto."""
+    impl = LargeBinary
+
+    def __init__(self, *args, **kwargs):
+        super(EncryptedString, self).__init__(*args, **kwargs)
+        self.key = current_config.PGCRYPTO_SECRET_KEY
+
+    def process_bind_param(self, value, dialect):
+        if value is not None:
+            return func.pgp_sym_encrypt(str(value), self.key)
+        return None
 
 class EncryptedString(TypeDecorator):
     """A custom type for storing encrypted strings using pgcrypto."""
