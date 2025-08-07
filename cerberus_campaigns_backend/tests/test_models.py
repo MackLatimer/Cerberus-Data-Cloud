@@ -16,15 +16,6 @@ def decrypt_data(data):
     if data is None: return None
     return app_db.session.scalar(text("SELECT pgp_sym_decrypt(:data, :key)"), {'data': data, 'key': PGCRYPTO_SECRET_KEY})
 
-@pytest.fixture(scope='function')
-def setup_data_source(session):
-    # Ensure a default data source exists for tests
-    data_source = DataSource.query.get(1)
-    if not data_source:
-        data_source = DataSource(source_id=1, source_name="Test Source", source_type="Manual")
-        session.add(data_source)
-        session.commit()
-    return data_source
 
 def is_postgres_db(db_session):
     return "postgresql" in db_session.bind.engine.url.drivername
@@ -64,32 +55,33 @@ def test_create_campaign(session, setup_data_source, skip_if_sqlite):
     campaign_name = "Test Campaign 2024"
     start = date(2024, 1, 1)
     end = date(2024, 11, 5)
-    description = "This is a test campaign."
-    campaign = Campaign(campaign_name=campaign_name, start_date=start, end_date=end, description=description, source_id=setup_data_source.source_id)
+    details = {"description": "This is a test campaign."}
+    campaign = Campaign(campaign_name=campaign_name, start_date=start, end_date=end, details=details, source_id=setup_data_source.source_id)
     session.add(campaign)
     session.commit()
     assert campaign.campaign_id is not None
     assert campaign.campaign_name == campaign_name
+    assert campaign.details["description"] == "This is a test campaign."
     retrieved_campaign = session.get(Campaign, campaign.campaign_id)
     assert retrieved_campaign == campaign
 
 def test_campaign_name_unique(session, setup_data_source):
     campaign1 = Campaign(campaign_name="Unique Campaign Name", source_id=setup_data_source.source_id)
     session.add(campaign1)
-    session.commit()
+    session.flush()
     campaign2 = Campaign(campaign_name="Unique Campaign Name", source_id=setup_data_source.source_id)
     session.add(campaign2)
     with pytest.raises(IntegrityError):
-        session.commit()
-    session.rollback()
+        session.flush()
 
 def test_campaign_to_dict(session, setup_data_source):
-    campaign = Campaign(campaign_name="Dict Test Campaign", start_date=date(2023, 1, 1), description="Testing to_dict", source_id=setup_data_source.source_id)
+    campaign = Campaign(campaign_name="Dict Test Campaign", start_date=date(2023, 1, 1), details={"description": "Testing to_dict"}, source_id=setup_data_source.source_id)
     session.add(campaign)
     session.commit()
     campaign_dict = campaign.to_dict()
     assert campaign_dict['campaign_id'] == campaign.campaign_id
     assert campaign_dict['campaign_name'] == "Dict Test Campaign"
+    assert campaign_dict['details']['description'] == "Testing to_dict"
 
 def test_create_user(session):
     user = User(username="testuser", password="password123", email="test@example.com")
@@ -101,12 +93,11 @@ def test_create_user(session):
 def test_user_username_unique(session):
     user1 = User(username="unique_user", password="password123")
     session.add(user1)
-    session.commit()
+    session.flush()
     user2 = User(username="unique_user", password="password456")
     session.add(user2)
     with pytest.raises(IntegrityError):
-        session.commit()
-    session.rollback()
+        session.flush()
 
 def test_create_person(session, setup_data_source):
     person_data = {"first_name": "John", "last_name": "Doe", "source_id": setup_data_source.source_id}
@@ -133,7 +124,7 @@ def test_person_email_unique(session, setup_data_source):
     session.flush()
     person_email1 = PersonEmail(person_id=person1.person_id, email=encrypt_data("unique.person@example.com"), email_type="Personal", source_id=setup_data_source.source_id)
     session.add(person_email1)
-    session.commit()
+    session.flush()
 
     person2 = Person(first_name="Jim", last_name="Beam", source_id=setup_data_source.source_id)
     session.add(person2)
@@ -141,8 +132,7 @@ def test_person_email_unique(session, setup_data_source):
     person_email2 = PersonEmail(person_id=person2.person_id, email=encrypt_data("unique.person@example.com"), email_type="Personal", source_id=setup_data_source.source_id)
     session.add(person_email2)
     with pytest.raises(IntegrityError):
-        session.commit()
-    session.rollback()
+        session.flush()
 
 def test_create_person_campaign_interaction(session, setup_data_source, skip_if_sqlite):
     campaign = Campaign(campaign_name="Interaction Campaign", source_id=setup_data_source.source_id)
