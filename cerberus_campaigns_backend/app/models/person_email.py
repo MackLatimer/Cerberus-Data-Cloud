@@ -5,14 +5,19 @@ class PersonEmail(db.Model):
     __tablename__ = 'person_emails'
 
     email_id = db.Column(db.Integer, primary_key=True)
-    person_id = db.Column(db.Integer, db.ForeignKey('persons.person_id', ondelete='CASCADE'), nullable=False)
+    person_id = db.Column(db.Integer, nullable=False)
     email = db.Column(EncryptedString, unique=True) # Encrypted
     email_type = db.Column(db.Enum('Personal', 'Work', 'Other', name='email_type_enum'))
     confidence_score = db.Column(db.Integer, default=100)
     is_verified = db.Column(db.Boolean, default=False)
-    source_id = db.Column(db.Integer, db.ForeignKey('data_sources.source_id'))
+    source_id = db.Column(db.Integer)
     created_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp())
     updated_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
+
+    __table_args__ = (
+        db.ForeignKeyConstraint(['person_id'], ['persons.person_id'], name='fk_person_emails_person_id', ondelete='CASCADE'),
+        db.ForeignKeyConstraint(['source_id'], ['data_sources.source_id'], name='fk_person_emails_source_id'),
+    )
 
     def to_dict(self):
         return {

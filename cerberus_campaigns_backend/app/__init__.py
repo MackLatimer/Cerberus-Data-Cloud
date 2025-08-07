@@ -52,4 +52,5 @@ def create_app(config_name_override: str = None) -> Flask:
                 context[name] = model_class
         return context
 
+    print(app.url_map)
     return app

@@ -5,6 +5,7 @@ os.environ['FLASK_ENV'] = 'testing'
 
 from app import create_app
 from app.extensions import db as _db
+from sqlalchemy import text
 
 # Import all models to ensure they are registered with SQLAlchemy
 from app.models import (
@@ -32,6 +33,8 @@ def db(app):
     with app.app_context():
         _db.metadata.drop_all(bind=_db.engine)
         _db.metadata.create_all(bind=_db.engine)
+        _db.session.execute(text("CREATE EXTENSION IF NOT EXISTS pgcrypto;"))
+        _db.session.commit()
         yield _db
         _db.session.remove()
         _db.metadata.drop_all(bind=_db.engine)
@@ -59,11 +62,10 @@ def setup_data_source(session):
         session.commit()
     return data_source
 
+@pytest.fixture
+def skip_if_sqlite(session):
+    if 'sqlite' in session.bind.engine.dialect.name:
+        pytest.skip("Test does not run on SQLite")
 def pytest_collection_modifyitems(config, items):
-    # Create an app instance to check the database engine
-    app = create_app()
-    with app.app_context():
-        if 'sqlite' in _db.engine.dialect.name:
-            for item in items:
-                if "skip_if_sqlite" in item.keywords:
-                    item.add_marker(pytest.mark.skip(reason="Test does not run on SQLite"))
+    # This function is kept for historical purposes, but skip_if_sqlite fixture is preferred
+    pass

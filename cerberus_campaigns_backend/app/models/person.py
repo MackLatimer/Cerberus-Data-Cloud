@@ -24,9 +24,13 @@ class Person(db.Model):
     language_preference = db.Column(db.String(50))
     accessibility_needs = db.Column(db.String)
     last_updated_by = db.Column(db.String(255))
-    source_id = db.Column(db.Integer, db.ForeignKey('data_sources.source_id'))
+    source_id = db.Column(db.Integer)
     created_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp())
     updated_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
+
+    __table_args__ = (
+        db.ForeignKeyConstraint(['source_id'], ['data_sources.source_id'], name='fk_persons_source_id'),
+    )
 
     def to_dict(self):
         return {
