@@ -8,7 +8,7 @@ services:
       - db
     environment:
       - FLASK_ENV=testing
-      - DATABASE_URL=postgresql://test_user:test_password@db:5432/test_db
+      - DATABASE_URL=postgresql+psycopg://test_user:test_password@db:5432/test_db
     command: ["sh", "-c", "pip install -r requirements-dev.txt && pytest"]
   db:
     image: postgis/postgis:13-3.4

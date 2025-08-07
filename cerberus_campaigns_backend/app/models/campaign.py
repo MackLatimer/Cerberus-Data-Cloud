@@ -12,3 +12,6 @@ class Campaign(db.Model):
     source_id = db.Column(db.Integer, db.ForeignKey('data_sources.source_id', use_alter=True))
     created_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp())
     updated_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
+
+    sourced_voters = db.relationship('Voter', back_populates='source_campaign', foreign_keys='Voter.source_campaign_id')
+    voters_association = db.relationship('CampaignVoter', back_populates='campaign')
