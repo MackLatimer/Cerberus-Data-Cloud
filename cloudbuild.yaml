@@ -87,32 +87,29 @@ steps:
       '--dockerfile=Dockerfile'
     ]
 
-  # Step 6: Run Cloud SQL Proxy
-  - name: 'gcr.io/cloud-builders/gcloud'
-    id: 'cloud-sql-proxy'
+  # Step 6: Run Database Migrations
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'run-migrations'
     waitFor: ['build-campaigns-backend']
     entrypoint: 'bash'
     args:
       - '-c'
       - |
-        wget https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.18.0/cloud-sql-proxy.linux.amd64 -O /workspace/cloud_sql_proxy
-        chmod +x /workspace/cloud_sql_proxy
-        /workspace/cloud_sql_proxy --unix-socket=/cloudsql/ $$DB_CONNECTION_NAME &
-    secretEnv: ['DB_CONNECTION_NAME']
-
-  # Step 7: Run Database Migrations using a secret for the DATABASE_URL
-  - name: 'gcr.io/google-appengine/exec-wrapper'
-    id: 'run-migrations'
-    waitFor: ['cloud-sql-proxy']
-    args: [
-      '-i', 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:$SHORT_SHA',
-      '-e', 'FLASK_ENV=production',
-      '-e', 'DATABASE_URL=postgresql+psycopg://$$(DB_USER):$$(DB_PASS)@/$$(DB_NAME)?host=/cloudsql/$$(DB_CONNECTION_NAME)',
-      '--',
-      'flask',
-      'db',
-      'upgrade'
-    ]
+        # Start the Cloud SQL Proxy in the background
+        wget https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.18.0/cloud-sql-proxy.linux.amd64 -O /cloud_sql_proxy
+        chmod +x /cloud_sql_proxy
+        mkdir -p /cloudsql
+        /cloud_sql_proxy --unix-socket=/cloudsql $$DB_CONNECTION_NAME &
+        # Wait for the proxy to be ready
+        sleep 10
+        # Run the database migrations
+        docker run \
+          --network cloudbuild \
+          -v /cloudsql:/cloudsql \
+          -e FLASK_ENV=production \
+          -e DATABASE_URL="postgresql+psycopg://$$(DB_USER):$$(DB_PASS)@/$$(DB_NAME)?host=/cloudsql/$$(DB_CONNECTION_NAME)" \
+          us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:$SHORT_SHA \
+          flask db upgrade
     secretEnv: ['DB_USER', 'DB_PASS', 'DB_NAME', 'DB_CONNECTION_NAME']
 
 # List of images to be pushed to Artifact Registry
