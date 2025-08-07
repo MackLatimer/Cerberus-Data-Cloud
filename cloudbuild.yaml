@@ -27,9 +27,6 @@ steps:
       - --cache-ttl=24h
       - --context=./cerberus_campaigns_backend
       - --dockerfile=./cerberus_campaigns_backend/Dockerfile
-    substitutions:
-      _SERVICE_NAME: 'campaigns-api'
-      _SERVICE_DIR: 'cerberus_campaigns_backend'
 
   - name: 'gcr.io/kaniko-project/executor:latest'
     id: 'build-cerberus-report-backend'
@@ -40,9 +37,6 @@ steps:
       - --cache-ttl=24h
       - --context=./cerberus_report_backend
       - --dockerfile=./cerberus_report_backend/Dockerfile
-    substitutions:
-      _SERVICE_NAME: 'agenda-api'
-      _SERVICE_DIR: 'cerberus_report_backend'
 
   - name: 'gcr.io/kaniko-project/executor:latest'
     id: 'build-cerberus-frontend'
@@ -53,9 +47,6 @@ steps:
       - --cache-ttl=24h
       - --context=./cerberus_frontend
       - --dockerfile=./cerberus_frontend/Dockerfile
-    substitutions:
-      _SERVICE_NAME: 'cerberus-frontend'
-      _SERVICE_DIR: 'cerberus_frontend'
 
   - name: 'gcr.io/kaniko-project/executor:latest'
     id: 'build-emmons-frontend'
@@ -66,9 +57,6 @@ steps:
       - --cache-ttl=24h
       - --context=./emmons_frontend
       - --dockerfile=./emmons_frontend/Dockerfile
-    substitutions:
-      _SERVICE_NAME: 'emmons-frontend'
-      _SERVICE_DIR: 'emmons_frontend'
 
   # Run database migrations
   - name: 'gcr.io/google-appengine/exec-wrapper'
