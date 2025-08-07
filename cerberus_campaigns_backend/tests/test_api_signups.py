@@ -76,33 +76,6 @@ def test_create_signup_success_existing_voter_by_email(client, session, setup_da
     assert interaction is not None
     assert interaction.details['notes'] == "Re-signed up with new interest. Expressed interest: Get Involved."
 
-def test_create_signup_missing_required_fields(client, session, setup_data_source):
-    campaign = Campaign(campaign_name="Signup Missing Fields Camp", source_id=setup_data_source.source_id)
-    session.add(campaign)
-    session.commit()
-    signup_data = {"first_name": "Test", "campaign_id": campaign.campaign_id}
-    response = client.post('/api/v1/signups', data=json.dumps(signup_data), content_type='application/json')
-    assert response.status_code == 400
-    response_data = response.get_json()
-    assert "Missing required fields" in response_data["error"]
-
-def test_create_signup_invalid_campaign_id(client, session, setup_data_source):
-    signup_data = {
-        "first_name": "Invalid", "last_name": "Campaigner", "email_address": "invalid.campaign@example.com",
-        "campaign_id": 99999
-    }
-    response = client.post('/api/v1/signups', data=json.dumps(signup_data), content_type='application/json')
-    assert response.status_code == 404
-
-def test_create_signup_no_payload(client, session):
-    response = client.post('/api/v1/signups', content_type='application/json') # No data sent
-    assert response.status_code == 400
-    assert "Invalid or empty JSON payload" in response.get_json()["error"]
-
-def test_create_signup_empty_payload(client, session):
-    response = client.post('/api/v1/signups', data=json.dumps({}), content_type='application/json')
-    assert response.status_code == 400
-    assert "Invalid or empty JSON payload" in response.get_json()["error"]
 
 def test_create_signup_missing_required_fields(client, session, setup_data_source):
     campaign = Campaign(campaign_name="Signup Missing Fields Camp", source_id=setup_data_source.source_id)

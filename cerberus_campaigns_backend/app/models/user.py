@@ -16,6 +16,7 @@ class User(TimestampMixin, db.Model):
 
     person_campaign_interactions = db.relationship('PersonCampaignInteraction', backref='user', lazy=True)
     positions = db.relationship('Position', backref='current_holder_user', lazy=True)
+    interactions = db.relationship('Interaction', back_populates='user', lazy=True)
 
     def __init__(self, username, password, email=None, first_name=None, last_name=None, role='viewer', is_active=True):
         self.username = username
