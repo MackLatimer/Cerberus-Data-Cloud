@@ -1,18 +1,6 @@
 import pytest
-from app.models import Campaign, Person, User, PersonCampaignInteraction, SurveyResult, DataSource, PersonEmail, PersonPhone, Voter
-from app.extensions import db as app_db
-from datetime import date, datetime, timezone
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy import text
-from app.config import current_config
-
-
-
-def is_postgres_db(db_session):
-    return "postgresql" in db_session.bind.engine.url.drivername
-
-import pytest
-from app.models import Campaign, Person, User, PersonCampaignInteraction, SurveyResult, DataSource, PersonEmail, PersonPhone
+from app.models import (Campaign, Person, User, PersonCampaignInteraction,
+                        SurveyResult, DataSource, PersonEmail, PersonPhone, Voter)
 from app.extensions import db as app_db
 from datetime import date, datetime, timezone
 from sqlalchemy.exc import IntegrityError
@@ -150,7 +138,11 @@ def test_create_person_campaign_interaction(session, setup_data_source, skip_if_
     assert interaction.details['notes'] == 'Spoke about policy.'
 
 def test_create_survey_result(session, setup_data_source, skip_if_sqlite):
-    voter = Voter(first_name="Survey", last_name="Taker", source_campaign_id=setup_data_source.source_id)
+    campaign = Campaign(campaign_name="Survey Campaign", source_id=setup_data_source.source_id)
+    session.add(campaign)
+    session.commit()
+
+    voter = Voter(first_name="Survey", last_name="Taker", source_campaign_id=campaign.campaign_id)
     session.add(voter)
     session.commit()
 
