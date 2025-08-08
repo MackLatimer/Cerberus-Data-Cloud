@@ -1,42 +1,21 @@
 steps:
-  # Test steps for backend services, running in parallel
+  # Test step for the universal backend
   - name: 'gcr.io/cloud-builders/docker'
-    id: 'test-cerberus-campaigns-backend'
-    dir: 'cerberus_campaigns_backend'
+    id: 'test-cerberus-universal-backend'
+    dir: 'cerberus_universal_backend'
     waitFor: ['-']
     args: ['compose', '-f', 'docker-compose.test.yaml', 'up', '--build', '--abort-on-container-exit']
 
-  - name: 'python:3.9-slim'
-    id: 'test-cerberus-report-backend'
-    dir: 'cerberus_report_backend'
-    waitFor: ['-']
-    entrypoint: 'sh'
-    args:
-      - '-c'
-      - |
-        pip install -r requirements.txt
-        pytest
-
   # Build steps for all services, running in parallel with tests
   - name: 'gcr.io/kaniko-project/executor:latest'
-    id: 'build-cerberus-campaigns-backend'
+    id: 'build-cerberus-universal-backend'
     waitFor: ['-']
     args:
-      - --destination=us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:$SHORT_SHA
+      - --destination=us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/universal-api:$SHORT_SHA
       - --cache=true
       - --cache-ttl=24h
-      - --context=./cerberus_campaigns_backend
-      - --dockerfile=./cerberus_campaigns_backend/Dockerfile
-
-  - name: 'gcr.io/kaniko-project/executor:latest'
-    id: 'build-cerberus-report-backend'
-    waitFor: ['-']
-    args:
-      - --destination=us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/agenda-api:$SHORT_SHA
-      - --cache=true
-      - --cache-ttl=24h
-      - --context=./cerberus_report_backend
-      - --dockerfile=./cerberus_report_backend/Dockerfile
+      - --context=./cerberus_universal_backend
+      - --dockerfile=./cerberus_universal_backend/Dockerfile
 
   - name: 'gcr.io/kaniko-project/executor:latest'
     id: 'build-cerberus-frontend'
@@ -62,11 +41,11 @@ steps:
   - name: 'gcr.io/google-appengine/exec-wrapper'
     id: 'run-migrations'
     waitFor:
-      - 'build-cerberus-campaigns-backend'
-      - 'test-cerberus-campaigns-backend'
+      - 'build-cerberus-universal-backend'
+      - 'test-cerberus-universal-backend'
     args:
       - '-i'
-      - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:$SHORT_SHA'
+      - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/universal-api:$SHORT_SHA'
       - '-s'
       - '$$DB_CONNECTION_NAME'
       - '-e'
@@ -79,8 +58,7 @@ steps:
 
 # List of images to be pushed to Artifact Registry
 images:
-  - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/campaigns-api:$SHORT_SHA'
-  - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/agenda-api:$SHORT_SHA'
+  - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/universal-api:$SHORT_SHA'
   - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/cerberus-frontend:$SHORT_SHA'
   - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/emmons-frontend:$SHORT_SHA'
 

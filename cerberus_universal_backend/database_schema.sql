@@ -354,6 +354,11 @@ CREATE TABLE government_bodies (
     jurisdiction VARCHAR(100),
     details JSONB,
     source_id INT,
+    agenda_url TEXT,
+    scraper_type TEXT,
+    config JSONB,
+    is_active BOOLEAN DEFAULT TRUE,
+    last_scraped_at TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (source_id) REFERENCES data_sources(source_id)
@@ -472,3 +477,34 @@ WHERE registration_status = 'Active'
 GROUP BY party_affiliation;
 
 -- Refresh: REFRESH MATERIALIZED VIEW voter_turnout_summary;
+
+-- 27. Agendas
+CREATE TABLE agendas (
+    id SERIAL PRIMARY KEY,
+    body_id INTEGER NOT NULL REFERENCES government_bodies(body_id) ON DELETE CASCADE,
+    date TEXT NOT NULL,        -- Date of the meeting (YYYY-MM-DD format)
+    pdf_url TEXT NOT NULL,     -- URL to the original PDF agenda document
+    scraped_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (body_id, date, pdf_url)
+);
+
+-- 28. Agenda Items
+CREATE TABLE agenda_items (
+    id SERIAL PRIMARY KEY,
+    agenda_id INTEGER NOT NULL REFERENCES agendas(id) ON DELETE CASCADE,
+    heading TEXT,
+    file_prefix TEXT,
+    item_text TEXT NOT NULL,
+    category TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT unique_agenda_item_text UNIQUE (agenda_id, item_text)
+);
+
+-- 29. Subscriptions
+CREATE TABLE subscriptions (
+    id SERIAL PRIMARY KEY,
+    email TEXT NOT NULL UNIQUE,
+    filter_settings JSONB NOT NULL,
+    active BOOLEAN DEFAULT TRUE,
+    last_checked TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
