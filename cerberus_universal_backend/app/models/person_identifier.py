@@ -106,6 +106,19 @@ class EncryptedString(TypeDecorator):
             return func.pgp_sym_encrypt(str(value), self.key)
         return None
 
+class EncryptedString(TypeDecorator):
+    """A custom type for storing encrypted strings using pgcrypto."""
+    impl = LargeBinary
+
+    def __init__(self, *args, **kwargs):
+        super(EncryptedString, self).__init__(*args, **kwargs)
+        self.key = current_config.PGCRYPTO_SECRET_KEY
+
+    def process_bind_param(self, value, dialect):
+        if value is not None:
+            return func.pgp_sym_encrypt(str(value), self.key)
+        return None
+
     def column_expression(self, col):
         return func.pgp_sym_decrypt(col, self.key, cast_as='text')
 
