@@ -9,6 +9,7 @@ PyJWT==2.8.0 # For token-based authentication (optional, but good for APIs)
 gunicorn==21.2.0 # WSGI server for deployment
 Flask-CORS==4.0.0 # For Cross-Origin Resource Sharing
 stripe==12.3.0
+libgeos-dev
 GeoAlchemy2
 psycopg[binary]
 google-cloud-secret-manager==2.16.2
