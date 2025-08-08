@@ -214,6 +214,7 @@ CREATE TABLE person_other_contacts (
 );
 
 -- 13. Voter History
+
 -- 13. Survey Results
 CREATE TABLE survey_results (
     survey_id SERIAL PRIMARY KEY,
