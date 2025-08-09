@@ -3,11 +3,11 @@ import 'package:campaigns_frontend/main.dart' as app;
 import 'package:campaign_config/campaign_config.dart';
 
 void main() {
-  final emmonsConfig = CampaignConfig(
+  final blairConfig = CampaignConfig(
     stripePublicKey: 'pk_test_51Rnnfv4brLkKMnfT9dQISZb1hLmvQMVq3nr8Ymb67lqFQ4JwJkTrc92dRUXKYvYs3tSMeYZkTgIkKJxLsOmjqTN800f2UFiJiT',
-    campaignId: '1',
-    campaignName: 'Curtis Emmons for County Commissioner',
-    domain: 'electemmons.com',
+    campaignId: '2',
+    campaignName: 'Blair for Bell',
+    domain: 'blairforbell.com',
     primaryColor: const Color(0xFF002663),
     secondaryColor: const Color(0xFFA01124),
     fontHeader: 'BebasNeue',
