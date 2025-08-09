@@ -1,16 +1,15 @@
+import 'package:emmons_frontend/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:emmons_frontend/core/utils/breakpoint.dart';
 
-import 'package:emmons_frontend/src/utils/breakpoint.dart';
-
-class CommonAppBar extends StatefulWidget implements PreferredSizeWidget {
-  final String title;
+class CommonAppBar extends ConsumerStatefulWidget implements PreferredSizeWidget {
   final List<Widget>? actions;
   final ScrollController? scrollController;
 
   const CommonAppBar({
     super.key,
-    required this.title,
     this.actions,
     this.scrollController,
   });
@@ -22,7 +21,7 @@ class CommonAppBar extends StatefulWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
-class CommonAppBarState extends State<CommonAppBar> {
+class CommonAppBarState extends ConsumerState<CommonAppBar> {
   double _scrollOffset = 0.0;
 
   @override
@@ -47,6 +46,7 @@ class CommonAppBarState extends State<CommonAppBar> {
 
   @override
   Widget build(BuildContext context) {
+    final campaignConfig = ref.watch(campaignProvider);
     final textTheme = Theme.of(context).textTheme;
     final windowSize = getWindowSize(context);
     final isMedium = windowSize == WindowSize.medium;
@@ -91,7 +91,7 @@ class CommonAppBarState extends State<CommonAppBar> {
               child: Text(
                 item['label']!,
                 style: textTheme.labelMedium?.copyWith(
-                  color: const Color(0xff002663),
+                  color: Color(int.parse('0xFF${campaignConfig.theme.primaryColor}')),
                   fontWeight: FontWeight.bold,
                   fontSize: 24,
                 ),
@@ -135,7 +135,7 @@ class CommonAppBarState extends State<CommonAppBar> {
                   child: Text(
                     item['label']!,
                     style: textTheme.labelMedium?.copyWith(
-                      color: const Color(0xff002663),
+                      color: Color(int.parse('0xFF${campaignConfig.theme.primaryColor}')),
                       fontWeight: FontWeight.bold,
                       fontSize: 24,
                     ),
@@ -155,7 +155,7 @@ class CommonAppBarState extends State<CommonAppBar> {
                   child: Text(
                     item['label']!,
                     style: textTheme.labelMedium?.copyWith(
-                      color: const Color(0xff002663),
+                      color: Color(int.parse('0xFF${campaignConfig.theme.primaryColor}')),
                       fontWeight: FontWeight.bold,
                       fontSize: 24,
                     ),
@@ -185,10 +185,11 @@ class CommonAppBarState extends State<CommonAppBar> {
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Image.asset(
-                          'assets/images/Emmons_Logo_4.png',
+                        Image.network(
+                          campaignConfig.theme.logoUrl,
                           width: 400,
                           height: 100,
+                          errorBuilder: (context, error, stackTrace) => const Icon(Icons.error),
                         ),
                         const SizedBox(height: 16.0),
                         if (isCompact)
@@ -200,10 +201,11 @@ class CommonAppBarState extends State<CommonAppBar> {
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Image.asset(
-                          'assets/images/Emmons_Logo_4.png',
+                        Image.network(
+                          campaignConfig.theme.logoUrl,
                           width: 400,
                           height: 100,
+                          errorBuilder: (context, error, stackTrace) => const Icon(Icons.error),
                         ),
                         navigation,
                       ],
