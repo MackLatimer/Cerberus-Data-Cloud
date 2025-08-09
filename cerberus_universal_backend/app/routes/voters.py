@@ -6,6 +6,7 @@ import csv
 import io
 from sqlalchemy import text
 from ..config import current_config
+from ..utils.security import token_required, encrypt_data, decrypt_data
 
 voters_api_bp = Blueprint('voters_api', __name__, url_prefix='/api/v1/voters')
 
@@ -123,7 +124,8 @@ def public_create_signup():
         return jsonify({"error": "An internal error occurred. Please try again later."}), 500
 
 @voters_api_bp.route('/', methods=['POST'])
-def create_person_via_portal():
+@token_required
+def create_person_via_portal(current_user):
     data = request.get_json()
     if not data:
         return jsonify({"error": "Invalid JSON payload"}), 400
@@ -173,7 +175,8 @@ def create_person_via_portal():
         return jsonify({"error": "Failed to create person."}), 500
 
 @voters_api_bp.route('/', methods=['GET'])
-def list_persons_via_portal():
+@token_required
+def list_persons_via_portal(current_user):
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 20, type=int)
 
@@ -199,7 +202,8 @@ def list_persons_via_portal():
     }), 200
 
 @voters_api_bp.route('/<int:person_id>', methods=['GET'])
-def get_person_detail_via_portal(person_id):
+@token_required
+def get_person_detail_via_portal(current_user, person_id):
     person = Person.query.get_or_404(person_id)
     person_dict = person.to_dict()
 
@@ -211,7 +215,8 @@ def get_person_detail_via_portal(person_id):
     return jsonify(person_dict), 200
 
 @voters_api_bp.route('/<int:person_id>', methods=['PUT'])
-def update_person_via_portal(person_id):
+@token_required
+def update_person_via_portal(current_user, person_id):
     person = Person.query.get_or_404(person_id)
     data = request.get_json()
     if not data:
@@ -261,7 +266,8 @@ def update_person_via_portal(person_id):
         return jsonify({"error": "Failed to update person."}), 500
 
 @voters_api_bp.route('/<int:person_id>', methods=['DELETE'])
-def delete_person_via_portal(person_id):
+@token_required
+def delete_person_via_portal(current_user, person_id):
     person = Person.query.get_or_404(person_id)
     try:
         db.session.delete(person)
@@ -273,7 +279,8 @@ def delete_person_via_portal(person_id):
         return jsonify({"error": "Failed to delete person. It might be referenced elsewhere."}), 500
 
 @voters_api_bp.route('/upload', methods=['POST'])
-def upload_persons():
+@token_required
+def upload_persons(current_user):
     if 'file' not in request.files:
         return jsonify({"error": "No file part"}), 400
     file = request.files['file']
@@ -313,7 +320,7 @@ def upload_persons():
 
                     new_person_email = PersonEmail(
                         person_id=person.person_id,
-                        email=email_str,
+                        email=encrypted_email,
                         email_type='Personal',
                         source_id=default_source_id
                     )

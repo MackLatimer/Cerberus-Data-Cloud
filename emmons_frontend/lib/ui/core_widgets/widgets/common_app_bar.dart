@@ -91,7 +91,7 @@ class CommonAppBarState extends ConsumerState<CommonAppBar> {
               child: Text(
                 item['label']!,
                 style: textTheme.labelMedium?.copyWith(
-                  color: Color(int.parse('0xFF${campaignConfig.theme.primaryColor}')),
+                  color: campaignConfig.theme.primaryColor,
                   fontWeight: FontWeight.bold,
                   fontSize: 24,
                 ),
@@ -135,7 +135,7 @@ class CommonAppBarState extends ConsumerState<CommonAppBar> {
                   child: Text(
                     item['label']!,
                     style: textTheme.labelMedium?.copyWith(
-                      color: Color(int.parse('0xFF${campaignConfig.theme.primaryColor}')),
+                      color: campaignConfig.theme.primaryColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 24,
                     ),

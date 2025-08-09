@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:emmons_frontend/src/utils/breakpoint.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:emmons_frontend/main.dart'; // For campaignProvider
+import 'package:emmons_frontend/core/utils/breakpoint.dart';
 
-class DonateSection extends StatelessWidget {
+class DonateSection extends ConsumerWidget {
   const DonateSection({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final campaignConfig = ref.watch(campaignProvider);
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
     final windowSize = getWindowSize(context);
@@ -14,7 +17,7 @@ class DonateSection extends StatelessWidget {
 
     final children = [
       Text(
-        'Make a Difference!',
+        campaignConfig.content.donateSectionTitle,
         style: textTheme.headlineMedium?.copyWith(
           fontWeight: FontWeight.bold,
           color: Colors.white,
@@ -24,7 +27,7 @@ class DonateSection extends StatelessWidget {
       SizedBox(height: isCompact ? 20 : 0, width: isCompact ? 0 : 40),
       ElevatedButton(
         onPressed: () => context.go('/donate'),
-        child: const Text('Donate Now'),
+        child: Text(campaignConfig.content.callToActionLabel),
       ),
     ];
 

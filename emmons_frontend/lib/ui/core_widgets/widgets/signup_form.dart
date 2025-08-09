@@ -1,18 +1,18 @@
-import 'package:emmons_frontend/src/api_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:go_router/go_router.dart';
-import '../config.dart';
+import 'package:emmons_frontend/main.dart'; // For campaignProvider
 
-class SignupFormWidget extends StatefulWidget {
+class SignupFormWidget extends ConsumerStatefulWidget {
   const SignupFormWidget({super.key});
 
   @override
   State<SignupFormWidget> createState() => _SignupFormWidgetState();
 }
 
-class _SignupFormWidgetState extends State<SignupFormWidget> {
+class _SignupFormWidgetState extends ConsumerState<SignupFormWidget> {
   final _formKey = GlobalKey<FormState>();
   bool _endorseChecked = false;
   bool _getInvolvedChecked = false;
@@ -34,12 +34,14 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
       _isLoading = true;
     });
 
+    final campaignConfig = ref.read(campaignProvider);
+
     final signupData = {
       'first_name': _firstNameController.text,
       'last_name': _lastNameController.text,
       'email_address': _emailController.text,
       'phone_number': _phoneController.text.isNotEmpty ? _phoneController.text : null,
-      'campaign_id': currentCampaignId,
+      'campaign_id': campaignConfig.campaignId,
       'interests': {
         'wants_to_endorse': _endorseChecked,
         'wants_to_get_involved': _getInvolvedChecked,
@@ -50,14 +52,14 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
       'notes': 'Signed up via website form. Endorse: $_endorseChecked, Get Involved: $_getInvolvedChecked',
     };
 
-    final url = Uri.parse('$apiBaseUrl/signups');
+    final url = Uri.parse('${campaignConfig.apiBaseUrl}/signups');
 
     try {
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(signupData),
-      ).timeout(const Duration(seconds: defaultNetworkTimeoutSeconds));
+      ).timeout(const Duration(seconds: 10));
 
       if (!mounted) return;
 
@@ -106,6 +108,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final campaignConfig = ref.watch(campaignProvider);
     final textTheme = Theme.of(context).textTheme;
 
     return Padding(
@@ -118,7 +121,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text('Join the Movement!', style: textTheme.titleMedium),
+                Text(campaignConfig.content.signupFormTitle, style: textTheme.titleMedium),
                 const SizedBox(height: 20),
                 TextFormField(
                   controller: _firstNameController,
@@ -164,7 +167,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                 ),
                 const SizedBox(height: 16),
                 CheckboxListTile(
-                  title: Text('I endorse Curtis Emmons and allow him to publish my endorsement', style: textTheme.bodyMedium),
+                  title: Text(campaignConfig.content.signupFormEndorseCheckboxLabel, style: textTheme.bodyMedium),
                   value: _endorseChecked,
                   onChanged: (bool? value) {
                     setState(() {
@@ -175,7 +178,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                   contentPadding: EdgeInsets.zero,
                 ),
                 CheckboxListTile(
-                  title: Text('I want to get involved with the campaign!', style: textTheme.bodyMedium),
+                  title: Text(campaignConfig.content.signupFormInvolvedCheckboxLabel, style: textTheme.bodyMedium),
                   value: _getInvolvedChecked,
                   onChanged: (bool? value) {
                     setState(() {
@@ -186,7 +189,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                   contentPadding: EdgeInsets.zero,
                 ),
                 CheckboxListTile(
-                  title: Text('I agree to receive automated messaging from Elect Emmons', style: textTheme.bodyMedium),
+                  title: Text(campaignConfig.content.signupFormMessagingCheckboxLabel, style: textTheme.bodyMedium),
                   value: _agreedToMessaging,
                   onChanged: (bool? value) {
                     setState(() {
@@ -197,7 +200,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                   contentPadding: EdgeInsets.zero,
                 ),
                 CheckboxListTile(
-                  title: Text('I agree to receive emails from Elect Emmons', style: textTheme.bodyMedium),
+                  title: Text(campaignConfig.content.signupFormEmailCheckboxLabel, style: textTheme.bodyMedium),
                   value: _agreedToEmails,
                   onChanged: (bool? value) {
                     setState(() {
@@ -209,7 +212,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Reply STOP to opt out, HELP for help. Msg & data rates may apply. Frequency may vary.',
+                  campaignConfig.content.signupFormSmsDisclaimer,
                   style: textTheme.bodySmall?.copyWith(fontStyle: FontStyle.italic),
                 ),
                 const SizedBox(height: 24),
@@ -218,7 +221,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                       ? const CircularProgressIndicator()
                       : ElevatedButton(
                           onPressed: _submitForm,
-                          child: const Text('Sign Up'),
+                          child: Text(campaignConfig.content.signupFormSubmitButtonLabel),
                         ),
                 ),
                 const SizedBox(height: 16),

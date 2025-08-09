@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:emmons_frontend/src/widgets/dynamic_size_app_bar.dart';
-import 'package:emmons_frontend/src/widgets/common_app_bar.dart';
-import 'package:emmons_frontend/src/widgets/signup_form.dart';
-import 'package:emmons_frontend/src/widgets/donate_section.dart';
-import 'package:emmons_frontend/src/widgets/home_page_section.dart';
-import 'package:emmons_frontend/src/widgets/footer.dart';
-import 'package:emmons_frontend/src/utils/breakpoint.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:emmons_frontend/main.dart'; // For campaignProvider
+import 'package:emmons_frontend/ui/core_widgets/widgets/dynamic_size_app_bar.dart';
+import 'package:emmons_frontend/ui/core_widgets/widgets/common_app_bar.dart';
+import 'package:emmons_frontend/ui/core_widgets/widgets/signup_form.dart';
+import 'package:emmons_frontend/ui/core_widgets/widgets/donate_section.dart';
+import 'package:emmons_frontend/ui/core_widgets/widgets/home_page_section.dart';
+import 'package:emmons_frontend/ui/core_widgets/widgets/footer.dart';
+import 'package:emmons_frontend/core/utils/breakpoint.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
   HomePageState createState() => HomePageState();
 }
 
-class HomePageState extends State<HomePage> {
+class HomePageState extends ConsumerState<HomePage> {
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -25,6 +27,7 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final campaignConfig = ref.watch(campaignProvider);
     final windowSize = getWindowSize(context);
     final isCompact = windowSize == WindowSize.compact;
     final heroHeight = isCompact ? MediaQuery.of(context).size.height * 0.5 : MediaQuery.of(context).size.height;
@@ -45,7 +48,7 @@ class HomePageState extends State<HomePage> {
         appBar: DynamicSizeAppBar(
           height: appBarHeight,
           child: CommonAppBar(
-            title: 'Curtis Emmons for Bell County Precinct 4',
+            title: campaignConfig.siteTitle,
             scrollController: _scrollController,
           ),
         ),
@@ -58,7 +61,7 @@ class HomePageState extends State<HomePage> {
                 height: heroHeight,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/images/Emmons_Home_Hero.png'),
+                    image: AssetImage('assets/images/Emmons_Home_Hero.png'), // This could also be in config
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -72,7 +75,7 @@ class HomePageState extends State<HomePage> {
             children: <Widget>[
               const SizedBox(height: 40),
               Text(
-                'Welcome to the Campaign!',
+                campaignConfig.content.welcomeTitle,
                 style: Theme.of(context).textTheme.headlineMedium,
                 textAlign: TextAlign.center,
               ),
@@ -80,56 +83,26 @@ class HomePageState extends State<HomePage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: Text(
-                  'Join us in making a difference for Bell County Precinct 4. Curtis Emmons is dedicated to serving our community with integrity, transparency, and a commitment to progress.',
+                  campaignConfig.content.welcomeSubtitle,
                   style: Theme.of(context).textTheme.bodyLarge,
                   textAlign: TextAlign.center,
                 ),
               ),
               const SizedBox(height: 40),
-              const HomePageSection(
-                title: 'Issues',
-                summary:
-                    'Learn about the key issues Curtis is focused on to improve our precinct.',
-                imagePath: 'assets/images/Emmons_Home_Issues_Preview.png',
-                routePath: '/issues',
-                imageBackgroundColor: Colors.blueGrey,
-                imageLeft: true,
-                backgroundColor: Color(0xffa01124),
-                textColor: Colors.white,
-                buttonColor: Colors.white,
-                buttonTextColor: Color(0xff002663),
-              ),
-              const HomePageSection(
-                title: 'About Me',
-                summary:
-                    'Discover more about Curtis Emmons, his background, and his vision for Bell County.',
-                imagePath: 'assets/images/Emmons_Home_About_Preview.png',
-                routePath: '/about',
-                imageBackgroundColor: Colors.teal,
-                imageLeft: false,
-              ),
-              const HomePageSection(
-                title: 'Endorsements',
-                summary:
-                    'See who is endorsing Curtis and learn how you can add your support.',
-                imagePath: 'assets/images/Emmons_Home_Endorsements_Preview.png',
-                routePath: '/endorsements',
-                imageBackgroundColor: Colors.amber,
-                imageLeft: true,
-                backgroundColor: Color(0xff002663),
-                textColor: Colors.white,
-                buttonColor: Colors.white,
-                buttonTextColor: Color(0xffa01124),
-              ),
-              const HomePageSection(
-                title: 'Donate',
-                summary:
-                    'Support the campaign financially and help us make a difference.',
-                imagePath: 'assets/images/Emmons_Home_Donate_Preview.png',
-                routePath: '/donate',
-                imageBackgroundColor: Colors.green,
-                imageLeft: false,
-              ),
+              ...campaignConfig.homePageSections.map((sectionConfig) {
+                return HomePageSection(
+                  title: sectionConfig.title,
+                  summary: sectionConfig.summary,
+                  imagePath: sectionConfig.imagePath,
+                  routePath: sectionConfig.routePath,
+                  imageBackgroundColor: sectionConfig.imageBackgroundColor,
+                  imageLeft: sectionConfig.imageLeft,
+                  backgroundColor: sectionConfig.backgroundColor,
+                  textColor: sectionConfig.textColor,
+                  buttonColor: sectionConfig.buttonColor,
+                  buttonTextColor: sectionConfig.buttonTextColor,
+                );
+              }).toList(),
               const DonateSection(),
               const SignupFormWidget(),
               const Footer(),
