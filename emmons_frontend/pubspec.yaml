@@ -36,6 +36,7 @@ flutter:
   assets:
     - assets/images/
     - assets/fonts/
+    - assets/campaign_configs/
 
   fonts:
     - family: BebasNeue
