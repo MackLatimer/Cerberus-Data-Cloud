@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from ..models import db, Agenda, AgendaItem, GovernmentBody, Subscription
+from ..utils.security import verify_webhook_signature
 import json
 
 agendas_bp = Blueprint('agendas_bp', __name__)
@@ -30,8 +31,9 @@ def search():
             query = query.filter(db_column == value)
 
     if keyword:
+        search_term = '%' + keyword + '%'
         keyword_search_fields = [GovernmentBody.body_name, AgendaItem.category, AgendaItem.heading, AgendaItem.item_text]
-        query = query.filter(db.or_(*[field.ilike(f"%{keyword}%") for field in keyword_search_fields]))
+        query = query.filter(db.or_(*[field.ilike(search_term) for field in keyword_search_fields]))
 
     results = query.order_by(Agenda.date.desc(), GovernmentBody.body_name, AgendaItem.id).all()
 
@@ -73,6 +75,7 @@ def subscribe():
     return jsonify({"message": "Subscription successful!"}), 201
 
 @agendas_bp.route('/webhook/order_canceled', methods=['POST'])
+@verify_webhook_signature
 def order_canceled():
     data = request.get_json()
     if not data or 'data' not in data or 'email' not in data['data']:
@@ -87,6 +90,7 @@ def order_canceled():
     return jsonify({"message": "Subscription deactivated"}), 200
 
 @agendas_bp.route('/webhook/order_renewed', methods=['POST'])
+@verify_webhook_signature
 def order_renewed():
     data = request.get_json()
     if not data or 'data' not in data or 'email' not in data['data']:
@@ -102,7 +106,8 @@ def order_renewed():
 
 @agendas_bp.route('/municipalities', methods=['GET'])
 def get_municipalities():
-    municipalities = GovernmentBody.query.filter(GovernmentBody.body_name.in_(['City of Progress', 'Town of Innovation'])).all()
+    # Fetch all distinct government bodies, ordered by name.
+    municipalities = GovernmentBody.query.order_by(GovernmentBody.body_name).all()
     return jsonify([{'id': m.body_id, 'name': m.body_name} for m in municipalities])
 
 @agendas_bp.route('/categories', methods=['GET'])

@@ -1,74 +1,98 @@
 steps:
-  # Test step for the universal backend
+  # 1. Run backend integration tests
   - name: 'gcr.io/cloud-builders/docker'
-    id: 'test-cerberus-universal-backend'
+    id: 'test-backend'
     dir: 'cerberus_universal_backend'
-    waitFor: ['-']
     args: ['compose', '-f', 'docker-compose.test.yaml', 'up', '--build', '--abort-on-container-exit']
 
-  # Build steps for all services, running in parallel with tests
-  - name: 'gcr.io/kaniko-project/executor:latest'
-    id: 'build-cerberus-universal-backend'
-    waitFor: ['-']
+  # 2. Build backend container
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build-backend'
+    waitFor: ['test-backend']
     args:
-      - --destination=us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/universal-api:$SHORT_SHA
-      - --cache=true
-      - --cache-ttl=24h
-      - --context=./cerberus_universal_backend
-      - --dockerfile=./cerberus_universal_backend/Dockerfile
+      - 'build'
+      - '-t'
+      - '${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REGISTRY_REPO}/${_BACKEND_SERVICE_NAME}:${COMMIT_SHA}'
+      - './cerberus_universal_backend'
+      - '-f'
+      - './cerberus_universal_backend/Dockerfile'
 
-  - name: 'gcr.io/kaniko-project/executor:latest'
-    id: 'build-cerberus-frontend'
-    waitFor: ['-']
+  # 3. Build frontend container
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build-frontend'
     args:
-      - --destination=us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/cerberus-frontend:$SHORT_SHA
-      - --cache=true
-      - --cache-ttl=24h
-      - --context=./cerberus_frontend
-      - --dockerfile=./cerberus_frontend/Dockerfile
+      - 'build'
+      - '-t'
+      - '${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REGISTRY_REPO}/${_FRONTEND_SERVICE_NAME}:${COMMIT_SHA}'
+      - './emmons_frontend'
+      - '-f'
+      - './emmons_frontend/Dockerfile'
 
-  - name: 'gcr.io/kaniko-project/executor:latest'
-    id: 'build-emmons-frontend'
-    waitFor: ['-']
-    args:
-      - --destination=us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/emmons-frontend:$SHORT_SHA
-      - --cache=true
-      - --cache-ttl=24h
-      - --context=./emmons_frontend
-      - --dockerfile=./emmons_frontend/Dockerfile
+  # 4. Push containers to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push-containers'
+    waitFor: ['build-backend', 'build-frontend']
+    args: ['push', '--all-tags', '${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REGISTRY_REPO}']
 
-  # Run database migrations
-  - name: 'gcr.io/google-appengine/exec-wrapper'
+  # 5. Apply database migrations
+  - name: 'gcr.io/google-cloud-sdk/gcloud'
     id: 'run-migrations'
-    waitFor:
-      - 'build-cerberus-universal-backend'
-      - 'test-cerberus-universal-backend'
+    waitFor: ['push-containers']
+    entrypoint: gcloud
     args:
-      - '-i'
-      - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/universal-api:$SHORT_SHA'
-      - '-s'
-      - '$$DB_CONNECTION_NAME'
-      - '-e'
-      - 'DATABASE_URL=postgresql+psycopg://$$DB_USER:$$DB_PASS@/$$DB_NAME?host=/cloudsql/$$DB_CONNECTION_NAME'
-      - '--'
-      - 'flask'
-      - 'db'
-      - 'upgrade'
-    secretEnv: ['DB_USER', 'DB_PASS', 'DB_NAME', 'DB_CONNECTION_NAME']
+      - 'run'
+      - 'jobs'
+      - 'execute'
+      - '${_BACKEND_MIGRATION_JOB_NAME}'
+      - '--region'
+      - '${_LOCATION}'
+      - '--wait'
+    # This assumes a pre-configured Cloud Run Job with the necessary secrets
+    # and service account to run 'flask db upgrade'.
 
-# List of images to be pushed to Artifact Registry
-images:
-  - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/universal-api:$SHORT_SHA'
-  - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/cerberus-frontend:$SHORT_SHA'
-  - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/emmons-frontend:$SHORT_SHA'
+  # 6. Deploy backend to Cloud Run
+  - name: 'gcr.io/google-cloud-sdk/gcloud'
+    id: 'deploy-backend'
+    waitFor: ['run-migrations']
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - '${_BACKEND_SERVICE_NAME}'
+      - '--image'
+      - '${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REGISTRY_REPO}/${_BACKEND_SERVICE_NAME}:${COMMIT_SHA}'
+      - '--region'
+      - '${_LOCATION}'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated' # Temporarily for public API parts, can be locked down with API Gateway
+      - '--set-secrets=DB_USER=DB_USER:latest,DB_PASS=DB_PASS:latest,DB_NAME=DB_NAME:latest,DB_CONNECTION_NAME=DB_CONNECTION_NAME:latest,SECRET_KEY=SECRET_KEY:latest,PGCRYPTO_SECRET_KEY=PGCRYPTO_SECRET_KEY:latest,STRIPE_SECRET_KEY=STRIPE_SECRET_KEY:latest,STRIPE_WEBHOOK_SECRET=STRIPE_WEBHOOK_SECRET:latest,WEBHOOK_SECRET_KEY=WEBHOOK_SECRET_KEY:latest'
 
-availableSecrets:
-  secretManager:
-  - versionName: projects/cerberus-data-cloud/secrets/DB_USER/versions/latest
-    env: 'DB_USER'
-  - versionName: projects/cerberus-data-cloud/secrets/DB_PASS/versions/latest
-    env: 'DB_PASS'
-  - versionName: projects/cerberus-data-cloud/secrets/DB_NAME/versions/latest
-    env: 'DB_NAME'
-  - versionName: projects/cerberus-data-cloud/secrets/DB_CONNECTION_NAME/versions/latest
-    env: 'DB_CONNECTION_NAME'
+  # 7. Deploy frontend to Cloud Run
+  - name: 'gcr.io/google-cloud-sdk/gcloud'
+    id: 'deploy-frontend'
+    waitFor: ['push-containers']
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - '${_FRONTEND_SERVICE_NAME}'
+      - '--image'
+      - '${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REGISTRY_REPO}/${_FRONTEND_SERVICE_NAME}:${COMMIT_SHA}'
+      - '--region'
+      - '${_LOCATION}'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+
+# Define substitution variables
+substitutions:
+  _LOCATION: 'us-central1'
+  _ARTIFACT_REGISTRY_REPO: 'cerberus-images'
+  _BACKEND_SERVICE_NAME: 'cerberus-universal-backend'
+  _FRONTEND_SERVICE_NAME: 'cerberus-universal-frontend'
+  _BACKEND_MIGRATION_JOB_NAME: 'cerberus-db-migrations'
+
+# Note: The availableSecrets section is removed because secrets are now
+# referenced directly in the 'gcloud run deploy' step. This is a newer
+# and more direct way to handle secrets for Cloud Run deployments.

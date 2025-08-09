@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:emmons_frontend/src/widgets/dynamic_size_app_bar.dart';
-import 'package:emmons_frontend/src/widgets/common_app_bar.dart';
-import 'package:emmons_frontend/src/widgets/signup_form.dart';
-import 'package:emmons_frontend/src/widgets/donate_section.dart';
-import 'package:emmons_frontend/src/widgets/footer.dart';
-import 'package:emmons_frontend/src/utils/breakpoint.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:emmons_frontend/main.dart'; // For campaignProvider
+import 'package:emmons_frontend/models/issue.dart';
+import 'package:emmons_frontend/ui/core_widgets/widgets/dynamic_size_app_bar.dart';
+import 'package:emmons_frontend/ui/core_widgets/widgets/common_app_bar.dart';
+import 'package:emmons_frontend/ui/core_widgets/widgets/signup_form.dart';
+import 'package:emmons_frontend/ui/core_widgets/widgets/donate_section.dart';
+import 'package:emmons_frontend/ui/core_widgets/widgets/footer.dart';
+import 'package:emmons_frontend/core/utils/breakpoint.dart';
 
-class IssuesPage extends StatefulWidget {
+class IssuesPage extends ConsumerStatefulWidget {
   const IssuesPage({super.key});
 
   @override
   IssuesPageState createState() => IssuesPageState();
 }
 
-class IssuesPageState extends State<IssuesPage> {
+class IssuesPageState extends ConsumerState<IssuesPage> {
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -23,10 +26,8 @@ class IssuesPageState extends State<IssuesPage> {
   }
 
   Widget _buildIssueSection(
-    BuildContext context,
-    String title,
-    String content, {
-    required String imagePath,
+    BuildContext context, {
+    required Issue issue,
     Color? backgroundColor,
     Color? textColor,
     bool imageLeft = true,
@@ -39,7 +40,7 @@ class IssuesPageState extends State<IssuesPage> {
       height: isCompact ? 200 : 400,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage(imagePath),
+          image: AssetImage(issue.imageUrl),
           fit: BoxFit.cover,
         ),
       ),
@@ -54,14 +55,14 @@ class IssuesPageState extends State<IssuesPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Text(
-            title,
+            issue.title,
             style: textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold, color: textColor ?? Colors.black),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 12),
           Text(
-            content,
+            issue.description,
             style:
                 textTheme.bodyLarge?.copyWith(color: textColor ?? Colors.black),
             textAlign: TextAlign.justify,
@@ -91,6 +92,7 @@ class IssuesPageState extends State<IssuesPage> {
 
   @override
   Widget build(BuildContext context) {
+    final campaignConfig = ref.watch(campaignProvider);
     final windowSize = getWindowSize(context);
     final isCompact = windowSize == WindowSize.compact;
     final heroHeight = isCompact ? MediaQuery.of(context).size.height * 0.5 : MediaQuery.of(context).size.height;
@@ -111,7 +113,7 @@ class IssuesPageState extends State<IssuesPage> {
         appBar: DynamicSizeAppBar(
           height: appBarHeight,
           child: CommonAppBar(
-            title: 'Key Issues',
+            title: campaignConfig.content.issuesPageTitle,
             scrollController: _scrollController,
           ),
         ),
@@ -122,9 +124,9 @@ class IssuesPageState extends State<IssuesPage> {
             SliverToBoxAdapter(
               child: Container(
                 height: heroHeight,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('images/Emmons_Issues_Hero.png'),
+                    image: AssetImage(campaignConfig.content.issuesPageHeroImagePath),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -138,43 +140,22 @@ class IssuesPageState extends State<IssuesPage> {
             children: <Widget>[
               const SizedBox(height: 40),
               Text(
-                'Issues',
+                campaignConfig.content.issuesPageTitle,
                 style: Theme.of(context).textTheme.headlineMedium,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 40),
-              _buildIssueSection(
-                context,
-                'Economic Growth & Job Creation',
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Curtis believes in fostering a business-friendly environment that attracts new opportunities and supports local entrepreneurs.',
-                  imagePath: 'images/Emmons_Issues_Issue1.png',
-                backgroundColor: const Color(0xffa01124),
-                textColor: Colors.white,
-                imageLeft: true,
-              ),
-              _buildIssueSection(
-                context,
-                'Community Safety & Emergency Services',
-                'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Ensuring our neighborhoods are safe and our first responders are well-equipped is a top priority.',
-                  imagePath: 'images/Emmons_Issues_Issue2.png',
-                imageLeft: false,
-              ),
-              _buildIssueSection(
-                context,
-                'Infrastructure Development & Maintenance',
-                'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. We must invest in maintaining and improving our roads, bridges, and public utilities to support our growing community.',
-                  imagePath: 'images/Emmons_Issues_Issue3.png',
-                backgroundColor: const Color(0xff002663),
-                textColor: Colors.white,
-                imageLeft: true,
-              ),
-              _buildIssueSection(
-                context,
-                'Fiscal Responsibility & Transparent Governance',
-                'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Curtis is committed to responsible spending of taxpayer dollars and ensuring all county operations are transparent and accountable to the public.',
-                  imagePath: 'images/Emmons_Issues_Issue4.png',
-                imageLeft: false,
-              ),
+              ...campaignConfig.issues.asMap().entries.map((entry) {
+                int idx = entry.key;
+                Issue issue = entry.value;
+                return _buildIssueSection(
+                  context,
+                  issue: issue,
+                  imageLeft: idx % 2 == 0, // Alternate image left/right
+                  backgroundColor: idx % 2 == 0 ? campaignConfig.theme.primaryColor : null,
+                  textColor: idx % 2 == 0 ? Colors.white : null,
+                );
+              }),
               const DonateSection(),
               const SignupFormWidget(),
               const Footer(),

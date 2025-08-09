@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:emmons_frontend/src/widgets/dynamic_size_app_bar.dart';
-import 'package:emmons_frontend/src/widgets/common_app_bar.dart';
-import 'package:emmons_frontend/src/widgets/signup_form.dart';
-import 'package:emmons_frontend/src/widgets/donate_section.dart';
-import 'package:emmons_frontend/src/widgets/footer.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:emmons_frontend/main.dart'; // For campaignProvider
+import 'package:emmons_frontend/ui/core_widgets/widgets/dynamic_size_app_bar.dart';
+import 'package:emmons_frontend/ui/core_widgets/widgets/common_app_bar.dart';
+import 'package:emmons_frontend/ui/core_widgets/widgets/signup_form.dart';
+import 'package:emmons_frontend/ui/core_widgets/widgets/donate_section.dart';
+import 'package:emmons_frontend/ui/core_widgets/widgets/footer.dart';
 
-class AboutPage extends StatefulWidget {
+class AboutPage extends ConsumerStatefulWidget {
   const AboutPage({super.key});
 
   @override
   AboutPageState createState() => AboutPageState();
 }
 
-class AboutPageState extends State<AboutPage> {
+class AboutPageState extends ConsumerState<AboutPage> {
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -23,6 +25,8 @@ class AboutPageState extends State<AboutPage> {
 
   @override
   Widget build(BuildContext context) {
+    final campaignConfig = ref.watch(campaignProvider);
+
     return LayoutBuilder(builder: (context, constraints) {
       final width = constraints.maxWidth;
       double appBarHeight;
@@ -39,7 +43,7 @@ class AboutPageState extends State<AboutPage> {
         appBar: DynamicSizeAppBar(
           height: appBarHeight,
           child: CommonAppBar(
-            title: 'About Curtis Emmons',
+            title: campaignConfig.content.aboutPageTitle,
             scrollController: _scrollController,
           ),
         ),
@@ -50,9 +54,9 @@ class AboutPageState extends State<AboutPage> {
             SliverToBoxAdapter(
               child: Container(
                 height: MediaQuery.of(context).size.height,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('images/Emmons_About_Hero.png'),
+                    image: AssetImage(campaignConfig.content.aboutPageHeroImagePath),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -74,14 +78,14 @@ class AboutPageState extends State<AboutPage> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
-                          'About Me',
+                          campaignConfig.content.aboutPageSubtitle,
                           style: Theme.of(context).textTheme.headlineMedium,
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 40),
-                        const Text(
-                          'Curtis Emmons is a dedicated public servant with a passion for community development and effective governance. With a background in business and a commitment to fiscal responsibility, Curtis brings a wealth of experience to the table. He is a strong advocate for transparency and accountability in government, and he is committed to working collaboratively to find solutions to the challenges facing our county.\n\nThroughout his career, Curtis has been actively involved in numerous local initiatives, from supporting small businesses to improving public infrastructure. He believes in a common-sense approach to problem-solving and is dedicated to ensuring that the voices of all residents are heard. His vision for the county is one of a smart growth, economic prosperity, and a high quality of life for all.\n\nAs a husband and father, Curtis understands the importance of building a strong and vibrant community for future generations. He is a firm believer in the power of collaboration and is committed to working with residents, business leaders, and community organizations to create a better future for our county.',
-                          style: TextStyle(fontSize: 18, height: 1.5),
+                        Text(
+                          campaignConfig.content.aboutPageBio,
+                          style: const TextStyle(fontSize: 18, height: 1.5),
                           textAlign: TextAlign.justify,
                         ),
                         const SizedBox(height: 40),
@@ -94,7 +98,7 @@ class AboutPageState extends State<AboutPage> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(15.0),
-                                  child: Image.asset('images/Emmons_About_Bio1.png', fit: BoxFit.cover)),
+                                  child: Image.asset(campaignConfig.content.aboutPageBioImage1Path, fit: BoxFit.cover)),
                               ),
                             ),
                             Expanded(
@@ -102,7 +106,7 @@ class AboutPageState extends State<AboutPage> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(15.0),
-                                  child: Image.asset('images/Emmons_About_Bio2.png', fit: BoxFit.cover)),
+                                  child: Image.asset(campaignConfig.content.aboutPageBioImage2Path, fit: BoxFit.cover)),
                               ),
                             ),
                           ],
@@ -113,7 +117,7 @@ class AboutPageState extends State<AboutPage> {
                             padding: const EdgeInsets.all(8.0),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(15.0),
-                              child: Image.asset('images/Emmons_About_Bio3.png', height: 200, fit: BoxFit.cover)),
+                              child: Image.asset(campaignConfig.content.aboutPageBioImage3Path, height: 200, fit: BoxFit.cover)),
                           ),
                         ),
                       ],

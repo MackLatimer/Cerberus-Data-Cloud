@@ -1,5 +1,6 @@
-import 'package:emmons_frontend/api/campaign_service.dart';
+import 'dart:html' if (dart.library.io) 'dart:io';
 import 'package:emmons_frontend/config/campaign_config.dart';
+import 'package:emmons_frontend/config/campaigns.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -12,22 +13,22 @@ import 'package:emmons_frontend/ui/features/pages/home_page.dart';
 import 'package:emmons_frontend/ui/features/pages/issues_page.dart';
 import 'package:emmons_frontend/ui/features/pages/privacy_policy_page.dart';
 
-// Provider to hold the campaign configuration
+// Provider to hold the campaign configuration.
+// It is overridden in main() with the correct campaign config.
 final campaignProvider = Provider<CampaignConfig>((ref) {
-  // This will be replaced by the actual loaded config.
-  // Throwing an error here to ensure it's overridden in the ProviderScope.
-  throw UnimplementedError();
+  // Return a default or throw an error if not overridden.
+  // This ensures we always have a config.
+  return campaignsByDomain['localhost']!;
 });
 
-Future<void> main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
   setUrlStrategy(const HashUrlStrategy());
   GoRouter.optionURLReflectsImperativeAPIs = true;
 
-  // In a real app, you'd get the identifier from the hostname.
-  // For now, we hardcode it to "emmons".
-  const campaignIdentifier = 'emmons';
-  final campaignConfig = await CampaignService().fetchConfigFor(campaignIdentifier);
+  // Determine the campaign config based on the hostname.
+  final String hostname = Uri.base.host;
+  final CampaignConfig campaignConfig = campaignsByDomain[hostname] ?? campaignsByDomain['localhost']!;
 
   runApp(
     ProviderScope(
@@ -48,7 +49,7 @@ class MyApp extends ConsumerWidget {
     final campaignConfig = ref.watch(campaignProvider);
 
     final router = GoRouter(
-      initialLocation: '/coming-soon',
+      initialLocation: '/home', // Changed to /home as a better default
       routes: [
         GoRoute(
           path: '/home',
@@ -82,8 +83,8 @@ class MyApp extends ConsumerWidget {
     );
 
     return MaterialApp.router(
-      title: campaignConfig.siteTitle, // Using dynamic site title
-      theme: createAppTheme(campaignConfig), // Using the dynamic theme generator
+      title: campaignConfig.siteTitle,
+      theme: campaignConfig.theme, // Use the theme directly from the config
       routerConfig: router,
     );
   }

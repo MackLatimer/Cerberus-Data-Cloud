@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:emmons_frontend/main.dart'; // For campaignProvider
 
-class Footer extends StatelessWidget {
+class Footer extends ConsumerWidget {
   const Footer({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final campaignConfig = ref.watch(campaignProvider);
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
@@ -17,7 +20,7 @@ class Footer extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text(
-              'Paid for by Elect Emmons',
+              campaignConfig.content.footerText,
               style: textTheme.bodyMedium?.copyWith(color: Colors.white),
               textAlign: TextAlign.center,
             ),

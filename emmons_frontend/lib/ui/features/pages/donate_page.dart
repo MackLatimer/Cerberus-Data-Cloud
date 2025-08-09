@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:emmons_frontend/src/widgets/dynamic_size_app_bar.dart';
-import 'package:emmons_frontend/src/widgets/common_app_bar.dart';
-import 'package:emmons_frontend/src/widgets/footer.dart';
-import 'package:emmons_frontend/src/widgets/donation_widget.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:emmons_frontend/main.dart'; // For campaignProvider
+import 'package:emmons_frontend/ui/core_widgets/widgets/dynamic_size_app_bar.dart';
+import 'package:emmons_frontend/ui/core_widgets/widgets/common_app_bar.dart';
+import 'package:emmons_frontend/ui/core_widgets/widgets/footer.dart';
+import 'package:emmons_frontend/ui/core_widgets/widgets/donation_widget.dart';
 
-class DonatePage extends StatefulWidget {
+class DonatePage extends ConsumerStatefulWidget {
   const DonatePage({super.key});
 
   @override
   DonatePageState createState() => DonatePageState();
 }
 
-class DonatePageState extends State<DonatePage> {
+class DonatePageState extends ConsumerState<DonatePage> {
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -22,6 +24,8 @@ class DonatePageState extends State<DonatePage> {
 
   @override
   Widget build(BuildContext context) {
+    final campaignConfig = ref.watch(campaignProvider);
+
     return LayoutBuilder(builder: (context, constraints) {
       final width = constraints.maxWidth;
       double appBarHeight;
@@ -38,7 +42,7 @@ class DonatePageState extends State<DonatePage> {
         appBar: DynamicSizeAppBar(
           height: appBarHeight,
           child: CommonAppBar(
-            title: 'Donate to the Campaign',
+            title: campaignConfig.content.donatePageTitle,
             scrollController: _scrollController,
           ),
         ),
@@ -49,9 +53,9 @@ class DonatePageState extends State<DonatePage> {
               SliverToBoxAdapter(
                 child: Container(
                   height: MediaQuery.of(context).size.height,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('images/Emmons_Donate_Hero.png'),
+                      image: AssetImage(campaignConfig.content.donatePageHeroImagePath),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -72,7 +76,7 @@ class DonatePageState extends State<DonatePage> {
                         children: <Widget>[
                           const SizedBox(height: 40),
                           Text(
-                            'Support our Mission!',
+                            campaignConfig.content.donatePageSubtitle,
                             style: Theme.of(context).textTheme.headlineMedium,
                             textAlign: TextAlign.center,
                           ),
@@ -80,13 +84,13 @@ class DonatePageState extends State<DonatePage> {
                           const DonationWidget(),
                           const SizedBox(height: 40),
                           Text(
-                            'If you prefer to donate by mail, please send a check payable to "Curtis Emmons Campaign" to: 123 Main Street, Anytown, USA 12345',
+                            campaignConfig.content.donatePageMailInstructions,
                             style: Theme.of(context).textTheme.bodyMedium,
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 20),
                           Text(
-                            'Thank you for your generosity!',
+                            campaignConfig.content.donatePageThankYouText,
                             style: Theme.of(context).textTheme.titleMedium,
                             textAlign: TextAlign.center,
                           ),

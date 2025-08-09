@@ -1,18 +1,19 @@
-import 'package:emmons_frontend/src/api_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:emmons_frontend/main.dart'; // For campaignProvider
 
-class DonationWidget extends StatefulWidget {
+class DonationWidget extends ConsumerStatefulWidget {
   const DonationWidget({super.key});
 
   @override
   State<DonationWidget> createState() => _DonationWidgetState();
 }
 
-class _DonationWidgetState extends State<DonationWidget> {
+class _DonationWidgetState extends ConsumerState<DonationWidget> {
   late Future<void> _stripeInitializationFuture;
   int? _selectedAmount;
   final TextEditingController _customAmountController = TextEditingController();
@@ -46,7 +47,8 @@ class _DonationWidgetState extends State<DonationWidget> {
   }
 
   Future<void> _initializeStripe() async {
-    Stripe.publishableKey = 'pk_test_51Rnnfv4brLkKMnfT9dQISZb1hLmvQMVq3nr8Ymb67lqFQ4JwJkTrc92dRUXKYvYs3tSMeYZkTgIkKJxLsOmjqTN800f2UFiJiT';
+    final campaignConfig = ref.read(campaignProvider);
+    Stripe.publishableKey = campaignConfig.stripe.publicKey;
     await Stripe.instance.applySettings();
   }
 
@@ -68,6 +70,7 @@ class _DonationWidgetState extends State<DonationWidget> {
   }
 
   Future<void> _createPaymentIntent() async {
+    final campaignConfig = ref.read(campaignProvider);
     final amount = _selectedAmount ?? int.tryParse(_customAmountController.text);
     if (amount == null) {
       if (mounted) {
@@ -80,11 +83,12 @@ class _DonationWidgetState extends State<DonationWidget> {
 
     try {
       final response = await http.post(
-        Uri.parse('$apiBaseUrl/donate/create-payment-intent'),
+        Uri.parse('${campaignConfig.apiBaseUrl}/donate/create-payment-intent'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'amount': amount * 100, // Convert to cents
           'currency': 'usd',
+          'campaign_id': campaignConfig.campaignId,
         }),
       );
 
@@ -96,7 +100,7 @@ class _DonationWidgetState extends State<DonationWidget> {
         await Stripe.instance.initPaymentSheet(
           paymentSheetParameters: SetupPaymentSheetParameters(
             paymentIntentClientSecret: clientSecret,
-            merchantDisplayName: 'Emmons for Office',
+            merchantDisplayName: campaignConfig.siteTitle,
           ),
         );
 
@@ -154,9 +158,10 @@ class _DonationWidgetState extends State<DonationWidget> {
   }
 
   Future<void> _submitDetails() async {
+    final campaignConfig = ref.read(campaignProvider);
     try {
       final response = await http.post(
-        Uri.parse('$apiBaseUrl/donate/update-donation-details'),
+        Uri.parse('${campaignConfig.apiBaseUrl}/donate/update-donation-details'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'payment_intent_id': _paymentIntentId,
@@ -231,6 +236,7 @@ class _DonationWidgetState extends State<DonationWidget> {
   }
 
   Widget _buildAmountStep() {
+    final campaignConfig = ref.watch(campaignProvider);
     return Column(
       key: const ValueKey<int>(1),
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -271,13 +277,14 @@ class _DonationWidgetState extends State<DonationWidget> {
         const SizedBox(height: 20),
         ElevatedButton(
           onPressed: _createPaymentIntent,
-          child: const Text('Continue'),
+          child: Text(campaignConfig.content.donationWidgetContinueButtonLabel),
         ),
       ],
     );
   }
 
   Widget _buildDetailsStep() {
+    final campaignConfig = ref.watch(campaignProvider);
     return Form(
       key: _formKey,
       child: Column(
@@ -330,11 +337,11 @@ class _DonationWidgetState extends State<DonationWidget> {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: _handlePayment,
-            child: const Text('Proceed to Payment'),
+            child: Text(campaignConfig.content.donationWidgetProceedButtonLabel),
           ),
           const SizedBox(height: 20),
           CheckboxListTile(
-            title: const Text('Cover transaction fees'),
+            title: Text(campaignConfig.content.donationWidgetCoverFeesCheckboxLabel),
             value: _coverFees,
             onChanged: (value) {
               setState(() {
@@ -343,7 +350,7 @@ class _DonationWidgetState extends State<DonationWidget> {
             },
           ),
           CheckboxListTile(
-            title: const Text('Make this a recurring monthly donation'),
+            title: Text(campaignConfig.content.donationWidgetRecurringCheckboxLabel),
             value: _isRecurring,
             onChanged: (value) {
               setState(() {
@@ -357,6 +364,7 @@ class _DonationWidgetState extends State<DonationWidget> {
   }
 
   Widget _buildContactStep() {
+    final campaignConfig = ref.watch(campaignProvider);
     return Form(
       key: const ValueKey<int>(3),
       child: Column(
@@ -383,7 +391,7 @@ class _DonationWidgetState extends State<DonationWidget> {
           ),
           const SizedBox(height: 20),
           CheckboxListTile(
-            title: const Text('Contact me via Email'),
+            title: Text(campaignConfig.content.donationWidgetContactEmailCheckboxLabel),
             value: _contactEmail,
             onChanged: (value) {
               setState(() {
@@ -392,7 +400,7 @@ class _DonationWidgetState extends State<DonationWidget> {
             },
           ),
           CheckboxListTile(
-            title: const Text('Contact me via Phone Call'),
+            title: Text(campaignConfig.content.donationWidgetContactPhoneCheckboxLabel),
             value: _contactPhone,
             onChanged: (value) {
               setState(() {
@@ -401,7 +409,7 @@ class _DonationWidgetState extends State<DonationWidget> {
             },
           ),
           CheckboxListTile(
-            title: const Text('Contact me via Mail'),
+            title: Text(campaignConfig.content.donationWidgetContactMailCheckboxLabel),
             value: _contactMail,
             onChanged: (value) {
               setState(() {
@@ -410,7 +418,7 @@ class _DonationWidgetState extends State<DonationWidget> {
             },
           ),
           CheckboxListTile(
-            title: const Text('Contact me via SMS'),
+            title: Text(campaignConfig.content.donationWidgetContactSmsCheckboxLabel),
             value: _contactSms,
             onChanged: (value) {
               setState(() {
@@ -421,7 +429,7 @@ class _DonationWidgetState extends State<DonationWidget> {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: _submitDetails,
-            child: const Text('Submit'),
+            child: Text(campaignConfig.content.donationWidgetSubmitButtonLabel),
           ),
         ],
       ),

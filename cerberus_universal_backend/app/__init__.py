@@ -16,6 +16,7 @@ from . import models as model_module
 from .routes.voters import voters_api_bp, public_api_bp
 from .routes.donate import donate_bp
 from .routes.agendas import agendas_bp
+from .routes.auth import auth_bp
 
 def create_app(config_name_override: str = None) -> Flask:
     """
@@ -40,6 +41,7 @@ def create_app(config_name_override: str = None) -> Flask:
     app.register_blueprint(voters_api_bp)
     app.register_blueprint(donate_bp)
     app.register_blueprint(agendas_bp, url_prefix='/api/v1/agendas')
+    app.register_blueprint(auth_bp)
 
     @app.route('/health')
     def health_check():

@@ -42,3 +42,13 @@ cerberus_campaigns_backend/database_schema.sql
 cerberus_campaigns_backend/.env.example
 cloudbuild.yaml-old
 *.bak
+
+# --- Overrides and Additions for GCP Build ---
+
+# Ensure all virtual environments are ignored, as they are large and not needed.
+**/*venv*
+
+# The main application source code should NOT be ignored.
+# The following rules override the broad ignores above.
+!cerberus_universal_backend/
+!emmons_frontend/

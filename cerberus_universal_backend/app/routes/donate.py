@@ -4,18 +4,9 @@ from app.extensions import db
 from app.models import Donation, Campaign, Person, PersonEmail, PersonPhone, DataSource
 from sqlalchemy import text
 from ..config import current_config
+from ..utils.security import encrypt_data, decrypt_data
 
 donate_bp = Blueprint('donate_bp', __name__, url_prefix='/api/v1/donate')
-
-PGCRYPTO_SECRET_KEY = current_config.PGCRYPTO_SECRET_KEY
-
-def encrypt_data(data):
-    if data is None: return None
-    return db.session.scalar(text("SELECT pgp_sym_encrypt(:data, :key)"), {'data': data, 'key': PGCRYPTO_SECRET_KEY})
-
-def decrypt_data(data):
-    if data is None: return None
-    return db.session.scalar(text("SELECT pgp_sym_decrypt(:data, :key)"), {'data': data, 'key': PGCRYPTO_SECRET_KEY})
 
 @donate_bp.route('/create-payment-intent', methods=['POST'])
 def create_payment_intent():
@@ -128,8 +119,10 @@ def update_donation_details():
     donation.employer = data.get('employer', donation.employer)
     donation.occupation = data.get('occupation', donation.occupation)
     
-    if 'email' in data: donation.email = data['email']
-    if 'phone_number' in data: donation.phone_number = data['phone_number']
+    if 'email' in data:
+        donation.email = encrypt_data(data['email'])
+    if 'phone_number' in data:
+        donation.phone_number = encrypt_data(data['phone_number'])
 
     donation.contact_email = data.get('contact_email', donation.contact_email)
     donation.contact_phone = data.get('contact_phone', donation.contact_phone)
