@@ -1,54 +1,65 @@
-# Ignore git files
+# This file tells the Docker client which files and directories to ignore
+# when creating a build context. This keeps the context small and secure.
+
+# Git
 .git
 .gitignore
 
-# Ignore python cache
-**/__pycache__
-**/*.pyc
-**/*.pyo
-**/*.pyd
+# Docker & CI/CD
+Dockerfile
+.dockerignore
+cloudbuild.yaml
 
-# Ignore dart files
-.dart_tool/
-.flutter-plugins-dependencies
-.metadata
-build/
+# Python artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.pytest_cache/
 
-# Ignore IDE files
+# Python Virtual Environments
+# Ignoring all directories named 'venv' or 'venv_backend'
+**/venv/
+**/venv_backend/
+
+# Flutter build artifacts and packages
+**/build/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.packages
+**/.dart_tool/
+
+# IDE and editor configuration files
 .idea/
 .vscode/
-.history/
+*.swp
+*.swo
 
-# Ignore unnecessary directories
-cerberus_frontend/
-emmons_frontend/test/
-emmons_frontend/web/
-cerberus_report_backend/__pycache__/
-cerberus_campaigns_backend/tests/
-cerberus_campaigns_backend/docs/
+# Operating System generated files
+.DS_Store
+Thumbs.db
 
-# Ignore log files
+# Log files, local databases, and other temporary files
 *.log
-
-# Ignore other unnecessary files
-emmons_frontend/new
-emmons_frontend/nginx.conf
-cerberus_report_backend/health_check_base_output.json
-cerberus_report_backend/health_check_retry_script.sh
-cerberus_report_backend/health_check_script.sh
-cerberus_report_backend/municipalities_output.json
-cerberus_report_backend/test_db_output.json
-cerberus_campaigns_backend/database_schema.sql
-cerberus_campaigns_backend/.env.example
-cloudbuild.yaml-old
+*.sql
+*.sqlite3
 *.bak
+test_output.log
+new_schema_fixed.sql
+new_schema.sql
+drop_current_schema.sql
 
-# --- Overrides and Additions for GCP Build ---
+# Local configuration files
+.env
+local.env
+/app/config.py.bak
 
-# Ensure all virtual environments are ignored, as they are large and not needed.
-**/*venv*
-
-# The main application source code should NOT be ignored.
-# The following rules override the broad ignores above.
-!cerberus_universal_backend/
-!emmons_frontend/
+# Documentation and analysis files not needed in production
+ANALYSIS.md
+GEMINI.md
+GCP_PLAN.md
+PROBLEMS.csv
+PROGRESS_SUMMARY.md
+README.md
+docs/
