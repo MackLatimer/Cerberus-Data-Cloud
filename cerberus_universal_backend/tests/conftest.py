@@ -25,14 +25,17 @@ from sqlalchemy.engine import Engine
 def app():
     @event.listens_for(Engine, "connect")
     def load_spatialite(dbapi_conn, connection_record):
-        import sqlite3
+        try:
+            import pysqlite3 as sqlite3
+        except ImportError:
+            import sqlite3
+
         if isinstance(dbapi_conn, sqlite3.Connection):
-            dbapi_conn.enable_load_extension(True)
             try:
-                dbapi_conn.load_extension('mod_spatialite')
-            except sqlite3.OperationalError:
-                # Handle case where the extension is not found or fails to load
-                print("SpatiaLite extension not found, skipping spatial tests.")
+                dbapi_conn.enable_load_extension(True)
+                dbapi_conn.load_extension('/usr/lib/x86_64-linux-gnu/mod_spatialite.so')
+            except (sqlite3.OperationalError, AttributeError):
+                print("SpatiaLite extension not found or not supported, skipping spatial tests.")
 
     _app = create_app()
     yield _app
