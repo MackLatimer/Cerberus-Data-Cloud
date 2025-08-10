@@ -37,6 +37,10 @@ def create_app(config_name_override: str = None) -> Flask:
 
     init_extensions(app)
 
+    if app.config.get('ENV') != 'testing':
+        with app.app_context():
+            db.create_all()
+
     app.register_blueprint(public_api_bp)
     app.register_blueprint(voters_api_bp)
     app.register_blueprint(donate_bp)

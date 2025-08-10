@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
-from ..models import db, Agenda, AgendaItem, GovernmentBody, Subscription
+from ..extensions import db
+from ..models import Agenda, AgendaItem, GovernmentBody, Subscription
 from ..utils.security import verify_webhook_signature
 import json
 
