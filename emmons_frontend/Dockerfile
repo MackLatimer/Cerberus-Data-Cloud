@@ -1,45 +1,36 @@
-# Stage 1: Build the Flutter application
-# Using the latest stable Flutter image
-FROM ghcr.io/cirruslabs/flutter:stable AS build
+# ---- Stage 1: Build ----
+# Use a specific version of the Flutter SDK for reproducible builds.
+# Using cirrusci/flutter as it's a common choice for CI/CD.
+FROM cirrusci/flutter:3.22.2 as build
 
-# Set working directory for Flutter build
-WORKDIR /app_src
+WORKDIR /app
 
-# Copy pubspec.yaml and pubspec.lock to leverage Docker cache
-COPY pubspec.* ./
+# Copy dependency definition files first to leverage Docker's layer caching.
+COPY pubspec.yaml pubspec.lock ./
 
-# Get dependencies
+# Install Flutter dependencies.
 RUN flutter pub get
 
-# Copy the rest of the frontend application code, excluding assets/images via .dockerignore
-COPY lib/ ./lib/
-COPY assets/ ./assets/
-COPY web/ ./web/
+# Copy the rest of the application source code.
+COPY . .
 
-# Build the web application
-# Using --release for a production build
+# Build the Flutter web application for release.
+# The output will be in the /app/build/web directory.
 RUN flutter build web --release
 
-# List the contents of the build directory for diagnostics
-RUN ls -lR /app_src/build/web
+# ---- Stage 2: Serve ----
+# Use a lightweight and secure Nginx image to serve the static files.
+FROM nginx:1.25-alpine as final
 
-# Verify that main.dart.js exists
-RUN test -f /app_src/build/web/main.dart.js || (echo "main.dart.js not found!" && exit 1)
-
-# Stage 2: Serve the built web application with Nginx
-FROM nginx:1.25-alpine
-
-# Copy the built static files from the 'build' stage
-# The output of 'flutter build web' is in 'build/web'
-COPY --from=build /app_src/build/web /usr/share/nginx/html
-
-# Copy a custom Nginx configuration file
+# Copy the custom Nginx configuration for the SPA.
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
+# Copy the built Flutter web application from the 'build' stage.
+COPY --from=build /app/build/web /usr/share/nginx/html
 
-# Expose port 80
+# Expose port 80 to allow incoming traffic.
+# Cloud Run will automatically map its external URL to this port.
 EXPOSE 80
 
-# Command to run Nginx
+# Start the Nginx server in the foreground.
 CMD ["nginx", "-g", "daemon off;"]
-
