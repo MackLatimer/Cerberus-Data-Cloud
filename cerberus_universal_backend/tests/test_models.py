@@ -30,7 +30,7 @@ def setup_data_source(session):
 def is_postgres_db(db_session):
     return "postgresql" in db_session.bind.engine.url.drivername
 
-def test_create_campaign(session, setup_data_source, skip_if_sqlite):
+def test_create_campaign(session, setup_data_source):
     campaign_name = "Test Campaign 2024"
     start = date(2024, 1, 1)
     end = date(2024, 11, 5)
@@ -113,7 +113,7 @@ def test_person_email_unique(session, setup_data_source):
     with pytest.raises(IntegrityError):
         session.flush()
 
-def test_create_person_campaign_interaction(session, setup_data_source, skip_if_sqlite):
+def test_create_person_campaign_interaction(session, setup_data_source):
     campaign = Campaign(campaign_name="Interaction Campaign", source_id=setup_data_source.source_id)
     person = Person(first_name="Interacting", last_name="Person", source_id=setup_data_source.source_id)
     user = User(username="logger", password="password")
@@ -137,7 +137,7 @@ def test_create_person_campaign_interaction(session, setup_data_source, skip_if_
     assert interaction.interaction_id is not None
     assert interaction.details['notes'] == 'Spoke about policy.'
 
-def test_create_survey_result(session, setup_data_source, skip_if_sqlite):
+def test_create_survey_result(session, setup_data_source):
     campaign = Campaign(campaign_name="Survey Campaign", source_id=setup_data_source.source_id)
     session.add(campaign)
     session.commit()

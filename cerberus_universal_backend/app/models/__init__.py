@@ -27,3 +27,5 @@ from .user import User
 from .campaign import Campaign
 from .voter import Voter
 from .interaction import Interaction
+from .agenda import Agenda, AgendaItem
+from .subscription import Subscription

@@ -4,7 +4,6 @@ from app.models import Person, PersonCampaignInteraction, Campaign, PersonEmail,
 from app.extensions import db
 
 
-@pytest.mark.skip_if_sqlite
 def test_create_signup_success_new_voter(client, session, setup_data_source):
     campaign = Campaign(campaign_name="Test Campaign for Signups", source_id=setup_data_source.source_id)
     session.add(campaign)
@@ -36,7 +35,6 @@ def test_create_signup_success_new_voter(client, session, setup_data_source):
     assert interaction is not None
     assert interaction.details['notes'] == "Signed up via API test. Expressed interest: Endorse."
 
-@pytest.mark.skip_if_sqlite
 def test_create_signup_success_existing_voter_by_email(client, session, setup_data_source):
     campaign = Campaign(campaign_name="Signup Campaign Existing Email", source_id=setup_data_source.source_id)
     existing_person = Person(first_name="Existing", last_name="User", source_id=setup_data_source.source_id)

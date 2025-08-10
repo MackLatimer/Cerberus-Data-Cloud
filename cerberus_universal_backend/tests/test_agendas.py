@@ -1,6 +1,7 @@
 import pytest
 import json
-from app.models import db, Agenda, AgendaItem, GovernmentBody, Subscription
+from app.extensions import db
+from app.models import Agenda, AgendaItem, GovernmentBody, Subscription
 
 @pytest.fixture
 def setup_data(session):
@@ -61,7 +62,7 @@ def test_get_municipalities(client, setup_data):
     response = client.get('/api/v1/agendas/municipalities')
     assert response.status_code == 200
     data = response.get_json()
-    assert len(data) == 2
+    assert len(data) == 3
     assert 'City of Progress' in [d['name'] for d in data]
     assert 'Town of Innovation' in [d['name'] for d in data]
 
