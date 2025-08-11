@@ -98,7 +98,6 @@ def decrypt_data(data):
     # The data from the DB is binary, so it doesn't need to be converted to string.
     return db.session.scalar(text("SELECT pgp_sym_decrypt(:data, :key)"), {'data': data, 'key': key})
 ```
-
 ## FILE: cerberus_universal_backend/app/routes/donate.py
 Path: cerberus_universal_backend/app/routes/donate.py
 Type: TEXT
