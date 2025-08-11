@@ -26,10 +26,35 @@ The Cerberus-Data-Cloud repository contains a multi-component system designed fo
 *   The backends use a shared PostgreSQL database, with schemas defined in the `sql_schemas` directory and managed via Flask-Migrate.
 *   The `cloudbuild.yaml` file orchestrates the continuous integration and deployment pipeline, building Docker images for each service and deploying them to Google Cloud Run.
 
+### Data Models
+The database schema is defined through SQLAlchemy models in `cerberus_universal_backend/app/models` and raw SQL in `new_schema.sql`.
+
+*   **Key Entities**: The core entities of the application are:
+    *   `Person`: Represents an individual, storing demographic, contact, and political affiliation data.
+    *   `Campaign`: Represents a political campaign with a start and end date.
+    *   `User`: Represents an application user with credentials and roles.
+    *   `Donation`: Tracks monetary contributions, linked to a `Person` and a `Campaign`.
+    *   `Address`, `District`: Geospatial data for voters and jurisdictions.
+    *   The schema is extensive, with many other tables linking these core entities, such as `person_emails`, `person_phones`, `person_addresses`, `interactions`, and `voter_history`.
+
+*   **Relationships**:
+    *   Relationships are established using foreign keys. For instance, a `Donation` must belong to a `Campaign` (`campaign_id`) and can optionally be linked to a `Person` (`person_id`).
+    *   The `person_campaign_interactions` table serves as a many-to-many link between people and campaigns.
+
+*   **Encryption**:
+    *   The application uses the `pgcrypto` PostgreSQL extension for data encryption. A custom `EncryptedString` SQLAlchemy type is defined in `cerberus_universal_backend/app/models/person_identifier.py`.
+    *   This encryption is applied to sensitive fields, such as `email` and `phone_number` in the `donations` table and `identifier_value` in the `person_identifiers` table.
+
+*   **Potential Issues**:
+    *   **Schema Discrepancy**: There is a mismatch between the ORM's `Donation` and `PersonIdentifier` models, which specify encrypted fields, and the `new_schema.sql` file, where the corresponding columns (`email`, `phone_number`, `identifier_value`) are defined as standard `VARCHAR`. The ORM expects these columns to be of type `LargeBinary` to store encrypted data.
+    *   **Redundant Code**: The `EncryptedString` class is defined multiple times within `cerberus_universal_backend/app/models/person_identifier.py`, which should be consolidated into a single definition.
+
 ## Identified Issues
 *   **Redundant Backend**: The presence of both `cerberus_universal_backend` and `cerberus_campaigns_backend` suggests a need for code cleanup and consolidation.
 *   **Missing `cerberus_report_backend`**: The directory for this backend is missing, despite being referenced in the documentation and `cerberus_frontend`.
 *   **Incomplete `universal_campaign_frontend`**: This component appears to be a work in progress and is not fully integrated.
+*   **Unprotected Signup Endpoint**: The `/api/v1/signups` endpoint in `voters.py` is public and lacks authentication. This could be exploited to flood the database with fraudulent `Person` and `Interaction` records.
+*   **Unprotected Donation Update Endpoint**: The `/api/v1/donate/update-donation-details` endpoint in `donate.py` is public. It allows any user with a valid `payment_intent_id` to modify donation records, including reassigning the donation to a different person or campaign, which is a critical security risk.
 
 ## Proposed Fixes
 *   No fixes are proposed at this time, as the immediate task is analysis and documentation. A follow-up task could be created to address the identified issues.
