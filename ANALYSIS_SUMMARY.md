@@ -61,5 +61,10 @@ The database schema is defined through SQLAlchemy models in `cerberus_universal_
 2.  **Inconsistent Secret Naming**: In `cloudbuild.yaml`, the database migration step uses a secret named `DB_URI`, while the Cloud Run deployment step uses `SQLALCHEMY_DATABASE_URI`. While they may point to the same value, this inconsistency can cause confusion and potential configuration errors.
 3.  **Missing Secrets in CI Test Step**: The `Backend Tests` step in `cloudbuild.yaml` does not have access to any secrets. If the integration tests require a database connection or other secrets, they are likely to fail or run against a misconfigured environment during the CI process.
 
+### Code Quality Issues
+1.  **Dead Code**: The `cerberus_campaigns_backend` directory appears to be a legacy or duplicate service. It is not referenced in the `cloudbuild.yaml` deployment pipeline, and its functionality seems to be provided by `cerberus_universal_backend`.
+2.  **Duplicate Code**: The `EncryptedString` class in `cerberus_universal_backend/app/models/person_identifier.py` is defined multiple times in the same file, which is a clear copy-paste error that needs to be refactored.
+3.  **Vulnerable Dependencies**: A `pip-audit` scan of `cerberus_universal_backend/requirements.txt` revealed 5 known vulnerabilities in 2 packages: `gunicorn` (1) and `flask-cors` (4). These should be updated to their recommended patched versions.
+
 ## Proposed Fixes
 *   No fixes are proposed at this time, as the immediate task is analysis and documentation. A follow-up task could be created to address the identified issues.
