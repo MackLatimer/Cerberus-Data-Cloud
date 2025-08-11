@@ -2,6 +2,825 @@
 
 ```
 
+## FILE: cerberus_universal_backend/requirements.txt
+Path: cerberus_universal_backend/requirements.txt
+Type: TEXT
+Content:
+```
+Flask==2.3.3
+SQLAlchemy==2.0.42
+Flask-SQLAlchemy==3.1.1
+cloud-sql-python-connector
+python-dotenv==1.0.0
+Flask-Migrate==4.0.5 # For database migrations
+Flask-Bcrypt==1.0.1 # For password hashing
+PyJWT==2.8.0 # For token-based authentication (optional, but good for APIs)
+gunicorn==23.0.0 # WSGI server for deployment
+Flask-CORS==6.0.1 # For Cross-Origin Resource Sharing
+stripe==12.3.0
+GeoAlchemy2
+psycopg[binary]
+google-cloud-secret-manager==2.16.2
+```
+
+## FILE: cerberus_universal_backend/app/routes/voters.py
+Path: cerberus_universal_backend/app/routes/voters.py
+Type: TEXT
+Content:
+```python
+from flask import Blueprint, request, jsonify
+from ..extensions import db
+from ..models import Person, PersonCampaignInteraction, Campaign, PersonEmail, PersonPhone, DataSource
+from datetime import datetime, timezone
+import csv
+import io
+from sqlalchemy import text
+from ..config import current_config
+from ..utils.security import token_required, encrypt_data, decrypt_data
+
+voters_api_bp = Blueprint('voters_api', __name__, url_prefix='/api/v1/voters')
+
+public_api_bp = Blueprint('public_api', __name__, url_prefix='/api/v1')
+
+
+
+@public_api_bp.route('/signups', methods=['POST'])
+def public_create_signup():
+    data = request.get_json(force=True, silent=True)
+
+    if not data:
+        return jsonify({"error": "Invalid or empty JSON payload"}), 400
+
+    required_fields = ['first_name', 'last_name', 'email_address', 'campaign_id']
+    missing_fields = [field for field in required_fields if not data.get(field)]
+    if missing_fields:
+        return jsonify({"error": f"Missing required fields: {', '.join(missing_fields)}"}), 400
+
+    email_str = data['email_address'].lower()
+    phone_str = data.get('phone_number')
+    first_name = data['first_name']
+    last_name = data['last_name']
+    campaign_id = data['campaign_id']
+
+    middle_name = data.get('middle_name')
+    notes_from_payload = data.get('notes', '')
+    interaction_type_from_payload = data.get('interaction_type', 'ContactForm') # Changed to match new ENUM
+    interests_from_payload = data.get('interests', {})
+
+    campaign = db.session.get(Campaign, campaign_id)
+    if not campaign:
+        return jsonify({"error": f"Campaign with ID {campaign_id} not found."}), 404
+
+    person = None
+    encrypted_email = encrypt_data(email_str)
+    if email_str:
+        person_email_obj = PersonEmail.query.filter_by(email=encrypted_email).first()
+        if person_email_obj: # Check if person_email_obj exists before accessing its person attribute
+            person = person_email_obj.person
+
+    if not person and phone_str:
+        encrypted_phone = encrypt_data(phone_str)
+        person_phone_obj = PersonPhone.query.filter_by(phone_number=encrypted_phone).first()
+        if person_phone_obj: # Check if person_phone_obj exists before accessing its person attribute
+            person = person_phone_obj.person
+
+    try:
+        if person:
+            pass # Person already exists, no need to create a new one
+        else:
+            # Assuming a default data source with source_id = 1 exists
+            default_source_id = 1
+            person = Person(
+                first_name=first_name,
+                last_name=last_name,
+                source_id=default_source_id,
+                # Add other fields as necessary from the payload or defaults
+            )
+            db.session.add(person)
+            db.session.flush() # Flush to get person.person_id
+
+            if email_str:
+                new_person_email = PersonEmail(
+                    person_id=person.person_id,
+                    email=encrypted_email,
+                    email_type='Personal', # Default type
+                    source_id=default_source_id
+                )
+                db.session.add(new_person_email)
+
+            if phone_str:
+                new_person_phone = PersonPhone(
+                    person_id=person.person_id,
+                    phone_number=encrypted_phone,
+                    phone_type='Mobile', # Default type
+                    source_id=default_source_id
+                )
+                db.session.add(new_person_phone)
+
+        interaction_notes_list = []
+        if notes_from_payload:
+            interaction_notes_list.append(notes_from_payload)
+
+        if interests_from_payload.get('wants_to_endorse'):
+            interaction_notes_list.append("Expressed interest: Endorse.")
+        if interests_from_payload.get('wants_to_get_involved'):
+            interaction_notes_list.append("Expressed interest: Get Involved.")
+
+        final_interaction_notes = " ".join(filter(None, interaction_notes_list)).strip()
+
+        # Assuming a default data source with source_id = 1 exists
+        default_source_id = 1
+        new_interaction = PersonCampaignInteraction(
+            person_id=person.person_id,
+            campaign_id=campaign_id,
+            interaction_type=interaction_type_from_payload,
+            interaction_date=datetime.now(timezone.utc).date(), # Changed to .date() for DATE type
+            details={'notes': final_interaction_notes} if final_interaction_notes else {'notes': "Website signup.'''"},
+            source_id=default_source_id
+        )
+        db.session.add(new_interaction)
+
+        db.session.commit()
+
+        return jsonify({
+            "message": "Signup processed successfully.",
+            "person_id": person.person_id,
+            "interaction_id": new_interaction.interaction_id
+        }), 201
+
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error processing signup: {str(e)}")
+        return jsonify({"error": "An internal error occurred. Please try again later."}), 500
+
+@voters_api_bp.route('/', methods=['POST'])
+@token_required
+def create_person_via_portal(current_user):
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "Invalid JSON payload"}), 400
+
+    required_fields = ['first_name', 'last_name']
+    if any(field not in data for field in required_fields):
+        return jsonify({"error": "Missing required fields"}), 400
+
+    try:
+        # Assuming a default data source with source_id = 1 exists
+        default_source_id = 1
+        person_data = {k: v for k, v in data.items() if k not in ['email_address', 'phone_number']}
+        person_data['source_id'] = default_source_id
+
+        new_person = Person(**person_data)
+        db.session.add(new_person)
+        db.session.flush() # Flush to get person.person_id
+
+        email_str = data.get('email_address')
+        if email_str:
+            encrypted_email = encrypt_data(email_str)
+            new_person_email = PersonEmail(
+                person_id=new_person.person_id,
+                email=encrypted_email,
+                email_type='Personal', # Default type
+                source_id=default_source_id
+            )
+            db.session.add(new_person_email)
+
+        phone_str = data.get('phone_number')
+        if phone_str:
+            encrypted_phone = encrypt_data(phone_str)
+            new_person_phone = PersonPhone(
+                person_id=new_person.person_id,
+                phone_number=encrypted_phone,
+                phone_type='Mobile', # Default type
+                source_id=default_source_id
+            )
+            db.session.add(new_person_phone)
+
+        db.session.commit()
+
+        return jsonify(new_person.to_dict()), 201
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error creating person: {str(e)}")
+        return jsonify({"error": "Failed to create person."}), 500
+
+@voters_api_bp.route('/', methods=['GET'])
+@token_required
+def list_persons_via_portal(current_user):
+    page = request.args.get('page', 1, type=int)
+    per_page = request.args.get('per_page', 20, type=int)
+
+    persons_query = Person.query
+
+    persons_page = persons_query.paginate(page=page, per_page=per_page, error_out=False)
+
+    # Decrypt emails and phones for display
+    persons_data = []
+    for person in persons_page.items:
+        person_dict = person.to_dict()
+        person_emails = PersonEmail.query.filter_by(person_id=person.person_id).all()
+        person_phones = PersonPhone.query.filter_by(person_id=person.person_id).all()
+        person_dict['emails'] = [decrypt_data(pe.email) for pe in person_emails]
+        person_dict['phones'] = [decrypt_data(pp.phone_number) for pp in person_phones]
+        persons_data.append(person_dict)
+
+    return jsonify({
+        "persons": persons_data,
+        "total_pages": persons_page.pages,
+        "current_page": persons_page.page,
+        "total_persons": persons_page.total
+    }), 200
+
+@voters_api_bp.route('/<int:person_id>', methods=['GET'])
+@token_required
+def get_person_detail_via_portal(current_user, person_id):
+    person = Person.query.get_or_404(person_id)
+    person_dict = person.to_dict()
+
+    person_emails = PersonEmail.query.filter_by(person_id=person.person_id).all()
+    person_phones = PersonPhone.query.filter_by(person_id=person.person_id).all()
+    person_dict['emails'] = [decrypt_data(pe.email) for pe in person_emails]
+    person_dict['phones'] = [decrypt_data(pp.phone_number) for pp in person_phones]
+
+    return jsonify(person_dict), 200
+
+@voters_api_bp.route('/<int:person_id>', methods=['PUT'])
+@token_required
+def update_person_via_portal(current_user, person_id):
+    person = Person.query.get_or_404(person_id)
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "Invalid JSON payload"}), 400
+
+    # Assuming a default data source with source_id = 1 exists
+    default_source_id = 1
+
+    for key, value in data.items():
+        if key == 'email_address':
+            # Handle email update: find existing or create new
+            existing_email = PersonEmail.query.filter_by(person_id=person.person_id, email_type='Personal').first()
+            if existing_email:
+                existing_email.email = encrypt_data(value)
+                existing_email.updated_at = datetime.now(timezone.utc)
+            else:
+                new_person_email = PersonEmail(
+                    person_id=person.person_id,
+                    email=encrypt_data(value),
+                    email_type='Personal',
+                    source_id=default_source_id
+                )
+                db.session.add(new_person_email)
+        elif key == 'phone_number':
+            # Handle phone update: find existing or create new
+            existing_phone = PersonPhone.query.filter_by(person_id=person.person_id, phone_type='Mobile').first()
+            if existing_phone:
+                existing_phone.phone_number = encrypt_data(value)
+                existing_phone.updated_at = datetime.now(timezone.utc)
+            else:
+                new_person_phone = PersonPhone(
+                    person_id=person.person_id,
+                    phone_number=encrypt_data(value),
+                    phone_type='Mobile',
+                    source_id=default_source_id
+                )
+                db.session.add(new_person_phone)
+        elif hasattr(person, key) and key not in ['person_id', 'created_at', 'updated_at']:
+            setattr(person, key, value)
+
+    try:
+        db.session.commit()
+        return jsonify(person.to_dict()), 200
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error updating person {person_id}: {str(e)}")
+        return jsonify({"error": "Failed to update person."}), 500
+
+@voters_api_bp.route('/<int:person_id>', methods=['DELETE'])
+@token_required
+def delete_person_via_portal(current_user, person_id):
+    person = Person.query.get_or_404(person_id)
+    try:
+        db.session.delete(person)
+        db.session.commit()
+        return jsonify({"message": f"Person {person_id} deleted successfully."}), 200
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error deleting person {person_id}: {str(e)}")
+        return jsonify({"error": "Failed to delete person. It might be referenced elsewhere."}), 500
+
+@voters_api_bp.route('/upload', methods=['POST'])
+@token_required
+def upload_persons(current_user):
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part"}), 400
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+    if file:
+        try:
+            stream = io.StringIO(file.stream.read().decode("UTF8"), newline=None)
+            csv_input = csv.reader(stream)
+            header = next(csv_input)
+            # Assuming a default data source with source_id = 1 exists
+            default_source_id = 1
+
+            for row in csv_input:
+                # Adjust column indices based on your CSV structure
+                first_name, last_name, email_str, phone_str = row[0], row[1], row[2], row[3] if len(row) > 3 else None
+
+                first_name = first_name.strip().title()
+                last_name = last_name.strip().title()
+                email_str = email_str.strip().lower() if email_str else None
+                phone_str = phone_str.strip() if phone_str else None
+
+                person = None
+                if email_str:
+                    encrypted_email = encrypt_data(email_str)
+                    person_email_obj = PersonEmail.query.filter_by(email=encrypted_email).first()
+                    if person_email_obj:
+                        person = person_email_obj.person
+
+                if not person and phone_str:
+                    encrypted_phone = encrypt_data(phone_str)
+                    person_phone_obj = PersonPhone.query.filter_by(phone_number=encrypted_phone).first()
+                    if person_phone_obj:
+                        person = person_phone_obj.person
+
+                if not person:
+                    person = Person(
+                        first_name=first_name,
+                        last_name=last_name,
+                        source_id=default_source_id
+                    )
+                    db.session.add(person)
+                    db.session.flush() # Flush to get person.person_id
+
+                    if email_str:
+                        new_person_email = PersonEmail(
+                            person_id=person.person_id,
+                            email=encrypt_data(email_str),
+                            email_type='Personal',
+                            source_id=default_source_id
+                        )
+                        db.session.add(new_person_email)
+
+                    if phone_str:
+                        new_person_phone = PersonPhone(
+                            person_id=person.person_id,
+                            phone_number=encrypt_data(phone_str),
+                            phone_type='Mobile',
+                            source_id=default_source_id
+                        )
+                        db.session.add(new_person_phone)
+            db.session.commit()
+            return jsonify({"message": "File processed successfully"}), 200
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({"error": str(e)}), 500
+```
+
+## FILE: cerberus_universal_backend/app/utils/security.py
+Path: cerberus_universal_backend/app/utils/security.py
+Type: TEXT
+Content:
+```python
+from flask import current_app, request, jsonify
+from sqlalchemy import text
+from app.extensions import db
+from app.models.user import User
+from functools import wraps
+import jwt
+import hmac
+import hashlib
+
+def verify_webhook_signature(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        signature = request.headers.get('X-Webhook-Signature')
+        if not signature:
+            return jsonify({'message': 'Signature is missing!'}), 401
+
+        # The secret key is loaded from environment variables.
+        # In a production environment, this should be managed by a secret manager (e.g., Google Secret Manager).
+        secret = current_app.config['WEBHOOK_SECRET_KEY']
+        if not secret:
+            # Log this error but don't expose details to the client
+            current_app.logger.error("WEBHOOK_SECRET_KEY is not configured.")
+            return jsonify({'message': 'Internal server error: webhook not configured'}), 500
+
+        # It's crucial to use request.get_data() because it returns the raw request body.
+        # request.data or request.get_json() might have already consumed or modified the body.
+        request_body = request.get_data()
+
+        expected_signature = hmac.new(
+            key=secret.encode('utf-8'),
+            msg=request_body,
+            digestmod=hashlib.sha256
+        ).hexdigest()
+
+        if not hmac.compare_digest(expected_signature, signature):
+            return jsonify({'message': 'Invalid signature.'}), 401
+
+        return f(*args, **kwargs)
+    return decorated_function
+
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = None
+        if 'Authorization' in request.headers:
+            # Expected format: "Bearer <token>"
+            auth_header = request.headers['Authorization']
+            parts = auth_header.split()
+            if len(parts) == 2 and parts[0].lower() == 'bearer':
+                token = parts[1]
+
+        if not token:
+            return jsonify({'message': 'Token is missing!'}), 401
+
+        try:
+            # Decode the token using the application's secret key
+            data = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=["HS256"])
+            current_user = db.session.get(User, data['user_id'])
+            if not current_user:
+                return jsonify({'message': 'User not found!'}), 401
+        except jwt.ExpiredSignatureError:
+            return jsonify({'message': 'Token has expired!'}), 401
+        except jwt.InvalidTokenError:
+            return jsonify({'message': 'Token is invalid!'}), 401
+
+        # Pass the user object to the decorated function
+        return f(current_user, *args, **kwargs)
+
+    return decorated
+
+def encrypt_data(data):
+    """Encrypts data using pgp_sym_encrypt."""
+    if data is None:
+        return None
+    # It's important to fetch the key from the current app context
+    # to ensure it's the correct one for the active configuration.
+    key = current_app.config.get('PGCRYPTO_SECRET_KEY')
+    if not key:
+        raise ValueError("PGCRYPTO_SECRET_KEY is not set in the application configuration.")
+    return db.session.scalar(text("SELECT pgp_sym_encrypt(:data, :key)"), {'data': str(data), 'key': key})
+
+def decrypt_data(data):
+    """Decrypts data using pgp_sym_decrypt."""
+    if data is None:
+        return None
+    key = current_app.config.get('PGCRYPTO_SECRET_KEY')
+    if not key:
+        raise ValueError("PGCRYPTO_SECRET_KEY is not set in the application configuration.")
+    # The data from the DB is binary, so it doesn't need to be converted to string.
+    return db.session.scalar(text("SELECT pgp_sym_decrypt(:data, :key)"), {'data': data, 'key': key})
+```
+
+## FILE: cerberus_universal_backend/app/routes/donate.py
+Path: cerberus_universal_backend/app/routes/donate.py
+Type: TEXT
+Content:
+```python
+from flask import Blueprint, request, jsonify, current_app
+import stripe
+from app.extensions import db
+from app.models import Donation, Campaign, Person, PersonEmail, PersonPhone, DataSource
+from sqlalchemy import text
+from ..config import current_config
+from ..utils.security import encrypt_data, decrypt_data, token_required
+
+donate_bp = Blueprint('donate_bp', __name__, url_prefix='/api/v1/donate')
+
+@donate_bp.route('/create-payment-intent', methods=['POST'])
+def create_payment_intent():
+    data = request.get_json()
+    print(f"Received data: {data}")
+    amount = data.get('amount')
+    currency = data.get('currency', 'usd')
+    campaign_id = data.get('campaign_id')
+    person_id = data.get('person_id') # Optional
+    email_str = data.get('email')
+    phone_str = data.get('phone_number')
+
+    if not amount:
+        return jsonify({'error': 'Amount is required'}), 400
+    if not campaign_id:
+        return jsonify({'error': 'Campaign ID is required'}), 400
+
+    campaign = db.session.get(Campaign, campaign_id)
+    if not campaign:
+        return jsonify({"error": f"Campaign with ID {campaign_id} not found."}), 404
+
+    # Check if person_id is provided and valid
+    if person_id:
+        person = db.session.get(Person, person_id)
+        if not person:
+            return jsonify({"error": f"Person with ID {person_id} not found."}), 404
+
+    try:
+        print(f"Using Stripe Secret Key: {current_app.config['STRIPE_SECRET_KEY']}")
+        stripe.api_key = current_app.config['STRIPE_SECRET_KEY']
+        intent = stripe.PaymentIntent.create(
+            amount=amount,
+            currency=currency,
+            automatic_payment_methods={'enabled': True},
+        )
+
+        # Encrypt sensitive data
+        encrypted_email = encrypt_data(email_str)
+        encrypted_phone = encrypt_data(phone_str)
+
+        # Assuming a default data source with source_id = 1 exists
+        default_source_id = 1
+
+        donation_data = {
+            'amount': amount / 100,
+            'currency': currency,
+            'stripe_payment_intent_id': intent.id,
+            'payment_status': 'pending',
+            'campaign_id': campaign_id,
+            'person_id': person_id, # Will be None if not provided
+            'first_name': data.get('first_name'),
+            'last_name': data.get('last_name'),
+            'address_line1': data.get('address_line1'),
+            'address_line2': data.get('address_line2'),
+            'address_city': data.get('address_city'),
+            'address_state': data.get('address_state'),
+            'address_zip': data.get('address_zip'),
+            'employer': data.get('employer'),
+            'occupation': data.get('occupation'),
+            'email': encrypted_email,
+            'phone_number': encrypted_phone,
+            'contact_email': data.get('contact_email', False),
+            'contact_phone': data.get('contact_phone', False),
+            'contact_mail': data.get('contact_mail', False),
+            'contact_sms': data.get('contact_sms', False),
+            'is_recurring': data.get('is_recurring', False),
+            'covers_fees': data.get('covers_fees', False),
+            'source_id': default_source_id
+        }
+        donation = Donation(**donation_data)
+
+        print(f"Donation object before commit: {donation.__dict__}")
+
+        db.session.add(donation)
+        db.session.commit()
+
+        return jsonify({
+            'clientSecret': intent.client_secret,
+            'paymentIntentId': intent.id,
+            'donationId': donation.id
+        })
+    except stripe.error.StripeError as e:
+        return jsonify({'error': str(e)}), 400
+    except Exception as e:
+        db.session.rollback()
+        print(f"Exception during commit: {e}")
+        return jsonify({'error': str(e)}), 500
+
+@donate_bp.route('/update-donation-details', methods=['POST'])
+@token_required
+def update_donation_details(current_user):
+    data = request.get_json()
+    payment_intent_id = data.get('payment_intent_id')
+
+    if not payment_intent_id:
+        return jsonify({'error': 'Payment Intent ID is required'}), 400
+
+    donation = Donation.query.filter_by(stripe_payment_intent_id=payment_intent_id).first()
+
+    if not donation:
+        return jsonify({'error': 'Donation not found'}), 404
+
+    # Update fields, encrypting sensitive ones
+    donation.first_name = data.get('first_name', donation.first_name)
+    donation.last_name = data.get('last_name', donation.last_name)
+    donation.address_line1 = data.get('address_line1', donation.address_line1)
+    donation.address_line2 = data.get('address_line2', donation.address_line2)
+    donation.address_city = data.get('address_city', donation.address_city)
+    donation.address_state = data.get('address_state', donation.address_state)
+    donation.address_zip = data.get('address_zip', donation.address_zip)
+    donation.employer = data.get('employer', donation.employer)
+    donation.occupation = data.get('occupation', donation.occupation)
+
+    if 'email' in data:
+        donation.email = encrypt_data(data['email'])
+    if 'phone_number' in data:
+        donation.phone_number = encrypt_data(data['phone_number'])
+
+    donation.contact_email = data.get('contact_email', donation.contact_email)
+    donation.contact_phone = data.get('contact_phone', donation.contact_phone)
+    donation.contact_mail = data.get('contact_mail', donation.contact_mail)
+    donation.contact_sms = data.get('contact_sms', donation.contact_sms)
+    donation.is_recurring = data.get('is_recurring', donation.is_recurring)
+    donation.covers_fees = data.get('covers_fees', donation.covers_fees)
+    donation.person_id = data.get('person_id', donation.person_id) # Allow updating person_id
+    donation.campaign_id = data.get('campaign_id', donation.campaign_id) # Allow updating campaign_id
+
+    try:
+        db.session.commit()
+        return jsonify({'message': 'Donation details updated successfully'}), 200
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error updating donation details: {e}")
+        return jsonify({'error': str(e)}), 500
+
+@donate_bp.route('/webhook', methods=['POST'])
+def webhook():
+    event = None
+    payload = request.data
+    sig_header = request.headers.get('stripe-signature')
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, current_app.config['STRIPE_WEBHOOK_SECRET']
+        )
+    except ValueError as e:
+        # Invalid payload
+        return jsonify({'error': str(e)}), 400
+    except stripe.error.SignatureVerificationError as e:
+        # Invalid signature
+        return jsonify({'error': str(e)}), 400
+
+    # Handle the event
+    if event['type'] == 'payment_intent.succeeded':
+        payment_intent = event['data']['object']
+        donation = Donation.query.filter_by(stripe_payment_intent_id=payment_intent.id).first()
+        if donation:
+            donation.payment_status = 'succeeded'
+            try:
+                db.session.commit()
+            except Exception as e:
+                print(f"Error committing webhook update: {e}")
+                return jsonify({'error': str(e)}), 500
+
+    return jsonify(success=True), 200
+```
+
+## FILE: cerberus_universal_backend/.env
+Path: cerberus_universal_backend/.env
+Type: TEXT
+Content:
+```
+SECRET_KEY=a_very_secret_and_secure_key_that_is_not_this_one
+DB_USER=testuser
+DB_PASS=testpass
+DB_NAME=testdb
+DB_CONNECTION_NAME=test-connection
+PGCRYPTO_SECRET_KEY=a_very_secret_pgcrypto_key
+STRIPE_SECRET_KEY=sk_test_123
+STRIPE_WEBHOOK_SECRET=whsec_123
+WEBHOOK_SECRET_KEY=wh_secret_123
+FLASK_ENV=development
+DATABASE_URL=sqlite:///test.db
+```
+
+## FILE: cerberus_universal_backend/docker-compose.yml
+Path: cerberus_universal_backend/docker-compose.yml
+Type: TEXT
+Content:
+```yaml
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    ports:
+      - '8080:8080'
+    environment:
+      - FLASK_ENV=development
+      - DATABASE_URL=postgresql+psycopg://test_user:test_password@db:5432/test_db
+      - SECRET_KEY=a_very_secret_and_secure_key_that_is_not_this_one
+      - PGCRYPTO_SECRET_KEY=a_very_secret_pgcrypto_key
+      - STRIPE_SECRET_KEY=sk_test_123
+      - STRIPE_WEBHOOK_SECRET=whsec_123
+      - WEBHOOK_SECRET_KEY=wh_secret_123
+      - DB_USER=testuser
+      - DB_PASS=testpass
+      - DB_NAME=testdb
+      - DB_CONNECTION_NAME=test-connection
+    command: >
+      sh -c "
+      flask db upgrade &&
+      gunicorn --bind '0.0.0.0:8080' --workers 1 --threads 8 --timeout 0 'run:app'
+      "
+  db:
+    image: postgis/postgis:13-3.4
+    environment:
+      - POSTGRES_USER=test_user
+      - POSTGRES_PASSWORD=test_password
+      - POSTGRES_DB=test_db
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/01-init.sql
+      - ./database_schema.sql:/docker-entrypoint-initdb.d/02-schema.sql
+```
+
+## FILE: ANALYSIS_SUMMARY.md
+Path: ANALYSIS_SUMMARY.md
+Type: TEXT
+Content:
+```markdown
+# Analysis Summary
+
+## Project Structure
+
+### High-Level Overview
+The Cerberus-Data-Cloud repository contains a multi-component system designed for political campaign management and public data reporting. It consists of three backend services, two frontend applications, and the necessary infrastructure and database schema definitions. The entire system is designed to be deployed on Google Cloud Platform.
+
+### Components
+*   **`cerberus_universal_backend`**: A Python Flask backend that serves as the central API for managing campaign data, including voters, interactions, donations, and user authentication.
+*   **`cerberus_campaigns_backend`**: This appears to be a duplicate or legacy version of `cerberus_universal_backend`. The project's main documentation and build scripts primarily reference `cerberus_universal_backend`.
+*   **`cerberus_report_backend`**: A Python Flask backend for scraping, storing, and serving public municipal agenda data. It also manages user subscriptions for agenda notifications.
+*   **`cerberus_frontend`**: A Flutter web application that acts as a multi-purpose data portal. It provides an interface for uploading and managing campaign data (connecting to `cerberus_universal_backend`) and a "Cerberus Report" page for viewing public agenda data (connecting to `cerberus_report_backend`).
+*   **`emmons_frontend`**: A Flutter web application that serves as a public-facing website for a specific political campaign (the "Emmons" campaign). It connects to `cerberus_universal_backend` for functionalities like mailing list signups and donations.
+*   **`universal_campaign_frontend`**: This directory contains a template or base for a universal campaign frontend, but it is not fully integrated or documented in the main project.
+
+### Technologies
+*   **Backend**: Python, Flask, SQLAlchemy, PostgreSQL
+*   **Frontend**: Flutter
+*   **Database**: PostgreSQL
+*   **Deployment**: Docker, Google Cloud Build, Google Cloud Run
+*   **Infrastructure as Code**: Terraform (in `cerberus_full_stack_infrastructure`)
+
+### Interactions
+*   `emmons_frontend` and `cerberus_frontend` communicate with `cerberus_universal_backend` via a REST API to manage campaign-related data.
+*   `cerberus_frontend`'s "Cerberus Report" feature communicates with `cerberus_report_backend` to fetch and display public agenda items.
+*   The backends use a shared PostgreSQL database, with schemas defined in the `sql_schemas` directory and managed via Flask-Migrate.
+*   The `cloudbuild.yaml` file orchestrates the continuous integration and deployment pipeline, building Docker images for each service and deploying them to Google Cloud Run.
+
+### Data Models
+The database schema is defined through SQLAlchemy models in `cerberus_universal_backend/app/models` and raw SQL in `new_schema.sql`.
+
+*   **Key Entities**: The core entities of the application are:
+    *   `Person`: Represents an individual, storing demographic, contact, and political affiliation data.
+    *   `Campaign`: Represents a political campaign with a start and end date.
+    *   `User`: Represents an application user with credentials and roles.
+    *   `Donation`: Tracks monetary contributions, linked to a `Person` and a `Campaign`.
+    *   `Address`, `District`: Geospatial data for voters and jurisdictions.
+    *   The schema is extensive, with many other tables linking these core entities, such as `person_emails`, `person_phones`, `person_addresses`, `interactions`, and `voter_history`.
+
+*   **Relationships**:
+    *   Relationships are established using foreign keys. For instance, a `Donation` must belong to a `Campaign` (`campaign_id`) and can optionally be linked to a `Person` (`person_id`).
+    *   The `person_campaign_interactions` table serves as a many-to-many link between people and campaigns.
+
+*   **Encryption**:
+    *   The application uses the `pgcrypto` PostgreSQL extension for data encryption. A custom `EncryptedString` SQLAlchemy type is defined in `cerberus_universal_backend/app/models/person_identifier.py`.
+    *   This encryption is applied to sensitive fields, such as `email` and `phone_number` in the `donations` table and `identifier_value` in the `person_identifiers` table.
+
+*   **Potential Issues**:
+    *   **Schema Discrepancy**: There is a mismatch between the ORM's `Donation` and `PersonIdentifier` models, which specify encrypted fields, and the `new_schema.sql` file, where the corresponding columns (`email`, `phone_number`, `identifier_value`) are defined as standard `VARCHAR`. The ORM expects these columns to be of type `LargeBinary` to store encrypted data.
+    *   **Redundant Code**: The `EncryptedString` class is defined multiple times within `cerberus_universal_backend/app/models/person_identifier.py`, which should be consolidated into a single definition.
+
+## Identified Issues
+*   **Redundant Backend**: The presence of both `cerberus_universal_backend` and `cerberus_campaigns_backend` suggests a need for code cleanup and consolidation.
+*   **Missing `cerberus_report_backend`**: The directory for this backend is missing, despite being referenced in the documentation and `cerberus_frontend`.
+*   **Incomplete `universal_campaign_frontend`**: This component appears to be a work in progress and is not fully integrated.
+*   **Unprotected Signup Endpoint**: The `/api/v1/signups` endpoint in `voters.py` is public and lacks authentication. This could be exploited to flood the database with fraudulent `Person` and `Interaction` records.
+*   **Unprotected Donation Update Endpoint**: The `/api/v1/donate/update-donation-details` endpoint in `donate.py` is public. It allows any user with a valid `payment_intent_id` to modify donation records, including reassigning the donation to a different person or campaign, which is a critical security risk.
+
+### Deployment Issues
+1.  **Inefficient Backend Docker Build**: The `cloudbuild.yaml` configuration for the backend service uses the repository root (`.`) as the Docker build context. This is inefficient as it breaks layer caching for any change made outside the `cerberus_universal_backend` directory, leading to longer build times.
+2.  **Inconsistent Secret Naming**: In `cloudbuild.yaml`, the database migration step uses a secret named `DB_URI`, while the Cloud Run deployment step uses `SQLALCHEMY_DATABASE_URI`. While they may point to the same value, this inconsistency can cause confusion and potential configuration errors.
+3.  **Missing Secrets in CI Test Step**: The `Backend Tests` step in `cloudbuild.yaml` does not have access to any secrets. If the integration tests require a database connection or other secrets, they are likely to fail or run against a misconfigured environment during the CI process.
+
+### Code Quality Issues
+1.  **Dead Code**: The `cerberus_campaigns_backend` directory appears to be a legacy or duplicate service. It is not referenced in the `cloudbuild.yaml` deployment pipeline, and its functionality seems to be provided by `cerberus_universal_backend`.
+2.  **Duplicate Code**: The `EncryptedString` class in `cerberus_universal_backend/app/models/person_identifier.py` is defined multiple times in the same file, which is a clear copy-paste error that needs to be refactored.
+3.  **Vulnerable Dependencies**: A `pip-audit` scan of `cerberus_universal_backend/requirements.txt` revealed 5 known vulnerabilities in 2 packages: `gunicorn` (1) and `flask-cors` (4). These should be updated to their recommended patched versions.
+
+## Proposed Fixes
+- **Authentication Fix**:
+  - Implemented JWT-based authentication for the backend.
+  - A `/api/v1/auth/login` endpoint was already present to validate user credentials and issue JWT tokens.
+  - A `@token_required` decorator was already present to protect routes.
+  - Applied the decorator to secure the `update_donation_details` route in `donate.py`. The `voters_api_bp` was already secured.
+```
+
+## FILE: PROGRESS_TRACKER.md
+Path: PROGRESS_TRACKER.md
+Type: TEXT
+Content:
+```markdown
+# Progress Tracker
+
+## Step Log
+
+| Step Number | Description                       | Outcome                   | Timestamp                  |
+|-------------|-----------------------------------|---------------------------|----------------------------|
+| 1           | Initialized tracking documents    | Files created             | 2025-08-10 18:50:02.554218 |
+| 2           | Analyzed overall structure        | Analysis complete         | 2025-08-10 19:02:08.000000 |
+| 3           | Analyzed data models              | Analysis complete         | 2025-08-10 20:07:51.576828 |
+| 4           | Identified auth/security issues   | Analysis complete         | 2025-08-10 20:20:33.450375 |
+| 5           | Identified deployment issues      | Analysis complete         | 2025-08-10 20:31:20.053912 |
+| 6           | Identified code quality issues    | Analysis complete         | 2025-08-11 05:41:30.417378 |
+| 7           | Implemented JWT auth              | Endpoints secured         | 2025-08-11 08:52:26.839807 |
+```
+
 ## FILE: AGENTS.md
 Path: AGENTS.md
 Type: TEXT
