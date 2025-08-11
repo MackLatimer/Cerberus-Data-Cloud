@@ -82,3 +82,5 @@ The database schema is defined through SQLAlchemy models in `cerberus_universal_
   - Fixed a bug in the CSV upload feature in `voters.py` to ensure that phone numbers are encrypted before being saved to the database.
   - Verified that email and phone numbers are correctly encrypted during donation updates.
   - Confirmed that encryption functions are centralized in `app/utils/security.py`.
+- **Dependencies**:
+  - Upgraded `gunicorn` to version `23.0.0` and `Flask-CORS` to version `6.0.1` to ensure the latest secure versions are used.
