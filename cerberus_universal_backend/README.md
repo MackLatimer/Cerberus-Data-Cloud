@@ -1,8 +1,8 @@
-# Cerberus Campaigns Backend
+# Cerberus Universal Backend
 
 ## Overview
 
-The Cerberus Campaigns Backend is a Python-based Flask application responsible for managing all campaign-related data. This includes voter information, campaign details, user interactions, survey responses, and user accounts. It serves as the central data store and API for various frontend applications within the Cerberus ecosystem.
+The Cerberus Universal Backend is a Python-based Flask application responsible for managing all campaign-related data. This includes voter information, campaign details, user interactions, survey responses, and user accounts. It serves as the central data store and API for various frontend applications within the Cerberus ecosystem.
 
 ## Key Features
 
@@ -77,7 +77,7 @@ The application's configuration is managed through environment variables and the
 
 ### Environment Variables
 
-The application uses a `.env` file to load environment variables. The file is expected to be in the root of the `cerberus_campaigns_backend` directory.
+The application uses a `.env` file to load environment variables. The file is expected to be in the root of the `cerberus_universal_backend` directory.
 
 *   `SECRET_KEY`: A strong, unique secret key for Flask session management and security.
 *   `DATABASE_URL`: The connection string for your PostgreSQL database. This is required for the application to run. For connecting to a local PostgreSQL instance, you can use a URL like `postgresql+psycopg://campaign_user:local_password@localhost:5432/campaign_data`. If you are using a Cloud SQL instance, ensure the Cloud SQL proxy is running.
@@ -97,7 +97,7 @@ For production deployments, it is recommended to:
 1.  **Clone the repository (if you haven't already):**
     ```bash
     git clone <repository_url>
-    cd <repository_directory>/cerberus_campaigns_backend
+    cd <repository_directory>/cerberus_universal_backend
     ```
 
 2.  **Create and activate a virtual environment:**
