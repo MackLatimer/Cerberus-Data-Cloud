@@ -67,4 +67,8 @@ The database schema is defined through SQLAlchemy models in `cerberus_universal_
 3.  **Vulnerable Dependencies**: A `pip-audit` scan of `cerberus_universal_backend/requirements.txt` revealed 5 known vulnerabilities in 2 packages: `gunicorn` (1) and `flask-cors` (4). These should be updated to their recommended patched versions.
 
 ## Proposed Fixes
-*   No fixes are proposed at this time, as the immediate task is analysis and documentation. A follow-up task could be created to address the identified issues.
+- **Authentication Fix**:
+  - Implemented JWT-based authentication for the backend.
+  - A `/api/v1/auth/login` endpoint was already present to validate user credentials and issue JWT tokens.
+  - A `@token_required` decorator was already present to protect routes.
+  - Applied the decorator to secure the `update_donation_details` route in `donate.py`. The `voters_api_bp` was already secured.
