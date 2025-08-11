@@ -5,8 +5,8 @@ This Flutter-based web application serves as a multi-purpose frontend within the
 ## Key Features
 
 1.  **Data Portal**:
-    *   **Purpose**: Allows authorized users to upload, view, and manage data stored in the `cerberus_campaigns_backend`. This includes voter lists, campaign details, and potentially other administrative functions.
-    *   **Connection**: Interacts with API endpoints provided by the `cerberus_campaigns_backend`.
+    *   **Purpose**: Allows authorized users to upload, view, and manage data stored in the `cerberus_universal_backend`. This includes voter lists, campaign details, and potentially other administrative functions.
+    *   **Connection**: Interacts with API endpoints provided by the `cerberus_universal_backend`.
 
 2.  **Cerberus Report Page**:
     *   **Purpose**: Provides a user interface for searching, filtering, and viewing publicly available agenda items scraped from various municipalities. It also allows users to subscribe to email notifications for new agenda items matching their filter criteria.
@@ -44,7 +44,7 @@ This Flutter-based web application serves as a multi-purpose frontend within the
 *   **About Page**: Provides more information about Cerberus Campaigns.
 *   **Contact Page**: A page with contact information.
 *   **Report Page**: The "Cerberus Report" feature. It allows users to search and filter public municipal agenda items. It also includes a feature to subscribe to email notifications for new agenda items that match the user's filter criteria. This page interacts with the `cerberus_report_backend`.
-*   **Upload Page**: Provides a user interface for uploading CSV files of voter data. This page interacts with the `cerberus_campaigns_backend`.
+*   **Upload Page**: Provides a user interface for uploading CSV files of voter data. This page interacts with the `cerberus_universal_backend`.
 
 ## Setup and Installation
 
@@ -66,7 +66,7 @@ This Flutter-based web application serves as a multi-purpose frontend within the
 
 1.  **Ensure Backends are Running:**
     *   For the **Cerberus Report Page** to function, the `cerberus_report_backend` must be running and accessible at the URL configured in `lib/pages/report/report_page.dart`.
-    *   For the **Data Portal** functionality, the `cerberus_campaigns_backend` must be running and its API endpoints correctly integrated into the frontend.
+    *   For the **Data Portal** functionality, the `cerberus_universal_backend` must be running and its API endpoints correctly integrated into the frontend.
 
 2.  **Run the application (web):**
     ```bash
@@ -88,7 +88,7 @@ The output will be placed in the `build/web` directory. These files can then be 
     ```dart
     final String _apiBaseUrl = 'http://api.cerberus-campaigns.com';
     ```
-*   **`cerberus_campaigns_backend` URL**: Located in `lib/pages/upload/upload_page.dart`.
+*   **`cerberus_universal_backend` URL**: Located in `lib/pages/upload/upload_page.dart`.
     ```dart
     var uri = Uri.parse('http://127.0.0.1:5001/api/v1/voters/upload');
     ```

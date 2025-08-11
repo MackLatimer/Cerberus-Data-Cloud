@@ -84,3 +84,5 @@ The database schema is defined through SQLAlchemy models in `cerberus_universal_
   - Confirmed that encryption functions are centralized in `app/utils/security.py`.
 - **Dependencies**:
   - Upgraded `gunicorn` to version `23.0.0` and `Flask-CORS` to version `6.0.1` to ensure the latest secure versions are used.
+- **Code Cleanup**:
+  - Removed the legacy `cerberus_campaigns_backend` directory and all references to it from the repository.

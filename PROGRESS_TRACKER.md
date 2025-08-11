@@ -15,3 +15,4 @@
 | 9           | Secured webhooks                  | Verified and documented   | 2025-08-11 09:16:36.106589 |
 | 10          | Fixed encryption bugs             | Encrypted all PII         | 2025-08-11 09:31:03.479103 |
 | 11          | Upgraded dependencies             | Pinned latest versions    | 2025-08-11 09:46:28.587280 |
+| 12          | Removed dead code                 | Deleted legacy backend    | 2025-08-11 10:38:04.264499 |
