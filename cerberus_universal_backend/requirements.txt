@@ -6,8 +6,8 @@ python-dotenv==1.0.0
 Flask-Migrate==4.0.5 # For database migrations
 Flask-Bcrypt==1.0.1 # For password hashing
 PyJWT==2.8.0 # For token-based authentication (optional, but good for APIs)
-gunicorn==22.0.0 # WSGI server for deployment
-Flask-CORS==4.0.1 # For Cross-Origin Resource Sharing
+gunicorn==23.0.0 # WSGI server for deployment
+Flask-CORS==6.0.1 # For Cross-Origin Resource Sharing
 stripe==12.3.0
 GeoAlchemy2
 psycopg[binary]

@@ -21,11 +21,6 @@ The repository contains multiple services, each with its own technology stack.
     *   `stripe`: For payment processing.
 *   **Deployment**: Docker container deployed on Google Cloud Platform (GCP), managed via Cloud Build.
 
-**`cerberus_campaigns_backend`**
-*   **Language**: Python (version not specified, likely 3.x).
-*   **Framework**: Inferred to be Flask.
-*   **Dependencies**: No `requirements.txt` file is present. The service is not included in the main `cloudbuild.yaml`, so its dependencies and deployment status are unclear. It may be a legacy or auxiliary service.
-
 ### Frontend Applications
 
 **`cerberus_frontend` & `emmons_frontend`**
@@ -45,7 +40,7 @@ The repository contains multiple services, each with its own technology stack.
 The project follows a **hybrid, microservices-based architecture**. The frontend and backend responsibilities are clearly separated into independent services.
 
 *   **Main Components**:
-    *   **Backend APIs**: Two Python/Flask backend services (`cerberus_universal_backend` and `cerberus_campaigns_backend`) provide RESTful APIs. `cerberus_universal_backend` is the primary service.
+    *   **Backend API**: The `cerberus_universal_backend` provides the primary RESTful API.
     *   **Frontend Web Apps**: Two Flutter web applications (`cerberus_frontend` and `emmons_frontend`) provide the user interfaces. `emmons_frontend` appears to be a themed or campaign-specific version of the main `cerberus_frontend`.
     *   **Database**: A central **PostgreSQL** database on **Google Cloud SQL** serves as the single source of truth, storing data for all services, including geospatial information.
 *   **Infrastructure**:
@@ -60,7 +55,6 @@ The project follows a **hybrid, microservices-based architecture**. The frontend
 *   **`cerberus_universal_backend/`**: The core backend API. Contains `app/` (models, routes), `migrations/`, `tests/`, and a `Dockerfile`.
 *   **`cerberus_frontend/`**: The main Flutter web app. Contains `lib/` (Dart source code), `web/` assets, `pubspec.yaml`, and a `Dockerfile`.
 *   **`emmons_frontend/`**: A second, campaign-specific Flutter web app with a structure nearly identical to `cerberus_frontend`.
-*   **`cerberus_campaigns_backend/`**: A secondary, less clearly defined backend service.
 *   **`cloudbuild.yaml`**: The root-level CI/CD pipeline definition for GCP.
 
 ## 4. Data Models & Schema

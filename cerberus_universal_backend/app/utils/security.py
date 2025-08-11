@@ -14,6 +14,8 @@ def verify_webhook_signature(f):
         if not signature:
             return jsonify({'message': 'Signature is missing!'}), 401
 
+        # The secret key is loaded from environment variables.
+        # In a production environment, this should be managed by a secret manager (e.g., Google Secret Manager).
         secret = current_app.config['WEBHOOK_SECRET_KEY']
         if not secret:
             # Log this error but don't expose details to the client

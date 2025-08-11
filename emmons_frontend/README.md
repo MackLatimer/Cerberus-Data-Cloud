@@ -4,7 +4,7 @@ This Flutter-based web application serves as the dedicated public-facing website
 
 ## Purpose
 
-The primary goal of this application is to provide a professional and informative online presence for the campaign, allowing visitors to learn about the candidate, the issues, and how to get involved. It connects to the `cerberus_campaigns_backend` to handle signups and donations.
+The primary goal of this application is to provide a professional and informative online presence for the campaign, allowing visitors to learn about the candidate, the issues, and how to get involved. It connects to the `cerberus_universal_backend` to handle signups and donations.
 
 ## Key Features
 
@@ -27,7 +27,7 @@ The primary goal of this application is to provide a professional and informativ
 
 ## Connection to Backend
 
-*   This frontend connects to the `cerberus_campaigns_backend`.
+*   This frontend connects to the `cerberus_universal_backend`.
 *   The base URL for the backend API is configured in `lib/src/widgets/signup_form.dart` and `lib/src/widgets/donation_widget.dart`.
 
 ## Project Structure
@@ -61,7 +61,7 @@ The primary goal of this application is to provide a professional and informativ
 ## Running the Application
 
 1.  **Ensure Backend is Running:**
-    The `cerberus_campaigns_backend` must be running and accessible at the URL configured in the frontend.
+    The `cerberus_universal_backend` must be running and accessible at the URL configured in the frontend.
 
 2.  **Run the application (web):**
     ```bash
