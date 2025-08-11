@@ -72,6 +72,6 @@ The database schema is defined through SQLAlchemy models in `cerberus_universal_
   - A `/api/v1/auth/login` endpoint was already present to validate user credentials and issue JWT tokens.
   - A `@token_required` decorator was already present to protect routes.
   - Applied the decorator to secure the `update_donation_details` route in `donate.py`. The `voters_api_bp` was already secured.
+
 - **Security Fixes**:
   - Investigated a potential SQL injection vulnerability in `agendas.py`. Found that the code was already using parameterized queries and was not vulnerable.
-  - Performed a search for other potential SQL injection vulnerabilities in the backend and found no issues.
