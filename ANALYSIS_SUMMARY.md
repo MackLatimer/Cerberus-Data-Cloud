@@ -56,5 +56,10 @@ The database schema is defined through SQLAlchemy models in `cerberus_universal_
 *   **Unprotected Signup Endpoint**: The `/api/v1/signups` endpoint in `voters.py` is public and lacks authentication. This could be exploited to flood the database with fraudulent `Person` and `Interaction` records.
 *   **Unprotected Donation Update Endpoint**: The `/api/v1/donate/update-donation-details` endpoint in `donate.py` is public. It allows any user with a valid `payment_intent_id` to modify donation records, including reassigning the donation to a different person or campaign, which is a critical security risk.
 
+### Deployment Issues
+1.  **Inefficient Backend Docker Build**: The `cloudbuild.yaml` configuration for the backend service uses the repository root (`.`) as the Docker build context. This is inefficient as it breaks layer caching for any change made outside the `cerberus_universal_backend` directory, leading to longer build times.
+2.  **Inconsistent Secret Naming**: In `cloudbuild.yaml`, the database migration step uses a secret named `DB_URI`, while the Cloud Run deployment step uses `SQLALCHEMY_DATABASE_URI`. While they may point to the same value, this inconsistency can cause confusion and potential configuration errors.
+3.  **Missing Secrets in CI Test Step**: The `Backend Tests` step in `cloudbuild.yaml` does not have access to any secrets. If the integration tests require a database connection or other secrets, they are likely to fail or run against a misconfigured environment during the CI process.
+
 ## Proposed Fixes
 *   No fixes are proposed at this time, as the immediate task is analysis and documentation. A follow-up task could be created to address the identified issues.
