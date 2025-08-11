@@ -296,18 +296,25 @@ def upload_persons(current_user):
 
             for row in csv_input:
                 # Adjust column indices based on your CSV structure
-                first_name, last_name, email_str = row[0], row[1], row[2]
+                first_name, last_name, email_str, phone_str = row[0], row[1], row[2], row[3] if len(row) > 3 else None
 
                 first_name = first_name.strip().title()
                 last_name = last_name.strip().title()
-                email_str = email_str.strip().lower()
-
-                encrypted_email = encrypt_data(email_str)
-                person_email_obj = PersonEmail.query.filter_by(email=encrypted_email).first()
+                email_str = email_str.strip().lower() if email_str else None
+                phone_str = phone_str.strip() if phone_str else None
 
                 person = None
-                if person_email_obj:
-                    person = person_email_obj.person
+                if email_str:
+                    encrypted_email = encrypt_data(email_str)
+                    person_email_obj = PersonEmail.query.filter_by(email=encrypted_email).first()
+                    if person_email_obj:
+                        person = person_email_obj.person
+
+                if not person and phone_str:
+                    encrypted_phone = encrypt_data(phone_str)
+                    person_phone_obj = PersonPhone.query.filter_by(phone_number=encrypted_phone).first()
+                    if person_phone_obj:
+                        person = person_phone_obj.person
 
                 if not person:
                     person = Person(
@@ -318,13 +325,23 @@ def upload_persons(current_user):
                     db.session.add(person)
                     db.session.flush() # Flush to get person.person_id
 
-                    new_person_email = PersonEmail(
-                        person_id=person.person_id,
-                        email=encrypted_email,
-                        email_type='Personal',
-                        source_id=default_source_id
-                    )
-                    db.session.add(new_person_email)
+                    if email_str:
+                        new_person_email = PersonEmail(
+                            person_id=person.person_id,
+                            email=encrypt_data(email_str),
+                            email_type='Personal',
+                            source_id=default_source_id
+                        )
+                        db.session.add(new_person_email)
+
+                    if phone_str:
+                        new_person_phone = PersonPhone(
+                            person_id=person.person_id,
+                            phone_number=encrypt_data(phone_str),
+                            phone_type='Mobile',
+                            source_id=default_source_id
+                        )
+                        db.session.add(new_person_phone)
             db.session.commit()
             return jsonify({"message": "File processed successfully"}), 200
         except Exception as e:

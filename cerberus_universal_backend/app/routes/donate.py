@@ -4,7 +4,7 @@ from app.extensions import db
 from app.models import Donation, Campaign, Person, PersonEmail, PersonPhone, DataSource
 from sqlalchemy import text
 from ..config import current_config
-from ..utils.security import encrypt_data, decrypt_data
+from ..utils.security import encrypt_data, decrypt_data, token_required
 
 donate_bp = Blueprint('donate_bp', __name__, url_prefix='/api/v1/donate')
 
@@ -96,7 +96,8 @@ def create_payment_intent():
         return jsonify({'error': str(e)}), 500
 
 @donate_bp.route('/update-donation-details', methods=['POST'])
-def update_donation_details():
+@token_required
+def update_donation_details(current_user):
     data = request.get_json()
     payment_intent_id = data.get('payment_intent_id')
 
