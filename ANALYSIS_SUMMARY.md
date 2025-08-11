@@ -53,6 +53,8 @@ The database schema is defined through SQLAlchemy models in `cerberus_universal_
 *   **Redundant Backend**: The presence of both `cerberus_universal_backend` and `cerberus_campaigns_backend` suggests a need for code cleanup and consolidation.
 *   **Missing `cerberus_report_backend`**: The directory for this backend is missing, despite being referenced in the documentation and `cerberus_frontend`.
 *   **Incomplete `universal_campaign_frontend`**: This component appears to be a work in progress and is not fully integrated.
+*   **Unprotected Signup Endpoint**: The `/api/v1/signups` endpoint in `voters.py` is public and lacks authentication. This could be exploited to flood the database with fraudulent `Person` and `Interaction` records.
+*   **Unprotected Donation Update Endpoint**: The `/api/v1/donate/update-donation-details` endpoint in `donate.py` is public. It allows any user with a valid `payment_intent_id` to modify donation records, including reassigning the donation to a different person or campaign, which is a critical security risk.
 
 ## Proposed Fixes
 *   No fixes are proposed at this time, as the immediate task is analysis and documentation. A follow-up task could be created to address the identified issues.
