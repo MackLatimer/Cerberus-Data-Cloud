@@ -1,0 +1,153 @@
+# This Cloud Build file defines the CI/CD pipeline for the entire Cerberus project.
+# It builds and deploys the backend, and both frontend applications.
+
+steps:
+  # --- 1. Cerberus Universal Backend ---
+
+  # Run backend unit and integration tests
+  - name: 'python:3.9-slim'
+    id: 'Backend Tests'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo "INFO: Installing backend test dependencies..."
+        pip install -r cerberus_universal_backend/requirements.txt
+        pip install -r cerberus_universal_backend/requirements-dev.txt
+        echo "INFO: Running backend tests..."
+        pytest cerberus_universal_backend/tests/
+
+  # Build the backend Docker image
+  # The Dockerfile is in the root, so the context is '.'
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'Backend Build'
+    args:
+      - 'build'
+      - '-t'
+      - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/cerberus-backend:$COMMIT_SHA'
+      - '.' # Use the root directory as build context
+    waitFor: ['Backend Tests']
+
+  # Push the backend image to Google Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'Backend Push'
+    args:
+      - 'push'
+      - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/cerberus-backend:$COMMIT_SHA'
+    waitFor: ['Backend Build']
+
+  # Apply database migrations using the newly built image
+  # This step securely accesses the database URI from Secret Manager.
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'Backend DB Migration'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo "INFO: Running database migrations..."
+        docker run --rm \
+          -e DATABASE_URL=$$DB_URI \
+          us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/cerberus-backend:$COMMIT_SHA \
+          flask db upgrade
+    secretEnv: ['DB_URI']
+    waitFor: ['Backend Push']
+
+  # Deploy the backend service to Cloud Run
+  - name: 'gcr.io/google-cloud-builders/gcloud'
+    id: 'Backend Deploy'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'cerberus-backend'
+      - '--image=us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/cerberus-backend:$COMMIT_SHA'
+      - '--region=us-south1'
+      - '--platform=managed'
+      - '--allow-unauthenticated' # As per standard web app setup
+      - '--project=cerberus-data-cloud'
+      - '--update-secrets=PGCRYPTO_SECRET_KEY=PGCRYPTO_SECRET_KEY:latest,SECRET_KEY=SECRET_KEY:latest,SQLALCHEMY_DATABASE_URI=SQLALCHEMY_DATABASE_URI:latest'
+    waitFor: ['Backend DB Migration']
+
+  # --- 2. Cerberus Frontend ---
+
+  # Build the Cerberus frontend Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'Cerberus Frontend Build'
+    args:
+      - 'build'
+      - '-t'
+      - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/cerberus-frontend:$COMMIT_SHA'
+      - './cerberus_frontend'
+    waitFor: ['-'] # Run in parallel with backend tests
+
+  # Push the Cerberus frontend image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'Cerberus Frontend Push'
+    args:
+      - 'push'
+      - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/cerberus-frontend:$COMMIT_SHA'
+    waitFor: ['Cerberus Frontend Build']
+
+  # Deploy the Cerberus frontend to Cloud Run
+  - name: 'gcr.io/google-cloud-builders/gcloud'
+    id: 'Cerberus Frontend Deploy'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'cerberus-frontend'
+      - '--image=us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/cerberus-frontend:$COMMIT_SHA'
+      - '--region=us-south1'
+      - '--platform=managed'
+      - '--allow-unauthenticated'
+      - '--project=cerberus-data-cloud'
+    waitFor: ['Cerberus Frontend Push']
+
+  # --- 3. Emmons Frontend ---
+
+  # Build the Emmons frontend Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'Emmons Frontend Build'
+    args:
+      - 'build'
+      - '-t'
+      - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/emmons-frontend:$COMMIT_SHA'
+      - './emmons_frontend'
+    waitFor: ['-'] # Run in parallel with backend tests
+
+  # Push the Emmons frontend image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'Emmons Frontend Push'
+    args:
+      - 'push'
+      - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/emmons-frontend:$COMMIT_SHA'
+    waitFor: ['Emmons Frontend Build']
+
+  # Deploy the Emmons frontend to Cloud Run
+  - name: 'gcr.io/google-cloud-builders/gcloud'
+    id: 'Emmons Frontend Deploy'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'emmons-frontend'
+      - '--image=us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/emmons-frontend:$COMMIT_SHA'
+      - '--region=us-south1'
+      - '--platform=managed'
+      - '--allow-unauthenticated'
+      - '--project=cerberus-data-cloud'
+    waitFor: ['Emmons Frontend Push']
+
+# Specify which secrets are needed for this build.
+# The Cloud Build service account must have the "Secret Manager Secret Accessor" role.
+availableSecrets:
+  secretManager:
+    - versionName: projects/cerberus-data-cloud/secrets/SQLALCHEMY_DATABASE_URI/versions/latest
+      env: 'DB_URI'
+
+# Define the images that will be built and pushed by this pipeline.
+images:
+  - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/cerberus-backend:$COMMIT_SHA'
+  - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/cerberus-frontend:$COMMIT_SHA'
+  - 'us-south1-docker.pkg.dev/cerberus-data-cloud/cerberus-images/emmons-frontend:$COMMIT_SHA'
+
+# Set build-wide options
+options:
+  logging: CLOUD_LOGGING_ONLY

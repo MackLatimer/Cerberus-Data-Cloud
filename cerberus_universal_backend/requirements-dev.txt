@@ -1,0 +1,2 @@
+pytest==7.4.4 # For running tests
+pytest-flask==1.3.0 # For Flask specific test fixtures
