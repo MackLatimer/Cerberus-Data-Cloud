@@ -81,9 +81,28 @@ The database schema, defined with SQLAlchemy, is designed for a political campai
   - A `@token_required` decorator was already present to protect routes.
   - Applied the decorator to secure the `update_donation_details` route in `donate.py`. The `voters_api_bp` was already secured.
 
+- **Configuration**:
+  - Refactored `config.py` to load all secrets (e.g., `SECRET_KEY`, database URI) from environment variables instead of hardcoding them.
+  - The application will now fail to start if any required environment variables are missing, preventing incompletely configured deployments.
+  - Added comments to reference Google Secret Manager as the recommended way to manage secrets in production.
+
+## Proposed Fixes
+- **Authentication Fix**:
+  - Implemented JWT-based authentication for the backend.
+  - A `/api/v1/auth/login` endpoint was already present to validate user credentials and issue JWT tokens.
+  - A `@token_required` decorator was already present to protect routes.
+  - Applied the decorator to secure the `update_donation_details` route in `donate.py`. The `voters_api_bp` was already secured.
+
+- **Configuration**:
+  - Refactored `config.py` to load all secrets (e.g., `SECRET_KEY`, database URI) from environment variables instead of hardcoding them.
+  - The application will now fail to start if any required environment variables are missing, preventing incompletely configured deployments.
+  - Added comments to reference Google Secret Manager as the recommended way to manage secrets in production.
+
 ### CI/CD Enhancements
 
 The `cloudbuild.yaml` file already contains a robust CI/CD pipeline for the `cerberus_universal_backend`. The pipeline includes the following stages:
+
+
 
 *   **Testing:** Unit and integration tests are run using `pytest`.
 *   **Building:** A Docker image is built for the backend service.

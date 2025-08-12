@@ -4,7 +4,7 @@ import logging
 from logging.config import fileConfig
 
 from flask import current_app
-from sqlalchemy import engine_from_config, pool
+from sqlalchemy import engine_from_config, pool, create_engine
 
 from alembic import context
 
@@ -17,7 +17,8 @@ from os.path import abspath, dirname
 project_root = abspath(os.path.join(dirname(__file__), '..'))
 sys.path.insert(0, project_root)
 
-from app.config import get_db_connection, ProductionConfig
+from app import create_app
+from app.extensions import db
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -32,7 +33,9 @@ logger = logging.getLogger('alembic.env')
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = ProductionConfig.SQLALCHEMY_DATABASE_URI # Use the metadata from your models
+app = create_app(os.getenv('FLASK_ENV') or 'development')
+with app.app_context():
+    target_metadata = db.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
@@ -79,13 +82,20 @@ def run_migrations_online():
                 directives[:] = []
                 logger.info('No changes in schema detected.')
 
-    # Use the get_db_connection from app.config to get a connection
-    connectable = engine_from_config(
-        config.get_section(config.config_ini_section),
-        prefix='sqlalchemy.',
-        poolclass=pool.NullPool,
-        creator=get_db_connection
-    )
+    database_url = os.environ.get('DATABASE_URL')
+    if database_url:
+        # For local development, connect using the DATABASE_URL
+        config.set_main_option('sqlalchemy.url', database_url)
+        connectable = create_engine(database_url)
+    else:
+        # For production, use the Cloud SQL Python Connector
+        from app.config import get_db_connection
+        connectable = engine_from_config(
+            config.get_section(config.config_ini_section),
+            prefix='sqlalchemy.',
+            poolclass=pool.NullPool,
+            creator=get_db_connection
+        )
 
     with connectable.connect() as connection:
         context.configure(

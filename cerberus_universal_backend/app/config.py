@@ -2,9 +2,12 @@ import os
 from google.cloud.sql.connector import Connector, IPTypes
 
 # According to 12-Factor App methodology, configuration should be stored in the environment.
+# For production environments, it is highly recommended to use a secret management service
+# like Google Secret Manager to securely store and manage sensitive information.
 # The application will fail to start if these required environment variables are not set.
 # This is intentional and prevents running with an insecure or incomplete configuration.
 try:
+    # For production, these variables should be sourced from Secret Manager.
     DB_USER = os.environ["DB_USER"]
     DB_PASS = os.environ["DB_PASS"]
     DB_NAME = os.environ["DB_NAME"]

@@ -18,3 +18,7 @@
 | 12          | Removed dead code                 | Deleted legacy backend    | 2025-08-11 10:38:04.264499 |
 | 13          | Optimized Dockerfile              | Multi-stage build         | 2025-08-12 12:00:00.000000 |
 | 14          | Enhanced CI/CD                    | Documented existing pipeline | 2025-08-12 10:33:59.000000 |
+| 15          | Externalized config               | Hardcoded secrets removed | 2025-08-12 12:00:00.000000 |
+| 16          | Added migrations                  | Initial migration created | 2025-08-12 12:00:00.000000 |
+| 17          | Final review                      | Summary and unresolved issues documented | 2025-08-12 12:00:00.000000 |
+| 18          | Created deployment guide          | Manual GCP setup steps documented | 2025-08-12 12:00:00.000000 |
