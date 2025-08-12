@@ -180,7 +180,7 @@ def list_persons_via_portal(current_user):
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 20, type=int)
 
-    persons_query = Person.query
+    persons_query = Person.query.options(joinedload(Person.emails), joinedload(Person.phones))
 
     persons_page = persons_query.paginate(page=page, per_page=per_page, error_out=False)
 
@@ -188,10 +188,8 @@ def list_persons_via_portal(current_user):
     persons_data = []
     for person in persons_page.items:
         person_dict = person.to_dict()
-        person_emails = PersonEmail.query.filter_by(person_id=person.person_id).all()
-        person_phones = PersonPhone.query.filter_by(person_id=person.person_id).all()
-        person_dict['emails'] = [decrypt_data(pe.email) for pe in person_emails]
-        person_dict['phones'] = [decrypt_data(pp.phone_number) for pp in person_phones]
+        person_dict['emails'] = [decrypt_data(pe.email) for pe in person.emails]
+        person_dict['phones'] = [decrypt_data(pp.phone_number) for pp in person.phones]
         persons_data.append(person_dict)
 
     return jsonify({
@@ -288,7 +286,7 @@ def upload_persons(current_user):
         return jsonify({"error": "No selected file"}), 400
     if file:
         try:
-            stream = io.StringIO(file.stream.read().decode("UTF8"), newline=None)
+            stream = io.TextIOWrapper(file.stream, encoding='utf-8')
             csv_input = csv.reader(stream)
             header = next(csv_input)
             # Assuming a default data source with source_id = 1 exists
@@ -296,12 +294,22 @@ def upload_persons(current_user):
 
             for row in csv_input:
                 # Adjust column indices based on your CSV structure
-                first_name, last_name, email_str, phone_str = row[0], row[1], row[2], row[3] if len(row) > 3 else None
+                try:
+                    first_name, last_name, email_str, phone_str = row[0], row[1], row[2], row[3] if len(row) > 3 else None
+                except IndexError:
+                    # Handle rows with missing columns
+                    continue
+
+                # Basic validation and sanitization
+                if not first_name or not last_name:
+                    continue # Skip rows with missing required fields
 
                 first_name = first_name.strip().title()
                 last_name = last_name.strip().title()
                 email_str = email_str.strip().lower() if email_str else None
                 phone_str = phone_str.strip() if phone_str else None
+
+                # Add more robust validation here (e.g., email format)
 
                 person = None
                 if email_str:

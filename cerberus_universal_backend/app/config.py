@@ -1,5 +1,14 @@
 import os
 from google.cloud.sql.connector import Connector, IPTypes
+from google.cloud import secretmanager
+
+def access_secret_version(secret_id, version_id="latest"):
+    """Access the payload for the given secret version."""
+    client = secretmanager.SecretManagerServiceClient()
+    project_id = os.environ.get("GCP_PROJECT")
+    name = f"projects/{project_id}/secrets/{secret_id}/versions/{version_id}"
+    response = client.access_secret_version(name=name)
+    return response.payload.data.decode('UTF-8')
 
 # According to 12-Factor App methodology, configuration should be stored in the environment.
 # For production environments, it is highly recommended to use a secret management service
@@ -8,15 +17,15 @@ from google.cloud.sql.connector import Connector, IPTypes
 # This is intentional and prevents running with an insecure or incomplete configuration.
 try:
     # For production, these variables should be sourced from Secret Manager.
-    DB_USER = os.environ["DB_USER"]
-    DB_PASS = os.environ["DB_PASS"]
-    DB_NAME = os.environ["DB_NAME"]
-    DB_CONNECTION_NAME = os.environ["DB_CONNECTION_NAME"]
-    SECRET_KEY = os.environ["SECRET_KEY"]
-    PGCRYPTO_SECRET_KEY = os.environ["PGCRYPTO_SECRET_KEY"]
-    STRIPE_SECRET_KEY = os.environ["STRIPE_SECRET_KEY"]
-    STRIPE_WEBHOOK_SECRET = os.environ["STRIPE_WEBHOOK_SECRET"]
-    WEBHOOK_SECRET_KEY = os.environ["WEBHOOK_SECRET_KEY"]
+    DB_USER = os.environ.get("DB_USER") or access_secret_version("DB_USER")
+    DB_PASS = os.environ.get("DB_PASS") or access_secret_version("DB_PASS")
+    DB_NAME = os.environ.get("DB_NAME") or access_secret_version("DB_NAME")
+    DB_CONNECTION_NAME = os.environ.get("DB_CONNECTION_NAME") or access_secret_version("DB_CONNECTION_NAME")
+    SECRET_KEY = os.environ.get("SECRET_KEY") or access_secret_version("SECRET_KEY")
+    PGCRYPTO_SECRET_KEY = os.environ.get("PGCRYPTO_SECRET_KEY") or access_secret_version("PGCRYPTO_SECRET_KEY")
+    STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY") or access_secret_version("STRIPE_SECRET_KEY")
+    STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET") or access_secret_version("STRIPE_WEBHOOK_SECRET")
+    WEBHOOK_SECRET_KEY = os.environ.get("WEBHOOK_SECRET_KEY") or access_secret_version("WEBHOOK_SECRET_KEY")
 except KeyError as e:
     raise RuntimeError(f"Missing required environment variable: {e}") from e
 
@@ -63,7 +72,7 @@ class TestingConfig(Config):
         'DATABASE_URL',
         'sqlite:///:memory:' # Default to in-memory SQLite for simple tests
     )
-    SECRET_KEY = 'test_secret_key_for_flask_testing' # It's okay to have a fixed key for testing
+    SECRET_KEY = os.environ.get("TEST_SECRET_KEY", 'test_secret_key_for_flask_testing')
 
 class ProductionConfig(Config):
     """Production configuration."""
