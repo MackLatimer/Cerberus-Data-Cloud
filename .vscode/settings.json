@@ -1,5 +1,0 @@
-{
-    "stripe.enableCodebaseIndexing": true,
-    "stripe.enableIntegrationGuides": true,
-    "stripe.projectName": "default"
-}
