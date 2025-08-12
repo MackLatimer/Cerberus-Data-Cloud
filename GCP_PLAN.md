@@ -253,3 +253,9 @@ To improve maintainability and reduce technical debt, the following actions shou
     *   **Action**: Add the necessary import statement for the encryption functions in `app/routes/voters.py`.
 
 This refactoring plan will result in a more secure, robust, and maintainable application that is well-suited for a modern cloud environment.
+
+## 5. Proposed Fixes
+
+### Container Optimization
+
+- Updated the root `Dockerfile` to a multi-stage build as per the plan. This includes using `python:3.9.18-slim-bullseye`, separating builder and final stages, and running as a non-root user. This change aligns the root `Dockerfile` with the `cerberus_universal_backend` `Dockerfile` and the overall containerization strategy.

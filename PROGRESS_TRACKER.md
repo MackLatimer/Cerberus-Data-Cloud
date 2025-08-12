@@ -16,3 +16,4 @@
 | 10          | Fixed encryption bugs             | Encrypted all PII         | 2025-08-11 09:31:03.479103 |
 | 11          | Upgraded dependencies             | Pinned latest versions    | 2025-08-11 09:46:28.587280 |
 | 12          | Removed dead code                 | Deleted legacy backend    | 2025-08-11 10:38:04.264499 |
+| 13          | Optimized Dockerfile              | Multi-stage build         | 2025-08-12 12:00:00.000000 |

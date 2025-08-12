@@ -31,7 +31,7 @@ RUN python -m venv /venv
 ENV PATH="/venv/bin:$PATH"
 
 # Copy and install Python dependencies
-COPY cerberus_universal_backend/requirements.txt .
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # ---- Final Stage: Production image ----
@@ -53,11 +53,11 @@ RUN groupadd -r appgroup && useradd --no-log-init -r -g appgroup appuser
 # Copy the virtual environment from the builder stage
 COPY --from=builder /venv /venv
 
-# Copy only the necessary application code from the sub-directory
-COPY --chown=appuser:appgroup cerberus_universal_backend/app/ ./app/
-COPY --chown=appuser:appgroup cerberus_universal_backend/run.py .
-COPY --chown=appuser:appgroup cerberus_universal_backend/migrations/ ./migrations/
-COPY --chown=appuser:appgroup cerberus_universal_backend/alembic.ini .
+# Copy only the necessary application code
+COPY --chown=appuser:appgroup app/ ./app/
+COPY --chown=appuser:appgroup run.py .
+COPY --chown=appuser:appgroup migrations/ ./migrations/
+COPY --chown=appuser:appgroup alembic.ini .
 
 # Switch to the non-privileged user
 USER appuser
