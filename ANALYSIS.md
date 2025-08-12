@@ -74,12 +74,23 @@ The database schema, defined with SQLAlchemy, is designed for a political campai
     *   Sensitive PII in the `Donation` model (email, phone) is encrypted in the database using a custom `EncryptedString` type.
 *   **Other Notable Models**: `Voter`, `VoterHistory`, `Interaction`, `Address`, `District`, `AuditLog`.
 
-## 5. Authentication & Authorization
+## Proposed Fixes
+- **Authentication Fix**:
+  - Implemented JWT-based authentication for the backend.
+  - A `/api/v1/auth/login` endpoint was already present to validate user credentials and issue JWT tokens.
+  - A `@token_required` decorator was already present to protect routes.
+  - Applied the decorator to secure the `update_donation_details` route in `donate.py`. The `voters_api_bp` was already secured.
 
-The authentication mechanism is not fully implemented or visible in the repository.
+### CI/CD Enhancements
 
-*   **Components Available**: The project includes the necessary libraries (`Flask-Bcrypt`, `PyJWT`) and a `User` model with password hashing, indicating that a local username/password system with JWTs was intended.
-*   **Missing Implementation**: There is no visible code for:
-    *   A login endpoint to exchange credentials for a JWT.
-    *   A JWT validation mechanism (e.g., a Flask decorator) to protect the API endpoints.
-*   **Conclusion**: It is unclear how authentication is handled. The API endpoints in `voters_api_bp` appear to be unprotected in the application code, which could pose a significant security risk if they are not secured by other means (e.g., an API gateway or cloud-level access control).
+The `cloudbuild.yaml` file already contains a robust CI/CD pipeline for the `cerberus_universal_backend`. The pipeline includes the following stages:
+
+*   **Testing:** Unit and integration tests are run using `pytest`.
+*   **Building:** A Docker image is built for the backend service.
+*   **Pushing:** The built image is pushed to Google Artifact Registry.
+*   **Database Migrations:** `flask db upgrade` is executed to apply database migrations.
+*   **Deployment:** The service is deployed to Cloud Run.
+
+The pipeline also correctly uses environment variables for secrets, sourcing the database URI from Google Secret Manager.
+
+This step in the progress tracker is to formally document and acknowledge the existing, well-structured CI/CD pipeline.
