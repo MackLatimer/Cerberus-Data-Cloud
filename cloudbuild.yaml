@@ -2,11 +2,11 @@ steps:
 # Build and deploy the backend
 - name: 'gcr.io/cloud-builders/docker'
   id: 'Build Backend Docker Image'
-  args: [ 'build', '-t', '${_REGION}-docker.pkg.dev/$PROJECT_ID/cerberus-backend-repo/cerberus-backend:$COMMIT_SHA', './cerberus_universal_backend' ]
+  args: [ 'build', '-t', '${_REGION}-docker.pkg.dev/$PROJECT_ID/cerberus-backend-repo/cerberus-backend:$BUILD_ID', './cerberus_universal_backend' ]
 
 - name: 'gcr.io/cloud-builders/docker'
   id: 'Push Backend Docker Image'
-  args: [ 'push', '${_REGION}-docker.pkg.dev/$PROJECT_ID/cerberus-backend-repo/cerberus-backend:$COMMIT_SHA' ]
+  args: [ 'push', '${_REGION}-docker.pkg.dev/$PROJECT_ID/cerberus-backend-repo/cerberus-backend:$BUILD_ID' ]
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   id: 'Deploy Backend to Cloud Run'
@@ -16,7 +16,7 @@ steps:
     - 'deploy'
     - 'cerberus-backend'
     - '--image'
-    - '${_REGION}-docker.pkg.dev/$PROJECT_ID/cerberus-backend-repo/cerberus-backend:$COMMIT_SHA'
+    - '${_REGION}-docker.pkg.dev/$PROJECT_ID/cerberus-backend-repo/cerberus-backend:$BUILD_ID'
     - '--region'
     - '${_REGION}'
     - '--platform'
@@ -49,7 +49,7 @@ steps:
   args: ['deploy', '--only', 'hosting:campaigns']
 
 images:
-- '${_REGION}-docker.pkg.dev/$PROJECT_ID/cerberus-backend-repo/cerberus-backend:$COMMIT_SHA'
+- '${_REGION}-docker.pkg.dev/$PROJECT_ID/cerberus-backend-repo/cerberus-backend:$BUILD_ID'
 
 options:
   substitution_option: 'ALLOW_LOOSE'
@@ -57,4 +57,3 @@ substitutions:
   _REGION: 'us-south1'
   _INSTANCE_CONNECTION_NAME: 'cerberus-data-cloud:us-south1:cerberus-db'
   _PROJECT_ID: 'cerberus-data-cloud'
-  _COMMIT_SHA: 'latest'
