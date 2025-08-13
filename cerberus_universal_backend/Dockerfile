@@ -57,7 +57,7 @@ COPY --from=builder /venv /venv
 COPY --chown=appuser:appgroup app/ ./app/
 COPY --chown=appuser:appgroup run.py .
 COPY --chown=appuser:appgroup migrations/ ./migrations/
-COPY --chown=appuser:appgroup alembic.ini .
+COPY --chown=appuser:appgroup migrations/alembic.ini migrations/
 
 # Switch to the non-privileged user
 USER appuser
