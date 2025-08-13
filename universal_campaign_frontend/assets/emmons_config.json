@@ -1,0 +1,21 @@
+{
+  "campaignId": "emmons",
+  "theme": {
+    "primaryColor": "#002663",
+    "secondaryColor": "#A01124",
+    "backgroundColor": "#FFFFFF",
+    "textColor": "#000000",
+    "fontFamily": "BebasNeue",
+    "secondaryFontFamily": "Tinos"
+  },
+  "content": {
+    "siteTitle": "Curtis Emmons for County Commissioner",
+    "heroTitle": "John Emmons for City Council",
+    "callToActionText": "Donate Today"
+  },
+  "assets": {
+    "logoPath": "assets/logos/emmons_logo.png",
+    "heroImagePath": "assets/images/emmons_hero.jpg"
+  },
+  "stripePublicKey": "pk_test_51Rnnfv4brLkKMnfT9dQISZb1hLmvQMVq3nr8Ymb67lqFQ4JwJkTrc92dRUXKYvYs3tSMeYZkTgIkKJxLsOmjqTN800f2UFiJiT"
+}
