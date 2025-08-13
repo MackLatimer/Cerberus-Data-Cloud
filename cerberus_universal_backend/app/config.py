@@ -23,8 +23,28 @@ try:
     DB_CONNECTION_NAME = os.environ.get("DB_CONNECTION_NAME") or access_secret_version("DB_CONNECTION_NAME")
     SECRET_KEY = os.environ.get("SECRET_KEY") or access_secret_version("SECRET_KEY")
     PGCRYPTO_SECRET_KEY = os.environ.get("PGCRYPTO_SECRET_KEY") or access_secret_version("PGCRYPTO_SECRET_KEY")
-    STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY") or access_secret_version("STRIPE_SECRET_KEY")
-    STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET") or access_secret_version("STRIPE_WEBHOOK_SECRET")
+    STRIPE_SECRET_KEYS = {
+        'blair_frontend': os.environ.get("BLAIR_STRIPE_SECRET_KEY") or access_secret_version("BLAIR_STRIPE_SECRET_KEY"),
+        'cox_frontend': os.environ.get("COX_STRIPE_SECRET_KEY") or access_secret_version("COX_STRIPE_SECRET_KEY"),
+        'emmons_frontend': os.environ.get("EMMONS_STRIPE_SECRET_KEY") or access_secret_version("EMMONS_STRIPE_SECRET_KEY"),
+        'gauntt_frontend': os.environ.get("GAUNTT_STRIPE_SECRET_KEY") or access_secret_version("GAUNTT_STRIPE_SECRET_KEY"),
+        'mintz_frontend': os.environ.get("MINTZ_STRIPE_SECRET_KEY") or access_secret_version("MINTZ_STRIPE_SECRET_KEY"),
+        'tice_frontend': os.environ.get("TICE_STRIPE_SECRET_KEY") or access_secret_version("TICE_STRIPE_SECRET_KEY"),
+        'tulloch_frontend': os.environ.get("TULLOCH_STRIPE_SECRET_KEY") or access_secret_version("TULLOCH_STRIPE_SECRET_KEY"),
+        'leudeke_frontend': os.environ.get("LEUDEKE_STRIPE_SECRET_KEY") or access_secret_version("LEUDEKE_STRIPE_SECRET_KEY"),
+        'whitson_frontend': os.environ.get("WHITSON_STRIPE_SECRET_KEY") or access_secret_version("WHITSON_STRIPE_SECRET_KEY"),
+    }
+    STRIPE_WEBHOOK_SECRETS = {
+        'blair_frontend': os.environ.get("BLAIR_STRIPE_WEBHOOK_SECRET") or access_secret_version("BLAIR_STRIPE_WEBHOOK_SECRET"),
+        'cox_frontend': os.environ.get("COX_STRIPE_WEBHOOK_SECRET") or access_secret_version("COX_STRIPE_WEBHOOK_SECRET"),
+        'emmons_frontend': os.environ.get("EMMONS_STRIPE_WEBHOOK_SECRET") or access_secret_version("EMMONS_STRIPE_WEBHOOK_SECRET"),
+        'gauntt_frontend': os.environ.get("GAUNTT_STRIPE_WEBHOOK_SECRET") or access_secret_version("GAUNTT_STRIPE_WEBHOOK_SECRET"),
+        'mintz_frontend': os.environ.get("MINTZ_STRIPE_WEBHOOK_SECRET") or access_secret_version("MINTZ_STRIPE_WEBHOOK_SECRET"),
+        'tice_frontend': os.environ.get("TICE_STRIPE_WEBHOOK_SECRET") or access_secret_version("TICE_STRIPE_WEBHOOK_SECRET"),
+        'tulloch_frontend': os.environ.get("TULLOCH_STRIPE_WEBHOOK_SECRET") or access_secret_version("TULLOCH_STRIPE_WEBHOOK_SECRET"),
+        'leudeke_frontend': os.environ.get("LEUDEKE_STRIPE_WEBHOOK_SECRET") or access_secret_version("LEUDEKE_STRIPE_WEBHOOK_SECRET"),
+        'whitson_frontend': os.environ.get("WHITSON_STRIPE_WEBHOOK_SECRET") or access_secret_version("WHITSON_STRIPE_WEBHOOK_SECRET"),
+    }
     WEBHOOK_SECRET_KEY = os.environ.get("WEBHOOK_SECRET_KEY") or access_secret_version("WEBHOOK_SECRET_KEY")
 except KeyError as e:
     raise RuntimeError(f"Missing required environment variable: {e}") from e
@@ -48,12 +68,24 @@ def get_db_connection():
 class Config:
     """Base configuration."""
     SECRET_KEY = SECRET_KEY
-    STRIPE_SECRET_KEY = STRIPE_SECRET_KEY
-    STRIPE_WEBHOOK_SECRET = STRIPE_WEBHOOK_SECRET
+    STRIPE_SECRET_KEYS = STRIPE_SECRET_KEYS
+    STRIPE_WEBHOOK_SECRETS = STRIPE_WEBHOOK_SECRETS
     PGCRYPTO_SECRET_KEY = PGCRYPTO_SECRET_KEY
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     DEBUG = False
     TESTING = False
+
+    CAMPAIGN_STRIPE_KEY_MAPPING = {
+        1: 'blair_frontend',
+        2: 'cox_frontend',
+        3: 'emmons_frontend',
+        4: 'gauntt_frontend',
+        5: 'mintz_frontend',
+        6: 'tice_frontend',
+        7: 'tulloch_frontend',
+        8: 'leudeke_frontend',
+        9: 'whitson_frontend',
+    }
 
 class DevelopmentConfig(Config):
     """Development configuration."""

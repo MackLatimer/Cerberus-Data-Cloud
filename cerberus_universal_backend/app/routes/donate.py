@@ -35,8 +35,16 @@ def create_payment_intent():
             return jsonify({"error": f"Person with ID {person_id} not found."}), 404
 
     try:
-        print(f"Using Stripe Secret Key: {current_app.config['STRIPE_SECRET_KEY']}")
-        stripe.api_key = current_app.config['STRIPE_SECRET_KEY']
+        stripe_key_name = current_app.config['CAMPAIGN_STRIPE_KEY_MAPPING'].get(campaign_id)
+        if not stripe_key_name:
+            return jsonify({'error': 'Invalid campaign_id'}), 400
+
+        stripe_secret_key = current_app.config['STRIPE_SECRET_KEYS'].get(stripe_key_name)
+        if not stripe_secret_key:
+            return jsonify({'error': 'Stripe secret key not found for campaign'}), 400
+
+        print(f"Using Stripe Secret Key: {stripe_secret_key}")
+        stripe.api_key = stripe_secret_key
         intent = stripe.PaymentIntent.create(
             amount=amount,
             currency=currency,
@@ -142,15 +150,23 @@ def update_donation_details(current_user):
         print(f"Error updating donation details: {e}")
         return jsonify({'error': str(e)}), 500
 
-@donate_bp.route('/webhook', methods=['POST'])
-def webhook():
+@donate_bp.route('/webhook/<campaign_id>', methods=['POST'])
+def webhook(campaign_id):
     event = None
     payload = request.data
     sig_header = request.headers.get('stripe-signature')
 
     try:
+        stripe_key_name = current_app.config['CAMPAIGN_STRIPE_KEY_MAPPING'].get(int(campaign_id))
+        if not stripe_key_name:
+            return jsonify({'error': 'Invalid campaign_id'}), 400
+
+        webhook_secret = current_app.config['STRIPE_WEBHOOK_SECRETS'].get(stripe_key_name)
+        if not webhook_secret:
+            return jsonify({'error': 'Stripe webhook secret not found for campaign'}), 400
+
         event = stripe.Webhook.construct_event(
-            payload, sig_header, current_app.config['STRIPE_WEBHOOK_SECRET']
+            payload, sig_header, webhook_secret
         )
     except ValueError as e:
         # Invalid payload
