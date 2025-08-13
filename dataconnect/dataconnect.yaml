@@ -1,0 +1,12 @@
+specVersion: "v1"
+serviceId: "cerberus-db"
+location: "us-south1"
+schema:
+  source: "./schema"
+  datasource:
+    postgresql:
+      database: "cerberus_db"
+      cloudSql:
+        instanceId: "cerberus-db"
+      # schemaValidation: "COMPATIBLE"
+connectorDirs: ["./connector"]
