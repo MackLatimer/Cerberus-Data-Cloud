@@ -1,5 +1,17 @@
 {
   "projects": {
-    "default": "cerberus-data-cloud"
+    "default": "[your-gcp-project-id]"
+  },
+  "targets": {
+    "[your-gcp-project-id]": {
+      "hosting": {
+        "cerberus": [
+          "[your-cerberus-site-name]"
+        ],
+        "campaigns": [
+          "[your-campaigns-site-name]"
+        ]
+      }
+    }
   }
 }
