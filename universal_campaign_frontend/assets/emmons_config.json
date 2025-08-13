@@ -1,5 +1,9 @@
 {
   "campaignId": "emmons",
+  "defaultCampaign": true,
+  "stripeSecretKeySecretManagerName": "projects/your-project-id/secrets/stripe-secret-key",
+  "stripeWebhookKeySecretManagerName": "projects/your-project-id/secrets/stripe-webhook-key",
+  "apiBaseUrl": "https://campaigns-api-885603051818.us-south1.run.app/api/v1",
   "theme": {
     "primaryColor": "#002663",
     "secondaryColor": "#A01124",
@@ -10,12 +14,182 @@
   },
   "content": {
     "siteTitle": "Curtis Emmons for County Commissioner",
-    "heroTitle": "John Emmons for City Council",
-    "callToActionText": "Donate Today"
+    "homePage": {
+      "heroTitle": "John Emmons for City Council",
+      "callToActionText": "Donate Today"
+    },
+    "aboutPage": {
+      "appBarTitle": "About Curtis Emmons",
+      "title": "About Me",
+      "bioText": "Curtis Emmons is a dedicated public servant with a passion for community development and effective governance. With a background in business and a commitment to fiscal responsibility, Curtis brings a wealth of experience to the table. He is a strong advocate for transparency and accountability in government, and he is committed to working collaboratively to find solutions to the challenges facing our county.\n\nThroughout his career, Curtis has been actively involved in numerous local initiatives, from supporting small businesses to improving public infrastructure. He believes in a common-sense approach to problem-solving and is dedicated to ensuring that the voices of all residents are heard. His vision for the county is one of a smart growth, economic prosperity, and a high quality of life for all.\n\nAs a husband and father, Curtis understands the importance of building a strong and vibrant community for future generations. He is a firm believer in the power of collaboration and is committed to working with residents, business leaders, and community organizations to create a better future for our county."
+    },
+    "comingSoonPage": {
+      "title": "Our new website is coming soon!",
+      "subtitle": "In the meantime, you can support our campaign by donating below."
+    },
+    "donatePage": {
+      "appBarTitle": "Donate to the Campaign",
+      "title": "Support our Mission!",
+      "mailDonationText": "If you prefer to donate by mail, please send a check payable to \"Curtis Emmons Campaign\" to: 123 Main Street, Anytown, USA 12345",
+      "thankYouText": "Thank you for your generosity!"
+    },
+    "endorsementsPage": {
+      "appBarTitle": "Endorsements",
+      "title": "Endorsed by Leaders and the Community",
+      "endorsements": [
+        {
+          "name": "John Doe",
+          "quote": "Curtis Emmons is the leader we need for our community. His dedication and vision are truly inspiring.",
+          "imagePath": "assets/images/endorsement_john_doe.png",
+          "imageLeft": true,
+          "backgroundColor": "#002663",
+          "textColor": "#FFFFFF"
+        },
+        {
+          "name": "Jane Smith",
+          "quote": "I've known Curtis for years, and he is a man of integrity and action. He will bring positive change to our county.",
+          "imagePath": "assets/images/endorsement_jane_smith.png",
+          "imageLeft": false,
+          "backgroundColor": "#A01124",
+          "textColor": "#FFFFFF"
+        }
+      ],
+      "communityEndorsements": [
+        {
+          "name": "Community Member 1",
+          "quote": "Curtis is a true public servant!"
+        },
+        {
+          "name": "Community Member 2",
+          "quote": "He really cares about our town."
+        }
+      ]
+    },
+    "issuesPage": {
+      "appBarTitle": "Key Issues",
+      "title": "Issues",
+      "issueSections": [
+        {
+          "title": "Economic Growth & Job Creation",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Curtis believes in fostering a business-friendly environment that attracts new opportunities and supports local entrepreneurs.",
+          "backgroundColor": "#a01124",
+          "textColor": "#FFFFFF",
+          "imagePath": "assets/images/Emmons_Issues_Issue1.png"
+        },
+        {
+          "title": "Community Safety & Emergency Services",
+          "description": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Ensuring our neighborhoods are safe and our first responders are well-equipped is a top priority.",
+          "backgroundColor": null,
+          "textColor": null,
+          "imagePath": "assets/images/Emmons_Issues_Issue2.png"
+        },
+        {
+          "title": "Infrastructure Development & Maintenance",
+          "description": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. We must invest in maintaining and improving our roads, bridges, and public utilities to support our growing community.",
+          "backgroundColor": "#002663",
+          "textColor": "#FFFFFF",
+          "imagePath": "assets/images/Emmons_Issues_Issue3.png"
+        },
+        {
+          "title": "Fiscal Responsibility & Transparent Governance",
+          "description": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Curtis is committed to responsible spending of taxpayer dollars and ensuring all county operations are transparent and accountable to the public.",
+          "backgroundColor": null,
+          "textColor": null,
+          "imagePath": "assets/images/Emmons_Issues_Issue4.png"
+        }
+      ]
+    },
+    "privacyPolicyPage": {
+      "appBarTitle": "Privacy Policy",
+      "title": "Privacy Policy",
+      "content": "No mobile information will be shared by us with third parties/affiliates for marketing/promotional purposes. Text messaging originator opt-in data and consent will not be shared with any third parties unless required by law. Carriers are not liable for delayed or undelivered messages."
+    },
+    "commonAppBar": {
+      "navItems": [
+        {"label": "Home", "path": "/home"},
+        {"label": "Issues", "path": "/issues"},
+        {"label": "About", "path": "/about"},
+        {"label": "Endorsements", "path": "/endorsements"},
+        {"label": "Donate", "path": "/donate"}
+      ]
+    },
+    "donateSection": {
+      "title": "Make a Difference!",
+      "buttonText": "Donate Now"
+    },
+    "donationWidget": {
+      "amountSelectionPrompt": "Please select or enter an amount",
+      "customAmountLabel": "Custom Amount",
+      "continueButtonText": "Continue",
+      "firstNameValidation": "Please enter your first name",
+      "lastNameValidation": "Please enter your last name",
+      "addressValidation": "Please enter your address",
+      "addressLine2Label": "Address Line 2 (Optional)",
+      "cityLabel": "City",
+      "stateLabel": "State",
+      "zipCodeLabel": "Zip Code",
+      "employerLabel": "Employer",
+      "occupationLabel": "Occupation",
+      "proceedToPaymentButtonText": "Proceed to Payment",
+      "coverFeesText": "Cover transaction fees",
+      "recurringDonationText": "Make this a recurring monthly donation",
+      "emailLabel": "Email",
+      "phoneLabel": "Phone Number",
+      "emailValidationEmpty": "Please enter your email",
+      "emailValidationInvalid": "Please enter a valid email address",
+      "contactEmailText": "Contact me via Email",
+      "contactPhoneText": "Contact me via Phone Call",
+      "contactMailText": "Contact me via Mail",
+      "contactSmsText": "Contact me via SMS",
+      "submitButtonText": "Submit",
+      "successMessage": "Thank you for your donation!",
+      "errorMessages": {
+        "submitFormError": "Error submitting form: {statusCode}. Please try again.",
+        "submitFormGenericError": "An error occurred: {error}. Please check your connection and try again.",
+        "createPaymentIntentFailed": "Failed to create payment intent: {body}",
+        "createPaymentIntentError": "Error creating payment intent: {error}",
+        "stripeError": "Error from Stripe: {message}",
+        "unforeseenError": "Unforeseen error: {error}",
+        "submitDetailsFailed": "Failed to submit details: {body}",
+        "submitDetailsError": "Error submitting details: {error}"
+      },
+      "donationAmounts": [25, 50, 100, 250, 500, 1000]
+    }
   },
+  "widgets": {
+    "signupForm": {
+      "title": "Join the Movement!",
+      "endorseText": "I endorse Curtis Emmons and allow him to publish my endorsement",
+      "getInvolvedText": "I want to get involved with the campaign!",
+      "automatedMessagingText": "I agree to receive automated messaging from Elect Emmons",
+      "emailOptInText": "I agree to receive emails from Elect Emmons",
+      "legalText": "Reply STOP to opt out, HELP for help. Msg & data rates may apply. Frequency may vary.",
+      "submitButtonText": "Sign Up",
+      "privacyPolicyText": "Privacy Policy"
+    }
+  },
+  "footer": {
+    "paidForText": "Paid for by Elect Emmons"
+  }
+},
   "assets": {
-    "logoPath": "assets/logos/emmons_logo.png",
-    "heroImagePath": "assets/images/emmons_hero.jpg"
+    "faviconImagePath": "assets/Cerberus_Favicon.png",
+    "homePage": {
+      "logoPath": "assets/logos/emmons_logo.png",
+      "heroImagePath": "assets/images/emmons_hero.jpg"
+    },
+    "aboutPage": {
+      "heroImagePath": "assets/images/Emmons_About_Hero.png",
+      "bioImage1Path": "assets/images/Emmons_About_Bio1.png",
+      "bioImage2Path": "assets/images/Emmons_About_Bio2.png",
+      "bioImage3Path": "assets/images/Emmons_About_Bio3.png"
+    },
+    "donatePage": {
+      "heroImagePath": "assets/images/Emmons_Donate_Hero.png"
+    },
+    "endorsementsPage": {
+      "heroImagePath": "assets/images/Emmons_Endorsements_Hero.png"
+    }
   },
   "stripePublicKey": "pk_test_51Rnnfv4brLkKMnfT9dQISZb1hLmvQMVq3nr8Ymb67lqFQ4JwJkTrc92dRUXKYvYs3tSMeYZkTgIkKJxLsOmjqTN800f2UFiJiT"
 }

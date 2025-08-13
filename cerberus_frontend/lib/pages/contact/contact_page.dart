@@ -1,0 +1,105 @@
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_project/widgets/join_list_section.dart';
+
+class ContactPage extends StatelessWidget {
+  const ContactPage({super.key});
+
+  Future<void> _launchUrl(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri)) {
+      // Consider logging this error or showing a snackbar
+      // print('Could not launch $url');
+    }
+  }
+
+  Widget _buildContactDetailRow(BuildContext context, String label, String value, String urlScheme) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text('$label: ', style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+          InkWell(
+            child: Text(
+              value,
+              style: TextStyle(color: Theme.of(context).colorScheme.primary, decoration: TextDecoration.underline),
+            ),
+            onTap: () => _launchUrl('$urlScheme$value'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildContactCard(BuildContext context, String name, String phone, String email) {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 750),
+      child: Card(
+        color: Colors.black,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: Colors.white, width: 3.0),
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        margin: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                name,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
+              ),
+              const SizedBox(height: 12.0), // Increased spacing
+              _buildContactDetailRow(context, 'Phone', phone, 'tel:'),
+              _buildContactDetailRow(context, 'Email', email, 'mailto:'),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Center(
+            child: Text(
+              'Contact Us',
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontFamily: 'LeagueSpartan',
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+          ),
+          const SizedBox(height: 16.0),
+          _buildContactCard(
+            context,
+            'Michael Smith',
+            '(512) 767-4324',
+            'Michael@CerberusCampaigns.com',
+          ),
+          _buildContactCard(
+            context,
+            'Tyler Rayner',
+            '(512) 767-4324', // Assuming same placeholder number, replace if different
+            'Tyler@CerberusCampaigns.com',
+          ),
+          _buildContactCard(
+            context,
+            'Mack Latimer',
+            '(512) 767-4324', // Assuming same placeholder number, replace if different
+            'Mack@CerberusCampaigns.com',
+          ),
+          const SizedBox(height: 24.0),
+          const JoinListSection(),
+        ],
+      ),
+    );
+  }
+}
