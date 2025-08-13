@@ -54,5 +54,5 @@ images:
 options:
   substitution_option: 'ALLOW_LOOSE'
 substitutions:
-  _REGION: 'us-central1'
-  _INSTANCE_CONNECTION_NAME: ''
+  _REGION: 'us-south1'
+  _INSTANCE_CONNECTION_NAME: 'cerberus-data-cloud:us-south1:cerberus-db'
