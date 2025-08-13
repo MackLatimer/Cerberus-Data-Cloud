@@ -91,6 +91,7 @@ This guide provides step-by-step instructions for provisioning the necessary Goo
 4.  Add the following roles:
     *   **Cloud SQL Client**
     *   **Secret Manager Secret Accessor**
+    *   **Cloud Run Admin** (This role is required for Cloud Build to deploy to Cloud Run)
 5.  Click **Save**.
 
 ### 8. Set up Cloud Build for CI/CD
