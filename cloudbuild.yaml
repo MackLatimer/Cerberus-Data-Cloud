@@ -60,9 +60,6 @@ steps:
       export PATH="/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" # Add flutter to PATH
       flutter pub get
   dir: 'cerberus_frontend' # Change working directory for this step
-  volumes:
-    - name: 'flutter_sdk'
-      path: '/flutter'
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:460.0.0' # Pinned to a stable version
   id: 'Build Cerberus Frontend'
@@ -73,9 +70,6 @@ steps:
       export PATH="/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" # Add flutter to PATH
       flutter build web --release
   dir: 'cerberus_frontend' # Change working directory for this step
-  volumes:
-    - name: 'flutter_sdk'
-      path: '/flutter'
 
 - name: 'gcr.io/cloud-builders/firebase:3.22.0' # Pinned to a stable version (example)
   id: 'Deploy Cerberus Frontend'
@@ -91,9 +85,6 @@ steps:
       export PATH="/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" # Add flutter to PATH
       flutter pub get
   dir: 'universal_campaign_frontend' # Change working directory for this step
-  volumes:
-    - name: 'flutter_sdk'
-      path: '/flutter'
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:460.0.0' # Pinned to a stable version
   id: 'Build Universal Campaign Frontend'
@@ -104,9 +95,6 @@ steps:
       export PATH="/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" # Add flutter to PATH
       flutter build web --release
   dir: 'universal_campaign_frontend' # Change working directory for this step
-  volumes:
-    - name: 'flutter_sdk'
-      path: '/flutter'
 
 - name: 'gcr.io/cloud-builders/firebase:3.22.0' # Pinned to a stable version (example)
   id: 'Deploy Universal Campaign Frontend'
