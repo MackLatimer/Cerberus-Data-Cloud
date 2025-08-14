@@ -108,7 +108,7 @@ options:
   volumes:
     - name: 'flutter_sdk'
       path: '/flutter'
-  logsBucket: 'gs://cerberus-data-cloud_cloudbuild'
+  
 substitutions:
   _REGION: 'us-south1'
   _INSTANCE_CONNECTION_NAME: 'cerberus-data-cloud:us-south1:cerberus-db'
