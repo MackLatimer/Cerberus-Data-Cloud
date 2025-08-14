@@ -94,10 +94,10 @@ class EndorsementsPageState extends State<EndorsementsPage> {
                             imagePath: widget.config.content.endorsementsPage.endorsements[i].imagePath,
                             imageLeft: widget.config.content.endorsementsPage.endorsements[i].imageLeft,
                             backgroundColor: widget.config.content.endorsementsPage.endorsements[i].backgroundColor != null
-                                ? Color(int.parse(widget.config.content.endorsementsPage.endorsements[i].backgroundColor.substring(1, 7), radix: 16) + 0xFF000000)
+                                ? Color(int.parse(widget.config.content.endorsementsPage.endorsements[i].backgroundColor!.substring(1, 7), radix: 16) + 0xFF000000)
                                 : null,
                             textColor: widget.config.content.endorsementsPage.endorsements[i].textColor != null
-                                ? Color(int.parse(widget.config.content.endorsementsPage.endorsements[i].textColor.substring(1, 7), radix: 16) + 0xFF000000)
+                                ? Color(int.parse(widget.config.content.endorsementsPage.endorsements[i].textColor!.substring(1, 7), radix: 16) + 0xFF000000)
                                 : null,
                           ),
                         const SizedBox(height: 40),
@@ -111,6 +111,7 @@ class EndorsementsPageState extends State<EndorsementsPage> {
                               textAlign: TextAlign.center,
                             ),
                           ),
+                      ],
                     ),
                   ),
                 ),
@@ -121,7 +122,7 @@ class EndorsementsPageState extends State<EndorsementsPage> {
             ],
           ),
         ),
-      ),
+        ),
       );
     });
   }

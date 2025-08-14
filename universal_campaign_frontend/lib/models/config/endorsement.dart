@@ -3,16 +3,16 @@ class Endorsement {
   final String quote;
   final String imagePath;
   final bool imageLeft;
-  final String backgroundColor;
-  final String textColor;
+  final String? backgroundColor;
+  final String? textColor;
 
   Endorsement({
     required this.name,
     required this.quote,
     required this.imagePath,
     required this.imageLeft,
-    required this.backgroundColor,
-    required this.textColor,
+    this.backgroundColor,
+    this.textColor,
   });
 
   factory Endorsement.fromJson(Map<String, dynamic> json) {

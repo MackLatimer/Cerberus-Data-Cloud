@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:universal_campaign_frontend/models/campaign_config.dart';
+import 'package:universal_campaign_frontend/models/config/nav_item.dart';
 
 import 'package:universal_campaign_frontend/utils/breakpoint.dart';
 
@@ -97,8 +98,8 @@ class CommonAppBarState extends State<CommonAppBar> {
       ),
     );
 
-    final navItemsRow1 = navItems.sublist(0, 3);
-    final navItemsRow2 = navItems.sublist(3, 5);
+    final navItemsRow1 = navItems.length > 3 ? navItems.sublist(0, 3) : navItems;
+    final navItemsRow2 = navItems.length > 3 ? navItems.sublist(3) : <NavItem>[];
 
     final compactNavigation = Container(
       height: 100,
@@ -139,26 +140,27 @@ class CommonAppBarState extends State<CommonAppBar> {
               );
             }).toList(),
           ),
-          Row(
-            mainAxisSize: MainAxisSize.AxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: navItemsRow2.map((item) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: TextButton(
-                  onPressed: () => context.go(item.path),
-                  child: Text(
-                    item.label,
-                    style: textTheme.labelMedium?.copyWith(
-                      color: Color(int.parse(widget.config.theme.primaryColor.substring(1, 7), radix: 16) + 0xFF000000),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24,
+          if (navItemsRow2.isNotEmpty)
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: navItemsRow2.map((item) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: TextButton(
+                    onPressed: () => context.go(item.path),
+                    child: Text(
+                      item.label,
+                      style: textTheme.labelMedium?.copyWith(
+                        color: Color(int.parse(widget.config.theme.primaryColor.substring(1, 7), radix: 16) + 0xFF000000),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                      ),
                     ),
                   ),
-                ),
-              );
-            }).toList(),
-          ),
+                );
+              }).toList(),
+            ),
         ],
       ),
     );
@@ -181,7 +183,7 @@ class CommonAppBarState extends State<CommonAppBar> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Image.asset(
-                          widget.config.assets.logoPath,
+                          widget.config.assets.commonAppBar.logoPath,
                           width: widget.config.assets.commonAppBar.logoWidth,
                           height: widget.config.assets.commonAppBar.logoHeight,
                         ),
@@ -196,7 +198,7 @@ class CommonAppBarState extends State<CommonAppBar> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Image.asset(
-                          widget.config.assets.homePage.logoPath,
+                          widget.config.assets.commonAppBar.logoPath,
                           width: widget.config.assets.commonAppBar.logoWidth,
                           height: widget.config.assets.commonAppBar.logoHeight,
                         ),

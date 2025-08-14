@@ -11,6 +11,7 @@ import 'package:universal_campaign_frontend/models/config/footer_content.dart';
 import 'package:universal_campaign_frontend/models/config/error_page_content.dart';
 import 'package:universal_campaign_frontend/models/config/widgets_content.dart';
 import 'package:universal_campaign_frontend/models/config/donation_widget_content.dart';
+import 'package:universal_campaign_frontend/models/config/signup_form_content.dart';
 
 class ContentConfig {
   final String siteTitle;
@@ -27,7 +28,8 @@ class ContentConfig {
   final FooterContent footer;
   final ErrorPageContent errorPage;
   final WidgetsContent widgets;
-  final DonationWidgetContent donationWidget; // Added
+  final DonationWidgetContent donationWidget;
+  final SignupFormContent signupForm;
 
   ContentConfig({
     required this.siteTitle,
@@ -44,7 +46,8 @@ class ContentConfig {
     required this.footer,
     required this.errorPage,
     required this.widgets,
-    required this.donationWidget, // Added
+    required this.donationWidget,
+    required this.signupForm,
   });
 
   factory ContentConfig.fromJson(Map<String, dynamic> json) {
@@ -63,7 +66,8 @@ class ContentConfig {
       footer: FooterContent.fromJson(json['footer']),
       errorPage: ErrorPageContent.fromJson(json['errorPage']),
       widgets: WidgetsContent.fromJson(json['widgets']),
-      donationWidget: DonationWidgetContent.fromJson(json['donationWidget']), // Added
+      donationWidget: DonationWidgetContent.fromJson(json['donationWidget']),
+      signupForm: SignupFormContent.fromJson(json['signupForm']),
     );
   }
 }

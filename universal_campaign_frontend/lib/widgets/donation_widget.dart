@@ -98,7 +98,7 @@ class _DonationWidgetState extends State<DonationWidget> {
         await Stripe.instance.initPaymentSheet(
           paymentSheetParameters: SetupPaymentSheetParameters(
             paymentIntentClientSecret: clientSecret,
-            merchantDisplayName: widget.config.siteTitle,
+            merchantDisplayName: widget.config.content.siteTitle,
           ),
         );
 
@@ -261,7 +261,7 @@ class _DonationWidgetState extends State<DonationWidget> {
           controller: _customAmountController,
           decoration: const InputDecoration(
             labelText: 'Custom Amount',
-            prefixText: r',
+            prefixText: r'$',
           ),
           keyboardType: TextInputType.number,
           onChanged: (value) {

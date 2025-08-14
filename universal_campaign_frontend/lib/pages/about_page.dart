@@ -54,7 +54,7 @@ class AboutPageState extends State<AboutPage> {
                 height: MediaQuery.of(context).size.height,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage(widget.config.aboutPage.heroImagePath),
+                    image: AssetImage(widget.config.assets.aboutPage.heroImagePath),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -96,7 +96,8 @@ class AboutPageState extends State<AboutPage> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(15.0),
-                                  child: Image.asset(widget.config.assets.aboutPage.bioImage1Path, fit: BoxFit.cover)),
+                                  child: Image.asset(widget.config.assets.aboutPage.bioImage1Path, fit: BoxFit.cover),
+                                ),
                               ),
                             ),
                             Expanded(
@@ -104,7 +105,8 @@ class AboutPageState extends State<AboutPage> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(15.0),
-                                  child: Image.asset(widget.config.assets.aboutPage.bioImage2Path, fit: BoxFit.cover)),
+                                  child: Image.asset(widget.config.assets.aboutPage.bioImage2Path, fit: BoxFit.cover),
+                                ),
                               ),
                             ),
                           ],
@@ -115,7 +117,8 @@ class AboutPageState extends State<AboutPage> {
                             padding: const EdgeInsets.all(8.0),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(15.0),
-                              child: Image.asset(widget.config.assets.aboutPage.bioImage3Path, height: 200, fit: BoxFit.cover)),
+                              child: Image.asset(widget.config.assets.aboutPage.bioImage3Path, height: 200, fit: BoxFit.cover),
+                            ),
                           ),
                         ),
                       ],
@@ -128,6 +131,7 @@ class AboutPageState extends State<AboutPage> {
               Footer(config: widget.config),
             ],
           ),
+        ),
         ),
       );
     });
