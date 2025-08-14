@@ -37,7 +37,7 @@ steps:
   args:
     - '-c'
     - |
-      export PATH="$PATH:/flutter/bin" # Ensure PATH is set for this step
+      export PATH="/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       FLUTTER_VERSION="3.22.2" # Or whatever stable version you prefer
       FLUTTER_SDK_URL="https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${FLUTTER_VERSION}-stable.tar.xz"
 
@@ -56,7 +56,7 @@ steps:
   args:
     - '-c'
     - |
-      export PATH="$$PATH:/flutter/bin"
+      export PATH="/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       cd cerberus_frontend && flutter pub get
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -65,7 +65,7 @@ steps:
   args:
     - '-c'
     - |
-      export PATH="$$PATH:/flutter/bin"
+      export PATH="/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       cd cerberus_frontend && flutter build web --release
 
 - name: 'gcr.io/cloud-builders/firebase'
@@ -79,7 +79,7 @@ steps:
   args:
     - '-c'
     - |
-      export PATH="$PATH:/flutter/bin" # Ensure PATH is set for this step
+      export PATH="/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       FLUTTER_VERSION="3.22.2" # Or whatever stable version you prefer
       FLUTTER_SDK_URL="https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${FLUTTER_VERSION}-stable.tar.xz"
 
@@ -98,7 +98,7 @@ steps:
   args:
     - '-c'
     - |
-      export PATH="$$PATH:/flutter/bin"
+      export PATH="/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       cd universal_campaign_frontend && flutter pub get
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -107,7 +107,7 @@ steps:
   args:
     - '-c'
     - |
-      export PATH="$$PATH:/flutter/bin"
+      export PATH="/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       cd universal_campaign_frontend && flutter build web --release
 
 - name: 'gcr.io/cloud-builders/firebase'
