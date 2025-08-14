@@ -44,7 +44,7 @@ steps:
         echo "Flutter SDK found in cache."
       fi
       flutter doctor
-  env: ['PATH=/flutter/bin:$PATH']
+  
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   id: 'Get dependencies for Cerberus Frontend'
@@ -53,7 +53,7 @@ steps:
     - '-c'
     - |
       cd cerberus_frontend && flutter pub get
-  env: ['PATH=/flutter/bin:$PATH']
+  
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   id: 'Build Cerberus Frontend'
@@ -62,7 +62,7 @@ steps:
     - '-c'
     - |
       cd cerberus_frontend && flutter build web --release
-  env: ['PATH=/flutter/bin:$PATH']
+  
 
 - name: 'gcr.io/cloud-builders/firebase'
   id: 'Deploy Cerberus Frontend'
@@ -82,7 +82,7 @@ steps:
         echo "Flutter SDK found in cache."
       fi
       flutter doctor
-  env: ['PATH=/flutter/bin:$PATH']
+  
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   id: 'Get dependencies for Universal Campaign Frontend'
@@ -91,7 +91,7 @@ steps:
     - '-c'
     - |
       cd universal_campaign_frontend && flutter pub get
-  env: ['PATH=/flutter/bin:$PATH']
+  
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   id: 'Build Universal Campaign Frontend'
@@ -100,7 +100,7 @@ steps:
     - '-c'
     - |
       cd universal_campaign_frontend && flutter build web --release
-  env: ['PATH=/flutter/bin:$PATH']
+  
 
 - name: 'gcr.io/cloud-builders/firebase'
   id: 'Deploy Universal Campaign Frontend'
