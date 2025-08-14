@@ -31,7 +31,7 @@ steps:
   id: 'Install Firebase Tools'
   args: ['install', '-g', 'firebase-tools']
 
-- name: 'ubuntu'
+- name: 'cirrusci/flutter:latest'
   id: 'Build Cerberus Frontend'
   args: ['bash', '-c', 'cd cerberus_frontend && flutter build web']
 
@@ -40,7 +40,7 @@ steps:
   args: ['deploy', '--only', 'hosting:cerberus']
 
 # Build and deploy the universal_campaign_frontend
-- name: 'ubuntu'
+- name: 'cirrusci/flutter:latest'
   id: 'Build Universal Campaign Frontend'
   args: ['bash', '-c', 'cd universal_campaign_frontend && flutter build web']
 
