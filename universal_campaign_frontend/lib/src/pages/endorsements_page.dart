@@ -86,10 +86,31 @@ class EndorsementsPageState extends State<EndorsementsPage> {
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 40),
-                        HighProfileEndorsementCard(config: widget.config),
+                        // High Profile Endorsements
+                        for (int i = 0; i < widget.config.content.endorsementsPage.endorsements.length; i++)
+                          HighProfileEndorsementCard(
+                            name: widget.config.content.endorsementsPage.endorsements[i].name,
+                            quote: widget.config.content.endorsementsPage.endorsements[i].quote,
+                            imagePath: widget.config.assets.endorsementsPage.endorsementImagePaths[i],
+                            imageLeft: widget.config.content.endorsementsPage.endorsements[i].imageLeft,
+                            backgroundColor: widget.config.content.endorsementsPage.endorsements[i].backgroundColor != null
+                                ? Color(int.parse(widget.config.content.endorsementsPage.endorsements[i].backgroundColor!.substring(1, 7), radix: 16) + 0xFF000000)
+                                : null,
+                            textColor: widget.config.content.endorsementsPage.endorsements[i].textColor != null
+                                ? Color(int.parse(widget.config.content.endorsementsPage.endorsements[i].textColor!.substring(1, 7), radix: 16) + 0xFF000000)
+                                : null,
+                          ),
                         const SizedBox(height: 40),
-                        // Add other endorsements here
-                      ],
+                        // Community Endorsements
+                        for (var endorsement in widget.config.content.endorsementsPage.communityEndorsements)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text(
+                              '"${endorsement.quote}" - ${endorsement.name}',
+                              style: Theme.of(context).textTheme.bodyLarge,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
                     ),
                   ),
                 ),

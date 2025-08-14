@@ -15,7 +15,7 @@ class HomePage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Image.asset(
-          config.assets.logoPath,
+          config.assets.homePage.logoPath,
           height: 40,
           fit: BoxFit.contain,
           errorBuilder: (context, error, stackTrace) {
@@ -35,7 +35,7 @@ class HomePage extends StatelessWidget {
             children: [
               const SizedBox(height: 40),
               Text(
-                config.content.heroTitle,
+                config.content.homePage.heroTitle,
                 style: textTheme.headlineLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: Color(int.parse(config.theme.primaryColor.substring(1, 7), radix: 16) + 0xFF000000),
@@ -49,7 +49,7 @@ class HomePage extends StatelessWidget {
                   // Navigator.push(context, MaterialPageRoute(builder: (context) => DonatePage()));
                   print('Call to Action button pressed!');
                 },
-                child: Text(config.content.callToActionText),
+                child: Text(config.content.homePage.callToActionText),
               ),
               const SizedBox(height: 60),
               // We can add sections for Issues and Endorsements here later

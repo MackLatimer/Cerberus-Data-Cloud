@@ -150,7 +150,7 @@ class IssuesPageState extends State<IssuesPage> {
                   context,
                   widget.config.content.issuesPage.issueSections[i].title,
                   widget.config.content.issuesPage.issueSections[i].description,
-                  imagePath: widget.config.assets.issuesPage.issueImagePaths[i],
+                  imagePath: widget.config.content.issuesPage.issueSections[i].imagePath,
                   backgroundColor: widget.config.content.issuesPage.issueSections[i].backgroundColor != null
                       ? Color(int.parse(widget.config.content.issuesPage.issueSections[i].backgroundColor!.substring(1, 7), radix: 16) + 0xFF000000)
                       : null,

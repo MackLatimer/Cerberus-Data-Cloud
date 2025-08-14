@@ -69,6 +69,7 @@ class ThemeConfig {
 
 class ContentConfig {
   final String siteTitle;
+  final String faviconImagePath;
   final HomePageContent homePage;
   final AboutPageContent aboutPage;
   final ComingSoonPageContent comingSoonPage;
@@ -84,6 +85,7 @@ class ContentConfig {
 
   ContentConfig({
     required this.siteTitle,
+    required this.faviconImagePath,
     required this.homePage,
     required this.aboutPage,
     required this.comingSoonPage,
@@ -101,6 +103,7 @@ class ContentConfig {
   factory ContentConfig.fromJson(Map<String, dynamic> json) {
     return ContentConfig(
       siteTitle: json['siteTitle'],
+      faviconImagePath: json['faviconImagePath'],
       homePage: HomePageContent.fromJson(json['homePage']),
       aboutPage: AboutPageContent.fromJson(json['aboutPage']),
       comingSoonPage: ComingSoonPageContent.fromJson(json['comingSoonPage']),
@@ -120,16 +123,19 @@ class ContentConfig {
 class HomePageContent {
   final String heroTitle;
   final String callToActionText;
+  final String heroImagePath;
 
   HomePageContent({
     required this.heroTitle,
     required this.callToActionText,
+    required this.heroImagePath,
   });
 
   factory HomePageContent.fromJson(Map<String, dynamic> json) {
     return HomePageContent(
       heroTitle: json['heroTitle'],
       callToActionText: json['callToActionText'],
+      heroImagePath: json['heroImagePath'],
     );
   }
 }
@@ -197,14 +203,17 @@ class DonateSectionContent {
 }
 
 class CommonAppBarContent {
+  final String logoPath;
   final List<NavItem> navItems;
 
   CommonAppBarContent({
+    required this.logoPath,
     required this.navItems,
   });
 
   factory CommonAppBarContent.fromJson(Map<String, dynamic> json) {
     return CommonAppBarContent(
+      logoPath: json['logoPath'],
       navItems: (json['navItems'] as List)
           .map((i) => NavItem.fromJson(i))
           .toList(),
@@ -276,12 +285,14 @@ class IssueSectionContent {
   final String description;
   final String? backgroundColor;
   final String? textColor;
+  final String imagePath;
 
   IssueSectionContent({
     required this.title,
     required this.description,
     this.backgroundColor,
     this.textColor,
+    required this.imagePath,
   });
 
   factory IssueSectionContent.fromJson(Map<String, dynamic> json) {
@@ -290,6 +301,7 @@ class IssueSectionContent {
       description: json['description'],
       backgroundColor: json['backgroundColor'],
       textColor: json['textColor'],
+      imagePath: json['imagePath'],
     );
   }
 }
@@ -379,17 +391,14 @@ class CommonAppBarAssets {
 
 class IssuesPageAssets {
   final String heroImagePath;
-  final List<String> issueImagePaths;
 
   IssuesPageAssets({
     required this.heroImagePath,
-    required this.issueImagePaths,
   });
 
   factory IssuesPageAssets.fromJson(Map<String, dynamic> json) {
     return IssuesPageAssets(
       heroImagePath: json['heroImagePath'],
-      issueImagePaths: List<String>.from(json['issueImagePaths']),
     );
   }
 }
@@ -436,43 +445,81 @@ class ComingSoonPageContent {
 
 class AboutPageContent {
   final String appBarTitle;
+  final String heroImagePath;
   final String title;
   final String bioText;
+  final String bioImage1Path;
+  final String bioImage2Path;
+  final String bioImage3Path;
 
   AboutPageContent({
     required this.appBarTitle,
+    required this.heroImagePath,
     required this.title,
     required this.bioText,
+    required this.bioImage1Path,
+    required this.bioImage2Path,
+    required this.bioImage3Path,
   });
 
   factory AboutPageContent.fromJson(Map<String, dynamic> json) {
     return AboutPageContent(
       appBarTitle: json['appBarTitle'],
+      heroImagePath: json['heroImagePath'],
       title: json['title'],
       bioText: json['bioText'],
+      bioImage1Path: json['bioImage1Path'],
+      bioImage2Path: json['bioImage2Path'],
+      bioImage3Path: json['bioImage3Path'],
     );
   }
 }
 
 class AssetsConfig {
-  final String logoPath;
-  final String heroImagePath;
+  final String faviconImagePath;
+  final HomePageAssets homePage;
   final AboutPageAssets aboutPage;
   final DonatePageAssets donatePage;
+  final EndorsementsPageAssets endorsementsPage;
+  final IssuesPageAssets issuesPage;
+  final CommonAppBarAssets commonAppBar;
 
   AssetsConfig({
-    required this.logoPath,
-    required this.heroImagePath,
+    required this.faviconImagePath,
+    required this.homePage,
     required this.aboutPage,
     required this.donatePage,
+    required this.endorsementsPage,
+    required this.issuesPage,
+    required this.commonAppBar,
   });
 
   factory AssetsConfig.fromJson(Map<String, dynamic> json) {
     return AssetsConfig(
-      logoPath: json['logoPath'],
-      heroImagePath: json['heroImagePath'],
+      faviconImagePath: json['faviconImagePath'],
+      homePage: HomePageAssets.fromJson(json['homePage']),
       aboutPage: AboutPageAssets.fromJson(json['aboutPage']),
       donatePage: DonatePageAssets.fromJson(json['donatePage']),
+      endorsementsPage: EndorsementsPageAssets.fromJson(json['endorsementsPage']),
+      issuesPage: IssuesPageAssets.fromJson(json['issuesPage']),
+      commonAppBar: CommonAppBarAssets.fromJson(json['commonAppBar']),
+    );
+  }
+}
+
+class HomePageAssets {
+  final String logoPath;
+  final String heroImagePath;
+
+  HomePageAssets({
+    required this.logoPath,
+    required this.heroImagePath,
+  });
+
+  factory HomePageAssets.fromJson(Map<String, dynamic> json) {
+    return HomePageAssets(
+      logoPath: json['logoPath'],
+      heroImagePath: json['heroImagePath'],
     );
   }
 }

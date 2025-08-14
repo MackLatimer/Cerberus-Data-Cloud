@@ -58,9 +58,9 @@ class HomePageState extends State<HomePage> {
             SliverToBoxAdapter(
               child: Container(
                 height: heroHeight,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/images/Emmons_Home_Hero.png'),
+                    image: AssetImage(widget.config.assets.homePage.heroImagePath),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -74,7 +74,7 @@ class HomePageState extends State<HomePage> {
             children: <Widget>[
               const SizedBox(height: 40),
               Text(
-                'Welcome to the Campaign!',
+                widget.config.content.homePage.heroTitle,
                 style: Theme.of(context).textTheme.headlineMedium,
                 textAlign: TextAlign.center,
               ),
@@ -82,7 +82,7 @@ class HomePageState extends State<HomePage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: Text(
-                  'Join us in making a difference for Bell County Precinct 4. Curtis Emmons is dedicated to serving our community with integrity, transparency, and a commitment to progress.',
+                  widget.config.content.homePage.callToActionText,
                   style: Theme.of(context).textTheme.bodyLarge,
                   textAlign: TextAlign.center,
                 ),

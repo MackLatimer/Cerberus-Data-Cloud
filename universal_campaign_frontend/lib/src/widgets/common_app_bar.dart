@@ -196,7 +196,7 @@ class CommonAppBarState extends State<CommonAppBar> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Image.asset(
-                          widget.config.logoPath,
+                          widget.config.assets.homePage.logoPath,
                           width: widget.config.assets.commonAppBar.logoWidth,
                           height: widget.config.assets.commonAppBar.logoHeight,
                         ),

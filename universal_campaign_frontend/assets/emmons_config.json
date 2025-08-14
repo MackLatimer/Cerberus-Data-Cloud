@@ -14,14 +14,20 @@
   },
   "content": {
     "siteTitle": "Curtis Emmons for County Commissioner",
+    "faviconImagePath": "assets/Cerberus_Favicon.png",
     "homePage": {
+      "heroImagePath": "assets/images/Emmons_Home_Hero.png",
       "heroTitle": "John Emmons for City Council",
       "callToActionText": "Donate Today"
     },
     "aboutPage": {
       "appBarTitle": "About Curtis Emmons",
+      "heroImagePath": "assets/images/Emmons_About_Hero.png",
       "title": "About Me",
-      "bioText": "Curtis Emmons is a dedicated public servant with a passion for community development and effective governance. With a background in business and a commitment to fiscal responsibility, Curtis brings a wealth of experience to the table. He is a strong advocate for transparency and accountability in government, and he is committed to working collaboratively to find solutions to the challenges facing our county.\n\nThroughout his career, Curtis has been actively involved in numerous local initiatives, from supporting small businesses to improving public infrastructure. He believes in a common-sense approach to problem-solving and is dedicated to ensuring that the voices of all residents are heard. His vision for the county is one of a smart growth, economic prosperity, and a high quality of life for all.\n\nAs a husband and father, Curtis understands the importance of building a strong and vibrant community for future generations. He is a firm believer in the power of collaboration and is committed to working with residents, business leaders, and community organizations to create a better future for our county."
+      "bioText": "Curtis Emmons is a dedicated public servant with a passion for community development and effective governance. With a background in business and a commitment to fiscal responsibility, Curtis brings a wealth of experience to the table. He is a strong advocate for transparency and accountability in government, and he is committed to working collaboratively to find solutions to the challenges facing our county.\n\nThroughout his career, Curtis has been actively involved in numerous local initiatives, from supporting small businesses to improving public infrastructure. He believes in a common-sense approach to problem-solving and is dedicated to ensuring that the voices of all residents are heard. His vision for the county is one of a smart growth, economic prosperity, and a high quality of life for all.\n\nAs a husband and father, Curtis understands the importance of building a strong and vibrant community for future generations. He is a firm believer in the power of collaboration and is committed to working with residents, business leaders, and community organizations to create a better future for our county.",
+      "bioImage1Path": "assets/images/Emmons_About_Bio1.png",
+      "bioImage2Path": "assets/images/Emmons_About_Bio2.png",
+      "bioImage3Path": "assets/images/Emmons_About_Bio3.png"
     },
     "comingSoonPage": {
       "title": "Our new website is coming soon!",
@@ -105,6 +111,7 @@
       "content": "No mobile information will be shared by us with third parties/affiliates for marketing/promotional purposes. Text messaging originator opt-in data and consent will not be shared with any third parties unless required by law. Carriers are not liable for delayed or undelivered messages."
     },
     "commonAppBar": {
+      "logoPath": "assets/logos/emmons_logo.png",
       "navItems": [
         {"label": "Home", "path": "/home"},
         {"label": "Issues", "path": "/issues"},
@@ -173,22 +180,22 @@
   }
 },
   "assets": {
-    "faviconImagePath": "assets/Cerberus_Favicon.png",
     "homePage": {
-      "logoPath": "assets/logos/emmons_logo.png",
-      "heroImagePath": "assets/images/emmons_hero.jpg"
-    },
-    "aboutPage": {
-      "heroImagePath": "assets/images/Emmons_About_Hero.png",
-      "bioImage1Path": "assets/images/Emmons_About_Bio1.png",
-      "bioImage2Path": "assets/images/Emmons_About_Bio2.png",
-      "bioImage3Path": "assets/images/Emmons_About_Bio3.png"
+      "logoWidth": 400,
+      "logoHeight": 100
     },
     "donatePage": {
       "heroImagePath": "assets/images/Emmons_Donate_Hero.png"
     },
     "endorsementsPage": {
-      "heroImagePath": "assets/images/Emmons_Endorsements_Hero.png"
+      "heroImagePath": "assets/images/Emmons_Endorsements_Hero.png",
+      "endorsementImagePaths": [
+        "assets/images/endorsement_john_doe.png",
+        "assets/images/endorsement_jane_smith.png"
+      ]
+    },
+    "issuesPage": {
+      "heroImagePath": "assets/images/Emmons_Issues_Hero.png"
     }
   },
   "stripePublicKey": "pk_test_51Rnnfv4brLkKMnfT9dQISZb1hLmvQMVq3nr8Ymb67lqFQ4JwJkTrc92dRUXKYvYs3tSMeYZkTgIkKJxLsOmjqTN800f2UFiJiT"
