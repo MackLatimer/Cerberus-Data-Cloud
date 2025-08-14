@@ -37,13 +37,17 @@ steps:
   args:
     - '-c'
     - |
-      export PATH="$$PATH:/flutter/bin"
-      if [ ! -d "/flutter" ]; then
-        echo "Flutter SDK not found in cache, cloning repository."
-        git clone https://github.com/flutter/flutter.git --depth 1 --branch stable /flutter
-      else
-        echo "Flutter SDK found in cache."
-      fi
+      export PATH="$PATH:/flutter/bin" # Ensure PATH is set for this step
+      FLUTTER_VERSION="3.22.2" # Or whatever stable version you prefer
+      FLUTTER_SDK_URL="https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${FLUTTER_VERSION}-stable.tar.xz"
+
+      echo "Downloading Flutter SDK version ${FLUTTER_VERSION}..."
+      wget -q -O /tmp/flutter.tar.xz ${FLUTTER_SDK_URL}
+      echo "Extracting Flutter SDK..."
+      mkdir -p /flutter
+      tar -xf /tmp/flutter.tar.xz -C /flutter --strip-components=1
+      rm /tmp/flutter.tar.xz
+      echo "Running flutter doctor..."
       flutter doctor
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -75,13 +79,17 @@ steps:
   args:
     - '-c'
     - |
-      export PATH="$$PATH:/flutter/bin"
-      if [ ! -d "/flutter" ]; then
-        echo "Flutter SDK not found in cache, cloning repository."
-        git clone https://github.com/flutter/flutter.git --depth 1 --branch stable /flutter
-      else
-        echo "Flutter SDK found in cache."
-      fi
+      export PATH="$PATH:/flutter/bin" # Ensure PATH is set for this step
+      FLUTTER_VERSION="3.22.2" # Or whatever stable version you prefer
+      FLUTTER_SDK_URL="https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${FLUTTER_VERSION}-stable.tar.xz"
+
+      echo "Downloading Flutter SDK version ${FLUTTER_VERSION}..."
+      wget -q -O /tmp/flutter.tar.xz ${FLUTTER_SDK_URL}
+      echo "Extracting Flutter SDK..."
+      mkdir -p /flutter
+      tar -xf /tmp/flutter.tar.xz -C /flutter --strip-components=1
+      rm /tmp/flutter.tar.xz
+      echo "Running flutter doctor..."
       flutter doctor
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
