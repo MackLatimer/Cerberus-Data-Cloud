@@ -3,19 +3,19 @@ import 'package:universal_campaign_frontend/config/campaign_config.dart';
 
 class ErrorPage extends StatelessWidget {
   final String errorMessage;
-  final CampaignConfig config;
+  final CampaignConfig? config;
 
-  const ErrorPage({super.key, required this.errorMessage, required this.config});
+  const ErrorPage({super.key, required this.errorMessage, this.config});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text(config.content.errorPage.appBarTitle),
+          title: Text(config?.content.errorPage.appBarTitle ?? 'Error'),
         ),
         body: Center(
-          child: Text('${config.content.errorPage.errorMessagePrefix}$errorMessage'),
+          child: Text('${config?.content.errorPage.errorMessagePrefix ?? "An error occurred: "}$errorMessage'),
         ),
       ),
     );

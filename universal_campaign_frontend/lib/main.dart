@@ -2,8 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:universal_campaign_frontend/config/campaign_config.dart';
+import 'package:universal_campaign_frontend/pages/about_page.dart';
+import 'package:universal_campaign_frontend/pages/coming_soon_page.dart';
+import 'package:universal_campaign_frontend/pages/donate_page.dart';
+import 'package:universal_campaign_frontend/pages/endorsements_page.dart';
 import 'package:universal_campaign_frontend/pages/error_page.dart';
 import 'package:universal_campaign_frontend/pages/home_page.dart';
+import 'package:universal_campaign_frontend/pages/issues_page.dart';
+import 'package:universal_campaign_frontend/pages/privacy_policy_page.dart';
 import 'package:universal_campaign_frontend/services/config_service.dart';
 
 void main() {
@@ -37,7 +43,7 @@ class _MyAppState extends State<MyApp> {
           final config = snapshot.data!;
           return buildApp(config);
         } else if (snapshot.hasError) {
-          return ErrorPage(errorMessage: snapshot.error.toString(), config: config);
+          return ErrorPage(errorMessage: snapshot.error.toString(), config: null);
         } else {
           return const Center(child: CircularProgressIndicator());
         }
@@ -77,6 +83,7 @@ class _MyAppState extends State<MyApp> {
           path: '/privacy-policy',
           builder: (context, state) => PrivacyPolicyPage(config: config),
         ),
+      ],
     );
 
     return MaterialApp.router(

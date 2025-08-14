@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 class CampaignConfig {
   final String campaignId;
@@ -697,6 +696,94 @@ class SignupFormContent {
       legalText: json['legalText'],
       submitButtonText: json['submitButtonText'],
       privacyPolicyText: json['privacyPolicyText'],
+    );
+  }
+}
+
+class AboutPageContent {
+  final String appBarTitle;
+  final String heroImagePath;
+  final String bioTitle;
+  final String bioParagraph1;
+  final String bioParagraph2;
+  final String bioParagraph3;
+
+  AboutPageContent({
+    required this.appBarTitle,
+    required this.heroImagePath,
+    required this.bioTitle,
+    required this.bioParagraph1,
+    required this.bioParagraph2,
+    required this.bioParagraph3,
+  });
+
+  factory AboutPageContent.fromJson(Map<String, dynamic> json) {
+    return AboutPageContent(
+      appBarTitle: json['appBarTitle'],
+      heroImagePath: json['heroImagePath'],
+      bioTitle: json['bioTitle'],
+      bioParagraph1: json['bioParagraph1'],
+      bioParagraph2: json['bioParagraph2'],
+      bioParagraph3: json['bioParagraph3'],
+    );
+  }
+}
+
+class ComingSoonPageContent {
+  final String title;
+  final String message;
+
+  ComingSoonPageContent({
+    required this.title,
+    required this.message,
+  });
+
+  factory ComingSoonPageContent.fromJson(Map<String, dynamic> json) {
+    return ComingSoonPageContent(
+      title: json['title'],
+      message: json['message'],
+    );
+  }
+}
+
+class EndorsementsPageAssets {
+  final String heroImagePath;
+
+  EndorsementsPageAssets({
+    required this.heroImagePath,
+  });
+
+  factory EndorsementsPageAssets.fromJson(Map<String, dynamic> json) {
+    return EndorsementsPageAssets(
+      heroImagePath: json['heroImagePath'],
+    );
+  }
+}
+
+class IssuesPageAssets {
+  final String heroImagePath;
+
+  IssuesPageAssets({
+    required this.heroImagePath,
+  });
+
+  factory IssuesPageAssets.fromJson(Map<String, dynamic> json) {
+    return IssuesPageAssets(
+      heroImagePath: json['heroImagePath'],
+    );
+  }
+}
+
+class CommonAppBarAssets {
+  final String logoPath;
+
+  CommonAppBarAssets({
+    required this.logoPath,
+  });
+
+  factory CommonAppBarAssets.fromJson(Map<String, dynamic> json) {
+    return CommonAppBarAssets(
+      logoPath: json['logoPath'],
     );
   }
 }
