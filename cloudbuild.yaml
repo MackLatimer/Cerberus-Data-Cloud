@@ -37,14 +37,13 @@ steps:
   args:
     - '-c'
     - |
-      export PATH="$PATH:/flutter/bin"
+      export PATH="$$PATH:/flutter/bin"
       if [ ! -d "/flutter" ]; then
         echo "Flutter SDK not found in cache, cloning repository."
         git clone https://github.com/flutter/flutter.git --depth 1 --branch stable /flutter
       else
         echo "Flutter SDK found in cache."
       fi
-      export PATH="$PATH:/flutter/bin"
       flutter doctor
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -53,7 +52,7 @@ steps:
   args:
     - '-c'
     - |
-      export PATH="$PATH:/flutter/bin"
+      export PATH="$$PATH:/flutter/bin"
       cd cerberus_frontend && flutter pub get
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -62,7 +61,7 @@ steps:
   args:
     - '-c'
     - |
-      export PATH="$PATH:/flutter/bin"
+      export PATH="$$PATH:/flutter/bin"
       cd cerberus_frontend && flutter build web --release
 
 - name: 'gcr.io/cloud-builders/firebase'
@@ -76,14 +75,13 @@ steps:
   args:
     - '-c'
     - |
-      export PATH="$PATH:/flutter/bin"
+      export PATH="$$PATH:/flutter/bin"
       if [ ! -d "/flutter" ]; then
         echo "Flutter SDK not found in cache, cloning repository."
         git clone https://github.com/flutter/flutter.git --depth 1 --branch stable /flutter
       else
         echo "Flutter SDK found in cache."
       fi
-      export PATH="$PATH:/flutter/bin"
       flutter doctor
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -92,7 +90,7 @@ steps:
   args:
     - '-c'
     - |
-      export PATH="$PATH:/flutter/bin"
+      export PATH="$$PATH:/flutter/bin"
       cd universal_campaign_frontend && flutter pub get
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -101,7 +99,7 @@ steps:
   args:
     - '-c'
     - |
-      export PATH="$PATH:/flutter/bin"
+      export PATH="$$PATH:/flutter/bin"
       cd universal_campaign_frontend && flutter build web --release
 
 - name: 'gcr.io/cloud-builders/firebase'
