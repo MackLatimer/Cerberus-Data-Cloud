@@ -1,14 +1,14 @@
 steps:
 # Build and deploy the backend
-- name: 'gcr.io/cloud-builders/docker'
+- name: 'gcr.io/cloud-builders/docker:20.10.17' # Pinned to a stable version
   id: 'Build Backend Docker Image'
   args: [ 'build', '-t', '${_REGION}-docker.pkg.dev/$PROJECT_ID/cerberus-images/cerberus-backend:$BUILD_ID', './cerberus_universal_backend' ]
 
-- name: 'gcr.io/cloud-builders/docker'
+- name: 'gcr.io/cloud-builders/docker:20.10.17' # Pinned to a stable version
   id: 'Push Backend Docker Image'
   args: [ 'push', '${_REGION}-docker.pkg.dev/$PROJECT_ID/cerberus-images/cerberus-backend:$BUILD_ID' ]
 
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:460.0.0' # Pinned to a stable version
   id: 'Deploy Backend to Cloud Run'
   entrypoint: gcloud
   args:
@@ -26,87 +26,94 @@ steps:
     - '${_INSTANCE_CONNECTION_NAME}'
     - '--set-secrets=DB_USER=DB_USER:latest,DB_PASS=DB_PASSWORD:latest,DB_NAME=DB_NAME:latest,DB_CONNECTION_NAME=DB_CONNECTION_NAME:latest,FLASK_SECRET_KEY=FLASK_SECRET_KEY:latest,PGCRYPTO_SECRET_KEY=PGCRYPTO_SECRET_KEY:latest,BLAIR_STRIPE_SECRET_KEY=BLAIR_STRIPE_SECRET_KEY:latest,COX_STRIPE_SECRET_KEY=COX_STRIPE_SECRET_KEY:latest,EMMONS_STRIPE_SECRET_KEY=EMMONS_STRIPE_SECRET_KEY:latest,GAUNTT_STRIPE_SECRET_KEY=GAUNTT_STRIPE_SECRET_KEY:latest,MINTZ_STRIPE_SECRET_KEY=MINTZ_STRIPE_SECRET_KEY:latest,TICE_STRIPE_SECRET_KEY=TICE_STRIPE_SECRET_KEY:latest,TULLOCH_STRIPE_SECRET_KEY=TULLOCH_STRIPE_SECRET_KEY:latest,LEUDEKE_STRIPE_SECRET_KEY=LEUDEKE_STRIPE_SECRET_KEY:latest,WHITSON_STRIPE_SECRET_KEY=WHITSON_STRIPE_SECRET_KEY:latest,BLAIR_STRIPE_WEBHOOK_KEY=BLAIR_STRIPE_WEBHOOK_KEY:latest,COX_STRIPE_WEBHOOK_KEY=COX_STRIPE_WEBHOOK_KEY:latest,EMMONS_STRIPE_WEBHOOK_KEY=EMMONS_STRIPE_WEBHOOK_KEY:latest,GAUNTT_STRIPE_WEBHOOK_KEY=GAUNTT_STRIPE_WEBHOOK_KEY:latest,MINTZ_STRIPE_WEBHOOK_KEY=MINTZ_STRIPE_WEBHOOK_KEY:latest,TICE_STRIPE_WEBHOOK_KEY=TICE_STRIPE_WEBHOOK_KEY:latest,WHITSON_STRIPE_WEBHOOK_KEY=WHITSON_STRIPE_WEBHOOK_KEY:latest'
 
-# Build and deploy the cerberus_frontend
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  id: 'Install Flutter SDK for Cerberus Frontend'
+# Install Flutter SDK once and cache it for both frontends
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:460.0.0' # Pinned to a stable version
+  id: 'Install and Cache Flutter SDK'
   entrypoint: 'bash'
   args:
     - '-c'
     - |
-      export PATH="/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-      apt-get update && apt-get install -y wget
-      FLUTTER_SDK_URL="https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${_FLUTTER_VERSION}-stable.tar.xz"
+      # Check if Flutter SDK is already cached
+      if [ -d "/flutter/bin" ] && command -v /flutter/bin/flutter &> /dev/null; then
+        echo "Flutter SDK already exists in cache. Skipping download."
+        /flutter/bin/flutter doctor
+      else
+        echo "Flutter SDK not found in cache. Downloading and extracting..."
+        apt-get update && apt-get install -y wget unzip # Install wget and unzip for download/extraction
+        FLUTTER_SDK_URL="https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_$${_FLUTTER_VERSION}-stable.tar.xz"
 
-      echo "Downloading Flutter SDK version $_FLUTTER_VERSION..."
-      wget -q -O /tmp/flutter.tar.xz $FLUTTER_SDK_URL
-      echo "Extracting Flutter SDK..."
-      mkdir -p /flutter
-      tar -xf /tmp/flutter.tar.xz -C /flutter --strip-components=1
-      rm /tmp/flutter.tar.xz
-      echo "Running flutter doctor..."
-      flutter doctor
+        echo "Downloading Flutter SDK version ${_FLUTTER_VERSION}..." # Corrected variable reference
+        wget -q -O /tmp/flutter.tar.xz $FLUTTER_SDK_URL
+        echo "Extracting Flutter SDK..."
+        mkdir -p /flutter
+        tar -xf /tmp/flutter.tar.xz -C /flutter --strip-components=1
+        rm /tmp/flutter.tar.xz
+        echo "Running flutter doctor..."
+        /flutter/bin/flutter doctor # Use absolute path for flutter
+      fi
+  volumes:
+    - name: 'flutter_sdk'
+      path: '/flutter'
 
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+# Build and deploy the cerberus_frontend
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:460.0.0' # Pinned to a stable version
   id: 'Get dependencies for Cerberus Frontend'
   entrypoint: 'bash'
   args:
     - '-c'
     - |
-      export PATH="/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-      cd cerberus_frontend && flutter pub get
+      export PATH="/flutter/bin:$PATH" # Add flutter to PATH
+      flutter pub get
+  dir: 'cerberus_frontend' # Change working directory for this step
+  volumes:
+    - name: 'flutter_sdk'
+      path: '/flutter'
 
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:460.0.0' # Pinned to a stable version
   id: 'Build Cerberus Frontend'
   entrypoint: 'bash'
   args:
     - '-c'
     - |
-      export PATH="/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-      cd cerberus_frontend && flutter build web --release
+      export PATH="/flutter/bin:$PATH" # Add flutter to PATH
+      flutter build web --release
+  dir: 'cerberus_frontend' # Change working directory for this step
+  volumes:
+    - name: 'flutter_sdk'
+      path: '/flutter'
 
-- name: 'gcr.io/cloud-builders/firebase'
+- name: 'gcr.io/cloud-builders/firebase:3.22.0' # Pinned to a stable version (example)
   id: 'Deploy Cerberus Frontend'
   args: ['deploy', '--only', 'hosting:cerberus']
 
 # Build and deploy the universal_campaign_frontend
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  id: 'Install Flutter SDK for Universal Campaign Frontend'
-  entrypoint: 'bash'
-  args:
-    - '-c'
-    - |
-      export PATH="/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-      apt-get update && apt-get install -y wget
-      FLUTTER_SDK_URL="https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${_FLUTTER_VERSION}-stable.tar.xz"
-
-      echo "Downloading Flutter SDK version $_FLUTTER_VERSION..."
-      wget -q -O /tmp/flutter.tar.xz $FLUTTER_SDK_URL
-      echo "Extracting Flutter SDK..."
-      mkdir -p /flutter
-      tar -xf /tmp/flutter.tar.xz -C /flutter --strip-components=1
-      rm /tmp/flutter.tar.xz
-      echo "Running flutter doctor..."
-      flutter doctor
-
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:460.0.0' # Pinned to a stable version
   id: 'Get dependencies for Universal Campaign Frontend'
   entrypoint: 'bash'
   args:
     - '-c'
     - |
-      export PATH="/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-      cd universal_campaign_frontend && flutter pub get
+      export PATH="/flutter/bin:$PATH" # Add flutter to PATH
+      flutter pub get
+  dir: 'universal_campaign_frontend' # Change working directory for this step
+  volumes:
+    - name: 'flutter_sdk'
+      path: '/flutter'
 
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:460.0.0' # Pinned to a stable version
   id: 'Build Universal Campaign Frontend'
   entrypoint: 'bash'
   args:
     - '-c'
     - |
-      export PATH="/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-      cd universal_campaign_frontend && flutter build web --release
+      export PATH="/flutter/bin:$PATH" # Add flutter to PATH
+      flutter build web --release
+  dir: 'universal_campaign_frontend' # Change working directory for this step
+  volumes:
+    - name: 'flutter_sdk'
+      path: '/flutter'
 
-- name: 'gcr.io/cloud-builders/firebase'
+- name: 'gcr.io/cloud-builders/firebase:3.22.0' # Pinned to a stable version (example)
   id: 'Deploy Universal Campaign Frontend'
   args: ['deploy', '--only', 'hosting:campaigns']
 
