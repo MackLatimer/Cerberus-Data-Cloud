@@ -27,10 +27,6 @@ steps:
     - '--set-secrets=DB_USER=DB_USER:latest,DB_PASS=DB_PASSWORD:latest,DB_NAME=DB_NAME:latest,DB_CONNECTION_NAME=DB_CONNECTION_NAME:latest,FLASK_SECRET_KEY=FLASK_SECRET_KEY:latest,PGCRYPTO_SECRET_KEY=PGCRYPTO_SECRET_KEY:latest,BLAIR_STRIPE_SECRET_KEY=BLAIR_STRIPE_SECRET_KEY:latest,COX_STRIPE_SECRET_KEY=COX_STRIPE_SECRET_KEY:latest,EMMONS_STRIPE_SECRET_KEY=EMMONS_STRIPE_SECRET_KEY:latest,GAUNTT_STRIPE_SECRET_KEY=GAUNTT_STRIPE_SECRET_KEY:latest,MINTZ_STRIPE_SECRET_KEY=MINTZ_STRIPE_SECRET_KEY:latest,TICE_STRIPE_SECRET_KEY=TICE_STRIPE_SECRET_KEY:latest,TULLOCH_STRIPE_SECRET_KEY=TULLOCH_STRIPE_SECRET_KEY:latest,LEUDEKE_STRIPE_SECRET_KEY=LEUDEKE_STRIPE_SECRET_KEY:latest,WHITSON_STRIPE_SECRET_KEY=WHITSON_STRIPE_SECRET_KEY:latest,BLAIR_STRIPE_WEBHOOK_KEY=BLAIR_STRIPE_WEBHOOK_KEY:latest,COX_STRIPE_WEBHOOK_KEY=COX_STRIPE_WEBHOOK_KEY:latest,EMMONS_STRIPE_WEBHOOK_KEY=EMMONS_STRIPE_WEBHOOK_KEY:latest,GAUNTT_STRIPE_WEBHOOK_KEY=GAUNTT_STRIPE_WEBHOOK_KEY:latest,MINTZ_STRIPE_WEBHOOK_KEY=MINTZ_STRIPE_WEBHOOK_KEY:latest,TICE_STRIPE_WEBHOOK_KEY=TICE_STRIPE_WEBHOOK_KEY:latest,TULLOCH_STRIPE_WEBHOOK_KEY=TULLOCH_WEBHOOK_KEY:latest,LEUDEKE_STRIPE_WEBHOOK_KEY=LEUDEKE_WEBHOOK_KEY:latest,WHITSON_STRIPE_WEBHOOK_KEY=WHITSON_STRIPE_WEBHOOK_KEY:latest'
 
 # Build and deploy the cerberus_frontend
-- name: 'gcr.io/cloud-builders/npm'
-  id: 'Install Firebase Tools'
-  args: ['install', '-g', 'firebase-tools']
-
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   id: 'Install Flutter SDK for Cerberus Frontend'
   entrypoint: 'bash'
@@ -38,10 +34,9 @@ steps:
     - '-c'
     - |
       export PATH="/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-      FLUTTER_VERSION="3.22.2" # Or whatever stable version you prefer
-      FLUTTER_SDK_URL="https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_$FLUTTER_VERSION-stable.tar.xz"
+      FLUTTER_SDK_URL="https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${_FLUTTER_VERSION}-stable.tar.xz"
 
-      echo "Downloading Flutter SDK version $FLUTTER_VERSION..."
+      echo "Downloading Flutter SDK version $_FLUTTER_VERSION..."
       wget -q -O /tmp/flutter.tar.xz $FLUTTER_SDK_URL
       echo "Extracting Flutter SDK..."
       mkdir -p /flutter
@@ -80,10 +75,9 @@ steps:
     - '-c'
     - |
       export PATH="/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-      FLUTTER_VERSION="3.22.2" # Or whatever stable version you prefer
-      FLUTTER_SDK_URL="https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_$FLUTTER_VERSION-stable.tar.xz"
+      FLUTTER_SDK_URL="https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${_FLUTTER_VERSION}-stable.tar.xz"
 
-      echo "Downloading Flutter SDK version $FLUTTER_VERSION..."
+      echo "Downloading Flutter SDK version $_FLUTTER_VERSION..."
       wget -q -O /tmp/flutter.tar.xz $FLUTTER_SDK_URL
       echo "Extracting Flutter SDK..."
       mkdir -p /flutter
@@ -126,3 +120,4 @@ substitutions:
   _REGION: 'us-south1'
   _INSTANCE_CONNECTION_NAME: 'cerberus-data-cloud:us-south1:cerberus-db'
   _PROJECT_ID: 'cerberus-data-cloud'
+  _FLUTTER_VERSION: '3.22.2'
