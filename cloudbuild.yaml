@@ -43,8 +43,8 @@ steps:
       else
         echo "Flutter SDK found in cache."
       fi
+      export PATH="$PATH:/flutter/bin"
       flutter doctor
-  
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   id: 'Get dependencies for Cerberus Frontend'
@@ -52,8 +52,8 @@ steps:
   args:
     - '-c'
     - |
+      export PATH="$PATH:/flutter/bin"
       cd cerberus_frontend && flutter pub get
-  
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   id: 'Build Cerberus Frontend'
@@ -61,8 +61,8 @@ steps:
   args:
     - '-c'
     - |
+      export PATH="$PATH:/flutter/bin"
       cd cerberus_frontend && flutter build web --release
-  
 
 - name: 'gcr.io/cloud-builders/firebase'
   id: 'Deploy Cerberus Frontend'
@@ -81,8 +81,8 @@ steps:
       else
         echo "Flutter SDK found in cache."
       fi
+      export PATH="$PATH:/flutter/bin"
       flutter doctor
-  
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   id: 'Get dependencies for Universal Campaign Frontend'
@@ -90,8 +90,8 @@ steps:
   args:
     - '-c'
     - |
+      export PATH="$PATH:/flutter/bin"
       cd universal_campaign_frontend && flutter pub get
-  
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   id: 'Build Universal Campaign Frontend'
@@ -99,8 +99,8 @@ steps:
   args:
     - '-c'
     - |
+      export PATH="$PATH:/flutter/bin"
       cd universal_campaign_frontend && flutter build web --release
-  
 
 - name: 'gcr.io/cloud-builders/firebase'
   id: 'Deploy Universal Campaign Frontend'
