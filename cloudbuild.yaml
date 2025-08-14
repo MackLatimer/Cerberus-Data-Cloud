@@ -37,6 +37,7 @@ steps:
   args:
     - '-c'
     - |
+      export PATH="$PATH:/flutter/bin"
       if [ ! -d "/flutter" ]; then
         echo "Flutter SDK not found in cache, cloning repository."
         git clone https://github.com/flutter/flutter.git --depth 1 --branch stable /flutter
@@ -75,6 +76,7 @@ steps:
   args:
     - '-c'
     - |
+      export PATH="$PATH:/flutter/bin"
       if [ ! -d "/flutter" ]; then
         echo "Flutter SDK not found in cache, cloning repository."
         git clone https://github.com/flutter/flutter.git --depth 1 --branch stable /flutter
