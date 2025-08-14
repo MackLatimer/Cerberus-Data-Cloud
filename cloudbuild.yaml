@@ -40,10 +40,8 @@ steps:
       else
         echo "Flutter SDK not found in cache. Downloading and extracting..."
         apt-get update && apt-get install -y wget unzip # Install wget and unzip for download/extraction
-        FLUTTER_SDK_URL="https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_$${_FLUTTER_VERSION}-stable.tar.xz"
-
         echo "Downloading Flutter SDK version ${_FLUTTER_VERSION}..." # Corrected variable reference
-        wget -q -O /tmp/flutter.tar.xz $FLUTTER_SDK_URL
+        wget -q -O /tmp/flutter.tar.xz "https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${_FLUTTER_VERSION}-stable.tar.xz"
         echo "Extracting Flutter SDK..."
         mkdir -p /flutter
         tar -xf /tmp/flutter.tar.xz -C /flutter --strip-components=1
