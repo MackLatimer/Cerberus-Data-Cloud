@@ -37,7 +37,7 @@ steps:
       FLUTTER_SDK_URL="https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${_FLUTTER_VERSION}-stable.tar.xz"
 
       echo "Downloading Flutter SDK version $_FLUTTER_VERSION..."
-      wget -q -O /tmp/flutter.tar.xz $FLUTTER_SDK_URL
+      wget -q -O /tmp/flutter.tar.xz $$FLUTTER_SDK_URL
       echo "Extracting Flutter SDK..."
       mkdir -p /flutter
       tar -xf /tmp/flutter.tar.xz -C /flutter --strip-components=1
@@ -78,7 +78,7 @@ steps:
       FLUTTER_SDK_URL="https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${_FLUTTER_VERSION}-stable.tar.xz"
 
       echo "Downloading Flutter SDK version $_FLUTTER_VERSION..."
-      wget -q -O /tmp/flutter.tar.xz $FLUTTER_SDK_URL
+      wget -q -O /tmp/flutter.tar.xz $$FLUTTER_SDK_URL
       echo "Extracting Flutter SDK..."
       mkdir -p /flutter
       tar -xf /tmp/flutter.tar.xz -C /flutter --strip-components=1
