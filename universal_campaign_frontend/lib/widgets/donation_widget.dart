@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:universal_campaign_frontend/src/models/campaign_config.dart';
+import 'package:universal_campaign_frontend/models/campaign_config.dart';
 
 class DonationWidget extends StatefulWidget {
   final CampaignConfig config;

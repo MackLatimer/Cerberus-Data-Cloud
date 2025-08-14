@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:universal_campaign_frontend/src/models/campaign_config.dart';
+import 'package:universal_campaign_frontend/models/campaign_config.dart';
 
 class Footer extends StatelessWidget {
   final CampaignConfig config;

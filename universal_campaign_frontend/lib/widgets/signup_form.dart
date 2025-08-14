@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:go_router/go_router.dart';
-import 'package:universal_campaign_frontend/src/models/campaign_config.dart';
+import 'package:universal_campaign_frontend/models/campaign_config.dart';
 
 const int defaultNetworkTimeoutSeconds = 10;
 
@@ -181,7 +181,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                   value: _getInvolvedChecked,
                   onChanged: (bool? value) {
                     setState(() {
-                      _getInolvedChecked = value ?? false;
+                      _getInvolvedChecked = value ?? false;
                     });
                   },
                   controlAffinity: ListTileControlAffinity.leading,

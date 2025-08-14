@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:universal_campaign_frontend/src/models/campaign_config.dart';
+import 'package:universal_campaign_frontend/models/campaign_config.dart';
 
-import 'package:universal_campaign_frontend/src/utils/breakpoint.dart';
+import 'package:universal_campaign_frontend/utils/breakpoint.dart';
 
 class CommonAppBar extends StatefulWidget implements PreferredSizeWidget {
   final CampaignConfig config;
