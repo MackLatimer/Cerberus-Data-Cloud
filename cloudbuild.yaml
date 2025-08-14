@@ -24,83 +24,87 @@ steps:
     - '--allow-unauthenticated'
     - '--add-cloudsql-instances'
     - '${_INSTANCE_CONNECTION_NAME}'
-    - '--set-secrets=DB_USER=DB_USER:latest,DB_PASS=DB_PASSWORD:latest,DB_NAME=DB_NAME:latest,DB_CONNECTION_NAME=DB_CONNECTION_NAME:latest,FLASK_SECRET_KEY=FLASK_SECRET_KEY:latest,PGCRYPTO_SECRET_KEY=PGCRYPTO_SECRET_KEY:latest,BLAIR_STRIPE_SECRET_KEY=BLAIR_STRIPE_SECRET_KEY:latest,COX_STRIPE_SECRET_KEY=COX_STRIPE_SECRET_KEY:latest,EMMONS_STRIPE_SECRET_KEY=EMMONS_STRIPE_SECRET_KEY:latest,GAUNTT_STRIPE_SECRET_KEY=GAUNTT_STRIPE_SECRET_KEY:latest,MINTZ_STRIPE_SECRET_KEY=MINTZ_STRIPE_SECRET_KEY:latest,TICE_STRIPE_SECRET_KEY=TICE_STRIPE_SECRET_KEY:latest,TULLOCH_STRIPE_SECRET_KEY=TULLOCH_STRIPE_SECRET_KEY:latest,LEUDEKE_STRIPE_SECRET_KEY=LEUDEKE_STRIPE_SECRET_KEY:latest,WHITSON_STRIPE_SECRET_KEY=WHITSON_STRIPE_SECRET_KEY:latest,BLAIR_STRIPE_WEBHOOK_KEY=BLAIR_STRIPE_WEBHOOK_KEY:latest,COX_STRIPE_WEBHOOK_KEY=COX_STRIPE_WEBHOOK_KEY:latest,EMMONS_STRIPE_WEBHOOK_KEY=EMMONS_STRIPE_WEBHOOK_KEY:latest,GAUNTT_STRIPE_WEBHOOK_KEY=GAUNTT_STRIPE_WEBHOOK_KEY:latest,MINTZ_STRIPE_WEBHOOK_KEY=MINTZ_STRIPE_WEBHOOK_KEY:latest,TICE_STRIPE_WEBHOOK_KEY=TICE_STRIPE_WEBHOOK_KEY:latest,TULLOCH_STRIPE_WEBHOOK_KEY=TULLOCH_WEBHOOK_KEY:latest,LEUDEKE_WEBHOOK_KEY=LEUDEKE_WEBHOOK_KEY:latest,WHITSON_STRIPE_WEBHOOK_KEY=WHITSON_STRIPE_WEBHOOK_KEY:latest'
+    - '--set-secrets=DB_USER=DB_USER:latest,DB_PASS=DB_PASSWORD:latest,DB_NAME=DB_NAME:latest,DB_CONNECTION_NAME=DB_CONNECTION_NAME:latest,FLASK_SECRET_KEY=FLASK_SECRET_KEY:latest,PGCRYPTO_SECRET_KEY=PGCRYPTO_SECRET_KEY:latest,BLAIR_STRIPE_SECRET_KEY=BLAIR_STRIPE_SECRET_KEY:latest,COX_STRIPE_SECRET_KEY=COX_STRIPE_SECRET_KEY:latest,EMMONS_STRIPE_SECRET_KEY=EMMONS_STRIPE_SECRET_KEY:latest,GAUNTT_STRIPE_SECRET_KEY=GAUNTT_STRIPE_SECRET_KEY:latest,MINTZ_STRIPE_SECRET_KEY=MINTZ_STRIPE_SECRET_KEY:latest,TICE_STRIPE_SECRET_KEY=TICE_STRIPE_SECRET_KEY:latest,TULLOCH_STRIPE_SECRET_KEY=TULLOCH_STRIPE_SECRET_KEY:latest,LEUDEKE_STRIPE_SECRET_KEY=LEUDEKE_STRIPE_SECRET_KEY:latest,WHITSON_STRIPE_SECRET_KEY=WHITSON_STRIPE_SECRET_KEY:latest,BLAIR_STRIPE_WEBHOOK_KEY=BLAIR_STRIPE_WEBHOOK_KEY:latest,COX_STRIPE_WEBHOOK_KEY=COX_STRIPE_WEBHOOK_KEY:latest,EMMONS_STRIPE_WEBHOOK_KEY=EMMONS_WEBHOOK_KEY:latest,GAUNTT_STRIPE_WEBHOOK_KEY=GAUNTT_STRIPE_WEBHOOK_KEY:latest,MINTZ_STRIPE_WEBHOOK_KEY=MINTZ_STRIPE_WEBHOOK_KEY:latest,TICE_STRIPE_WEBHOOK_KEY=TICE_STRIPE_WEBHOOK_KEY:latest,TULLOCH_STRIPE_WEBHOOK_KEY=TULLOCH_WEBHOOK_KEY:latest,LEUDEKE_WEBHOOK_KEY=LEUDEKE_WEBHOOK_KEY:latest,WHITSON_STRIPE_WEBHOOK_KEY=WHITSON_STRIPE_WEBHOOK_KEY:latest'
 
 # Build and deploy the cerberus_frontend
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  id: 'Install Flutter SDK for Cerberus Frontend'
-  entrypoint: 'bash'
-  args:
-    - '-c'
-    - |
-      if [ ! -d "/flutter" ]; then
-        echo "Flutter SDK not found in cache, cloning repository."
-        git clone https://github.com/flutter/flutter.git --depth 1 --branch stable /flutter
-      else
-        echo "Flutter SDK found in cache."
-      fi
-      export PATH="$PATH:/flutter/bin"
-      flutter doctor
+# - name: 'gcr.io/cloud-builders/npm'
+#   id: 'Install Firebase Tools'
+#   args: ['install', '-g', 'firebase-tools']
 
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  id: 'Get dependencies for Cerberus Frontend'
-  entrypoint: 'bash'
-  args:
-    - '-c'
-    - |
-      export PATH="$PATH:/flutter/bin"
-      cd cerberus_frontend && flutter pub get
+# - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+#   id: 'Install Flutter SDK for Cerberus Frontend'
+#   entrypoint: 'bash'
+#   args:
+#     - '-c'
+#     - |
+#       if [ ! -d "/flutter" ]; then
+#         echo "Flutter SDK not found in cache, cloning repository."
+#         git clone https://github.com/flutter/flutter.git --depth 1 --branch stable /flutter
+#       else
+#         echo "Flutter SDK found in cache."
+#       fi
+#       
+#       flutter doctor
 
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  id: 'Build Cerberus Frontend'
-  entrypoint: 'bash'
-  args:
-    - '-c'
-    - |
-      export PATH="$PATH:/flutter/bin"
-      cd cerberus_frontend && flutter build web --release
+# - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+#   id: 'Get dependencies for Cerberus Frontend'
+#   entrypoint: 'bash'
+#   args:
+# #     - '-c'
+# #     - |
+# #       
+# #       cd cerberus_frontend && flutter pub get
 
-- name: 'gcr.io/cloud-builders/firebase'
-  id: 'Deploy Cerberus Frontend'
-  args: ['deploy', '--only', 'hosting:cerberus']
+# - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+#   id: 'Build Cerberus Frontend'
+#   entrypoint: 'bash'
+#   args:
+#     - '-c'
+#     - |
+#       
+#       cd cerberus_frontend && flutter build web --release
 
-# Build and deploy the universal_campaign_frontend
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  id: 'Install Flutter SDK for Universal Campaign Frontend'
-  entrypoint: 'bash'
-  args:
-    - '-c'
-    - |
-      if [ ! -d "/flutter" ]; then
-        echo "Flutter SDK not found in cache, cloning repository."
-        git clone https://github.com/flutter/flutter.git --depth 1 --branch stable /flutter
-      else
-        echo "Flutter SDK found in cache."
-      fi
-      export PATH="$PATH:/flutter/bin"
-      flutter doctor
+# - name: 'gcr.io/cloud-builders/firebase'
+#   id: 'Deploy Cerberus Frontend'
+#   args: ['deploy', '--only', 'hosting:cerberus']
 
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  id: 'Get dependencies for Universal Campaign Frontend'
-  entrypoint: 'bash'
-  args:
-    - '-c'
-    - |
-      export PATH="$PATH:/flutter/bin"
-      cd universal_campaign_frontend && flutter pub get
+# # Build and deploy the universal_campaign_frontend
+# - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+#   id: 'Install Flutter SDK for Universal Campaign Frontend'
+#   entrypoint: 'bash'
+#   args:
+#     - '-c'
+#     - |
+#       if [ ! -d "/flutter" ]; then
+#         echo "Flutter SDK not found in cache, cloning repository."
+#         git clone https://github.com/flutter/flutter.git --depth 1 --branch stable /flutter
+#       else
+#         echo "Flutter SDK found in cache."
+#       fi
+#       
+#       flutter doctor
 
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  id: 'Build Universal Campaign Frontend'
-  entrypoint: 'bash'
-  args:
-    - '-c'
-    - |
-      export PATH="$PATH:/flutter/bin"
-      cd universal_campaign_frontend && flutter build web --release
+# - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+#   id: 'Get dependencies for Universal Campaign Frontend'
+#   entrypoint: 'bash'
+#   args:
+#     - '-c'
+#     - |
+#       
+#       cd universal_campaign_frontend && flutter pub get
 
-- name: 'gcr.io/cloud-builders/firebase'
-  id: 'Deploy Universal Campaign Frontend'
-  args: ['deploy', '--only', 'hosting:campaigns']
+# - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+#   id: 'Build Universal Campaign Frontend'
+#   entrypoint: 'bash'
+#   args:
+#     - '-c'
+#     - |
+#       
+#       cd universal_campaign_frontend && flutter build web --release
+
+# - name: 'gcr.io/cloud-builders/firebase'
+#   id: 'Deploy Universal Campaign Frontend'
+#   args: ['deploy', '--only', 'hosting:campaigns']
 
 images:
 - '${_REGION}-docker.pkg.dev/$PROJECT_ID/cerberus-images/cerberus-backend:$BUILD_ID'
