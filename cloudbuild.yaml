@@ -49,9 +49,6 @@ steps:
         echo "Running flutter doctor..."
         /flutter/bin/flutter doctor # Use absolute path for flutter
       fi
-  volumes:
-    - name: 'flutter_sdk'
-      path: '/flutter'
 
 # Build and deploy the cerberus_frontend
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:460.0.0' # Pinned to a stable version
