@@ -54,7 +54,7 @@ def token_required(f):
 
         try:
             # Decode the token using the application's secret key
-            data = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=["HS256"])
+            data = jwt.decode(token, current_app.config['FLASK_SECRET_KEY'], algorithms=["HS256"])
             current_user = db.session.get(User, data['user_id'])
             if not current_user:
                 return jsonify({'message': 'User not found!'}), 401

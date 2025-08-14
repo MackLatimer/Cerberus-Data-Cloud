@@ -49,7 +49,7 @@ The application uses a `.env` file to manage environment-specific configurations
 
     -   `FLASK_APP`: Should be `run.py` (usually pre-filled).
     -   `FLASK_ENV`: Set to `development` for local development.
-    -   `SECRET_KEY`: **Important!** Change this to a long, random, and secret string. This key is used for session management and security. You can generate one using `python -c 'import secrets; print(secrets.token_hex(24))'`.
+            *   `FLASK_SECRET_KEY`: **Important!** Change this to a long, random, and secret string. This key is used for session management and security. You can generate one using `python -c 'import secrets; print(secrets.token_hex(24))'`.
     -   `DATABASE_URL`: This is the most critical part for database connection.
         -   **For Google Cloud SQL (PostgreSQL) via Cloud SQL Proxy:**
             -   Ensure the Cloud SQL Proxy is running and configured for your instance.

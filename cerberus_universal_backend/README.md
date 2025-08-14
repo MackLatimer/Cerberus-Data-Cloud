@@ -121,7 +121,7 @@ For production deployments, it is recommended to:
         cp .env.example .env
         ```
     *   Edit the `.env` file to set your configurations:
-        *   `SECRET_KEY`: A strong, unique secret key for Flask session management and security.
+        *   `FLASK_SECRET_KEY`: A strong, unique secret key for Flask session management and security.
         *   `DATABASE_URL`: The connection string for your PostgreSQL database (e.g., `postgresql://user:password@host:port/dbname`).
         *   `FLASK_ENV`: Set to `development` for development mode, or `production` for production.
         *   `STRIPE_SECRET_KEY`: Your Stripe secret key.

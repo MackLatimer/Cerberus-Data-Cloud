@@ -34,18 +34,17 @@ try:
         'leudeke_frontend': os.environ.get("LEUDEKE_STRIPE_SECRET_KEY") or access_secret_version("LEUDEKE_STRIPE_SECRET_KEY"),
         'whitson_frontend': os.environ.get("WHITSON_STRIPE_SECRET_KEY") or access_secret_version("WHITSON_STRIPE_SECRET_KEY"),
     }
-    STRIPE_WEBHOOK_SECRETS = {
-        'blair_frontend': os.environ.get("BLAIR_STRIPE_WEBHOOK_SECRET") or access_secret_version("BLAIR_STRIPE_WEBHOOK_SECRET"),
-        'cox_frontend': os.environ.get("COX_STRIPE_WEBHOOK_SECRET") or access_secret_version("COX_STRIPE_WEBHOOK_SECRET"),
-        'emmons_frontend': os.environ.get("EMMONS_STRIPE_WEBHOOK_SECRET") or access_secret_version("EMMONS_STRIPE_WEBHOOK_SECRET"),
-        'gauntt_frontend': os.environ.get("GAUNTT_STRIPE_WEBHOOK_SECRET") or access_secret_version("GAUNTT_STRIPE_WEBHOOK_SECRET"),
-        'mintz_frontend': os.environ.get("MINTZ_STRIPE_WEBHOOK_SECRET") or access_secret_version("MINTZ_STRIPE_WEBHOOK_SECRET"),
-        'tice_frontend': os.environ.get("TICE_STRIPE_WEBHOOK_SECRET") or access_secret_version("TICE_STRIPE_WEBHOOK_SECRET"),
-        'tulloch_frontend': os.environ.get("TULLOCH_STRIPE_WEBHOOK_SECRET") or access_secret_version("TULLOCH_STRIPE_WEBHOOK_SECRET"),
-        'leudeke_frontend': os.environ.get("LEUDEKE_STRIPE_WEBHOOK_SECRET") or access_secret_version("LEUDEKE_STRIPE_WEBHOOK_SECRET"),
-        'whitson_frontend': os.environ.get("WHITSON_STRIPE_WEBHOOK_SECRET") or access_secret_version("WHITSON_STRIPE_WEBHOOK_SECRET"),
+    STRIPE_WEBHOOK_KEYS = {
+        'blair_frontend': os.environ.get("BLAIR_STRIPE_WEBHOOK_KEY") or access_secret_version("BLAIR_STRIPE_WEBHOOK_KEY"),
+        'cox_frontend': os.environ.get("COX_STRIPE_WEBHOOK_KEY") or access_secret_version("COX_STRIPE_WEBHOOK_KEY"),
+        'emmons_frontend': os.environ.get("EMMONS_STRIPE_WEBHOOK_KEY") or access_secret_version("EMMONS_STRIPE_WEBHOOK_KEY"),
+        'gauntt_frontend': os.environ.get("GAUNTT_STRIPE_WEBHOOK_KEY") or access_secret_version("GAUNTT_STRIPE_WEBHOOK_KEY"),
+        'mintz_frontend': os.environ.get("MINTZ_STRIPE_WEBHOOK_KEY") or access_secret_version("MINTZ_STRIPE_WEBHOOK_KEY"),
+        'tice_frontend': os.environ.get("TICE_STRIPE_WEBHOOK_KEY") or access_secret_version("TICE_STRIPE_WEBHOOK_KEY"),
+        'tulloch_frontend': os.environ.get("TULLOCH_STRIPE_WEBHOOK_KEY") or access_secret_version("TULLOCH_STRIPE_WEBHOOK_KEY"),
+        'leudeke_frontend': os.environ.get("LEUDEKE_STRIPE_WEBHOOK_KEY") or access_secret_version("LEUDEKE_STRIPE_WEBHOOK_KEY"),
+        'whitson_frontend': os.environ.get("WHITSON_STRIPE_WEBHOOK_KEY") or access_secret_version("WHITSON_STRIPE_WEBHOOK_KEY"),
     }
-    WEBHOOK_SECRET_KEY = os.environ.get("WEBHOOK_SECRET_KEY") or access_secret_version("WEBHOOK_SECRET_KEY")
 except KeyError as e:
     raise RuntimeError(f"Missing required environment variable: {e}") from e
 
@@ -69,7 +68,7 @@ class Config:
     """Base configuration."""
     SECRET_KEY = SECRET_KEY
     STRIPE_SECRET_KEYS = STRIPE_SECRET_KEYS
-    STRIPE_WEBHOOK_SECRETS = STRIPE_WEBHOOK_SECRETS
+    STRIPE_WEBHOOK_KEYS = STRIPE_WEBHOOK_KEYS
     PGCRYPTO_SECRET_KEY = PGCRYPTO_SECRET_KEY
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     DEBUG = False
@@ -104,7 +103,7 @@ class TestingConfig(Config):
         'DATABASE_URL',
         'sqlite:///:memory:' # Default to in-memory SQLite for simple tests
     )
-    SECRET_KEY = os.environ.get("TEST_SECRET_KEY", 'test_secret_key_for_flask_testing')
+    FLASK_SECRET_KEY = os.environ.get("TEST_SECRET_KEY", 'test_secret_key_for_flask_testing')
 
 class ProductionConfig(Config):
     """Production configuration."""
