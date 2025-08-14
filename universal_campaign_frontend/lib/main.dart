@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
-import 'package:universal_campaign_frontend/config/campaign_config.dart';
+import 'package:universal_campaign_frontend/models/campaign_config.dart';
 import 'package:universal_campaign_frontend/pages/about_page.dart';
 import 'package:universal_campaign_frontend/pages/coming_soon_page.dart';
 import 'package:universal_campaign_frontend/pages/donate_page.dart';
@@ -30,8 +30,12 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    final campaignId = Uri.base.queryParameters['campaign'] ?? ConfigService.getDefaultCampaignId();
-    _campaignConfigFuture = ConfigService.loadCampaignConfig(campaignId);
+    _campaignConfigFuture = _loadConfig();
+  }
+
+  Future<CampaignConfig> _loadConfig() async {
+    final campaignId = Uri.base.queryParameters['campaign'] ?? await ConfigService.getDefaultCampaignId();
+    return ConfigService.loadCampaignConfig(campaignId);
   }
 
   @override

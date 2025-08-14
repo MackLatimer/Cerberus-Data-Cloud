@@ -1,0 +1,171 @@
+{
+  "campaignId": "error",
+  "defaultCampaign": false,
+  "stripeSecretKeySecretManagerName": "",
+  "stripeWebhookKeySecretManagerName": "",
+  "apiBaseUrl": "",
+  "stripePublicKey": "",
+  "theme": {
+    "primaryColor": "#FF0000",
+    "secondaryColor": "#000000",
+    "backgroundColor": "#FFFFFF",
+    "textColor": "#000000",
+    "fontFamily": "Roboto",
+    "secondaryFontFamily": "Roboto"
+  },
+  "content": {
+    "siteTitle": "Error",
+    "faviconImagePath": "",
+    "homePage": {
+      "heroTitle": "Error",
+      "callToActionText": "",
+      "heroImagePath": "",
+      "homeTitleMessage": "",
+      "issuesImage": "",
+      "issuesMessage": "",
+      "issuesButton": "",
+      "aboutMeImage": "",
+      "aboutMeMessage": "",
+      "aboutMeButton": "",
+      "endorsementsImage": "",
+      "endorsementsMessage": "",
+      "endorsementsButton": "",
+      "donateImage": "",
+      "donateMessage": "",
+      "donateButton": ""
+    },
+    "aboutPage": {
+      "appBarTitle": "Error",
+      "heroImagePath": "",
+      "bioTitle": "Error",
+      "bioParagraph1": "",
+      "bioParagraph2": "",
+      "bioParagraph3": ""
+    },
+    "comingSoonPage": {
+      "title": "Error",
+      "message": "Something went wrong."
+    },
+    "donatePage": {
+      "appBarTitle": "Error",
+      "heroImagePath": "",
+      "title": "Error",
+      "mailDonationText": "",
+      "thankYouText": ""
+    },
+    "endorsementsPage": {
+      "appBarTitle": "Error",
+      "heroImagePath": "",
+      "title": "Error",
+      "endorsements": [],
+      "communityEndorsements": [],
+      "endorsementTitle1": "",
+      "endorsementTitle2": "",
+      "endorsementBodyParagraph": ""
+    },
+    "issuesPage": {
+      "appBarTitle": "Error",
+      "heroImagePath": "",
+      "title": "Error",
+      "issueSections": []
+    },
+    "privacyPolicyPage": {
+      "appBarTitle": "Error",
+      "title": "Error",
+      "content": ""
+    },
+    "commonAppBar": {
+      "logoPath": "",
+      "logoWidth": 0,
+      "logoHeight": 0,
+      "navItems": []
+    },
+    "donateSection": {
+      "title": "",
+      "buttonText": ""
+    },
+    "footer": {
+      "paidForText": ""
+    },
+    "errorPage": {
+      "appBarTitle": "Error",
+      "errorMessagePrefix": "An error occurred: "
+    },
+    "widgets": {
+      "signupForm": {
+        "title": "",
+        "endorseText": "",
+        "getInvolvedText": "",
+        "automatedMessagingText": "",
+        "emailOptInText": "",
+        "legalText": "",
+        "submitButtonText": "",
+        "privacyPolicyText": ""
+      }
+    },
+    "donationWidget": {
+        "amountSelectionPrompt": "",
+        "customAmountLabel": "",
+        "continueButtonText": "",
+        "firstNameValidation": "",
+        "lastNameValidation": "",
+        "addressValidation": "",
+        "addressLine2Label": "",
+        "cityLabel": "",
+        "stateLabel": "",
+        "zipCodeLabel": "",
+        "employerLabel": "",
+        "occupationLabel": "",
+        "proceedToPaymentButtonText": "",
+        "coverFeesText": "",
+        "recurringDonationText": "",
+        "emailLabel": "",
+        "phoneLabel": "",
+        "emailValidationEmpty": "",
+        "emailValidationInvalid": "",
+        "contactEmailText": "",
+        "contactPhoneText": "",
+        "contactMailText": "",
+        "contactSmsText": "",
+        "submitButtonText": "",
+        "successMessage": "",
+        "errorMessages": {
+            "submitFormError": "",
+            "submitFormGenericError": "",
+            "createPaymentIntentFailed": "",
+            "createPaymentIntentError": "",
+            "stripeError": "",
+            "unforeseenError": "",
+            "submitDetailsFailed": "",
+            "submitDetailsError": ""
+        },
+        "donationAmounts": []
+    }
+  },
+  "assets": {
+    "faviconImagePath": "",
+    "logoPath": "",
+    "homePage": {
+        "logoPath": "",
+        "heroImagePath": ""
+    },
+    "aboutPage": {
+        "heroImagePath": "",
+        "bioImage1Path": "",
+        "bioImage2Path": "",
+        "bioImage3Path": ""
+    },
+    "donatePage": {
+        "heroImagePath": ""
+    },
+    "endorsementsPage": {
+        "heroImagePath": ""
+    },
+    "issuesPage": {
+        "heroImagePath": ""
+    },
+    "commonAppBar": {
+        "logoPath": ""
+    }
+  }
+}

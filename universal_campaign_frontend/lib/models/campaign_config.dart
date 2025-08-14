@@ -1,17 +1,41 @@
-import 'package:flutter/material.dart';
+import 'package:universal_campaign_frontend/models/config/theme_config.dart';
+import 'package:universal_campaign_frontend/models/config/content_config.dart';
+import 'package:universal_campaign_frontend/models/config/assets_config.dart';
 
 class CampaignConfig {
   final String campaignId;
-  final ThemeData theme;
-  final String siteTitle;
+  final bool defaultCampaign;
+  final String stripeSecretKeySecretManagerName;
+  final String stripeWebhookKeySecretManagerName;
+  final String apiBaseUrl;
+  final ThemeConfig theme;
+  final ContentConfig content;
+  final AssetsConfig assets;
   final String stripePublicKey;
-  final String logoPath;
 
   CampaignConfig({
     required this.campaignId,
+    required this.defaultCampaign,
+    required this.stripeSecretKeySecretManagerName,
+    required this.stripeWebhookKeySecretManagerName,
+    required this.apiBaseUrl,
     required this.theme,
-    required this.siteTitle,
+    required this.content,
+    required this.assets,
     required this.stripePublicKey,
-    required this.logoPath,
   });
+
+  factory CampaignConfig.fromJson(Map<String, dynamic> json) {
+    return CampaignConfig(
+      campaignId: json['campaignId'],
+      defaultCampaign: json['defaultCampaign'] ?? false,
+      stripeSecretKeySecretManagerName: json['stripeSecretKeySecretManagerName'],
+      stripeWebhookKeySecretManagerName: json['stripeWebhookKeySecretManagerName'],
+      apiBaseUrl: json['apiBaseUrl'],
+      theme: ThemeConfig.fromJson(json['theme']),
+      content: ContentConfig.fromJson(json['content']),
+      assets: AssetsConfig.fromJson(json['assets']),
+      stripePublicKey: json['stripePublicKey'],
+    );
+  }
 }

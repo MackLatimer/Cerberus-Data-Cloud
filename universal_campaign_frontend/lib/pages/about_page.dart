@@ -54,7 +54,7 @@ class AboutPageState extends State<AboutPage> {
                 height: MediaQuery.of(context).size.height,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage(widget.config.assets.aboutPage.heroImagePath),
+                    image: AssetImage(widget.config.aboutPage.heroImagePath),
                     fit: BoxFit.cover,
                   ),
                 ),
