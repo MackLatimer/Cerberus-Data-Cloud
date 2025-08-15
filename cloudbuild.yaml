@@ -38,16 +38,18 @@ steps:
         echo "Flutter SDK already exists in cache. Skipping download."
         /flutter/bin/flutter doctor
       else
-        echo "Flutter SDK not found in cache. Downloading and extracting..."
-        apt-get update && apt-get install -y wget unzip # Install wget and unzip for download/extraction
-        echo "Downloading Flutter SDK version ${_FLUTTER_VERSION}..." # Corrected variable reference
-        wget -q -O /tmp/flutter.tar.xz "https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${_FLUTTER_VERSION}-stable.tar.xz"
-        echo "Extracting Flutter SDK..."
-        mkdir -p /flutter
-        tar -xf /tmp/flutter.tar.xz -C /flutter --strip-components=1
-        rm /tmp/flutter.tar.xz
+        echo "Flutter SDK not found in cache. Cloning and installing..."
+        apt-get update && apt-get install -y git # Install git for cloning
+        git clone https://github.com/flutter/flutter.git /flutter
+        git config --global --add safe.directory /flutter # Add safe directory for git ownership issue
+        cd /flutter
+        git checkout stable
+        git pull
+        ./bin/flutter --version # Check Flutter version
+        ./bin/flutter channel stable
+        ./bin/flutter upgrade
         echo "Running flutter doctor..."
-        /flutter/bin/flutter doctor # Use absolute path for flutter
+        ./bin/flutter doctor
       fi
 
 # Build and deploy the cerberus_frontend
