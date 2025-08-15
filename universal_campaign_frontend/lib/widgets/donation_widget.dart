@@ -158,7 +158,7 @@ class _DonationWidgetState extends State<DonationWidget> {
   Future<void> _submitDetails() async {
     try {
       final response = await http.post(
-        Uri.parse('https://campaigns-api-885603051818.us-south1.run.app/api/v1/donate/update-donation-details'),
+        Uri.parse('https://cerberus-backend-885603051818.us-south1.run.app/api/v1/donate/update-donation-details'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'payment_intent_id': _paymentIntentId,

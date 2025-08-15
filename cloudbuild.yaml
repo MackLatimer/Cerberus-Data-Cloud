@@ -68,6 +68,7 @@ steps:
   args:
     - '-c'
     - |
+      apt-get update && apt-get install -y unzip
       export PATH="/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" # Add flutter to PATH
       flutter build web --release
   dir: 'cerberus_frontend' # Change working directory for this step
@@ -100,6 +101,7 @@ steps:
   args:
     - '-c'
     - |
+      apt-get update && apt-get install -y unzip
       export PATH="/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" # Add flutter to PATH
       flutter build web --release
   dir: 'universal_campaign_frontend' # Change working directory for this step

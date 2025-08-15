@@ -52,7 +52,7 @@ class _ReportPageState extends State<ReportPage> {
   // Base URL for the local api.py.
   // For Android emulators, use 10.0.2.2 to connect to localhost on the host machine.
   // For iOS simulators and web (if backend is on same machine), localhost (127.0.0.1) works.
-  final String _apiBaseUrl = 'http://api.cerberus-campaigns.com';
+  final String _apiBaseUrl = 'https://cerberus-backend-885603051818.us-south1.run.app';
   final String _searchEndpoint = '/search';
 
   @override
