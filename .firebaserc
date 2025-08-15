@@ -6,10 +6,10 @@
     "cerberus-data-cloud": {
       "hosting": {
         "cerberus": [
-          "cerberus-data-cloud"
+          "cerberus-site"
         ],
         "campaigns": [
-          "cerberus-data-cloud-campaigns"
+          "campaigns-site"
         ]
       }
     }
