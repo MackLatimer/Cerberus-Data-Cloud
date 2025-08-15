@@ -1,0 +1,188 @@
+{
+  "campaignId": "gauntt",
+  "defaultCampaign": false,
+  "stripePublicKey": "pk_test_placeholder",
+  "stripeSecretKeySecretManagerName": "projects/Cerberus-Data-Cloud/secrets/GAUNTT_STRIPE_SECRET_KEY",
+  "stripeWebhookKeySecretManagerName": "projects/Cerberus-Data-Cloud/secrets/GAUNTT_STRIPE_WEBHOOK_KEY",
+  "apiBaseUrl": "https://cerberus-backend-885603051818.us-south1.run.app/api/v1",
+  "theme": {
+    "primaryColor": "#002663",
+    "secondaryColor": "#A01124",
+    "backgroundColor": "#FFFFFF",
+    "textColor": "#000000",
+    "fontFamily": "BebasNeue",
+    "secondaryFontFamily": "Tinos"
+  },
+  "content": {
+    "siteTitle": "Gauntt for County Commissioner",
+    "faviconImagePath": "assets/Cerberus_Favicon.png",
+    "comingSoonPage": {
+      "title": "Our new website is coming soon!",
+      "subtitle": "In the meantime, you can support our campaign by donating below."
+    },
+    "homePage": {
+      "heroImagePath": "assets/images/placeholder.png",
+      "homeTitleMessage": "Welcome to our campaign!",
+      "issuesImage": "assets/images/placeholder.png",
+      "issuesMessage": "Learn about the key issues we're fighting for.",
+      "issuesButton": "View Issues",
+      "aboutMeImage": "assets/images/placeholder.png",
+      "aboutMeMessage": "Discover more about Gauntt.",
+      "aboutMeButton": "About Me",
+      "endorsementsImage": "assets/images/placeholder.png",
+      "endorsementsMessage": "See who supports our campaign.",
+      "endorsementsButton": "View Endorsements",
+      "donateImage": "assets/images/placeholder.png",
+      "donateMessage": "Support our mission with a donation.",
+      "donateButton": "Donate Now"
+    },
+    "issuesPage": {
+      "appBarTitle": "Key Issues",
+      "heroImagePath": "assets/images/placeholder.png",
+      "title": "Issues",
+      "issueSections": [
+        {
+          "title": "Placeholder Issue 1",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+          "backgroundColor": "#a01124",
+          "textColor": "#FFFFFF",
+          "imagePath": "assets/images/placeholder.png"
+        },
+        {
+          "title": "Placeholder Issue 2",
+          "description": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+          "backgroundColor": null,
+          "textColor": null,
+          "imagePath": "assets/images/placeholder.png"
+        }
+      ]
+    },
+    "aboutPage": {
+      "appBarTitle": "About Gauntt",
+      "heroImagePath": "assets/images/placeholder.png",
+      "title": "About Me",
+      "bioText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "bioImage1Path": "assets/images/placeholder.png",
+      "bioImage2Path": "assets/images/placeholder.png",
+      "bioImage3Path": "assets/images/placeholder.png"
+    },
+    "endorsementsPage": {
+      "appBarTitle": "Endorsements",
+      "heroImagePath": "assets/images/placeholder.png",
+      "title": "Endorsed by Leaders and the Community",
+      "endorsements": [
+        {
+          "name": "John Doe",
+          "quote": "Gauntt is the leader we need for our community. Their dedication and vision are truly inspiring.",
+          "imagePath": "assets/images/placeholder.png",
+          "imageLeft": true,
+          "backgroundColor": "#002663",
+          "textColor": "#FFFFFF"
+        },
+        {
+          "name": "Jane Smith",
+          "quote": "I've known Gauntt for years, and they are a person of integrity and action. They will bring positive change to our county.",
+          "imagePath": "assets/images/placeholder.png",
+          "imageLeft": false,
+          "backgroundColor": "#A01124",
+          "textColor": "#FFFFFF"
+        }
+      ],
+      "communityEndorsements": [
+        "Community Member 1",
+        "Community Member 2"
+      ],
+      "endorsementTitle1": "Additional Title 1",
+      "endorsementTitle2": "Additional Title 2",
+      "endorsementBodyParagraph": "This is a body paragraph for the endorsements page."
+    },
+    "donatePage": {
+      "appBarTitle": "Donate to the Campaign",
+      "heroImagePath": "assets/images/placeholder.png",
+      "title": "Support our Mission!",
+      "mailDonationText": "If you prefer to donate by mail, please send a check payable to \"Gauntt Campaign\" to: 123 Main Street, Anytown, USA 12345",
+      "thankYouText": "Thank you for your generosity!"
+    },
+    "privacyPolicyPage": {
+      "appBarTitle": "Privacy Policy",
+      "title": "Privacy Policy",
+      "content": "No mobile information will be shared by us with third parties/affiliates for marketing/promotional purposes. Text messaging originator opt-in data and consent will not be shared with any third parties unless required by law. Carriers are not liable for delayed or undelivered messages."
+    },
+    "commonAppBar": {
+      "logoPath": "assets/logos/placeholder_logo.png",
+      "logoWidth": 400,
+      "logoHeight": 100,
+      "navItems": [
+        {"label": "Home", "path": "/home"},
+        {"label": "Issues", "path": "/issues"},
+        {"label": "About", "path": "/about"},
+        {"label": "Endorsements", "path": "/endorsements"},
+        {"label": "Donate", "path": "/donate"}
+      ]
+    },
+    "donateSection": {
+      "title": "Make a Difference!",
+      "buttonText": "Donate Now"
+    },
+    "donationWidget": {
+      "amountSelectionPrompt": "Please select or enter an amount",
+      "customAmountLabel": "Custom Amount",
+      "continueButtonText": "Continue",
+      "firstNameValidation": "Please enter your first name",
+      "lastNameValidation": "Please enter your last name",
+      "addressValidation": "Please enter your address",
+      "addressLine2Label": "Address Line 2 (Optional)",
+      "cityLabel": "City",
+      "stateLabel": "State",
+      "zipCodeLabel": "Zip Code",
+      "employerLabel": "Employer",
+      "occupationLabel": "Occupation",
+      "proceedToPaymentButtonText": "Proceed to Payment",
+      "coverFeesText": "Cover transaction fees",
+      "recurringDonationText": "Make this a recurring monthly donation",
+      "emailLabel": "Email",
+      "phoneLabel": "Phone Number",
+      "emailValidationEmpty": "Please enter your email",
+      "emailValidationInvalid": "Please enter a valid email address",
+      "contactEmailText": "Contact me via Email",
+      "contactPhoneText": "Contact me via Phone Call",
+      "contactMailText": "Contact me via Mail",
+      "contactSmsText": "Contact me via SMS",
+      "submitButtonText": "Submit",
+      "successMessage": "Thank you for your donation!",
+      "errorMessages": {
+        "submitFormError": "Error submitting form: {statusCode}. Please try again.",
+        "submitFormGenericError": "An error occurred: {error}. Please check your connection and try again.",
+        "createPaymentIntentFailed": "Failed to create payment intent: {body}",
+        "createPaymentIntentError": "Error creating payment intent: {error}",
+        "stripeError": "Error from Stripe: {message}",
+        "unforeseenError": "Unforeseen error: {error}",
+        "submitDetailsFailed": "Failed to submit details: {body}",
+        "submitDetailsError": "Error submitting details: {error}"
+      },
+      "donationAmounts": [
+        25,
+        50,
+        100,
+        250,
+        500,
+        1000
+      ]
+    }
+  },
+  "widgets": {
+    "signupForm": {
+      "title": "Join the Movement!",
+      "endorseText": "I endorse Gauntt and allow them to publish my endorsement",
+      "getInvolvedText": "I want to get involved with the campaign!",
+      "automatedMessagingText": "I agree to receive automated messaging from Elect Gauntt",
+      "emailOptInText": "I agree to receive emails from Elect Gauntt",
+      "legalText": "Reply STOP to opt out, HELP for help. Msg & data rates may apply. Frequency may vary.",
+      "submitButtonText": "Sign Up",
+      "privacyPolicyText": "Privacy Policy"
+    }
+  },
+  "footer": {
+    "paidForText": "Paid for by Elect Gauntt"
+  }
+}

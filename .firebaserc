@@ -8,8 +8,32 @@
         "cerberus": [
           "cerberus-site"
         ],
-        "campaigns": [
-          "campaigns-site"
+        "emmons": [
+          "emmons-site"
+        ],
+        "blair": [
+          "blair-site"
+        ],
+        "cox": [
+          "cox-site"
+        ],
+        "gauntt": [
+          "gauntt-site"
+        ],
+        "mintz": [
+          "mintz-site"
+        ],
+        "tice": [
+          "tice-site"
+        ],
+        "leudeke": [
+          "leudeke-site"
+        ],
+        "tulloch": [
+          "tulloch-site"
+        ],
+        "whitson": [
+          "whitson-site"
         ]
       }
     }
