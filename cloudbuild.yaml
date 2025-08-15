@@ -34,7 +34,8 @@ steps:
     - '-c'
     - |
       # Check if Flutter SDK is already cached
-      if [ -d "/flutter/bin" ] && command -v /flutter/bin/flutter &> /dev/null; then
+      if [ -d "/flutter/bin" ] && command -v /flutter/bin/flutter &> /dev/null;
+      then
         echo "Flutter SDK already exists in cache. Skipping download."
         /flutter/bin/flutter doctor
       else
@@ -73,9 +74,14 @@ steps:
       flutter build web --release
   dir: 'cerberus_frontend' # Change working directory for this step
 
-- name: 'gcr.io/cloud-builders/firebase:14.11.1'
+- name: 'gcr.io/cloud-builders/npm'
   id: 'Deploy Cerberus Frontend'
-  args: ['deploy', '--only', 'hosting:cerberus']
+  args:
+    - 'bash'
+    - '-c'
+    - |
+      npm install -g firebase-tools@13.11.2 && \
+      firebase deploy --only 'hosting:cerberus'
 
 # Build and deploy the universal_campaign_frontend
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -98,9 +104,14 @@ steps:
       flutter build web --release
   dir: 'universal_campaign_frontend' # Change working directory for this step
 
-- name: 'gcr.io/cloud-builders/firebase'
+- name: 'gcr.io/cloud-builders/npm'
   id: 'Deploy Universal Campaign Frontend'
-  args: ['deploy', '--only', 'hosting:campaigns']
+  args:
+    - 'bash'
+    - '-c'
+    - |
+      npm install -g firebase-tools@13.11.2 && \
+      firebase deploy --only 'hosting:campaigns'
 
 images:
 - '${_REGION}-docker.pkg.dev/$PROJECT_ID/cerberus-images/cerberus-backend:$BUILD_ID'
