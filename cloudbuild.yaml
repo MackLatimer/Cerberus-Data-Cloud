@@ -44,7 +44,7 @@ steps:
         git clone https://github.com/flutter/flutter.git /flutter
         git config --global --add safe.directory /flutter # Add safe directory for git ownership issue
         cd /flutter
-        git checkout 3.22.2
+        git checkout 3.35.1
         ./bin/flutter --version # Check Flutter version
         ./bin/flutter upgrade
         echo "Running flutter doctor..."
@@ -126,4 +126,4 @@ substitutions:
   _REGION: 'us-south1'
   _INSTANCE_CONNECTION_NAME: 'cerberus-data-cloud:us-south1:cerberus-db'
   _PROJECT_ID: 'cerberus-data-cloud'
-  _FLUTTER_VERSION: '3.22.2'
+  _FLUTTER_VERSION: '3.35.1'
