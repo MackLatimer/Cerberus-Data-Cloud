@@ -73,7 +73,7 @@ steps:
       flutter build web --release
   dir: 'cerberus_frontend' # Change working directory for this step
 
-- name: 'gcr.io/cloud-builders/firebase'
+- name: 'gcr.io/cloud-builders/firebase:14.11.1'
   id: 'Deploy Cerberus Frontend'
   args: ['deploy', '--only', 'hosting:cerberus']
 
