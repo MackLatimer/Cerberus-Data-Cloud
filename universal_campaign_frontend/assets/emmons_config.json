@@ -21,6 +21,8 @@
       "subtitle": "In the meantime, you can support our campaign by donating below."
     },
     "homePage": {
+      "heroTitle": "Welcome to our campaign!",
+      "callToActionText": "Join us in making a difference.",
       "heroImagePath": "assets/images/Emmons_Home_Hero.png",
       "homeTitleMessage": "Welcome to our campaign!",
       "issuesImage": "assets/images/Emmons_Home_Issues_Preview.png",
