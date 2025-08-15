@@ -60,7 +60,7 @@ class HomePageState extends State<HomePage> {
                 height: heroHeight,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage(widget.config.assets.homePage.heroImagePath),
+                    image: AssetImage(widget.config.content.homePage.heroImagePath),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -90,9 +90,8 @@ class HomePageState extends State<HomePage> {
               const SizedBox(height: 40),
               HomePageSection(
                 title: 'Issues',
-                summary:
-                    'Learn about the key issues Curtis is focused on to improve our precinct.',
-                imagePath: 'assets/images/Emmons_Home_Issues_Preview.png',
+                summary: widget.config.content.homePage.issuesMessage,
+                imagePath: widget.config.content.homePage.issuesImage,
                 routePath: '/issues',
                 imageBackgroundColor: Colors.blueGrey,
                 imageLeft: true,
@@ -101,20 +100,18 @@ class HomePageState extends State<HomePage> {
                 buttonColor: Colors.white,
                 buttonTextColor: const Color(0xff002663),
               ),
-              const HomePageSection(
+              HomePageSection(
                 title: 'About Me',
-                summary:
-                    'Discover more about Curtis Emmons, his background, and his vision for Bell County.',
-                imagePath: 'assets/images/Emmons_Home_About_Preview.png',
+                summary: widget.config.content.homePage.aboutMeMessage,
+                imagePath: widget.config.content.homePage.aboutMeImage,
                 routePath: '/about',
                 imageBackgroundColor: Colors.teal,
                 imageLeft: false,
               ),
-              const HomePageSection(
+              HomePageSection(
                 title: 'Endorsements',
-                summary:
-                    'See who is endorsing Curtis and learn how you can add your support.',
-                imagePath: 'assets/images/Emmons_Home_Endorsements_Preview.png',
+                summary: widget.config.content.homePage.endorsementsMessage,
+                imagePath: widget.config.content.homePage.endorsementsImage,
                 routePath: '/endorsements',
                 imageBackgroundColor: Colors.amber,
                 imageLeft: true,
@@ -123,11 +120,10 @@ class HomePageState extends State<HomePage> {
                 buttonColor: Colors.white,
                 buttonTextColor: Color(0xffa01124),
               ),
-              const HomePageSection(
+              HomePageSection(
                 title: 'Donate',
-                summary:
-                    'Support the campaign financially and help us make a difference.',
-                imagePath: 'assets/images/Emmons_Home_Donate_Preview.png',
+                summary: widget.config.content.homePage.donateMessage,
+                imagePath: widget.config.content.homePage.donateImage,
                 routePath: '/donate',
                 imageBackgroundColor: Colors.green,
                 imageLeft: false,
