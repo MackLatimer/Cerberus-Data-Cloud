@@ -102,7 +102,6 @@ steps:
     - |
       apt-get update && apt-get install -y unzip
       export PATH="/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" # Add flutter to PATH
-      flutter create . --platforms web
       flutter build web --release
       ls -la build/web
   dir: 'universal_campaign_frontend' # Change working directory for this step
