@@ -104,10 +104,10 @@ steps:
       flutter build web --release
   dir: 'universal_campaign_frontend' # Change working directory for this step
 
-- name: 'gcr.io/cloud-builders/npm'
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   id: 'Deploy Universal Campaign Frontend'
+  entrypoint: 'bash'
   args:
-    - 'bash'
     - '-c'
     - |
       npm install -g firebase-tools@13.11.2 && \
