@@ -83,7 +83,6 @@ steps:
       npm install -g firebase-tools@13.11.2 && \
       firebase deploy --only 'hosting:cerberus' --project '${_PROJECT_ID}'
 
-
 # Build and deploy the universal_campaign_frontend
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   id: 'Get dependencies for Universal Campaign Frontend'
