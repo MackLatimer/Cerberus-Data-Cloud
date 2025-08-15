@@ -74,12 +74,14 @@ steps:
       flutter build web --release
   dir: 'cerberus_frontend' # Change working directory for this step
 
-- name: 'gcr.io/cloud-builders/firebase'
+- name: 'gcr.io/cloud-builders/npm'
   id: 'Deploy Cerberus Frontend'
   args:
-    - 'deploy'
-    - '--only'
-    - 'hosting:cerberus'
+    - 'bash'
+    - '-c'
+    - |
+      npm install -g firebase-tools@13.11.2 && \
+      firebase deploy --only 'hosting:cerberus'
   dir: 'cerberus_frontend'
 
 # Build and deploy the universal_campaign_frontend
