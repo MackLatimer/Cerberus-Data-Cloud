@@ -40,7 +40,7 @@ steps:
         /flutter/bin/flutter doctor
       else
         echo "Flutter SDK not found in cache. Cloning and installing..."
-        apt-get update && apt-get install -y git unzip # Install git and unzip for cloning and dart sdk extraction
+        apt-get update && apt-get install -y git unzip nodejs npm # Install git, unzip, nodejs, and npm for cloning, dart sdk extraction, and firebase-tools
         git clone https://github.com/flutter/flutter.git /flutter
         git config --global --add safe.directory /flutter # Add safe directory for git ownership issue
         cd /flutter
