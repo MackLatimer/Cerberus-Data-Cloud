@@ -83,6 +83,7 @@ steps:
     - '-c'
     - |
       export PATH="/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" # Add flutter to PATH
+      apt-get update && apt-get install -y unzip
       flutter build web --release
   dir: 'cerberus_frontend'
   waitFor: ['Get dependencies for Cerberus Frontend']
