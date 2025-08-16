@@ -99,7 +99,7 @@
       "content": ""
     },
     "commonAppBar": {
-      "logoPath": "",
+      "logoPath": "assets/images/error_placeholder.png",
       "logoWidth": 0,
       "logoHeight": 0,
       "navItems": []
