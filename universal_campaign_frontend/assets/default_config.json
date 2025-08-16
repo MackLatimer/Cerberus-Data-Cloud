@@ -129,11 +129,26 @@
       "logoWidth": 400,
       "logoHeight": 100,
       "navItems": [
-        {"label": "Home", "path": "/home"},
-        {"label": "Issues", "path": "/issues"},
-        {"label": "About", "path": "/about"},
-        {"label": "Endorsements", "path": "/endorsements"},
-        {"label": "Donate", "path": "/donate"}
+        {
+          "label": "Home",
+          "path": "/home"
+        },
+        {
+          "label": "Issues",
+          "path": "/issues"
+        },
+        {
+          "label": "About",
+          "path": "/about"
+        },
+        {
+          "label": "Endorsements",
+          "path": "/endorsements"
+        },
+        {
+          "label": "Donate",
+          "path": "/donate"
+        }
       ]
     },
     "donateSection": {
@@ -176,7 +191,14 @@
         "submitDetailsFailed": "Failed to submit details: {body}",
         "submitDetailsError": "Error submitting details: {error}"
       },
-      "donationAmounts": [25, 50, 100, 250, 500, 1000]
+      "donationAmounts": [
+        25,
+        50,
+        100,
+        250,
+        500,
+        1000
+      ]
     },
     "widgets": {
       "signupForm": {
@@ -193,5 +215,5 @@
     "footer": {
       "paidForText": "Paid for by Elect Emmons"
     }
-}
   }
+}
