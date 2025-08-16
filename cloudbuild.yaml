@@ -104,6 +104,7 @@ steps:
     - '-c'
     - |
       export PATH="/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      apt-get update && apt-get install -y unzip
       chmod +x build_campaigns.sh
       ./build_campaigns.sh
   dir: 'universal_campaign_frontend'
