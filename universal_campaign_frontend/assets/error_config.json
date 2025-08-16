@@ -140,6 +140,18 @@
             "submitDetailsError": ""
         },
         "donationAmounts": []
+    },
+    "widgets": {
+      "signupForm": {
+        "title": "",
+        "endorseText": "",
+        "getInvolvedText": "",
+        "automatedMessagingText": "",
+        "emailOptInText": "",
+        "legalText": "",
+        "submitButtonText": "",
+        "privacyPolicyText": ""
+      }
     }
   },
   "assets": {
