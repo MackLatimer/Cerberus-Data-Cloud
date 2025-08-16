@@ -39,7 +39,7 @@
   },
   "content": {
     "siteTitle": "Error",
-    "faviconImagePath": "",
+    "faviconImagePath": "assets/Cerberus_Favicon.png",
     "homePage": {
       "heroTitle": "Error",
       "callToActionText": "",
