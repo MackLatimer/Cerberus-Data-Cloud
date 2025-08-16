@@ -167,29 +167,29 @@
     }
   },
   "assets": {
-    "faviconImagePath": "",
-    "logoPath": "",
+    "faviconImagePath": "assets/Cerberus_Favicon.png",
+    "logoPath": "assets/images/error_placeholder.png",
     "homePage": {
-        "logoPath": "",
-        "heroImagePath": ""
+        "logoPath": "assets/images/error_placeholder.png",
+        "heroImagePath": "assets/images/error_placeholder.png"
     },
     "aboutPage": {
-        "heroImagePath": "",
-        "bioImage1Path": "",
-        "bioImage2Path": "",
-        "bioImage3Path": ""
+        "heroImagePath": "assets/images/error_placeholder.png",
+        "bioImage1Path": "assets/images/error_placeholder.png",
+        "bioImage2Path": "assets/images/error_placeholder.png",
+        "bioImage3Path": "assets/images/error_placeholder.png"
     },
     "donatePage": {
-        "heroImagePath": ""
+        "heroImagePath": "assets/images/error_placeholder.png"
     },
     "endorsementsPage": {
-        "heroImagePath": ""
+        "heroImagePath": "assets/images/error_placeholder.png"
     },
     "issuesPage": {
-        "heroImagePath": ""
+        "heroImagePath": "assets/images/error_placeholder.png"
     },
     "commonAppBar": {
-        "logoPath": ""
+        "logoPath": "assets/images/error_placeholder.png"
     }
   }
 }
