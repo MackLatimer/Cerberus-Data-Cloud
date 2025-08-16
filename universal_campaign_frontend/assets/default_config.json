@@ -134,7 +134,16 @@
       "mailDonationText": "If you prefer to donate by mail, please send a check payable to \"Curtis Emmons Campaign\" to: 123 Main Street, Anytown, USA 12345"
     },
     "commonAppBar": {
-      "logoPath": "assets/logos/Emmons_Logo.png"
+      "logoPath": "assets/logos/Emmons_Logo.png",
+      "logoWidth": 100.0,
+      "logoHeight": 50.0,
+      "navItems": [
+        {"label": "Home", "path": "/"},
+        {"label": "About", "path": "/about"},
+        {"label": "Issues", "path": "/issues"},
+        {"label": "Donate", "path": "/donate"},
+        {"label": "Endorsements", "path": "/endorsements"}
+      ]
     },
     "widgets": {
       "signupForm": {

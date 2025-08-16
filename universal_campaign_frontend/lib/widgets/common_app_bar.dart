@@ -21,7 +21,7 @@ class CommonAppBar extends StatefulWidget implements PreferredSizeWidget {
   CommonAppBarState createState() => CommonAppBarState();
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(170.0);
 }
 
 class CommonAppBarState extends State<CommonAppBar> {
