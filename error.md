@@ -1,4 +1,4 @@
-This app is linked to the debug service: ws://127.0.0.1:49309/ce5sjhG2DgM=/ws
+This app is linked to the debug service: ws://127.0.0.1:50370/Zf92pe_LW0c=/ws
 js_primitives.dart:28 ══╡ EXCEPTION CAUGHT BY IMAGE RESOURCE SERVICE ╞════════════════════════════════════════════════════
 js_primitives.dart:28 The following ImageCodecException was thrown resolving an image codec:
 js_primitives.dart:28 Failed to detect image file format using the file header.
@@ -41,7 +41,7 @@ js_primitives.dart:28 dart-sdk/lib/_internal/js_dev_runtime/private/ddc_runtime/
 js_primitives.dart:28 dart-sdk/lib/_internal/js_dev_runtime/patch/async_patch.dart 186:7                <fn>
 js_primitives.dart:28 
 js_primitives.dart:28 Image provider: AssetImage(bundle: null, name: "assets/images/error_placeholder.png")
-js_primitives.dart:28 Image key: AssetBundleImageKey(bundle: PlatformAssetBundle#78dad(), name:
+js_primitives.dart:28 Image key: AssetBundleImageKey(bundle: PlatformAssetBundle#82846(), name:
 js_primitives.dart:28   "assets/images/error_placeholder.png", scale: 1)
 js_primitives.dart:28 ════════════════════════════════════════════════════════════════════════════════════════════════════
 js_primitives.dart:28 Another exception was thrown: A RenderFlex overflowed by 87 pixels on the bottom.

@@ -99,7 +99,7 @@
       "content": ""
     },
     "commonAppBar": {
-      "logoPath": "assets/images/error_placeholder.png",
+      "logoPath": "assets/images/Blair_Logo.png",
       "logoWidth": 0,
       "logoHeight": 0,
       "navItems": []
@@ -168,28 +168,28 @@
   },
   "assets": {
     "faviconImagePath": "assets/Cerberus_Favicon.png",
-    "logoPath": "assets/images/error_placeholder.png",
+    "logoPath": "assets/images/Blair_Logo.png",
     "homePage": {
-        "logoPath": "assets/images/error_placeholder.png",
-        "heroImagePath": "assets/images/error_placeholder.png"
+        "logoPath": "assets/images/Blair_Logo.png",
+        "heroImagePath": "assets/images/Blair_Logo.png"
     },
     "aboutPage": {
-        "heroImagePath": "assets/images/error_placeholder.png",
-        "bioImage1Path": "assets/images/error_placeholder.png",
-        "bioImage2Path": "assets/images/error_placeholder.png",
-        "bioImage3Path": "assets/images/error_placeholder.png"
+        "heroImagePath": "assets/images/Blair_Logo.png",
+        "bioImage1Path": "assets/images/Blair_Logo.png",
+        "bioImage2Path": "assets/images/Blair_Logo.png",
+        "bioImage3Path": "assets/images/Blair_Logo.png"
     },
     "donatePage": {
-        "heroImagePath": "assets/images/error_placeholder.png"
+        "heroImagePath": "assets/images/Blair_Logo.png"
     },
     "endorsementsPage": {
-        "heroImagePath": "assets/images/error_placeholder.png"
+        "heroImagePath": "assets/images/Blair_Logo.png"
     },
     "issuesPage": {
-        "heroImagePath": "assets/images/error_placeholder.png"
+        "heroImagePath": "assets/images/Blair_Logo.png"
     },
     "commonAppBar": {
-        "logoPath": "assets/images/error_placeholder.png"
+        "logoPath": "assets/images/Blair_Logo.png"
     }
   }
 }
