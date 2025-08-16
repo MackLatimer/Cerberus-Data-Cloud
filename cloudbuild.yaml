@@ -104,7 +104,8 @@ steps:
     - '-c'
     - |
       export PATH="/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-      apt-get update && apt-get install -y unzip
+      apt-get update && apt-get install -y nodejs npm unzip
+      npm install -g firebase-tools@13.11.2
       chmod +x build_campaigns.sh
       ./build_campaigns.sh
   dir: 'universal_campaign_frontend'
