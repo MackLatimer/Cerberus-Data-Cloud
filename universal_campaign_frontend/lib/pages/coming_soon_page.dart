@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:universal_campaign_frontend/providers/campaign_provider.dart';
 import 'package:universal_campaign_frontend/widgets/donation_widget.dart';
-import 'package:universal_campaign_frontend/models/campaign_config.dart';
+
 
 class ComingSoonPage extends StatelessWidget {
-  final CampaignConfig config;
-  const ComingSoonPage({super.key, required this.config});
+  const ComingSoonPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final config = Provider.of<CampaignProvider>(context).campaignConfig!;
+
     return Scaffold(
       body: Stack(
         children: [

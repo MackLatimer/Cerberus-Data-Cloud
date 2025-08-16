@@ -1,38 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:universal_campaign_frontend/widgets/dynamic_size_app_bar.dart';
+import 'package:provider/provider.dart';
+import 'package:universal_campaign_frontend/providers/campaign_provider.dart';
 import 'package:universal_campaign_frontend/widgets/common_app_bar.dart';
 import 'package:universal_campaign_frontend/widgets/footer.dart';
-import 'package:universal_campaign_frontend/models/campaign_config.dart';
+
 
 class PrivacyPolicyPage extends StatelessWidget {
-  final CampaignConfig config;
-  const PrivacyPolicyPage({super.key, required this.config});
+  const PrivacyPolicyPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final config = Provider.of<CampaignProvider>(context).campaignConfig!;
     final textTheme = Theme.of(context).textTheme;
 
-    return LayoutBuilder(builder: (context, constraints) {
-      final width = constraints.maxWidth;
-      double appBarHeight;
-
-      if (width > 1000) {
-        appBarHeight = 206;
-      } else if (width > 600) {
-        appBarHeight = 266;
-      } else {
-        appBarHeight = 306;
-      }
-      return Scaffold(
-        appBar: DynamicSizeAppBar(
-          height: appBarHeight,
-          child: CommonAppBar(
-            config: config,
-          ),
-        ),
-        body: CustomScrollView(
-          slivers: <Widget>[
-            SliverPadding(
+    return Scaffold(
+      appBar: CommonAppBar(
+        config: config,
+      ),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverPadding(
             padding: const EdgeInsets.all(24.0),
             sliver: SliverToBoxAdapter(
               child: Center(
@@ -62,7 +49,6 @@ class PrivacyPolicyPage extends StatelessWidget {
           SliverToBoxAdapter(child: Footer(config: config)),
         ],
       ),
-      );
-    });
+    );
   }
 }

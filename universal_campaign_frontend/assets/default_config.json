@@ -76,9 +76,9 @@
         },
         {
           "title": "Community Safety & Emergency Services",
-          "description": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Ensuring our neighborhoods are safe and our first responders are well-equipped is a top priority.",
-          "backgroundColor": null,
-          "textColor": null,
+          "description": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat ""a pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Ensuring our neighborhoods are safe and our first responders are well-equipped is a top priority.",
+          "backgroundColor": "",
+          "textColor": "",
           "imagePath": "assets/images/Emmons_Issues_Issue2.png"
         },
         {
@@ -91,8 +91,8 @@
         {
           "title": "Fiscal Responsibility & Transparent Governance",
           "description": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Curtis is committed to responsible spending of taxpayer dollars and ensuring all county operations are transparent and accountable to the public.",
-          "backgroundColor": null,
-          "textColor": null,
+          "backgroundColor": "",
+          "textColor": "",
           "imagePath": "assets/images/Emmons_Issues_Issue4.png"
         }
       ]
@@ -127,113 +127,20 @@
           "backgroundColor": "#A01124",
           "textColor": "#FFFFFF"
         }
-      ],
-      "communityEndorsements": [
-        "Community Member 1",
-        "Community Member 2"
-      ],
-      "endorsementTitle1": "Additional Title 1",
-      "endorsementTitle2": "Additional Title 2",
-      "endorsementBodyParagraph": "This is a body paragraph for the endorsements page."
+      ]
     },
     "donatePage": {
-      "appBarTitle": "Donate to the Campaign",
       "heroImagePath": "assets/images/Emmons_Donate_Hero.png",
-      "title": "Support our Mission!",
-      "mailDonationText": "If you prefer to donate by mail, please send a check payable to \"Curtis Emmons Campaign\" to: 123 Main Street, Anytown, USA 12345",
-      "thankYouText": "Thank you for your generosity!"
-    },
-    "privacyPolicyPage": {
-      "appBarTitle": "Privacy Policy",
-      "title": "Privacy Policy",
-      "content": "No mobile information will be shared by us with third parties/affiliates for marketing/promotional purposes. Text messaging originator opt-in data and consent will not be shared with any third parties unless required by law. Carriers are not liable for delayed or undelivered messages."
+      "mailDonationText": "If you prefer to donate by mail, please send a check payable to \"Curtis Emmons Campaign\" to: 123 Main Street, Anytown, USA 12345"
     },
     "commonAppBar": {
-      "logoPath": "assets/logos/Emmons_Logo.png",
-      "logoWidth": 400,
-      "logoHeight": 100,
-      "navItems": [
-        {
-          "label": "Home",
-          "path": "/home"
-        },
-        {
-          "label": "Issues",
-          "path": "/issues"
-        },
-        {
-          "label": "About",
-          "path": "/about"
-        },
-        {
-          "label": "Endorsements",
-          "path": "/endorsements"
-        },
-        {
-          "label": "Donate",
-          "path": "/donate"
-        }
-      ]
-    },
-    "donateSection": {
-      "title": "Make a Difference!",
-      "buttonText": "Donate Now"
-    },
-    "donationWidget": {
-      "amountSelectionPrompt": "Please select or enter an amount",
-      "customAmountLabel": "Custom Amount",
-      "continueButtonText": "Continue",
-      "firstNameValidation": "Please enter your first name",
-      "lastNameValidation": "Please enter your last name",
-      "addressValidation": "Please enter your address",
-      "addressLine2Label": "Address Line 2 (Optional)",
-      "cityLabel": "City",
-      "stateLabel": "State",
-      "zipCodeLabel": "Zip Code",
-      "employerLabel": "Employer",
-      "occupationLabel": "Occupation",
-      "proceedToPaymentButtonText": "Proceed to Payment",
-      "coverFeesText": "Cover transaction fees",
-      "recurringDonationText": "Make this a recurring monthly donation",
-      "emailLabel": "Email",
-      "phoneLabel": "Phone Number",
-      "emailValidationEmpty": "Please enter your email",
-      "emailValidationInvalid": "Please enter a valid email address",
-      "contactEmailText": "Contact me via Email",
-      "contactPhoneText": "Contact me via Phone Call",
-      "contactMailText": "Contact me via Mail",
-      "contactSmsText": "Contact me via SMS",
-      "submitButtonText": "Submit",
-      "successMessage": "Thank you for your donation!",
-      "errorMessages": {
-        "submitFormError": "Error submitting form: {statusCode}. Please try again.",
-        "submitFormGenericError": "An error occurred: {error}. Please check your connection and try again.",
-        "createPaymentIntentFailed": "Failed to create payment intent: {body}",
-        "createPaymentIntentError": "Error creating payment intent: {error}",
-        "stripeError": "Error from Stripe: {message}",
-        "unforeseenError": "Unforeseen error: {error}",
-        "submitDetailsFailed": "Failed to submit details: {body}",
-        "submitDetailsError": "Error submitting details: {error}"
-      },
-      "donationAmounts": [
-        25,
-        50,
-        100,
-        250,
-        500,
-        1000
-      ]
+      "logoPath": "assets/logos/Emmons_Logo.png"
     },
     "widgets": {
       "signupForm": {
-        "title": "Join the Movement!",
         "endorseText": "I endorse Curtis Emmons and allow him to publish my endorsement",
-        "getInvolvedText": "I want to get involved with the campaign!",
         "automatedMessagingText": "I agree to receive automated messaging from Elect Emmons",
-        "emailOptInText": "I agree to receive emails from Elect Emmons",
-        "legalText": "Reply STOP to opt out, HELP for help. Msg & data rates may apply. Frequency may vary.",
-        "submitButtonText": "Sign Up",
-        "privacyPolicyText": "Privacy Policy"
+        "emailOptInText": "I agree to receive emails from Elect Emmons"
       }
     },
     "footer": {

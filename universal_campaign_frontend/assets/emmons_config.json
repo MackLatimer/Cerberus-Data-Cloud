@@ -11,31 +11,7 @@
     "backgroundColor": "#FFFFFF",
     "textColor": "#000000",
     "fontFamily": "BebasNeue",
-    "secondaryFontFamily": "Tinos",
-    "issuesSectionTheme": {
-      "backgroundColor": "#a01124",
-      "textColor": "#FFFFFF",
-      "buttonColor": "#FFFFFF",
-      "buttonTextColor": "#002663"
-    },
-    "aboutMeSectionTheme": {
-      "backgroundColor": "#FFFFFF",
-      "textColor": "#000000",
-      "buttonColor": "#002663",
-      "buttonTextColor": "#FFFFFF"
-    },
-    "endorsementsSectionTheme": {
-      "backgroundColor": "#002663",
-      "textColor": "#FFFFFF",
-      "buttonColor": "#FFFFFF",
-      "buttonTextColor": "#a01124"
-    },
-    "donateSectionTheme": {
-      "backgroundColor": "#FFFFFF",
-      "textColor": "#000000",
-      "buttonColor": "#002663",
-      "buttonTextColor": "#FFFFFF"
-    }
+    "secondaryFontFamily": "Tinos"
   },
   "content": {
     "siteTitle": "Curtis Emmons for County Commissioner",
@@ -153,11 +129,26 @@
       "logoWidth": 400,
       "logoHeight": 100,
       "navItems": [
-        {"label": "Home", "path": "/home"},
-        {"label": "Issues", "path": "/issues"},
-        {"label": "About", "path": "/about"},
-        {"label": "Endorsements", "path": "/endorsements"},
-        {"label": "Donate", "path": "/donate"}
+        {
+          "label": "Home",
+          "path": "/home"
+        },
+        {
+          "label": "Issues",
+          "path": "/issues"
+        },
+        {
+          "label": "About",
+          "path": "/about"
+        },
+        {
+          "label": "Endorsements",
+          "path": "/endorsements"
+        },
+        {
+          "label": "Donate",
+          "path": "/donate"
+        }
       ]
     },
     "donateSection": {
@@ -200,7 +191,14 @@
         "submitDetailsFailed": "Failed to submit details: {body}",
         "submitDetailsError": "Error submitting details: {error}"
       },
-      "donationAmounts": [25, 50, 100, 250, 500, 1000]
+      "donationAmounts": [
+        25,
+        50,
+        100,
+        250,
+        500,
+        1000
+      ]
     },
     "widgets": {
       "signupForm": {
@@ -217,5 +215,5 @@
     "footer": {
       "paidForText": "Paid for by Elect Emmons"
     }
-    }
+  }
 }

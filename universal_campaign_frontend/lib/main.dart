@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:provider/provider.dart';
 import 'package:universal_campaign_frontend/models/campaign_config.dart';
 import 'package:universal_campaign_frontend/pages/about_page.dart';
 import 'package:universal_campaign_frontend/pages/coming_soon_page.dart';
@@ -10,116 +11,116 @@ import 'package:universal_campaign_frontend/pages/error_page.dart';
 import 'package:universal_campaign_frontend/pages/home_page.dart';
 import 'package:universal_campaign_frontend/pages/issues_page.dart';
 import 'package:universal_campaign_frontend/pages/privacy_policy_page.dart';
-import 'package:universal_campaign_frontend/services/config_service.dart';
+import 'package:universal_campaign_frontend/providers/campaign_provider.dart';
+
+import 'package:universal_campaign_frontend/locator.dart';
 
 void main() {
+  setupLocator();
   setUrlStrategy(const HashUrlStrategy());
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) {
+        final provider = locator<CampaignProvider>();
+        final campaignId = Uri.base.queryParameters['campaign'];
+        provider.loadCampaign(campaignId ?? 'default');
+        return provider;
+      },
+      child: const MyApp(),
+    ),
+  );
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  late Future<CampaignConfig> _campaignConfigFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    _campaignConfigFuture = _loadConfig();
-  }
-
-  Future<CampaignConfig> _loadConfig() async {
-    final campaignId = Uri.base.queryParameters['campaign'] ?? await ConfigService.getDefaultCampaignId();
-    return ConfigService.loadCampaignConfig(campaignId);
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return FutureBuilder<CampaignConfig>(
-      future: _campaignConfigFuture,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          final config = snapshot.data!;
-          return buildApp(config);
-        } else if (snapshot.hasError) {
-          return ErrorPage(errorMessage: snapshot.error.toString(), config: null);
-        } else {
+    return Consumer<CampaignProvider>(
+      builder: (context, provider, child) {
+        if (provider.isLoading) {
           return const Center(child: CircularProgressIndicator());
         }
+
+        if (provider.error != null) {
+          return ErrorPage(errorMessage: provider.error!, config: null);
+        }
+
+        if (provider.campaignConfig == null) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        final config = provider.campaignConfig!;
+        return buildApp(context, config);
       },
     );
   }
 
-  Widget buildApp(CampaignConfig config) {
+  Widget buildApp(BuildContext context, CampaignConfig config) {
     final router = GoRouter(
       initialLocation: '/home',
       routes: [
         GoRoute(
           path: '/home',
-          builder: (context, state) => HomePage(config: config),
+          builder: (context, state) => const HomePage(),
         ),
         GoRoute(
           path: '/about',
-          builder: (context, state) => AboutPage(config: config),
+          builder: (context, state) => const AboutPage(),
         ),
         GoRoute(
           path: '/coming-soon',
-          builder: (context, state) => ComingSoonPage(config: config),
+          builder: (context, state) => const ComingSoonPage(),
         ),
         GoRoute(
           path: '/donate',
-          builder: (context, state) => DonatePage(config: config),
+          builder: (context, state) => const DonatePage(),
         ),
         GoRoute(
           path: '/endorsements',
-          builder: (context, state) => EndorsementsPage(config: config),
+          builder: (context, state) => const EndorsementsPage(),
         ),
         GoRoute(
           path: '/issues',
-          builder: (context, state) => IssuesPage(config: config),
+          builder: (context, state) => const IssuesPage(),
         ),
         GoRoute(
           path: '/privacy-policy',
-          builder: (context, state) => PrivacyPolicyPage(config: config),
+          builder: (context, state) => const PrivacyPolicyPage(),
         ),
       ],
     );
 
     return MaterialApp.router(
       title: config.content.siteTitle,
-      theme: _buildTheme(config),
+      theme: _buildTheme(context, config),
       routerConfig: router,
     );
   }
 
-  ThemeData _buildTheme(CampaignConfig config) {
-    Color primaryColor = Color(int.parse(config.theme.primaryColor.substring(1, 7), radix: 16) + 0xFF000000);
-    Color secondaryColor = Color(int.parse(config.theme.secondaryColor.substring(1, 7), radix: 16) + 0xFF000000);
-    Color backgroundColor = Color(int.parse(config.theme.backgroundColor.substring(1, 7), radix: 16) + 0xFF000000);
-    Color textColor = Color(int.parse(config.theme.textColor.substring(1, 7), radix: 16) + 0xFF000000);
+  ThemeData _buildTheme(BuildContext context, CampaignConfig config) {
+    Color primaryColor = _parseColor(config.theme.primaryColor, Colors.blue);
+    Color secondaryColor = _parseColor(config.theme.secondaryColor, Colors.amber);
+    Color backgroundColor = _parseColor(config.theme.backgroundColor, Colors.white);
+    Color textColor = _parseColor(config.theme.textColor, Colors.black);
 
-    final TextTheme appTextTheme = TextTheme(
-      displayLarge: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 152, color: textColor, fontWeight: FontWeight.bold),
-      displayMedium: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 122, color: textColor, fontWeight: FontWeight.bold),
-      displaySmall: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 98, color: textColor, fontWeight: FontWeight.bold),
-      headlineLarge: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 78, color: textColor, fontWeight: FontWeight.bold),
-      headlineMedium: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 62, color: textColor, fontWeight: FontWeight.bold),
-      headlineSmall: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 50, color: textColor, fontWeight: FontWeight.bold),
-      titleLarge: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 40, color: textColor, fontWeight: FontWeight.bold),
-      titleMedium: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 32, color: textColor, fontWeight: FontWeight.bold),
-      titleSmall: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 25, color: textColor, fontWeight: FontWeight.bold),
-      bodyLarge: TextStyle(fontFamily: config.theme.secondaryFontFamily, fontSize: 20, color: textColor),
-      bodyMedium: TextStyle(fontFamily: config.theme.secondaryFontFamily, fontSize: 16, color: textColor),
-      bodySmall: TextStyle(fontFamily: config.theme.secondaryFontFamily, fontSize: 12.8, color: textColor),
-      labelLarge: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
-      labelMedium: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 16, fontWeight: FontWeight.bold),
-      labelSmall: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 12.8, fontWeight: FontWeight.bold),
-    );
+    final TextTheme appTextTheme = Theme.of(context).textTheme.copyWith(
+          displayLarge: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 152, color: textColor, fontWeight: FontWeight.bold),
+          displayMedium: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 122, color: textColor, fontWeight: FontWeight.bold),
+          displaySmall: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 98, color: textColor, fontWeight: FontWeight.bold),
+          headlineLarge: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 78, color: textColor, fontWeight: FontWeight.bold),
+          headlineMedium: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 62, color: textColor, fontWeight: FontWeight.bold),
+          headlineSmall: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 50, color: textColor, fontWeight: FontWeight.bold),
+          titleLarge: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 40, color: textColor, fontWeight: FontWeight.bold),
+          titleMedium: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 32, color: textColor, fontWeight: FontWeight.bold),
+          titleSmall: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 25, color: textColor, fontWeight: FontWeight.bold),
+          bodyLarge: TextStyle(fontFamily: config.theme.secondaryFontFamily, fontSize: 20, color: textColor),
+          bodyMedium: TextStyle(fontFamily: config.theme.secondaryFontFamily, fontSize: 16, color: textColor),
+          bodySmall: TextStyle(fontFamily: config.theme.secondaryFontFamily, fontSize: 12.8, color: textColor),
+          labelLarge: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+          labelMedium: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 16, fontWeight: FontWeight.bold),
+          labelSmall: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 12.8, fontWeight: FontWeight.bold),
+        );
 
     return ThemeData(
       useMaterial3: true,
@@ -163,5 +164,17 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
+  }
+
+  Color _parseColor(String colorString, Color defaultColor) {
+    try {
+      if (colorString.startsWith('#')) {
+        return Color(int.parse(colorString.substring(1), radix: 16) + 0xFF000000);
+      } else {
+        return Color(int.parse(colorString, radix: 16) + 0xFF000000);
+      }
+    } catch (e) {
+      return defaultColor;
+    }
   }
 }

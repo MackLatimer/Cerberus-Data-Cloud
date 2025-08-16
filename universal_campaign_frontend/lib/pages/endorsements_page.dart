@@ -1,76 +1,47 @@
 import 'package:flutter/material.dart';
-import 'package:universal_campaign_frontend/widgets/dynamic_size_app_bar.dart';
+import 'package:provider/provider.dart';
+import 'package:universal_campaign_frontend/providers/campaign_provider.dart';
 import 'package:universal_campaign_frontend/widgets/common_app_bar.dart';
 import 'package:universal_campaign_frontend/widgets/signup_form.dart';
 import 'package:universal_campaign_frontend/widgets/donate_section.dart';
 import 'package:universal_campaign_frontend/widgets/high_profile_endorsement_card.dart';
 import 'package:universal_campaign_frontend/widgets/footer.dart';
 import 'package:universal_campaign_frontend/utils/breakpoint.dart';
-import 'package:universal_campaign_frontend/models/campaign_config.dart';
 
-class EndorsementsPage extends StatefulWidget {
-  final CampaignConfig config;
-  const EndorsementsPage({super.key, required this.config});
 
-  @override
-  EndorsementsPageState createState() => EndorsementsPageState();
-}
-
-class EndorsementsPageState extends State<EndorsementsPage> {
-  final ScrollController _scrollController = ScrollController();
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
+class EndorsementsPage extends StatelessWidget {
+  const EndorsementsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final config = Provider.of<CampaignProvider>(context).campaignConfig!;
+    final ScrollController scrollController = ScrollController();
     final windowSize = getWindowSize(context);
     final isCompact = windowSize == WindowSize.compact;
     final heroHeight = isCompact ? MediaQuery.of(context).size.height * 0.5 : MediaQuery.of(context).size.height;
 
-    return LayoutBuilder(builder: (context, constraints) {
-      final width = constraints.maxWidth;
-      double appBarHeight;
-
-      if (width > 1000) {
-        appBarHeight = 156;
-      } else if (width > 600) {
-        appBarHeight = 216;
-      } else {
-        appBarHeight = 256;
-      }
-      return Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: DynamicSizeAppBar(
-          height: appBarHeight,
-          child: CommonAppBar(
-            config: widget.config,
-            scrollController: _scrollController,
-          ),
-        ),
-        body: NestedScrollView(
-          controller: _scrollController,
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            SliverToBoxAdapter(
-              child: Container(
-                height: heroHeight,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(widget.config.assets.endorsementsPage.heroImagePath),
-                    fit: BoxFit.cover,
-                  ),
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: CommonAppBar(
+        config: config,
+        scrollController: scrollController,
+      ),
+      body: CustomScrollView(
+        controller: scrollController,
+        slivers: <Widget>[
+          SliverToBoxAdapter(
+            child: Container(
+              height: heroHeight,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(config.assets.endorsementsPage.heroImagePath),
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
-          ];
-        },
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate([
               Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: Center(
@@ -81,28 +52,28 @@ class EndorsementsPageState extends State<EndorsementsPage> {
                       children: <Widget>[
                         const SizedBox(height: 40),
                         Text(
-                          widget.config.content.endorsementsPage.title,
+                          config.content.endorsementsPage.title,
                           style: Theme.of(context).textTheme.headlineMedium,
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 40),
                         // High Profile Endorsements
-                        for (int i = 0; i < widget.config.content.endorsementsPage.endorsements.length; i++)
+                        for (int i = 0; i < config.content.endorsementsPage.endorsements.length; i++)
                           HighProfileEndorsementCard(
-                            name: widget.config.content.endorsementsPage.endorsements[i].name,
-                            quote: widget.config.content.endorsementsPage.endorsements[i].quote,
-                            imagePath: widget.config.content.endorsementsPage.endorsements[i].imagePath,
-                            imageLeft: widget.config.content.endorsementsPage.endorsements[i].imageLeft,
-                            backgroundColor: widget.config.content.endorsementsPage.endorsements[i].backgroundColor != null
-                                ? Color(int.parse(widget.config.content.endorsementsPage.endorsements[i].backgroundColor!.substring(1, 7), radix: 16) + 0xFF000000)
+                            name: config.content.endorsementsPage.endorsements[i].name,
+                            quote: config.content.endorsementsPage.endorsements[i].quote,
+                            imagePath: config.content.endorsementsPage.endorsements[i].imagePath,
+                            imageLeft: config.content.endorsementsPage.endorsements[i].imageLeft,
+                            backgroundColor: config.content.endorsementsPage.endorsements[i].backgroundColor != null
+                                ? Color(int.parse(config.content.endorsementsPage.endorsements[i].backgroundColor!.substring(1, 7), radix: 16) + 0xFF000000)
                                 : null,
-                            textColor: widget.config.content.endorsementsPage.endorsements[i].textColor != null
-                                ? Color(int.parse(widget.config.content.endorsementsPage.endorsements[i].textColor!.substring(1, 7), radix: 16) + 0xFF000000)
+                            textColor: config.content.endorsementsPage.endorsements[i].textColor != null
+                                ? Color(int.parse(config.content.endorsementsPage.endorsements[i].textColor!.substring(1, 7), radix: 16) + 0xFF000000)
                                 : null,
                           ),
                         const SizedBox(height: 40),
                         // Community Endorsements
-                        for (var endorsement in widget.config.content.endorsementsPage.communityEndorsements)
+                        for (var endorsement in config.content.endorsementsPage.communityEndorsements)
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: Text(
@@ -116,14 +87,13 @@ class EndorsementsPageState extends State<EndorsementsPage> {
                   ),
                 ),
               ),
-              DonateSection(config: widget.config),
-              SignupFormWidget(config: widget.config),
-              Footer(config: widget.config),
-            ],
+              DonateSection(config: config),
+              SignupFormWidget(config: config),
+              Footer(config: config),
+            ]),
           ),
-        ),
-        ),
-      );
-    });
+        ],
+      ),
+    );
   }
 }

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:universal_campaign_frontend/models/campaign_config.dart';
 import 'package:universal_campaign_frontend/enums/donation_step.dart';
+import 'package:universal_campaign_frontend/services/error_service.dart';
 
 class DonationWidget extends StatefulWidget {
   final CampaignConfig config;
@@ -115,11 +116,9 @@ class _DonationWidgetState extends State<DonationWidget> {
           );
         }
       }
-    } catch (e) {
+    } catch (e, s) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error creating payment intent: $e')),
-        );
+        ErrorService.handleError(context, e, s);
       }
     }
   }
@@ -135,23 +134,9 @@ class _DonationWidgetState extends State<DonationWidget> {
       setState(() {
         _step = DonationStep.contact;
       });
-    } on Exception catch (e) {
-      if (e is StripeException) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Error from Stripe: ${e.error.localizedMessage}'),
-            ),
-          );
-        }
-      } else {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Unforeseen error: $e'),
-            ),
-          );
-        }
+    } on Exception catch (e, s) {
+      if (mounted) {
+        ErrorService.handleError(context, e, s);
       }
     }
   }
@@ -195,11 +180,9 @@ class _DonationWidgetState extends State<DonationWidget> {
           );
         }
       }
-    } catch (e) {
+    } catch (e, s) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error submitting details: $e')),
-        );
+        ErrorService.handleError(context, e, s);
       }
     }
   }
@@ -242,7 +225,7 @@ class _DonationWidgetState extends State<DonationWidget> {
           alignment: WrapAlignment.center,
           children: [25, 50, 100, 250, 500, 1000]
               .map((amount) => ChoiceChip(
-                    label: Text('\$amount'),
+                    label: const Text('\$amount'),
                     selected: _selectedAmount == amount,
                     onSelected: (selected) {
                       setState(() {
@@ -371,7 +354,7 @@ class _DonationWidgetState extends State<DonationWidget> {
               if (value!.isEmpty) {
                 return 'Please enter your email';
               }
-              if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)) {
+              if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\\.[a-zA-Z]+").hasMatch(value)) {
                 return 'Please enter a valid email address';
               }
               return null;
