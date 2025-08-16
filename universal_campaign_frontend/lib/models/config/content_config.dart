@@ -52,22 +52,22 @@ class ContentConfig {
 
   factory ContentConfig.fromJson(Map<String, dynamic> json) {
     return ContentConfig(
-      siteTitle: json['siteTitle'],
-      faviconImagePath: json['faviconImagePath'],
-      homePage: HomePageContent.fromJson(json['homePage']),
-      aboutPage: AboutPageContent.fromJson(json['aboutPage']),
-      comingSoonPage: ComingSoonPageContent.fromJson(json['comingSoonPage']),
-      donatePage: DonatePageContent.fromJson(json['donatePage']),
-      endorsementsPage: EndorsementsPageContent.fromJson(json['endorsementsPage']),
-      issuesPage: IssuesPageContent.fromJson(json['issuesPage']),
-      privacyPolicyPage: PrivacyPolicyPageContent.fromJson(json['privacyPolicyPage']),
-      commonAppBar: CommonAppBarContent.fromJson(json['commonAppBar']),
-      donateSection: DonateSectionContent.fromJson(json['donateSection']),
-      footer: FooterContent.fromJson(json['footer']),
-      errorPage: ErrorPageContent.fromJson(json['errorPage']),
-      widgets: WidgetsContent.fromJson(json['widgets']),
-      donationWidget: DonationWidgetContent.fromJson(json['donationWidget']),
-      signupForm: SignupFormContent.fromJson(json['signupForm']),
+      siteTitle: json['siteTitle'] ?? '',
+      faviconImagePath: json['faviconImagePath'] ?? '',
+      homePage: HomePageContent.fromJson(json['homePage'] ?? {}),
+      aboutPage: AboutPageContent.fromJson(json['aboutPage'] ?? {}),
+      comingSoonPage: ComingSoonPageContent.fromJson(json['comingSoonPage'] ?? {}),
+      donatePage: DonatePageContent.fromJson(json['donatePage'] ?? {}),
+      endorsementsPage: EndorsementsPageContent.fromJson(json['endorsementsPage'] ?? {}),
+      issuesPage: IssuesPageContent.fromJson(json['issuesPage'] ?? {}),
+      privacyPolicyPage: PrivacyPolicyPageContent.fromJson(json['privacyPolicyPage'] ?? {}),
+      commonAppBar: CommonAppBarContent.fromJson(json['commonAppBar'] ?? {}),
+      donateSection: DonateSectionContent.fromJson(json['donateSection'] ?? {}),
+      footer: FooterContent.fromJson(json['footer'] ?? {}),
+      errorPage: ErrorPageContent.fromJson(json['errorPage'] ?? {}),
+      widgets: WidgetsContent.fromJson(json['widgets'] ?? {}),
+      donationWidget: DonationWidgetContent.fromJson(json['donationWidget'] ?? {}),
+      signupForm: SignupFormContent.fromJson(json['signupForm'] ?? {}),
     );
   }
 }

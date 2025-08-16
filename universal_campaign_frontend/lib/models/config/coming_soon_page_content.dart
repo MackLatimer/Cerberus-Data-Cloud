@@ -9,8 +9,8 @@ class ComingSoonPageContent {
 
   factory ComingSoonPageContent.fromJson(Map<String, dynamic> json) {
     return ComingSoonPageContent(
-      title: json['title'],
-      message: json['message'],
+      title: json['title'] ?? '',
+      message: json['message'] ?? '',
     );
   }
 }

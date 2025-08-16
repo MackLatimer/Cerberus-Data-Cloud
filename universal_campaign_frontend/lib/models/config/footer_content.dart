@@ -7,7 +7,7 @@ class FooterContent {
 
   factory FooterContent.fromJson(Map<String, dynamic> json) {
     return FooterContent(
-      paidForText: json['paidForText'],
+      paidForText: json['paidForText'] ?? '',
     );
   }
 }

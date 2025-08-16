@@ -7,7 +7,7 @@ class IssuesPageAssets {
 
   factory IssuesPageAssets.fromJson(Map<String, dynamic> json) {
     return IssuesPageAssets(
-      heroImagePath: json['heroImagePath'],
+      heroImagePath: json['heroImagePath'] ?? '',
     );
   }
 }

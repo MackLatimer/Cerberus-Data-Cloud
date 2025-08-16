@@ -27,15 +27,15 @@ class CampaignConfig {
 
   factory CampaignConfig.fromJson(Map<String, dynamic> json) {
     return CampaignConfig(
-      campaignId: json['campaignId'],
+      campaignId: json['campaignId'] ?? '',
       defaultCampaign: json['defaultCampaign'] ?? false,
-      stripeSecretKeySecretManagerName: json['stripeSecretKeySecretManagerName'],
-      stripeWebhookKeySecretManagerName: json['stripeWebhookKeySecretManagerName'],
-      apiBaseUrl: json['apiBaseUrl'],
-      theme: ThemeConfig.fromJson(json['theme']),
-      content: ContentConfig.fromJson(json['content']),
-      assets: AssetsConfig.fromJson(json['assets']),
-      stripePublicKey: json['stripePublicKey'],
+      stripeSecretKeySecretManagerName: json['stripeSecretKeySecretManagerName'] ?? '',
+      stripeWebhookKeySecretManagerName: json['stripeWebhookKeySecretManagerName'] ?? '',
+      apiBaseUrl: json['apiBaseUrl'] ?? '',
+      theme: ThemeConfig.fromJson(json['theme'] ?? {}),
+      content: ContentConfig.fromJson(json['content'] ?? {}),
+      assets: AssetsConfig.fromJson(json['assets'] ?? {}),
+      stripePublicKey: json['stripePublicKey'] ?? '',
     );
   }
 }

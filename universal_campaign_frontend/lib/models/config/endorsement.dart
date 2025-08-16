@@ -17,10 +17,10 @@ class Endorsement {
 
   factory Endorsement.fromJson(Map<String, dynamic> json) {
     return Endorsement(
-      name: json['name'],
-      quote: json['quote'],
-      imagePath: json['imagePath'],
-      imageLeft: json['imageLeft'],
+      name: json['name'] ?? '',
+      quote: json['quote'] ?? '',
+      imagePath: json['imagePath'] ?? '',
+      imageLeft: json['imageLeft'] ?? false,
       backgroundColor: json['backgroundColor'],
       textColor: json['textColor'],
     );

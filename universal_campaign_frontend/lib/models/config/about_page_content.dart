@@ -17,12 +17,12 @@ class AboutPageContent {
 
   factory AboutPageContent.fromJson(Map<String, dynamic> json) {
     return AboutPageContent(
-      appBarTitle: json['appBarTitle'],
-      heroImagePath: json['heroImagePath'],
-      bioTitle: json['bioTitle'],
-      bioParagraph1: json['bioParagraph1'],
-      bioParagraph2: json['bioParagraph2'],
-      bioParagraph3: json['bioParagraph3'],
+      appBarTitle: json['appBarTitle'] ?? '',
+      heroImagePath: json['heroImagePath'] ?? '',
+      bioTitle: json['bioTitle'] ?? '',
+      bioParagraph1: json['bioParagraph1'] ?? '',
+      bioParagraph2: json['bioParagraph2'] ?? '',
+      bioParagraph3: json['bioParagraph3'] ?? '',
     );
   }
 }

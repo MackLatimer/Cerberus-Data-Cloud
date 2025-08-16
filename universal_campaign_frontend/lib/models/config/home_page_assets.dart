@@ -9,8 +9,8 @@ class HomePageAssets {
 
   factory HomePageAssets.fromJson(Map<String, dynamic> json) {
     return HomePageAssets(
-      logoPath: json['logoPath'],
-      heroImagePath: json['heroImagePath'],
+      logoPath: json['logoPath'] ?? '',
+      heroImagePath: json['heroImagePath'] ?? '',
     );
   }
 }

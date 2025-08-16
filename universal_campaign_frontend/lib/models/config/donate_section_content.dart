@@ -9,8 +9,8 @@ class DonateSectionContent {
 
   factory DonateSectionContent.fromJson(Map<String, dynamic> json) {
     return DonateSectionContent(
-      title: json['title'],
-      buttonText: json['buttonText'],
+      title: json['title'] ?? '',
+      buttonText: json['buttonText'] ?? '',
     );
   }
 }

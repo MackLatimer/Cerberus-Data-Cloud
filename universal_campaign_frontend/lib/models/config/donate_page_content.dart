@@ -15,11 +15,11 @@ class DonatePageContent {
 
   factory DonatePageContent.fromJson(Map<String, dynamic> json) {
     return DonatePageContent(
-      appBarTitle: json['appBarTitle'],
-      heroImagePath: json['heroImagePath'], // Added
-      title: json['title'],
-      mailDonationText: json['mailDonationText'],
-      thankYouText: json['thankYouText'],
+      appBarTitle: json['appBarTitle'] ?? '',
+      heroImagePath: json['heroImagePath'] ?? '', // Added
+      title: json['title'] ?? '',
+      mailDonationText: json['mailDonationText'] ?? '',
+      thankYouText: json['thankYouText'] ?? '',
     );
   }
 }

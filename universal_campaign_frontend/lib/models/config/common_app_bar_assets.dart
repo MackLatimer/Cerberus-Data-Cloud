@@ -11,9 +11,9 @@ class CommonAppBarAssets {
 
   factory CommonAppBarAssets.fromJson(Map<String, dynamic> json) {
     return CommonAppBarAssets(
-      logoPath: json['logoPath'],
-      logoWidth: (json['logoWidth'] as num).toDouble(),
-      logoHeight: (json['logoHeight'] as num).toDouble(),
+      logoPath: json['logoPath'] ?? '',
+      logoWidth: (json['logoWidth'] as num? ?? 0.0).toDouble(),
+      logoHeight: (json['logoHeight'] as num? ?? 0.0).toDouble(),
     );
   }
 }

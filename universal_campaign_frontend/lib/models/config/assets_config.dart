@@ -26,13 +26,13 @@ class AssetsConfig {
 
   factory AssetsConfig.fromJson(Map<String, dynamic> json) {
     return AssetsConfig(
-      faviconImagePath: json['faviconImagePath'],
-      homePage: HomePageAssets.fromJson(json['homePage']),
-      aboutPage: AboutPageAssets.fromJson(json['aboutPage']),
-      donatePage: DonatePageAssets.fromJson(json['donatePage']),
-      endorsementsPage: EndorsementsPageAssets.fromJson(json['endorsementsPage']),
-      issuesPage: IssuesPageAssets.fromJson(json['issuesPage']),
-      commonAppBar: CommonAppBarAssets.fromJson(json['commonAppBar']),
+      faviconImagePath: json['faviconImagePath'] ?? '',
+      homePage: HomePageAssets.fromJson(json['homePage'] ?? {}),
+      aboutPage: AboutPageAssets.fromJson(json['aboutPage'] ?? {}),
+      donatePage: DonatePageAssets.fromJson(json['donatePage'] ?? {}),
+      endorsementsPage: EndorsementsPageAssets.fromJson(json['endorsementsPage'] ?? {}),
+      issuesPage: IssuesPageAssets.fromJson(json['issuesPage'] ?? {}),
+      commonAppBar: CommonAppBarAssets.fromJson(json['commonAppBar'] ?? {}),
     );
   }
 }

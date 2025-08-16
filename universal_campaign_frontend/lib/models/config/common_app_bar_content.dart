@@ -15,10 +15,10 @@ class CommonAppBarContent {
 
   factory CommonAppBarContent.fromJson(Map<String, dynamic> json) {
     return CommonAppBarContent(
-      logoPath: json['logoPath'],
-      logoWidth: (json['logoWidth'] as num).toDouble(), // Added
-      logoHeight: (json['logoHeight'] as num).toDouble(), // Added
-      navItems: (json['navItems'] as List)
+      logoPath: json['logoPath'] ?? '',
+      logoWidth: (json['logoWidth'] as num? ?? 0.0).toDouble(), // Added
+      logoHeight: (json['logoHeight'] as num? ?? 0.0).toDouble(), // Added
+      navItems: (json['navItems'] as List? ?? [])
           .map((i) => NavItem.fromJson(i))
           .toList(),
     );

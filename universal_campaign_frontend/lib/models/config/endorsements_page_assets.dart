@@ -7,7 +7,7 @@ class EndorsementsPageAssets {
 
   factory EndorsementsPageAssets.fromJson(Map<String, dynamic> json) {
     return EndorsementsPageAssets(
-      heroImagePath: json['heroImagePath'],
+      heroImagePath: json['heroImagePath'] ?? '',
     );
   }
 }

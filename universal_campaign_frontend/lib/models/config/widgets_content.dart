@@ -9,7 +9,7 @@ class WidgetsContent {
 
   factory WidgetsContent.fromJson(Map<String, dynamic> json) {
     return WidgetsContent(
-      signupForm: SignupFormContent.fromJson(json['signupForm']),
+      signupForm: SignupFormContent.fromJson(json['signupForm'] ?? {}),
     );
   }
 }

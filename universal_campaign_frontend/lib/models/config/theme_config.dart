@@ -27,16 +27,16 @@ class ThemeConfig {
 
   factory ThemeConfig.fromJson(Map<String, dynamic> json) {
     return ThemeConfig(
-      primaryColor: json['primaryColor'],
-      secondaryColor: json['secondaryColor'],
-      backgroundColor: json['backgroundColor'],
-      textColor: json['textColor'],
-      fontFamily: json['fontFamily'],
-      secondaryFontFamily: json['secondaryFontFamily'],
-      issuesSectionTheme: HomePageSectionTheme.fromJson(json['issuesSectionTheme']),
-      aboutMeSectionTheme: HomePageSectionTheme.fromJson(json['aboutMeSectionTheme']),
-      endorsementsSectionTheme: HomePageSectionTheme.fromJson(json['endorsementsSectionTheme']),
-      donateSectionTheme: HomePageSectionTheme.fromJson(json['donateSectionTheme']),
+      primaryColor: json['primaryColor'] ?? '',
+      secondaryColor: json['secondaryColor'] ?? '',
+      backgroundColor: json['backgroundColor'] ?? '',
+      textColor: json['textColor'] ?? '',
+      fontFamily: json['fontFamily'] ?? '',
+      secondaryFontFamily: json['secondaryFontFamily'] ?? '',
+      issuesSectionTheme: HomePageSectionTheme.fromJson(json['issuesSectionTheme'] ?? {}),
+      aboutMeSectionTheme: HomePageSectionTheme.fromJson(json['aboutMeSectionTheme'] ?? {}),
+      endorsementsSectionTheme: HomePageSectionTheme.fromJson(json['endorsementsSectionTheme'] ?? {}),
+      donateSectionTheme: HomePageSectionTheme.fromJson(json['donateSectionTheme'] ?? {}),
     );
   }
 }

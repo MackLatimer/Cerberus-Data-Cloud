@@ -9,8 +9,8 @@ class NavItem {
 
   factory NavItem.fromJson(Map<String, dynamic> json) {
     return NavItem(
-      label: json['label'],
-      path: json['path'],
+      label: json['label'] ?? '',
+      path: json['path'] ?? '',
     );
   }
 }

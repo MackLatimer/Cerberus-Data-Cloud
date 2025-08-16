@@ -21,14 +21,14 @@ class ErrorMessagesContent {
 
   factory ErrorMessagesContent.fromJson(Map<String, dynamic> json) {
     return ErrorMessagesContent(
-      submitFormError: json['submitFormError'],
-      submitFormGenericError: json['submitFormGenericError'],
-      createPaymentIntentFailed: json['createPaymentIntentFailed'],
-      createPaymentIntentError: json['createPaymentIntentError'],
-      stripeError: json['stripeError'],
-      unforeseenError: json['unforeseenError'],
-      submitDetailsFailed: json['submitDetailsFailed'],
-      submitDetailsError: json['submitDetailsError'],
+      submitFormError: json['submitFormError'] ?? '',
+      submitFormGenericError: json['submitFormGenericError'] ?? '',
+      createPaymentIntentFailed: json['createPaymentIntentFailed'] ?? '',
+      createPaymentIntentError: json['createPaymentIntentError'] ?? '',
+      stripeError: json['stripeError'] ?? '',
+      unforeseenError: json['unforeseenError'] ?? '',
+      submitDetailsFailed: json['submitDetailsFailed'] ?? '',
+      submitDetailsError: json['submitDetailsError'] ?? '',
     );
   }
 }

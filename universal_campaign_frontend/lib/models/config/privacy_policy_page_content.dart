@@ -11,9 +11,9 @@ class PrivacyPolicyPageContent {
 
   factory PrivacyPolicyPageContent.fromJson(Map<String, dynamic> json) {
     return PrivacyPolicyPageContent(
-      appBarTitle: json['appBarTitle'],
-      title: json['title'],
-      content: json['content'],
+      appBarTitle: json['appBarTitle'] ?? '',
+      title: json['title'] ?? '',
+      content: json['content'] ?? '',
     );
   }
 }

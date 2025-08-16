@@ -13,10 +13,10 @@ class HomePageSectionTheme {
 
   factory HomePageSectionTheme.fromJson(Map<String, dynamic> json) {
     return HomePageSectionTheme(
-      backgroundColor: json['backgroundColor'],
-      textColor: json['textColor'],
-      buttonColor: json['buttonColor'],
-      buttonTextColor: json['buttonTextColor'],
+      backgroundColor: json['backgroundColor'] ?? '',
+      textColor: json['textColor'] ?? '',
+      buttonColor: json['buttonColor'] ?? '',
+      buttonTextColor: json['buttonTextColor'] ?? '',
     );
   }
 }

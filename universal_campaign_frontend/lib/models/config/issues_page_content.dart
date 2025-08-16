@@ -15,10 +15,10 @@ class IssuesPageContent {
 
   factory IssuesPageContent.fromJson(Map<String, dynamic> json) {
     return IssuesPageContent(
-      appBarTitle: json['appBarTitle'],
-      heroImagePath: json['heroImagePath'], // Added
-      title: json['title'],
-      issueSections: (json['issueSections'] as List)
+      appBarTitle: json['appBarTitle'] ?? '',
+      heroImagePath: json['heroImagePath'] ?? '', // Added
+      title: json['title'] ?? '',
+      issueSections: (json['issueSections'] as List? ?? [])
           .map((i) => IssueSectionContent.fromJson(i))
           .toList(),
     );

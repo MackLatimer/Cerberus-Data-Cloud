@@ -9,8 +9,8 @@ class ErrorPageContent {
 
   factory ErrorPageContent.fromJson(Map<String, dynamic> json) {
     return ErrorPageContent(
-      appBarTitle: json['appBarTitle'],
-      errorMessagePrefix: json['errorMessagePrefix'],
+      appBarTitle: json['appBarTitle'] ?? '',
+      errorMessagePrefix: json['errorMessagePrefix'] ?? '',
     );
   }
 }

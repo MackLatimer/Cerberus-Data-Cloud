@@ -7,7 +7,7 @@ class DonatePageAssets {
 
   factory DonatePageAssets.fromJson(Map<String, dynamic> json) {
     return DonatePageAssets(
-      heroImagePath: json['heroImagePath'],
+      heroImagePath: json['heroImagePath'] ?? '',
     );
   }
 }

@@ -23,18 +23,18 @@ class EndorsementsPageContent {
 
   factory EndorsementsPageContent.fromJson(Map<String, dynamic> json) {
     return EndorsementsPageContent(
-      appBarTitle: json['appBarTitle'],
-      heroImagePath: json['heroImagePath'],
-      title: json['title'],
-      endorsements: (json['endorsements'] as List)
+      appBarTitle: json['appBarTitle'] ?? '',
+      heroImagePath: json['heroImagePath'] ?? '',
+      title: json['title'] ?? '',
+      endorsements: (json['endorsements'] as List? ?? [])
           .map((i) => Endorsement.fromJson(i))
           .toList(),
-      communityEndorsements: (json['communityEndorsements'] as List)
+      communityEndorsements: (json['communityEndorsements'] as List? ?? [])
           .map((i) => i.toString())
           .toList(),
-      endorsementTitle1: json['endorsementTitle1'],
-      endorsementTitle2: json['endorsementTitle2'],
-      endorsementBodyParagraph: json['endorsementBodyParagraph'],
+      endorsementTitle1: json['endorsementTitle1'] ?? '',
+      endorsementTitle2: json['endorsementTitle2'] ?? '',
+      endorsementBodyParagraph: json['endorsementBodyParagraph'] ?? '',
     );
   }
 }

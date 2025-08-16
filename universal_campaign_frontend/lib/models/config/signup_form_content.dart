@@ -21,14 +21,14 @@ class SignupFormContent {
 
   factory SignupFormContent.fromJson(Map<String, dynamic> json) {
     return SignupFormContent(
-      title: json['title'],
-      endorseText: json['endorseText'],
-      getInvolvedText: json['getInvolvedText'],
-      automatedMessagingText: json['automatedMessagingText'],
-      emailOptInText: json['emailOptInText'],
-      legalText: json['legalText'],
-      submitButtonText: json['submitButtonText'],
-      privacyPolicyText: json['privacyPolicyText'],
+      title: json['title'] ?? '',
+      endorseText: json['endorseText'] ?? '',
+      getInvolvedText: json['getInvolvedText'] ?? '',
+      automatedMessagingText: json['automatedMessagingText'] ?? '',
+      emailOptInText: json['emailOptInText'] ?? '',
+      legalText: json['legalText'] ?? '',
+      submitButtonText: json['submitButtonText'] ?? '',
+      privacyPolicyText: json['privacyPolicyText'] ?? '',
     );
   }
 }

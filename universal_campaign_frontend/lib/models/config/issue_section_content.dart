@@ -15,11 +15,11 @@ class IssueSectionContent {
 
   factory IssueSectionContent.fromJson(Map<String, dynamic> json) {
     return IssueSectionContent(
-      title: json['title'],
-      description: json['description'],
+      title: json['title'] ?? '',
+      description: json['description'] ?? '',
       backgroundColor: json['backgroundColor'],
       textColor: json['textColor'],
-      imagePath: json['imagePath'],
+      imagePath: json['imagePath'] ?? '',
     );
   }
 }

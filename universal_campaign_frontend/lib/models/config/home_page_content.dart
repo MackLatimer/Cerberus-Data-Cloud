@@ -37,22 +37,22 @@ class HomePageContent {
 
   factory HomePageContent.fromJson(Map<String, dynamic> json) {
     return HomePageContent(
-      heroTitle: json['heroTitle'],
-      callToActionText: json['callToActionText'],
-      heroImagePath: json['heroImagePath'],
-      homeTitleMessage: json['homeTitleMessage'],
-      issuesImage: json['issuesImage'],
-      issuesMessage: json['issuesMessage'],
-      issuesButton: json['issuesButton'],
-      aboutMeImage: json['aboutMeImage'],
-      aboutMeMessage: json['aboutMeMessage'],
-      aboutMeButton: json['aboutMeButton'],
-      endorsementsImage: json['endorsementsImage'],
-      endorsementsMessage: json['endorsementsMessage'],
-      endorsementsButton: json['endorsementsButton'],
-      donateImage: json['donateImage'],
-      donateMessage: json['donateMessage'],
-      donateButton: json['donateButton'],
+      heroTitle: json['heroTitle'] ?? '',
+      callToActionText: json['callToActionText'] ?? '',
+      heroImagePath: json['heroImagePath'] ?? '',
+      homeTitleMessage: json['homeTitleMessage'] ?? '',
+      issuesImage: json['issuesImage'] ?? '',
+      issuesMessage: json['issuesMessage'] ?? '',
+      issuesButton: json['issuesButton'] ?? '',
+      aboutMeImage: json['aboutMeImage'] ?? '',
+      aboutMeMessage: json['aboutMeMessage'] ?? '',
+      aboutMeButton: json['aboutMeButton'] ?? '',
+      endorsementsImage: json['endorsementsImage'] ?? '',
+      endorsementsMessage: json['endorsementsMessage'] ?? '',
+      endorsementsButton: json['endorsementsButton'] ?? '',
+      donateImage: json['donateImage'] ?? '',
+      donateMessage: json['donateMessage'] ?? '',
+      donateButton: json['donateButton'] ?? '',
     );
   }
 }
