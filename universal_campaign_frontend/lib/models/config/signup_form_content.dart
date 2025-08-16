@@ -5,7 +5,7 @@ class SignupFormContent {
   final String automatedMessagingText;
   final String emailOptInText;
   final String legalText;
-  final String submitButtonText;
+  final String buttonText;
   final String privacyPolicyText;
 
   SignupFormContent({
@@ -15,7 +15,7 @@ class SignupFormContent {
     required this.automatedMessagingText,
     required this.emailOptInText,
     required this.legalText,
-    required this.submitButtonText,
+    required this.buttonText,
     required this.privacyPolicyText,
   });
 
@@ -27,7 +27,7 @@ class SignupFormContent {
       automatedMessagingText: json['automatedMessagingText'] ?? '',
       emailOptInText: json['emailOptInText'] ?? '',
       legalText: json['legalText'] ?? '',
-      submitButtonText: json['submitButtonText'] ?? '',
+      buttonText: json['buttonText'] ?? '',
       privacyPolicyText: json['privacyPolicyText'] ?? '',
     );
   }

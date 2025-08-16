@@ -139,9 +139,15 @@
     "widgets": {
       "signupForm": {
         "endorseText": "I endorse Curtis Emmons and allow him to publish my endorsement",
+        "getInvolvedText": "I want to get involved with the campaign",
         "automatedMessagingText": "I agree to receive automated messaging from Elect Emmons",
-        "emailOptInText": "I agree to receive emails from Elect Emmons"
+        "emailOptInText": "I agree to receive emails from Elect Emmons",
+        "buttonText": "Submit"
       }
+    },
+    "donateSection": {
+      "callToActionText": "Make a Difference!",
+      "buttonText": "Donate Now!"
     },
     "footer": {
       "paidForText": "Paid for by Elect Emmons"

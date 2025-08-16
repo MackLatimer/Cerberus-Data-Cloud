@@ -16,7 +16,7 @@ class DonateSection extends StatelessWidget {
 
     final children = [
       Text(
-        config.content.donateSection.title,
+        config.content.donateSection.callToActionText,
         style: textTheme.headlineMedium?.copyWith(
           fontWeight: FontWeight.bold,
           color: Colors.white,

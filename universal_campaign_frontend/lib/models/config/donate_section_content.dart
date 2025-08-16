@@ -1,15 +1,15 @@
 class DonateSectionContent {
-  final String title;
+  final String callToActionText;
   final String buttonText;
 
   DonateSectionContent({
-    required this.title,
+    required this.callToActionText,
     required this.buttonText,
   });
 
   factory DonateSectionContent.fromJson(Map<String, dynamic> json) {
     return DonateSectionContent(
-      title: json['title'] ?? '',
+      callToActionText: json['callToActionText'] ?? '',
       buttonText: json['buttonText'] ?? '',
     );
   }

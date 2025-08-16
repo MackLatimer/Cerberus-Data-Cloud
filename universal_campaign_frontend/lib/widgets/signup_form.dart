@@ -166,7 +166,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                 ),
                 const SizedBox(height: 16),
                 CheckboxListTile(
-                  title: Text(widget.config.content.signupForm.endorseText, style: textTheme.bodyMedium),
+                  title: Text(widget.config.content.widgets.signupForm.endorseText, style: textTheme.bodyMedium),
                   value: _endorseChecked,
                   onChanged: (bool? value) {
                     setState(() {
@@ -177,7 +177,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                   contentPadding: EdgeInsets.zero,
                 ),
                 CheckboxListTile(
-                  title: Text(widget.config.content.signupForm.getInvolvedText, style: textTheme.bodyMedium),
+                  title: Text(widget.config.content.widgets.signupForm.getInvolvedText, style: textTheme.bodyMedium),
                   value: _getInvolvedChecked,
                   onChanged: (bool? value) {
                     setState(() {
@@ -188,7 +188,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                   contentPadding: EdgeInsets.zero,
                 ),
                 CheckboxListTile(
-                  title: Text(widget.config.content.signupForm.automatedMessagingText, style: textTheme.bodyMedium),
+                  title: Text(widget.config.content.widgets.signupForm.automatedMessagingText, style: textTheme.bodyMedium),
                   value: _agreedToMessaging,
                   onChanged: (bool? value) {
                     setState(() {
@@ -199,7 +199,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                   contentPadding: EdgeInsets.zero,
                 ),
                 CheckboxListTile(
-                  title: Text(widget.config.content.signupForm.emailOptInText, style: textTheme.bodyMedium),
+                  title: Text(widget.config.content.widgets.signupForm.emailOptInText, style: textTheme.bodyMedium),
                   value: _agreedToEmails,
                   onChanged: (bool? value) {
                     setState(() {
@@ -220,7 +220,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                       ? const CircularProgressIndicator()
                       : ElevatedButton(
                           onPressed: _submitForm,
-                          child: Text(widget.config.content.signupForm.submitButtonText),
+                          child: Text(widget.config.content.widgets.signupForm.buttonText),
                         ),
                 ),
                 const SizedBox(height: 16),

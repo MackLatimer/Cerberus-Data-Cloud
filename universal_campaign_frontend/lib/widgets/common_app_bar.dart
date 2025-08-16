@@ -183,9 +183,9 @@ class CommonAppBarState extends State<CommonAppBar> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Image.asset(
-                          widget.config.assets.commonAppBar.logoPath.isNotEmpty ? widget.config.assets.commonAppBar.logoPath : 'assets/images/error_placeholder.png',
-                          width: widget.config.assets.commonAppBar.logoWidth,
-                          height: widget.config.assets.commonAppBar.logoHeight,
+                          widget.config.content.commonAppBar.logoPath.isNotEmpty ? widget.config.content.commonAppBar.logoPath : 'assets/images/error_placeholder.png',
+                          width: widget.config.content.commonAppBar.logoWidth,
+                          height: widget.config.content.commonAppBar.logoHeight,
                         ),
                         const SizedBox(height: 16.0),
                         if (isCompact)
@@ -198,9 +198,9 @@ class CommonAppBarState extends State<CommonAppBar> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Image.asset(
-                          widget.config.assets.commonAppBar.logoPath.isNotEmpty ? widget.config.assets.commonAppBar.logoPath : 'assets/images/error_placeholder.png',
-                          width: widget.config.assets.commonAppBar.logoWidth,
-                          height: widget.config.assets.commonAppBar.logoHeight,
+                          widget.config.content.commonAppBar.logoPath.isNotEmpty ? widget.config.content.commonAppBar.logoPath : 'assets/images/error_placeholder.png',
+                          width: widget.config.content.commonAppBar.logoWidth,
+                          height: widget.config.content.commonAppBar.logoHeight,
                         ),
                         navigation,
                       ],
