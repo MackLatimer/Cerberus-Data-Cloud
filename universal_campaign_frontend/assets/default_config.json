@@ -76,9 +76,9 @@
         },
         {
           "title": "Community Safety & Emergency Services",
-          "description": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Ensuring our neighborhoods are safe and our first responders are well-equipped is a top priority.",
-          "backgroundColor": "#FFFFFF",
-          "textColor": "#000000",
+          "description": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat ""a pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Ensuring our neighborhoods are safe and our first responders are well-equipped is a top priority.",
+          "backgroundColor": "",
+          "textColor": "",
           "imagePath": "assets/images/Emmons_Issues_Issue2.png"
         },
         {
@@ -91,8 +91,8 @@
         {
           "title": "Fiscal Responsibility & Transparent Governance",
           "description": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Curtis is committed to responsible spending of taxpayer dollars and ensuring all county operations are transparent and accountable to the public.",
-          "backgroundColor": "#FFFFFF",
-          "textColor": "#000000",
+          "backgroundColor": "",
+          "textColor": "",
           "imagePath": "assets/images/Emmons_Issues_Issue4.png"
         }
       ]
