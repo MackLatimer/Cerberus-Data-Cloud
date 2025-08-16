@@ -60,7 +60,7 @@ class HomePageState extends State<HomePage> {
                 height: heroHeight,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage(widget.config.content.homePage.heroImagePath),
+                    image: AssetImage(widget.config.content.homePage.heroImagePath ?? 'assets/images/placeholder.png'),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -74,7 +74,7 @@ class HomePageState extends State<HomePage> {
             children: <Widget>[
               const SizedBox(height: 40),
               Text(
-                widget.config.content.homePage.heroTitle,
+                widget.config.content.homePage.heroTitle ?? 'Placeholder Title',
                 style: Theme.of(context).textTheme.headlineMedium,
                 textAlign: TextAlign.center,
               ),
@@ -82,7 +82,7 @@ class HomePageState extends State<HomePage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: Text(
-                  widget.config.content.homePage.callToActionText,
+                  widget.config.content.homePage.callToActionText ?? 'Placeholder call to action.',
                   style: Theme.of(context).textTheme.bodyLarge,
                   textAlign: TextAlign.center,
                 ),
@@ -90,8 +90,8 @@ class HomePageState extends State<HomePage> {
               const SizedBox(height: 40),
               HomePageSection(
                 title: 'Issues',
-                summary: widget.config.content.homePage.issuesMessage,
-                imagePath: widget.config.content.homePage.issuesImage,
+                summary: widget.config.content.homePage.issuesMessage ?? 'Placeholder summary.',
+                imagePath: widget.config.content.homePage.issuesImage ?? 'assets/images/placeholder.png',
                 routePath: '/issues',
                 imageBackgroundColor: Colors.blueGrey,
                 imageLeft: true,
@@ -102,16 +102,16 @@ class HomePageState extends State<HomePage> {
               ),
               HomePageSection(
                 title: 'About Me',
-                summary: widget.config.content.homePage.aboutMeMessage,
-                imagePath: widget.config.content.homePage.aboutMeImage,
+                summary: widget.config.content.homePage.aboutMeMessage ?? 'Placeholder summary.',
+                imagePath: widget.config.content.homePage.aboutMeImage ?? 'assets/images/placeholder.png',
                 routePath: '/about',
                 imageBackgroundColor: Colors.teal,
                 imageLeft: false,
               ),
               HomePageSection(
                 title: 'Endorsements',
-                summary: widget.config.content.homePage.endorsementsMessage,
-                imagePath: widget.config.content.homePage.endorsementsImage,
+                summary: widget.config.content.homePage.endorsementsMessage ?? 'Placeholder summary.',
+                imagePath: widget.config.content.homePage.endorsementsImage ?? 'assets/images/placeholder.png',
                 routePath: '/endorsements',
                 imageBackgroundColor: Colors.amber,
                 imageLeft: true,
@@ -122,8 +122,8 @@ class HomePageState extends State<HomePage> {
               ),
               HomePageSection(
                 title: 'Donate',
-                summary: widget.config.content.homePage.donateMessage,
-                imagePath: widget.config.content.homePage.donateImage,
+                summary: widget.config.content.homePage.donateMessage ?? 'Placeholder summary.',
+                imagePath: widget.config.content.homePage.donateImage ?? 'assets/images/placeholder.png',
                 routePath: '/donate',
                 imageBackgroundColor: Colors.green,
                 imageLeft: false,
