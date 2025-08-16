@@ -179,7 +179,7 @@ class CommonAppBarState extends State<CommonAppBar> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0),
               child: isCompact || isMedium
-                  ? Column(
+                  ? (Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Image.asset(
@@ -193,7 +193,7 @@ class CommonAppBarState extends State<CommonAppBar> {
                         else
                           navigation,
                       ],
-                    )
+                    ))
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
