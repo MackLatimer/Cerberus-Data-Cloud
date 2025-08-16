@@ -1,0 +1,18 @@
+
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    - avoid_print
+    - prefer_single_quotes
+    - prefer_const_constructors
+    - prefer_const_declarations
+    - prefer_final_fields
+    - camel_case_types
+    - library_private_types_in_public_api
+    - non_constant_identifier_names
+    - slash_for_doc_comments
+    - unnecessary_const
+    - unnecessary_new
+    - unnecessary_this
+    - use_key_in_widget_constructors

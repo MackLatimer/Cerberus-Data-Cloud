@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:universal_campaign_frontend/models/campaign_config.dart';
+import 'package:universal_campaign_frontend/enums/donation_step.dart';
 
 class DonationWidget extends StatefulWidget {
   final CampaignConfig config;
@@ -17,7 +18,7 @@ class _DonationWidgetState extends State<DonationWidget> {
   late Future<void> _stripeInitializationFuture;
   int? _selectedAmount;
   final TextEditingController _customAmountController = TextEditingController();
-  int _step = 1;
+  DonationStep _step = DonationStep.amount;
   String? _paymentIntentId;
 
   final _formKey = GlobalKey<FormState>();
@@ -81,7 +82,7 @@ class _DonationWidgetState extends State<DonationWidget> {
 
     try {
       final response = await http.post(
-        Uri.parse('https://campaigns-api-885603051818.us-south1.run.app/api/v1/donate/create-payment-intent'),
+        Uri.parse('${widget.config.apiBaseUrl}/donate/create-payment-intent'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'amount': amount * 100, // Convert to cents
@@ -104,7 +105,7 @@ class _DonationWidgetState extends State<DonationWidget> {
 
         if (mounted) {
           setState(() {
-            _step = 2;
+            _step = DonationStep.details;
           });
         }
       } else {
@@ -132,7 +133,7 @@ class _DonationWidgetState extends State<DonationWidget> {
       await Stripe.instance.presentPaymentSheet();
 
       setState(() {
-        _step = 3;
+        _step = DonationStep.contact;
       });
     } on Exception catch (e) {
       if (e is StripeException) {
@@ -158,7 +159,7 @@ class _DonationWidgetState extends State<DonationWidget> {
   Future<void> _submitDetails() async {
     try {
       final response = await http.post(
-        Uri.parse('https://cerberus-backend-885603051818.us-south1.run.app/api/v1/donate/update-donation-details'),
+        Uri.parse('${widget.config.apiBaseUrl}/donate/update-donation-details'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'payment_intent_id': _paymentIntentId,
@@ -221,14 +222,12 @@ class _DonationWidgetState extends State<DonationWidget> {
 
   Widget _buildStep() {
     switch (_step) {
-      case 1:
+      case DonationStep.amount:
         return _buildAmountStep();
-      case 2:
+      case DonationStep.details:
         return _buildDetailsStep();
-      case 3:
+      case DonationStep.contact:
         return _buildContactStep();
-      default:
-        return Container();
     }
   }
 

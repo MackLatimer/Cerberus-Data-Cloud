@@ -11,7 +11,31 @@
     "backgroundColor": "#FFFFFF",
     "textColor": "#000000",
     "fontFamily": "BebasNeue",
-    "secondaryFontFamily": "Tinos"
+    "secondaryFontFamily": "Tinos",
+    "issuesSectionTheme": {
+      "backgroundColor": "#a01124",
+      "textColor": "#FFFFFF",
+      "buttonColor": "#FFFFFF",
+      "buttonTextColor": "#002663"
+    },
+    "aboutMeSectionTheme": {
+      "backgroundColor": "#FFFFFF",
+      "textColor": "#000000",
+      "buttonColor": "#002663",
+      "buttonTextColor": "#FFFFFF"
+    },
+    "endorsementsSectionTheme": {
+      "backgroundColor": "#002663",
+      "textColor": "#FFFFFF",
+      "buttonColor": "#FFFFFF",
+      "buttonTextColor": "#a01124"
+    },
+    "donateSectionTheme": {
+      "backgroundColor": "#FFFFFF",
+      "textColor": "#000000",
+      "buttonColor": "#002663",
+      "buttonTextColor": "#FFFFFF"
+    }
   },
   "content": {
     "siteTitle": "Mintz for County Commissioner",
