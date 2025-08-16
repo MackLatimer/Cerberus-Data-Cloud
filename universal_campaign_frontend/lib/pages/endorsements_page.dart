@@ -34,7 +34,7 @@ class EndorsementsPage extends StatelessWidget {
               height: heroHeight,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(config.assets.endorsementsPage.heroImagePath),
+                  image: AssetImage(config.assets.endorsementsPage.heroImagePath.isNotEmpty ? config.assets.endorsementsPage.heroImagePath : 'assets/images/error_placeholder.png'),
                   fit: BoxFit.cover,
                 ),
               ),

@@ -28,7 +28,7 @@ class DonatePage extends StatelessWidget {
               height: MediaQuery.of(context).size.height,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(config.assets.donatePage.heroImagePath),
+                  image: AssetImage(config.assets.donatePage.heroImagePath.isNotEmpty ? config.assets.donatePage.heroImagePath : 'assets/images/error_placeholder.png'),
                   fit: BoxFit.cover,
                 ),
               ),

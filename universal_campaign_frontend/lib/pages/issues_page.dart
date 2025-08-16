@@ -33,7 +33,7 @@ class IssuesPage extends StatelessWidget {
               height: heroHeight,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(config.assets.issuesPage.heroImagePath),
+                  image: AssetImage(config.assets.issuesPage.heroImagePath.isNotEmpty ? config.assets.issuesPage.heroImagePath : 'assets/images/error_placeholder.png'),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -89,7 +89,7 @@ class IssuesPage extends StatelessWidget {
       height: isCompact ? 200 : 400,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage(imagePath),
+          image: AssetImage(imagePath.isNotEmpty ? imagePath : 'assets/images/error_placeholder.png'),
           fit: BoxFit.cover,
         ),
       ),

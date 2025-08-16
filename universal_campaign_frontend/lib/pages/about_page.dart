@@ -29,7 +29,7 @@ class AboutPage extends StatelessWidget {
               height: MediaQuery.of(context).size.height,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(config.assets.aboutPage.heroImagePath),
+                  image: AssetImage(config.assets.aboutPage.heroImagePath.isNotEmpty ? config.assets.aboutPage.heroImagePath : 'assets/images/error_placeholder.png'),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -67,7 +67,7 @@ class AboutPage extends StatelessWidget {
                                 padding: const EdgeInsets.all(8.0),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(15.0),
-                                  child: Image.asset(config.assets.aboutPage.bioImage1Path, fit: BoxFit.cover),
+                                  child: Image.asset(config.assets.aboutPage.bioImage1Path.isNotEmpty ? config.assets.aboutPage.bioImage1Path : 'assets/images/error_placeholder.png', fit: BoxFit.cover),
                                 ),
                               ),
                             ),
@@ -76,7 +76,7 @@ class AboutPage extends StatelessWidget {
                                 padding: const EdgeInsets.all(8.0),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(15.0),
-                                  child: Image.asset(config.assets.aboutPage.bioImage2Path, fit: BoxFit.cover),
+                                  child: Image.asset(config.assets.aboutPage.bioImage2Path.isNotEmpty ? config.assets.aboutPage.bioImage2Path : 'assets/images/error_placeholder.png', fit: BoxFit.cover),
                                 ),
                               ),
                             ),
@@ -88,7 +88,7 @@ class AboutPage extends StatelessWidget {
                             padding: const EdgeInsets.all(8.0),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(15.0),
-                              child: Image.asset(config.assets.aboutPage.bioImage3Path, height: 200, fit: BoxFit.cover),
+                                                                child: Image.asset(config.assets.aboutPage.bioImage3Path.isNotEmpty ? config.assets.aboutPage.bioImage3Path : 'assets/images/error_placeholder.png', height: 200, fit: BoxFit.cover),
                             ),
                           ),
                         ),

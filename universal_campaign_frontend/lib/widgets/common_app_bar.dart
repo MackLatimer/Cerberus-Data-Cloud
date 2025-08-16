@@ -194,17 +194,11 @@ class CommonAppBarState extends State<CommonAppBar> {
                           navigation,
                       ],
                     )
-                  : Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Image.asset(
-                          widget.config.assets.commonAppBar.logoPath,
+                  Image.asset(
+                          widget.config.assets.commonAppBar.logoPath.isNotEmpty ? widget.config.assets.commonAppBar.logoPath : 'assets/images/error_placeholder.png',
                           width: widget.config.assets.commonAppBar.logoWidth,
                           height: widget.config.assets.commonAppBar.logoHeight,
                         ),
-                        navigation,
-                      ],
-                    ),
             ),
           ),
           actions: widget.actions,

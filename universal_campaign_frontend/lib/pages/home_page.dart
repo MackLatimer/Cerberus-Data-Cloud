@@ -34,7 +34,7 @@ class HomePage extends StatelessWidget {
               height: heroHeight,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(config.content.homePage.heroImagePath),
+                  image: AssetImage(config.content.homePage.heroImagePath.isNotEmpty ? config.content.homePage.heroImagePath : 'assets/images/error_placeholder.png'),
                   fit: BoxFit.cover,
                 ),
               ),

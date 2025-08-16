@@ -29,7 +29,7 @@ class HighProfileEndorsementCard extends StatelessWidget {
       height: isCompact ? 200 : 400,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage(imagePath),
+          image: AssetImage(imagePath.isNotEmpty ? imagePath : 'assets/images/error_placeholder.png'),
           fit: BoxFit.cover,
         ),
       ),
