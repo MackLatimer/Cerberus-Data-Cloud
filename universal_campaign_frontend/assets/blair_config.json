@@ -14,7 +14,7 @@
     "secondaryFontFamily": "Tinos"
   },
   "content": {
-    "siteTitle": "Blair for County Commissioner",
+    "siteTitle": "Tice for County Commissioner",
     "faviconImagePath": "assets/Cerberus_Favicon.png",
     "comingSoonPage": {
       "title": "Our new website is coming soon!",
@@ -29,7 +29,7 @@
       "issuesMessage": "Learn about the key issues we're fighting for.",
       "issuesButton": "View Issues",
       "aboutMeImage": "assets/images/placeholder.png",
-      "aboutMeMessage": "Discover more about Blair.",
+      "aboutMeMessage": "Discover more about Tice.",
       "aboutMeButton": "About Me",
       "endorsementsImage": "assets/images/placeholder.png",
       "endorsementsMessage": "See who supports our campaign.",
@@ -44,14 +44,14 @@
       "title": "Issues",
       "issueSections": [
         {
-          "title": "Placeholder Issue 1",
+          "title": "Economic Growth & Job Creation",
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
           "backgroundColor": "#a01124",
           "textColor": "#FFFFFF",
           "imagePath": "assets/images/placeholder.png"
         },
         {
-          "title": "Placeholder Issue 2",
+          "title": "Community Safety & Emergency Services",
           "description": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
           "backgroundColor": null,
           "textColor": null,
@@ -60,7 +60,7 @@
       ]
     },
     "aboutPage": {
-      "appBarTitle": "About Blair",
+      "appBarTitle": "About Tice",
       "heroImagePath": "assets/images/placeholder.png",
       "title": "About Me",
       "bioText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
@@ -75,7 +75,7 @@
       "endorsements": [
         {
           "name": "John Doe",
-          "quote": "Blair is the leader we need for our community. Their dedication and vision are truly inspiring.",
+          "quote": "Tice is the leader we need for our community. Their dedication and vision are truly inspiring.",
           "imagePath": "assets/images/placeholder.png",
           "imageLeft": true,
           "backgroundColor": "#002663",
@@ -83,7 +83,7 @@
         },
         {
           "name": "Jane Smith",
-          "quote": "I've known Blair for years, and they are a person of integrity and action. They will bring positive change to our county.",
+          "quote": "I've known Tice for years, and they are a person of integrity and action. They will bring positive change to our county.",
           "imagePath": "assets/images/placeholder.png",
           "imageLeft": false,
           "backgroundColor": "#A01124",
@@ -102,7 +102,7 @@
       "appBarTitle": "Donate to the Campaign",
       "heroImagePath": "assets/images/placeholder.png",
       "title": "Support our Mission!",
-      "mailDonationText": "If you prefer to donate by mail, please send a check payable to \"Blair Campaign\" to: 123 Main Street, Anytown, USA 12345",
+      "mailDonationText": "If you prefer to donate by mail, please send a check payable to \"Tice Campaign\" to: 123 Main Street, Anytown, USA 12345",
       "thankYouText": "Thank you for your generosity!"
     },
     "privacyPolicyPage": {
@@ -162,22 +162,29 @@
         "submitDetailsFailed": "Failed to submit details: {body}",
         "submitDetailsError": "Error submitting details: {error}"
       },
-      "donationAmounts": [25, 50, 100, 250, 500, 1000]
+      "donationAmounts": [
+        25,
+        50,
+        100,
+        250,
+        500,
+        1000
+      ]
+    },
+    "widgets": {
+      "signupForm": {
+        "title": "Join the Movement!",
+        "endorseText": "I endorse Tice and allow them to publish my endorsement",
+        "getInvolvedText": "I want to get involved with the campaign!",
+        "automatedMessagingText": "I agree to receive automated messaging from Elect Tice",
+        "emailOptInText": "I agree to receive emails from Elect Tice",
+        "legalText": "Reply STOP to opt out, HELP for help. Msg & data rates may apply. Frequency may vary.",
+        "submitButtonText": "Sign Up",
+        "privacyPolicyText": "Privacy Policy"
+      }
+    },
+    "footer": {
+      "paidForText": "Paid for by Elect Tice"
     }
-  },
-  "widgets": {
-    "signupForm": {
-      "title": "Join the Movement!",
-      "endorseText": "I endorse Blair and allow them to publish my endorsement",
-      "getInvolvedText": "I want to get involved with the campaign!",
-      "automatedMessagingText": "I agree to receive automated messaging from Elect Blair",
-      "emailOptInText": "I agree to receive emails from Elect Blair",
-      "legalText": "Reply STOP to opt out, HELP for help. Msg & data rates may apply. Frequency may vary.",
-      "submitButtonText": "Sign Up",
-      "privacyPolicyText": "Privacy Policy"
-    }
-  },
-  "footer": {
-    "paidForText": "Paid for by Elect Blair"
   }
 }

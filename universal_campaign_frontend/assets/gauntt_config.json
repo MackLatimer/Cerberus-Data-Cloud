@@ -170,21 +170,21 @@
         500,
         1000
       ]
+    },
+    "widgets": {
+      "signupForm": {
+        "title": "Join the Movement!",
+        "endorseText": "I endorse Gauntt and allow them to publish my endorsement",
+        "getInvolvedText": "I want to get involved with the campaign!",
+        "automatedMessagingText": "I agree to receive automated messaging from Elect Gauntt",
+        "emailOptInText": "I agree to receive emails from Elect Gauntt",
+        "legalText": "Reply STOP to opt out, HELP for help. Msg & data rates may apply. Frequency may vary.",
+        "submitButtonText": "Sign Up",
+        "privacyPolicyText": "Privacy Policy"
+      }
+    },
+    "footer": {
+      "paidForText": "Paid for by Elect Gauntt"
     }
-  },
-  "widgets": {
-    "signupForm": {
-      "title": "Join the Movement!",
-      "endorseText": "I endorse Gauntt and allow them to publish my endorsement",
-      "getInvolvedText": "I want to get involved with the campaign!",
-      "automatedMessagingText": "I agree to receive automated messaging from Elect Gauntt",
-      "emailOptInText": "I agree to receive emails from Elect Gauntt",
-      "legalText": "Reply STOP to opt out, HELP for help. Msg & data rates may apply. Frequency may vary.",
-      "submitButtonText": "Sign Up",
-      "privacyPolicyText": "Privacy Policy"
-    }
-  },
-  "footer": {
-    "paidForText": "Paid for by Elect Gauntt"
   }
 }

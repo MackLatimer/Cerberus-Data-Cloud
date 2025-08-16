@@ -44,14 +44,14 @@
       "title": "Issues",
       "issueSections": [
         {
-          "title": "Placeholder Issue 1",
+          "title": "Economic Growth & Job Creation",
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
           "backgroundColor": "#a01124",
           "textColor": "#FFFFFF",
           "imagePath": "assets/images/placeholder.png"
         },
         {
-          "title": "Placeholder Issue 2",
+          "title": "Community Safety & Emergency Services",
           "description": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
           "backgroundColor": null,
           "textColor": null,
@@ -170,21 +170,21 @@
         500,
         1000
       ]
+    },
+    "widgets": {
+      "signupForm": {
+        "title": "Join the Movement!",
+        "endorseText": "I endorse Tice and allow them to publish my endorsement",
+        "getInvolvedText": "I want to get involved with the campaign!",
+        "automatedMessagingText": "I agree to receive automated messaging from Elect Tice",
+        "emailOptInText": "I agree to receive emails from Elect Tice",
+        "legalText": "Reply STOP to opt out, HELP for help. Msg & data rates may apply. Frequency may vary.",
+        "submitButtonText": "Sign Up",
+        "privacyPolicyText": "Privacy Policy"
+      }
+    },
+    "footer": {
+      "paidForText": "Paid for by Elect Tice"
     }
-  },
-  "widgets": {
-    "signupForm": {
-      "title": "Join the Movement!",
-      "endorseText": "I endorse Tice and allow them to publish my endorsement",
-      "getInvolvedText": "I want to get involved with the campaign!",
-      "automatedMessagingText": "I agree to receive automated messaging from Elect Tice",
-      "emailOptInText": "I agree to receive emails from Elect Tice",
-      "legalText": "Reply STOP to opt out, HELP for help. Msg & data rates may apply. Frequency may vary.",
-      "submitButtonText": "Sign Up",
-      "privacyPolicyText": "Privacy Policy"
-    }
-  },
-  "footer": {
-    "paidForText": "Paid for by Elect Tice"
   }
 }
