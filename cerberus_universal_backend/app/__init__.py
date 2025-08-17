@@ -32,7 +32,7 @@ def create_app(config_name_override: str = None) -> Flask:
     app.config.from_object(get_config_by_name(effective_config_name))
 
     CORS(app, resources={
-        r"/api/*": {
+        r"/api/v1/*": {
             "origins": [
                 "https://electemmons.com",
                 "http://localhost:8080",

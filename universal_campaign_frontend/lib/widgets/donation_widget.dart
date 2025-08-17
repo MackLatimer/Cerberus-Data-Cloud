@@ -325,6 +325,7 @@ class _DonationWidgetState extends State<DonationWidget> {
                 InputDecoration(labelText: donationWidgetContent.firstNameLabel),
             validator: (value) =>
                 value!.isEmpty ? donationWidgetContent.firstNameValidation : null,
+            autofillHints: const [AutofillHints.givenName],
           ),
           TextFormField(
             controller: _lastNameController,
@@ -332,6 +333,7 @@ class _DonationWidgetState extends State<DonationWidget> {
                 InputDecoration(labelText: donationWidgetContent.lastNameLabel),
             validator: (value) =>
                 value!.isEmpty ? donationWidgetContent.lastNameValidation : null,
+            autofillHints: const [AutofillHints.familyName],
           ),
           TextFormField(
             controller: _addressLine1Controller,
@@ -339,23 +341,27 @@ class _DonationWidgetState extends State<DonationWidget> {
                 labelText: donationWidgetContent.addressLine1Label),
             validator: (value) =>
                 value!.isEmpty ? donationWidgetContent.addressValidation : null,
+            autofillHints: const [AutofillHints.streetAddressLine1],
           ),
           TextFormField(
             controller: _addressLine2Controller,
             decoration: InputDecoration(
                 labelText: donationWidgetContent.addressLine2Label),
+            autofillHints: const [AutofillHints.streetAddressLine2],
           ),
           TextFormField(
             controller: _addressCityController,
             decoration: InputDecoration(labelText: donationWidgetContent.cityLabel),
             validator: (value) =>
                 value!.isEmpty ? donationWidgetContent.cityValidation : null,
+            autofillHints: const [AutofillHints.addressCity],
           ),
           TextFormField(
             controller: _addressStateController,
             decoration: InputDecoration(labelText: donationWidgetContent.stateLabel),
             validator: (value) =>
                 value!.isEmpty ? donationWidgetContent.stateValidation : null,
+            autofillHints: const [AutofillHints.addressState],
           ),
           TextFormField(
             controller: _addressZipController,
@@ -363,6 +369,7 @@ class _DonationWidgetState extends State<DonationWidget> {
                 InputDecoration(labelText: donationWidgetContent.zipCodeLabel),
             validator: (value) =>
                 value!.isEmpty ? donationWidgetContent.zipCodeValidation : null,
+            autofillHints: const [AutofillHints.postalCode],
           ),
           TextFormField(
             controller: _employerController,
@@ -370,6 +377,7 @@ class _DonationWidgetState extends State<DonationWidget> {
                 InputDecoration(labelText: donationWidgetContent.employerLabel),
             validator: (value) =>
                 value!.isEmpty ? donationWidgetContent.employerValidation : null,
+            autofillHints: const [AutofillHints.organization],
           ),
           TextFormField(
             controller: _occupationController,
@@ -377,6 +385,7 @@ class _DonationWidgetState extends State<DonationWidget> {
                 InputDecoration(labelText: donationWidgetContent.occupationLabel),
             validator: (value) =>
                 value!.isEmpty ? donationWidgetContent.occupationValidation : null,
+            autofillHints: const [AutofillHints.jobTitle],
           ),
           const SizedBox(height: 20),
           CheckboxListTile(
@@ -430,12 +439,14 @@ class _DonationWidgetState extends State<DonationWidget> {
               }
               return null;
             },
+            autofillHints: const [AutofillHints.email],
           ),
           TextFormField(
             controller: _phoneController,
             decoration:
                 InputDecoration(labelText: donationWidgetContent.phoneNumberLabel),
             keyboardType: TextInputType.phone,
+            autofillHints: const [AutofillHints.telephoneNumber],
           ),
           const SizedBox(height: 20),
           CheckboxListTile(
