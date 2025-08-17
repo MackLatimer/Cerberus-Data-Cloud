@@ -40,7 +40,6 @@
     },
     "issuesPage": {
       "appBarTitle": "Key Issues",
-      "heroImagePath": "assets/images/placeholder.png",
       "title": "Issues",
       "issueSections": [
         {
@@ -185,6 +184,11 @@
     },
     "footer": {
       "paidForText": "Paid for by Elect Tice"
+    }
+  },
+  "assets": {
+    "issuesPage": {
+      "heroImagePath": "assets/images/Blair_Issues_Hero.png"
     }
   }
 }

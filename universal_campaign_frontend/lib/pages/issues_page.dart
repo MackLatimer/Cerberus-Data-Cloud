@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart'; // Added for debugPrint
 import 'package:provider/provider.dart';
 import 'package:universal_campaign_frontend/providers/campaign_provider.dart';
 import 'package:universal_campaign_frontend/widgets/common_app_bar.dart';
@@ -44,7 +45,7 @@ class IssuesPage extends StatelessWidget {
               height: heroHeight,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(config.assets.issuesPage.heroImagePath.isNotEmpty ? config.assets.issuesPage.heroImagePath : 'assets/images/error_placeholder.png'),
+                  image: AssetImage(config.assets.issuesPage.heroImagePath),
                   fit: BoxFit.cover,
                 ),
               ),

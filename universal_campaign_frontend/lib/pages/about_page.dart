@@ -94,15 +94,32 @@ class AboutPage extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 20),
-                        Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(15.0),
-                                                                child: Image.asset(config.assets.aboutPage.bioImage3Path.isNotEmpty ? config.assets.aboutPage.bioImage3Path : 'assets/images/Blair_Logo.png', height: 200, fit: BoxFit.cover),
-                            ),
-                          ),
+                        Text(
+                          config.content.aboutPage.bioParagraph2,
+                          style: const TextStyle(fontSize: 18, height: 1.5),
+                          textAlign: TextAlign.justify,
                         ),
+                        const SizedBox(height: 40),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                  child: Image.asset(config.assets.aboutPage.bioImage3Path.isNotEmpty ? config.assets.aboutPage.bioImage3Path : 'assets/images/Blair_Logo.png', fit: BoxFit.cover),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          config.content.aboutPage.bioParagraph3,
+                          style: const TextStyle(fontSize: 18, height: 1.5),
+                          textAlign: TextAlign.justify,
+                        ),
+                        const SizedBox(height: 40),
                       ],
                     ),
                   ),
