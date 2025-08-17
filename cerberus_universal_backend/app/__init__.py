@@ -32,7 +32,15 @@ def create_app(config_name_override: str = None) -> Flask:
     app.config.from_object(get_config_by_name(effective_config_name))
 
     CORS(app, resources={
-        r"/api/*": {"origins": "*"}
+        r"/api/*": {
+            "origins": [
+                "https://electemmons.com",
+                "http://localhost:8080",
+                "http://localhost:5000",
+                "https://cerberus-data-cloud.web.app",
+                "https://cerberus-data-cloud-dev.web.app",
+            ]
+        }
     }, supports_credentials=True)
 
     init_extensions(app)
