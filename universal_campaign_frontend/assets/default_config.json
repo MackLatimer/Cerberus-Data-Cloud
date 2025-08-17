@@ -10,8 +10,8 @@
     "secondaryColor": "#A01124",
     "backgroundColor": "#FFFFFF",
     "textColor": "#000000",
-    "fontFamily": "BebasNeue",
-    "secondaryFontFamily": "Tinos",
+    "fontFamily": "bebasNeue",
+    "secondaryFontFamily": "tinos",
     "issuesSectionTheme": {
       "backgroundColor": "#a01124",
       "textColor": "#FFFFFF",

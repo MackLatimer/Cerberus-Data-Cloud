@@ -105,22 +105,25 @@ class MyApp extends StatelessWidget {
     Color backgroundColor = _parseColor(config.theme.backgroundColor, Colors.white);
     Color textColor = _parseColor(config.theme.textColor, Colors.black);
 
+    final TextTheme primaryFontTextTheme = _getGoogleFontTextTheme(config.theme.fontFamily);
+    final TextTheme secondaryFontTextTheme = _getGoogleFontTextTheme(config.theme.secondaryFontFamily);
+
     final TextTheme appTextTheme = Theme.of(context).textTheme.copyWith(
-          displayLarge: TextStyle(fontFamily: GoogleFonts.getFont(config.theme.fontFamily).fontFamily, fontSize: 152, color: textColor, fontWeight: FontWeight.bold),
-          displayMedium: TextStyle(fontFamily: GoogleFonts.getFont(config.theme.fontFamily).fontFamily, fontSize: 122, color: textColor, fontWeight: FontWeight.bold),
-          displaySmall: TextStyle(fontFamily: GoogleFonts.getFont(config.theme.fontFamily).fontFamily, fontSize: 98, color: textColor, fontWeight: FontWeight.bold),
-          headlineLarge: TextStyle(fontFamily: GoogleFonts.getFont(config.theme.fontFamily).fontFamily, fontSize: 78, color: textColor, fontWeight: FontWeight.bold),
-          headlineMedium: TextStyle(fontFamily: GoogleFonts.getFont(config.theme.fontFamily).fontFamily, fontSize: 62, color: textColor, fontWeight: FontWeight.bold),
-          headlineSmall: TextStyle(fontFamily: GoogleFonts.getFont(config.theme.fontFamily).fontFamily, fontSize: 50, color: textColor, fontWeight: FontWeight.bold),
-          titleLarge: TextStyle(fontFamily: GoogleFonts.getFont(config.theme.fontFamily).fontFamily, fontSize: 40, color: textColor, fontWeight: FontWeight.bold),
-          titleMedium: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 32, color: textColor, fontWeight: FontWeight.bold),
-          titleSmall: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 25, color: textColor, fontWeight: FontWeight.bold),
-          bodyLarge: TextStyle(fontFamily: config.theme.secondaryFontFamily, fontSize: 20, color: textColor),
-          bodyMedium: TextStyle(fontFamily: config.theme.secondaryFontFamily, fontSize: 16, color: textColor),
-          bodySmall: TextStyle(fontFamily: config.theme.secondaryFontFamily, fontSize: 12.8, color: textColor),
-          labelLarge: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
-          labelMedium: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 16, fontWeight: FontWeight.bold),
-          labelSmall: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 12.8, fontWeight: FontWeight.bold),
+          displayLarge: primaryFontTextTheme.displayLarge?.copyWith(fontSize: 152, color: textColor, fontWeight: FontWeight.bold),
+          displayMedium: primaryFontTextTheme.displayMedium?.copyWith(fontSize: 122, color: textColor, fontWeight: FontWeight.bold),
+          displaySmall: primaryFontTextTheme.displaySmall?.copyWith(fontSize: 98, color: textColor, fontWeight: FontWeight.bold),
+          headlineLarge: primaryFontTextTheme.headlineLarge?.copyWith(fontSize: 78, color: textColor, fontWeight: FontWeight.bold),
+          headlineMedium: primaryFontTextTheme.headlineMedium?.copyWith(fontSize: 62, color: textColor, fontWeight: FontWeight.bold),
+          headlineSmall: primaryFontTextTheme.headlineSmall?.copyWith(fontSize: 50, color: textColor, fontWeight: FontWeight.bold),
+          titleLarge: primaryFontTextTheme.titleLarge?.copyWith(fontSize: 40, color: textColor, fontWeight: FontWeight.bold),
+          titleMedium: primaryFontTextTheme.titleMedium?.copyWith(fontSize: 32, color: textColor, fontWeight: FontWeight.bold),
+          titleSmall: primaryFontTextTheme.titleSmall?.copyWith(fontSize: 25, color: textColor, fontWeight: FontWeight.bold),
+          bodyLarge: secondaryFontTextTheme.bodyLarge?.copyWith(fontSize: 20, color: textColor),
+          bodyMedium: secondaryFontTextTheme.bodyMedium?.copyWith(fontSize: 16, color: textColor),
+          bodySmall: secondaryFontTextTheme.bodySmall?.copyWith(fontSize: 12.8, color: textColor),
+          labelLarge: primaryFontTextTheme.labelLarge?.copyWith(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+          labelMedium: primaryFontTextTheme.labelMedium?.copyWith(fontSize: 16, fontWeight: FontWeight.bold),
+          labelSmall: primaryFontTextTheme.labelSmall?.copyWith(fontSize: 12.8, fontWeight: FontWeight.bold),
         );
 
     return ThemeData(
@@ -176,6 +179,22 @@ class MyApp extends StatelessWidget {
       }
     } catch (e) {
       return defaultColor;
+    }
+  }
+
+  TextTheme _getGoogleFontTextTheme(String fontFamilyName) {
+    switch (fontFamilyName) {
+      case 'BebasNeue':
+        return GoogleFonts.bebasNeueTextTheme();
+      case 'LeagueSpartan':
+        return GoogleFonts.leagueSpartanTextTheme();
+      case 'Signika':
+        return GoogleFonts.signikaTextTheme();
+      case 'Tinos':
+        return GoogleFonts.tinosTextTheme();
+      // Add more cases for other fonts as needed
+      default:
+        return GoogleFonts.robotoTextTheme(); // Fallback to Roboto
     }
   }
 }

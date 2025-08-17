@@ -21,7 +21,7 @@ class CommonAppBar extends StatefulWidget implements PreferredSizeWidget {
   CommonAppBarState createState() => CommonAppBarState();
 
   @override
-  Size get preferredSize => const Size.fromHeight(170.0);
+  Size get preferredSize => const Size.fromHeight(220.0);
 }
 
 class CommonAppBarState extends State<CommonAppBar> {
@@ -89,7 +89,6 @@ class CommonAppBarState extends State<CommonAppBar> {
                 style: textTheme.labelMedium?.copyWith(
                   color: Color(int.parse(widget.config.theme.primaryColor.substring(1, 7), radix: 16) + 0xFF000000),
                   fontWeight: FontWeight.bold,
-                  fontSize: 24,
                 ),
               ),
             ),
@@ -133,7 +132,6 @@ class CommonAppBarState extends State<CommonAppBar> {
                     style: textTheme.labelMedium?.copyWith(
                       color: Color(int.parse(widget.config.theme.primaryColor.substring(1, 7), radix: 16) + 0xFF000000),
                       fontWeight: FontWeight.bold,
-                      fontSize: 24,
                     ),
                   ),
                 ),
