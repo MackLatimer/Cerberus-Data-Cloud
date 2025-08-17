@@ -16,6 +16,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:web/web.dart' as web;
 
 import 'package:universal_campaign_frontend/locator.dart';
+import 'package:universal_campaign_frontend/services/config_service.dart';
 
 void main() {
   setupLocator();
@@ -24,8 +25,24 @@ void main() {
     ChangeNotifierProvider(
       create: (context) {
         final provider = locator<CampaignProvider>();
-        final campaignId = Uri.base.queryParameters['campaign'];
-        provider.loadCampaign(campaignId ?? 'default');
+
+        // Get campaign ID from --dart-define, fallback to URL param, then to 'default'
+        const campaignFromEnv = String.fromEnvironment('CAMPAIGN_ID');
+
+        String campaignId = campaignFromEnv;
+        if (campaignId.isEmpty) {
+          campaignId = Uri.base.queryParameters['campaign'] ?? 'default';
+        }
+
+        if (campaignId == 'default') {
+          // If we are still on default, we need to load the default config to find the actual default campaign
+          ConfigService.getDefaultCampaignId().then((defaultId) {
+            provider.loadCampaign(defaultId);
+          });
+        } else {
+          provider.loadCampaign(campaignId);
+        }
+
         return provider;
       },
       child: const MyApp(),

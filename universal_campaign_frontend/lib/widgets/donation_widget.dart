@@ -37,7 +37,6 @@ class _DonationWidgetState extends State<DonationWidget> {
   final TextEditingController _phoneController = TextEditingController();
 
   bool _coverFees = false;
-  bool _isRecurring = false;
   bool _contactEmail = false;
   bool _contactPhone = false;
   bool _contactMail = false;
