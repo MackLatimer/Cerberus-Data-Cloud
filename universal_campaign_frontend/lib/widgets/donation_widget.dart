@@ -23,7 +23,9 @@ class _DonationWidgetState extends State<DonationWidget> {
   String? _paymentIntentId;
   bool _isLoading = false;
 
-  final _formKey = GlobalKey<FormState>();
+  final _detailsFormKey = GlobalKey<FormState>();
+  final _contactFormKey = GlobalKey<FormState>();
+
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _addressLine1Controller = TextEditingController();
@@ -37,6 +39,7 @@ class _DonationWidgetState extends State<DonationWidget> {
   final TextEditingController _phoneController = TextEditingController();
 
   bool _coverFees = false;
+  bool _isRecurring = false;
   bool _contactEmail = false;
   bool _contactPhone = false;
   bool _contactMail = false;
@@ -70,16 +73,26 @@ class _DonationWidgetState extends State<DonationWidget> {
     super.dispose();
   }
 
-  Future<void> _createPaymentIntent() async {
-    if (_isLoading) return;
-
+  void _handleAmountSelected() {
     final amount = _selectedAmount ?? int.tryParse(_customAmountController.text);
-    if (amount == null) {
+    if (amount == null || amount <= 0) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(widget.config.content.donationWidget.selectAmountValidation)),
+          SnackBar(
+              content:
+                  Text(widget.config.content.donationWidget.selectAmountValidation)),
         );
       }
+      return;
+    }
+    setState(() {
+      _step = DonationStep.details;
+    });
+  }
+
+  Future<void> _createPaymentIntentAndConfirm() async {
+    if (_isLoading) return;
+    if (!_detailsFormKey.currentState!.validate()) {
       return;
     }
 
@@ -87,41 +100,66 @@ class _DonationWidgetState extends State<DonationWidget> {
       _isLoading = true;
     });
 
+    final amount = _selectedAmount ?? int.tryParse(_customAmountController.text);
+
     try {
+      // Create Payment Intent on the server
       final response = await http.post(
         Uri.parse('${widget.config.apiBaseUrl}/donate/create-payment-intent'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
-          'amount': amount * 100, // Convert to cents
+          'amount': amount! * 100, // Convert to cents
           'currency': 'usd',
           'campaign_id': widget.config.campaignId,
+           'metadata': {
+            'firstName': _firstNameController.text,
+            'lastName': _lastNameController.text,
+            'address':
+                '${_addressLine1Controller.text}, ${_addressLine2Controller.text}, ${_addressCityController.text}, ${_addressStateController.text}, ${_addressZipController.text}',
+            'employer': _employerController.text,
+            'occupation': _occupationController.text,
+          }
         }),
       );
 
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        final clientSecret = data['clientSecret'];
-        _paymentIntentId = data['paymentIntentId'];
+      if (!mounted) return;
 
-        await Stripe.instance.initPaymentSheet(
-          paymentSheetParameters: SetupPaymentSheetParameters(
-            paymentIntentClientSecret: clientSecret,
-            merchantDisplayName: widget.config.content.siteTitle,
-          ),
-        );
-
-        if (mounted) {
-          setState(() {
-            _step = DonationStep.details;
-          });
-        }
-      } else {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Failed to create payment intent: ${response.body}')),
-          );
-        }
+      if (response.statusCode != 200) {
+        ErrorService.handleError(context, 'Failed to create payment intent: ${response.body}', StackTrace.current);
+        return;
       }
+
+      final data = json.decode(response.body);
+      final clientSecret = data['clientSecret'];
+      _paymentIntentId = data['paymentIntentId'];
+
+      // Initialize the payment sheet
+      await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+          paymentIntentClientSecret: clientSecret,
+          merchantDisplayName: widget.config.content.siteTitle,
+          billingDetails: BillingDetails(
+            name: '${_firstNameController.text} ${_lastNameController.text}',
+            address: Address(
+              line1: _addressLine1Controller.text,
+              line2: _addressLine2Controller.text,
+              city: _addressCityController.text,
+              state: _addressStateController.text,
+              postalCode: _addressZipController.text,
+              country: 'US',
+            ),
+          ),
+        ),
+      );
+
+      // Present the payment sheet
+      await Stripe.instance.presentPaymentSheet();
+
+      // On successful payment, move to the contact step
+      setState(() {
+        _step = DonationStep.contact;
+      });
+
     } catch (e, s) {
       if (mounted) {
         ErrorService.handleError(context, e, s);
@@ -135,39 +173,12 @@ class _DonationWidgetState extends State<DonationWidget> {
     }
   }
 
-  Future<void> _handlePayment() async {
-    if (_isLoading || !mounted) return;
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
-
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      // Bypassing the payment sheet presentation for testing purposes
-      // TODO: Remove this bypass in production
-      // await Stripe.instance.presentPaymentSheet();
-
-      setState(() {
-        _step = DonationStep.contact;
-      });
-    } on Exception catch (e, s) {
-      if (mounted) {
-        ErrorService.handleError(context, e, s);
-      }
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
-  }
 
   Future<void> _submitDetails() async {
     if (_isLoading || !mounted) return;
+     if (!_contactFormKey.currentState!.validate()) {
+      return;
+    }
 
     setState(() {
       _isLoading = true;
@@ -194,14 +205,15 @@ class _DonationWidgetState extends State<DonationWidget> {
           'contact_phone': _contactPhone,
           'contact_mail': _contactMail,
           'contact_sms': _contactSms,
+          'cover_fees': _coverFees,
+          'is_recurring': _isRecurring,
         }),
       );
 
       if (response.statusCode == 200) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Thank you for your donation!'))
-          );
+              const SnackBar(content: Text('Thank you for your donation!')));
           context.go('/home');
         }
       } else {
@@ -292,7 +304,7 @@ class _DonationWidgetState extends State<DonationWidget> {
         ),
         const SizedBox(height: 20),
         ElevatedButton(
-          onPressed: _isLoading ? null : _createPaymentIntent,
+          onPressed: _isLoading ? null : _handleAmountSelected,
           child: _isLoading
               ? const CircularProgressIndicator(color: Colors.white)
               : Text(donationWidgetContent.continueButtonText),
@@ -303,60 +315,68 @@ class _DonationWidgetState extends State<DonationWidget> {
 
   Widget _buildDetailsStep(donationWidgetContent) {
     return Form(
-      key: _formKey,
+      key: _detailsFormKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           TextFormField(
             controller: _firstNameController,
-            decoration: InputDecoration(labelText: donationWidgetContent.firstNameLabel),
-            validator: (value) => value!.isEmpty ? donationWidgetContent.firstNameValidation : null,
+            decoration:
+                InputDecoration(labelText: donationWidgetContent.firstNameLabel),
+            validator: (value) =>
+                value!.isEmpty ? donationWidgetContent.firstNameValidation : null,
           ),
           TextFormField(
             controller: _lastNameController,
-            decoration: InputDecoration(labelText: donationWidgetContent.lastNameLabel),
-            validator: (value) => value!.isEmpty ? donationWidgetContent.lastNameValidation : null,
+            decoration:
+                InputDecoration(labelText: donationWidgetContent.lastNameLabel),
+            validator: (value) =>
+                value!.isEmpty ? donationWidgetContent.lastNameValidation : null,
           ),
           TextFormField(
             controller: _addressLine1Controller,
-            decoration: InputDecoration(labelText: donationWidgetContent.addressLine1Label),
-            validator: (value) => value!.isEmpty ? donationWidgetContent.addressValidation : null,
+            decoration: InputDecoration(
+                labelText: donationWidgetContent.addressLine1Label),
+            validator: (value) =>
+                value!.isEmpty ? donationWidgetContent.addressValidation : null,
           ),
           TextFormField(
             controller: _addressLine2Controller,
-            decoration: InputDecoration(labelText: donationWidgetContent.addressLine2Label),
+            decoration: InputDecoration(
+                labelText: donationWidgetContent.addressLine2Label),
           ),
           TextFormField(
             controller: _addressCityController,
             decoration: InputDecoration(labelText: donationWidgetContent.cityLabel),
-            validator: (value) => value!.isEmpty ? donationWidgetContent.cityValidation : null,
+            validator: (value) =>
+                value!.isEmpty ? donationWidgetContent.cityValidation : null,
           ),
           TextFormField(
             controller: _addressStateController,
             decoration: InputDecoration(labelText: donationWidgetContent.stateLabel),
-            validator: (value) => value!.isEmpty ? donationWidgetContent.stateValidation : null,
+            validator: (value) =>
+                value!.isEmpty ? donationWidgetContent.stateValidation : null,
           ),
           TextFormField(
             controller: _addressZipController,
-            decoration: InputDecoration(labelText: donationWidgetContent.zipCodeLabel),
-            validator: (value) => value!.isEmpty ? donationWidgetContent.zipCodeValidation : null,
+            decoration:
+                InputDecoration(labelText: donationWidgetContent.zipCodeLabel),
+            validator: (value) =>
+                value!.isEmpty ? donationWidgetContent.zipCodeValidation : null,
           ),
           TextFormField(
             controller: _employerController,
-            decoration: InputDecoration(labelText: donationWidgetContent.employerLabel),
-            validator: (value) => value!.isEmpty ? donationWidgetContent.employerValidation : null,
+            decoration:
+                InputDecoration(labelText: donationWidgetContent.employerLabel),
+            validator: (value) =>
+                value!.isEmpty ? donationWidgetContent.employerValidation : null,
           ),
           TextFormField(
             controller: _occupationController,
-            decoration: InputDecoration(labelText: donationWidgetContent.occupationLabel),
-            validator: (value) => value!.isEmpty ? donationWidgetContent.occupationValidation : null,
-          ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: _isLoading ? null : _handlePayment,
-            child: _isLoading
-                ? const CircularProgressIndicator(color: Colors.white)
-                : Text(donationWidgetContent.proceedToPaymentButtonText),
+            decoration:
+                InputDecoration(labelText: donationWidgetContent.occupationLabel),
+            validator: (value) =>
+                value!.isEmpty ? donationWidgetContent.occupationValidation : null,
           ),
           const SizedBox(height: 20),
           CheckboxListTile(
@@ -368,6 +388,22 @@ class _DonationWidgetState extends State<DonationWidget> {
               });
             },
           ),
+          CheckboxListTile(
+            title: Text(donationWidgetContent.recurringDonationText),
+            value: _isRecurring,
+            onChanged: (value) {
+              setState(() {
+                _isRecurring = value!;
+              });
+            },
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: _isLoading ? null : _createPaymentIntentAndConfirm,
+            child: _isLoading
+                ? const CircularProgressIndicator(color: Colors.white)
+                : Text(donationWidgetContent.proceedToPaymentButtonText),
+          ),
         ],
       ),
     );
@@ -375,7 +411,7 @@ class _DonationWidgetState extends State<DonationWidget> {
 
   Widget _buildContactStep(donationWidgetContent) {
     return Form(
-      key: const ValueKey<int>(3),
+      key: _contactFormKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -387,7 +423,9 @@ class _DonationWidgetState extends State<DonationWidget> {
               if (value!.isEmpty) {
                 return donationWidgetContent.emailValidation;
               }
-              if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)) {
+              if (!RegExp(
+                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                  .hasMatch(value)) {
                 return donationWidgetContent.invalidEmailValidation;
               }
               return null;
@@ -395,7 +433,8 @@ class _DonationWidgetState extends State<DonationWidget> {
           ),
           TextFormField(
             controller: _phoneController,
-            decoration: InputDecoration(labelText: donationWidgetContent.phoneNumberLabel),
+            decoration:
+                InputDecoration(labelText: donationWidgetContent.phoneNumberLabel),
             keyboardType: TextInputType.phone,
           ),
           const SizedBox(height: 20),
