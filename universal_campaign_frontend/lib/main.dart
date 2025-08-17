@@ -184,7 +184,7 @@ class MyApp extends StatelessWidget {
 
   TextTheme _getGoogleFontTextTheme(String fontFamilyName) {
     switch (fontFamilyName) {
-      case 'BebasNeue':
+      case 'Bebas Neue':
         return GoogleFonts.bebasNeueTextTheme();
       case 'LeagueSpartan':
         return GoogleFonts.leagueSpartanTextTheme();
