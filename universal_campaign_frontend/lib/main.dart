@@ -154,8 +154,8 @@ class MyApp extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: secondaryColor,
           foregroundColor: Colors.white,
-          textStyle: appTextTheme.labelLarge,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          textStyle: appTextTheme.titleSmall,
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),

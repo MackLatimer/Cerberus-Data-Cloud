@@ -86,7 +86,7 @@ class CommonAppBarState extends State<CommonAppBar> {
               onPressed: () => context.go(item.path),
               child: Text(
                 item.label,
-                style: textTheme.labelMedium?.copyWith(
+                style: textTheme.labelLarge?.copyWith(
                   color: Color(int.parse(widget.config.theme.primaryColor.substring(1, 7), radix: 16) + 0xFF000000),
                   fontWeight: FontWeight.bold,
                 ),
@@ -129,7 +129,7 @@ class CommonAppBarState extends State<CommonAppBar> {
                   onPressed: () => context.go(item.path),
                   child: Text(
                     item.label,
-                    style: textTheme.labelMedium?.copyWith(
+                    style: textTheme.labelLarge?.copyWith(
                       color: Color(int.parse(widget.config.theme.primaryColor.substring(1, 7), radix: 16) + 0xFF000000),
                       fontWeight: FontWeight.bold,
                     ),
@@ -149,10 +149,9 @@ class CommonAppBarState extends State<CommonAppBar> {
                     onPressed: () => context.go(item.path),
                     child: Text(
                       item.label,
-                      style: textTheme.labelMedium?.copyWith(
+                      style: textTheme.labelLarge?.copyWith(
                         color: Color(int.parse(widget.config.theme.primaryColor.substring(1, 7), radix: 16) + 0xFF000000),
                         fontWeight: FontWeight.bold,
-                        fontSize: 24,
                       ),
                     ),
                   ),
