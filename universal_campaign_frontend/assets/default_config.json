@@ -135,8 +135,8 @@
     },
     "commonAppBar": {
       "logoPath": "assets/logos/Emmons_Logo.png",
-      "logoWidth": 100.0,
-      "logoHeight": 50.0,
+      "logoWidth": 400.0,
+      "logoHeight": 100.0,
       "navItems": [
         {"label": "Home", "path": "/"},
         {"label": "About", "path": "/about"},
