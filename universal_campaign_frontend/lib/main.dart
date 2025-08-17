@@ -12,6 +12,7 @@ import 'package:universal_campaign_frontend/pages/home_page.dart';
 import 'package:universal_campaign_frontend/pages/issues_page.dart';
 import 'package:universal_campaign_frontend/pages/privacy_policy_page.dart';
 import 'package:universal_campaign_frontend/providers/campaign_provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:universal_campaign_frontend/locator.dart';
 
@@ -105,13 +106,13 @@ class MyApp extends StatelessWidget {
     Color textColor = _parseColor(config.theme.textColor, Colors.black);
 
     final TextTheme appTextTheme = Theme.of(context).textTheme.copyWith(
-          displayLarge: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 152, color: textColor, fontWeight: FontWeight.bold),
-          displayMedium: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 122, color: textColor, fontWeight: FontWeight.bold),
-          displaySmall: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 98, color: textColor, fontWeight: FontWeight.bold),
-          headlineLarge: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 78, color: textColor, fontWeight: FontWeight.bold),
-          headlineMedium: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 62, color: textColor, fontWeight: FontWeight.bold),
-          headlineSmall: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 50, color: textColor, fontWeight: FontWeight.bold),
-          titleLarge: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 40, color: textColor, fontWeight: FontWeight.bold),
+          displayLarge: TextStyle(fontFamily: GoogleFonts.getFont(config.theme.fontFamily).fontFamily, fontSize: 152, color: textColor, fontWeight: FontWeight.bold),
+          displayMedium: TextStyle(fontFamily: GoogleFonts.getFont(config.theme.fontFamily).fontFamily, fontSize: 122, color: textColor, fontWeight: FontWeight.bold),
+          displaySmall: TextStyle(fontFamily: GoogleFonts.getFont(config.theme.fontFamily).fontFamily, fontSize: 98, color: textColor, fontWeight: FontWeight.bold),
+          headlineLarge: TextStyle(fontFamily: GoogleFonts.getFont(config.theme.fontFamily).fontFamily, fontSize: 78, color: textColor, fontWeight: FontWeight.bold),
+          headlineMedium: TextStyle(fontFamily: GoogleFonts.getFont(config.theme.fontFamily).fontFamily, fontSize: 62, color: textColor, fontWeight: FontWeight.bold),
+          headlineSmall: TextStyle(fontFamily: GoogleFonts.getFont(config.theme.fontFamily).fontFamily, fontSize: 50, color: textColor, fontWeight: FontWeight.bold),
+          titleLarge: TextStyle(fontFamily: GoogleFonts.getFont(config.theme.fontFamily).fontFamily, fontSize: 40, color: textColor, fontWeight: FontWeight.bold),
           titleMedium: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 32, color: textColor, fontWeight: FontWeight.bold),
           titleSmall: TextStyle(fontFamily: config.theme.fontFamily, fontSize: 25, color: textColor, fontWeight: FontWeight.bold),
           bodyLarge: TextStyle(fontFamily: config.theme.secondaryFontFamily, fontSize: 20, color: textColor),
