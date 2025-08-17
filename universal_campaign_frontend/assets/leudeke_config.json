@@ -1,7 +1,7 @@
 {
   "campaignId": "leudeke",
-  "defaultCampaign": false,
-  "stripePublicKey": "pk_test_placeholder",
+  "defaultCampaign": true,
+  "stripePublicKey": "pk_test_51Rprl4DJohanGZYnPtUtDTPfjA4PNgyif3BFs4IcCn3CB389C7V2T6AH2zq7TPsuhPSDf7BGK1Ytc6atHH5gqKog00kvIBYB7b",
   "stripeSecretKeySecretManagerName": "projects/Cerberus-Data-Cloud/secrets/LEUDEKE_STRIPE_SECRET_KEY",
   "stripeWebhookKeySecretManagerName": "projects/Cerberus-Data-Cloud/secrets/LEUDEKE_STRIPE_WEBHOOK_KEY",
   "apiBaseUrl": "https://cerberus-backend-885603051818.us-south1.run.app/api/v1",
@@ -10,12 +10,38 @@
     "secondaryColor": "#A01124",
     "backgroundColor": "#FFFFFF",
     "textColor": "#000000",
-    "fontFamily": "BebasNeue",
-    "secondaryFontFamily": "Tinos"
+    "fontFamily": "Bebas Neue",
+    "secondaryFontFamily": "tinos",
+    "usePageTransitions": false,
+    "issuesSectionTheme": {
+      "backgroundColor": "#a01124",
+      "textColor": "#FFFFFF",
+      "buttonColor": "#FFFFFF",
+      "buttonTextColor": "#002663"
+    },
+    "aboutMeSectionTheme": {
+      "backgroundColor": "#FFFFFF",
+      "textColor": "#000000",
+      "buttonColor": "#002663",
+      "buttonTextColor": "#FFFFFF"
+    },
+    "endorsementsSectionTheme": {
+      "backgroundColor": "#002663",
+      "textColor": "#FFFFFF",
+      "buttonColor": "#FFFFFF",
+      "buttonTextColor": "#a01124"
+    },
+    "donateSectionTheme": {
+      "backgroundColor": "#FFFFFF",
+      "textColor": "#000000",
+      "buttonColor": "#002663",
+      "buttonTextColor": "#FFFFFF"
+    }
   },
   "content": {
-    "siteTitle": "Leudeke for County Commissioner",
-    "faviconImagePath": "assets/Cerberus_Favicon.png",
+    "siteTitle": "Curtis Leudeke for County Commissioner",
+    "faviconImagePath": "assets/favicons/Leudeke_Favicon.png",
+    "launchStatus": false,
     "comingSoonPage": {
       "title": "Our new website is coming soon!",
       "subtitle": "In the meantime, you can support our campaign by donating below."
@@ -23,168 +49,176 @@
     "homePage": {
       "heroTitle": "Welcome to our campaign!",
       "callToActionText": "Join us in making a difference.",
-      "heroImagePath": "assets/images/placeholder.png",
+      "heroImagePath": "assets/images/Leudeke_Home_Hero.png",
       "homeTitleMessage": "Welcome to our campaign!",
-      "issuesImage": "assets/images/placeholder.png",
+      "issuesImage": "assets/images/Leudeke_Home_Issues_Preview.png",
       "issuesMessage": "Learn about the key issues we're fighting for.",
       "issuesButton": "View Issues",
-      "aboutMeImage": "assets/images/placeholder.png",
-      "aboutMeMessage": "Discover more about Leudeke.",
+      "aboutMeImage": "assets/images/Leudeke_Home_About_Preview.png",
+      "aboutMeMessage": "Discover more about Curtis Leudeke.",
       "aboutMeButton": "About Me",
-      "endorsementsImage": "assets/images/placeholder.png",
+      "endorsementsImage": "assets/images/Leudeke_Home_Endorsements_Preview.png",
       "endorsementsMessage": "See who supports our campaign.",
       "endorsementsButton": "View Endorsements",
-      "donateImage": "assets/images/placeholder.png",
+      "donateImage": "assets/images/Leudeke_Home_Donate_Preview.png",
       "donateMessage": "Support our mission with a donation.",
       "donateButton": "Donate Now"
     },
     "issuesPage": {
       "appBarTitle": "Key Issues",
-      "heroImagePath": "assets/images/placeholder.png",
+      "heroImagePath": "assets/images/Leudeke_Issues_Hero.png",
       "title": "Issues",
       "issueSections": [
         {
-          "title": "Placeholder Issue 1",
-          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+          "title": "Economic Growth & Job Creation",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Curtis believes in fostering a business-friendly environment that attracts new opportunities and supports local entrepreneurs.",
           "backgroundColor": "#a01124",
           "textColor": "#FFFFFF",
-          "imagePath": "assets/images/placeholder.png"
+          "imagePath": "assets/images/Leudeke_Issues_Issue1.png"
         },
         {
-          "title": "Placeholder Issue 2",
-          "description": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-          "backgroundColor": null,
-          "textColor": null,
-          "imagePath": "assets/images/placeholder.png"
+          "title": "Community Safety & Emergency Services",
+          "description": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat a pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Ensuring our neighborhoods are safe and our first responders are well-equipped is a top priority.",
+          "backgroundColor": "#a01124",
+          "textColor": "#FFFFFF",
+          "imagePath": "assets/images/Leudeke_Issues_Issue2.png"
+        },
+        {
+          "title": "Infrastructure Development & Maintenance",
+          "description": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. We must invest in maintaining and improving our roads, bridges, and public utilities to support our growing community.",
+          "backgroundColor": "#002663",
+          "textColor": "#FFFFFF",
+          "imagePath": "assets/images/Leudeke_Issues_Issue3.png"
+        },
+        {
+          "title": "Fiscal Responsibility & Transparent Governance",
+          "description": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Curtis is committed to responsible spending of taxpayer dollars and ensuring all county operations are transparent and accountable to the public.",
+          "backgroundColor": "#002663",
+          "textColor": "#FFFFFF",
+          "imagePath": "assets/images/Leudeke_Issues_Issue4.png"
         }
       ]
     },
     "aboutPage": {
-      "appBarTitle": "About Leudeke",
-      "heroImagePath": "assets/images/placeholder.png",
-      "title": "About Me",
-      "bioText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      "bioImage1Path": "assets/images/placeholder.png",
-      "bioImage2Path": "assets/images/placeholder.png",
-      "bioImage3Path": "assets/images/placeholder.png"
+      "appBarTitle": "About Curtis Leudeke",
+      "heroImagePath": "assets/images/Leudeke_About_Hero.png",
+      "bioTitle": "About Me",
+      "bioParagraph1": "Curtis Leudeke is a dedicated public servant with a passion for community development and effective governance. With a background in business and a commitment to fiscal responsibility, Curtis brings a wealth of experience to the table. He is a strong advocate for transparency and accountability in government, and he is committed to working collaboratively to find solutions to the challenges facing our county.\n\nThroughout his career, Curtis has been actively involved in numerous local initiatives, from supporting small businesses to improving public infrastructure. He believes in a common-sense approach to problem-solving and is dedicated to ensuring that the voices of all residents are heard. His vision for the county is one of a smart growth, economic prosperity, and a high quality of life for all.\n\nAs a husband and father, Curtis understands the importance of building a strong and vibrant community for future generations. He is a firm believer in the power of collaboration and is committed to working with residents, business leaders, and community organizations to create a better future for our county.",
+      "bioParagraph2": "This is a placeholder for the second paragraph of the bio. It will be placed between the double picture and the single picture.",
+      "bioParagraph3": "This is a placeholder for the third paragraph of the bio. It will be placed after the single picture.",
+      "bioImage1Path": "assets/images/Leudeke_About_Bio1.png",
+      "bioImage2Path": "assets/images/Leudeke_About_Bio2.png",
+      "bioImage3Path": "assets/images/Leudeke_About_Bio3.png"
     },
     "endorsementsPage": {
       "appBarTitle": "Endorsements",
-      "heroImagePath": "assets/images/placeholder.png",
+      "heroImagePath": "assets/images/Leudeke_Endorsements_Hero.png",
       "title": "Endorsed by Leaders and the Community",
       "endorsements": [
         {
           "name": "John Doe",
-          "quote": "Leudeke is the leader we need for our community. Their dedication and vision are truly inspiring.",
-          "imagePath": "assets/images/placeholder.png",
+          "quote": "Curtis Leudeke is the leader we need for our community. His dedication and vision are truly inspiring.",
+          "imagePath": "assets/images/Leudeke_Endorsements_1.png",
           "imageLeft": true,
           "backgroundColor": "#002663",
           "textColor": "#FFFFFF"
         },
         {
           "name": "Jane Smith",
-          "quote": "I've known Leudeke for years, and they are a person of integrity and action. They will bring positive change to our county.",
-          "imagePath": "assets/images/placeholder.png",
+          "quote": "I've known Curtis for years, and he is a man of integrity and action. He will bring positive change to our county.",
+          "imagePath": "assets/images/Leudeke_Endorsements_2.png",
           "imageLeft": false,
           "backgroundColor": "#A01124",
           "textColor": "#FFFFFF"
         }
       ],
+      "communityTitle": "Community Endorsements",
       "communityEndorsements": [
-        "Community Member 1",
-        "Community Member 2"
+        "John Doe",
+        "Jane Smith",
+        "Bob Builder",
+        "Alice Johnson",
+        "Charlie Brown",
+        "Emily Davis",
+        "Frank White"
       ],
-      "endorsementTitle1": "Additional Title 1",
-      "endorsementTitle2": "Additional Title 2",
-      "endorsementBodyParagraph": "This is a body paragraph for the endorsements page."
+      "endorsementCallToAction": "Join the list of supporters!",
+      "endorsementCallToActionText": "Fill out the form below to endorse Curtis Leudeke and allow him to publish your endorsement on this page."
     },
     "donatePage": {
-      "appBarTitle": "Donate to the Campaign",
-      "heroImagePath": "assets/images/placeholder.png",
-      "title": "Support our Mission!",
-      "mailDonationText": "If you prefer to donate by mail, please send a check payable to \"Leudeke Campaign\" to: 123 Main Street, Anytown, USA 12345",
-      "thankYouText": "Thank you for your generosity!"
-    },
-    "privacyPolicyPage": {
-      "appBarTitle": "Privacy Policy",
-      "title": "PrivacyPolicy",
-      "content": "No mobile information will be shared by us with third parties/affiliates for marketing/promotional purposes. Text messaging originator opt-in data and consent will not be shared with any third parties unless required by law. Carriers are not liable for delayed or undelivered messages."
+      "heroImagePath": "assets/images/Leudeke_Donate_Hero.png",
+      "title": "Support Our Campaign",
+      "subtitle": "Your contribution helps us make a difference in our community.",
+      "mailDonationText": "If you prefer to donate by mail, please send a check payable to \"Curtis Leudeke Campaign\" to: 123 Main Street, Anytown, USA 12345"
     },
     "commonAppBar": {
-      "logoPath": "assets/logos/placeholder_logo.png",
-      "logoWidth": 400,
-      "logoHeight": 100,
+      "logoPath": "assets/logos/Leudeke_Logo.png",
+      "logoWidth": 400.0,
+      "logoHeight": 100.0,
       "navItems": [
         {"label": "Home", "path": "/home"},
-        {"label": "Issues", "path": "/issues"},
         {"label": "About", "path": "/about"},
-        {"label": "Endorsements", "path": "/endorsements"},
-        {"label": "Donate", "path": "/donate"}
-      ]
-    },
-    "donateSection": {
-      "title": "Make a Difference!",
-      "buttonText": "Donate Now"
-    },
-    "donationWidget": {
-      "amountSelectionPrompt": "Please select or enter an amount",
-      "customAmountLabel": "Custom Amount",
-      "continueButtonText": "Continue",
-      "firstNameValidation": "Please enter your first name",
-      "lastNameValidation": "Please enter your last name",
-      "addressValidation": "Please enter your address",
-      "addressLine2Label": "Address Line 2 (Optional)",
-      "cityLabel": "City",
-      "stateLabel": "State",
-      "zipCodeLabel": "Zip Code",
-      "employerLabel": "Employer",
-      "occupationLabel": "Occupation",
-      "proceedToPaymentButtonText": "Proceed to Payment",
-      "coverFeesText": "Cover transaction fees",
-      "recurringDonationText": "Make this a recurring monthly donation",
-      "emailLabel": "Email",
-      "phoneLabel": "Phone Number",
-      "emailValidationEmpty": "Please enter your email",
-      "emailValidationInvalid": "Please enter a valid email address",
-      "contactEmailText": "Contact me via Email",
-      "contactPhoneText": "Contact me via Phone Call",
-      "contactMailText": "Contact me via Mail",
-      "contactSmsText": "Contact me via SMS",
-      "submitButtonText": "Submit",
-      "successMessage": "Thank you for your donation!",
-      "errorMessages": {
-        "submitFormError": "Error submitting form: {statusCode}. Please try again.",
-        "submitFormGenericError": "An error occurred: {error}. Please check your connection and try again.",
-        "createPaymentIntentFailed": "Failed to create payment intent: {body}",
-        "createPaymentIntentError": "Error creating payment intent: {error}",
-        "stripeError": "Error from Stripe: {message}",
-        "unforeseenError": "Unforeseen error: {error}",
-        "submitDetailsFailed": "Failed to submit details: {body}",
-        "submitDetailsError": "Error submitting details: {error}"
-      },
-      "donationAmounts": [
-        25,
-        50,
-        100,
-        250,
-        500,
-        1000
+        {"label": "Issues", "path": "/issues"},
+        {"label": "Donate", "path": "/donate"},
+        {"label": "Endorsements", "path": "/endorsements"}
       ]
     },
     "widgets": {
       "signupForm": {
-        "title": "Join the Movement!",
-        "endorseText": "I endorse Leudeke and allow them to publish my endorsement",
-        "getInvolvedText": "I want to get involved with the campaign!",
+        "endorseText": "I endorse Curtis Leudeke and allow him to publish my endorsement",
+        "getInvolvedText": "I want to get involved with the campaign",
         "automatedMessagingText": "I agree to receive automated messaging from Elect Leudeke",
         "emailOptInText": "I agree to receive emails from Elect Leudeke",
-        "legalText": "Reply STOP to opt out, HELP for help. Msg & data rates may apply. Frequency may vary.",
-        "submitButtonText": "Sign Up",
-        "privacyPolicyText": "Privacy Policy"
+        "buttonText": "Submit",
+        "privacyButtonText": "Privacy Policy"
+      },
+      "donateWidget": {
+        "amounts": [25, 50, 100, 250, 500, 1000],
+        "customAmountLabel": "Custom Amount",
+        "continueButtonText": "Continue",
+        "selectAmountValidation": "Please select or enter an amount",
+        "firstNameLabel": "First Name",
+        "lastNameLabel": "Last Name",
+        "addressLine1Label": "Address Line 1",
+        "addressLine2Label": "Address Line 2 (Optional)",
+        "cityLabel": "City",
+        "stateLabel": "State",
+        "zipCodeLabel": "Zip Code",
+        "employerLabel": "Employer",
+        "occupationLabel": "Occupation",
+        "firstNameValidation": "Please enter your first name",
+        "lastNameValidation": "Please enter your last name",
+        "addressValidation": "Please enter your address",
+        "cityValidation": "Please enter your city",
+        "stateValidation": "Please enter your state",
+        "zipCodeValidation": "Please enter your zip code",
+        "employerValidation": "Please enter your employer",
+        "occupationValidation": "Please enter your occupation",
+        "proceedToPaymentButtonText": "Proceed to Payment",
+        "coverFeesText": "Cover transaction fees",
+        "recurringDonationText": "Make this a recurring monthly donation",
+        "emailLabel": "Email",
+        "phoneNumberLabel": "Phone Number",
+        "emailValidation": "Please enter your email",
+        "invalidEmailValidation": "Please enter a valid email address",
+        "contactEmailText": "Contact me via Email",
+        "contactPhoneText": "Contact me via Phone Call",
+        "contactMailText": "Contact me via Mail",
+        "contactSmsText": "Contact me via SMS",
+        "submitButtonText": "Submit"
       }
     },
+    "donateSection": {
+      "callToActionText": "Make a Difference!",
+      "buttonText": "Donate Now!"
+    },
     "footer": {
-      "paidForText": "Paid for by Elect Leudeke"
+      "paidForText": "Paid for by Elect Leudeke",
+      "facebookLink": "https://www.facebook.com/",
+      "instagramLink": "https://www.instagram.com/",
+      "xLink": "https://twitter.com/",
+      "linkedinLink": "https://www.linkedin.com/",
+      "youtubeLink": "https://www.youtube.com/"
     }
   }
 }

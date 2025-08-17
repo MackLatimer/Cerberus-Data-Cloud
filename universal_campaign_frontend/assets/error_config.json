@@ -1,195 +1,224 @@
 {
   "campaignId": "error",
-  "defaultCampaign": false,
-  "stripeSecretKeySecretManagerName": "",
-  "stripeWebhookKeySecretManagerName": "",
-  "apiBaseUrl": "",
-  "stripePublicKey": "",
+  "defaultCampaign": true,
+  "stripePublicKey": "pk_test_51Rprl4DJohanGZYnPtUtDTPfjA4PNgyif3BFs4IcCn3CB389C7V2T6AH2zq7TPsuhPSDf7BGK1Ytc6atHH5gqKog00kvIBYB7b",
+  "stripeSecretKeySecretManagerName": "projects/Cerberus-Data-Cloud/secrets/ERROR_STRIPE_SECRET_KEY",
+  "stripeWebhookKeySecretManagerName": "projects/Cerberus-Data-Cloud/secrets/ERROR_STRIPE_WEBHOOK_KEY",
+  "apiBaseUrl": "https://cerberus-backend-885603051818.us-south1.run.app/api/v1",
   "theme": {
-    "primaryColor": "#FF0000",
-    "secondaryColor": "#000000",
+    "primaryColor": "#002663",
+    "secondaryColor": "#A01124",
     "backgroundColor": "#FFFFFF",
     "textColor": "#000000",
-    "fontFamily": "Roboto",
-    "secondaryFontFamily": "Roboto",
+    "fontFamily": "Bebas Neue",
+    "secondaryFontFamily": "tinos",
+    "usePageTransitions": false,
     "issuesSectionTheme": {
-      "backgroundColor": "#FFFFFF",
-      "textColor": "#000000",
-      "buttonColor": "#FF0000",
-      "buttonTextColor": "#FFFFFF"
+      "backgroundColor": "#a01124",
+      "textColor": "#FFFFFF",
+      "buttonColor": "#FFFFFF",
+      "buttonTextColor": "#002663"
     },
     "aboutMeSectionTheme": {
       "backgroundColor": "#FFFFFF",
       "textColor": "#000000",
-      "buttonColor": "#FF0000",
+      "buttonColor": "#002663",
       "buttonTextColor": "#FFFFFF"
     },
     "endorsementsSectionTheme": {
-      "backgroundColor": "#FFFFFF",
-      "textColor": "#000000",
-      "buttonColor": "#FF0000",
-      "buttonTextColor": "#FFFFFF"
+      "backgroundColor": "#002663",
+      "textColor": "#FFFFFF",
+      "buttonColor": "#FFFFFF",
+      "buttonTextColor": "#a01124"
     },
     "donateSectionTheme": {
       "backgroundColor": "#FFFFFF",
       "textColor": "#000000",
-      "buttonColor": "#FF0000",
+      "buttonColor": "#002663",
       "buttonTextColor": "#FFFFFF"
     }
   },
   "content": {
-    "siteTitle": "Error",
-    "faviconImagePath": "assets/Cerberus_Favicon.png",
-    "homePage": {
-      "heroTitle": "Error",
-      "callToActionText": "",
-      "heroImagePath": "",
-      "homeTitleMessage": "",
-      "issuesImage": "",
-      "issuesMessage": "",
-      "issuesButton": "",
-      "aboutMeImage": "",
-      "aboutMeMessage": "",
-      "aboutMeButton": "",
-      "endorsementsImage": "",
-      "endorsementsMessage": "",
-      "endorsementsButton": "",
-      "donateImage": "",
-      "donateMessage": "",
-      "donateButton": ""
-    },
-    "aboutPage": {
-      "appBarTitle": "Error",
-      "heroImagePath": "",
-      "bioTitle": "Error",
-      "bioParagraph1": "",
-      "bioParagraph2": "",
-      "bioParagraph3": ""
-    },
+    "siteTitle": "Curtis Error for County Commissioner",
+    "faviconImagePath": "assets/favicons/Error_Favicon.png",
+    "launchStatus": false,
     "comingSoonPage": {
-      "title": "Error",
-      "message": "Something went wrong."
+      "title": "Our new website is coming soon!",
+      "subtitle": "In the meantime, you can support our campaign by donating below."
     },
-    "donatePage": {
-      "appBarTitle": "Error",
-      "heroImagePath": "",
-      "title": "Error",
-      "mailDonationText": "",
-      "thankYouText": ""
-    },
-    "endorsementsPage": {
-      "appBarTitle": "Error",
-      "heroImagePath": "",
-      "title": "Error",
-      "endorsements": [],
-      "communityEndorsements": [],
-      "endorsementTitle1": "",
-      "endorsementTitle2": "",
-      "endorsementBodyParagraph": ""
+    "homePage": {
+      "heroTitle": "Welcome to our campaign!",
+      "callToActionText": "Join us in making a difference.",
+      "heroImagePath": "assets/images/Error_Home_Hero.png",
+      "homeTitleMessage": "Welcome to our campaign!",
+      "issuesImage": "assets/images/Error_Home_Issues_Preview.png",
+      "issuesMessage": "Learn about the key issues we're fighting for.",
+      "issuesButton": "View Issues",
+      "aboutMeImage": "assets/images/Error_Home_About_Preview.png",
+      "aboutMeMessage": "Discover more about Curtis Error.",
+      "aboutMeButton": "About Me",
+      "endorsementsImage": "assets/images/Error_Home_Endorsements_Preview.png",
+      "endorsementsMessage": "See who supports our campaign.",
+      "endorsementsButton": "View Endorsements",
+      "donateImage": "assets/images/Error_Home_Donate_Preview.png",
+      "donateMessage": "Support our mission with a donation.",
+      "donateButton": "Donate Now"
     },
     "issuesPage": {
-      "appBarTitle": "Error",
-      "heroImagePath": "",
-      "title": "Error",
-      "issueSections": []
+      "appBarTitle": "Key Issues",
+      "heroImagePath": "assets/images/Error_Issues_Hero.png",
+      "title": "Issues",
+      "issueSections": [
+        {
+          "title": "Economic Growth & Job Creation",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Curtis believes in fostering a business-friendly environment that attracts new opportunities and supports local entrepreneurs.",
+          "backgroundColor": "#a01124",
+          "textColor": "#FFFFFF",
+          "imagePath": "assets/images/Error_Issues_Issue1.png"
+        },
+        {
+          "title": "Community Safety & Emergency Services",
+          "description": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat a pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Ensuring our neighborhoods are safe and our first responders are well-equipped is a top priority.",
+          "backgroundColor": "#a01124",
+          "textColor": "#FFFFFF",
+          "imagePath": "assets/images/Error_Issues_Issue2.png"
+        },
+        {
+          "title": "Infrastructure Development & Maintenance",
+          "description": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. We must invest in maintaining and improving our roads, bridges, and public utilities to support our growing community.",
+          "backgroundColor": "#002663",
+          "textColor": "#FFFFFF",
+          "imagePath": "assets/images/Error_Issues_Issue3.png"
+        },
+        {
+          "title": "Fiscal Responsibility & Transparent Governance",
+          "description": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Curtis is committed to responsible spending of taxpayer dollars and ensuring all county operations are transparent and accountable to the public.",
+          "backgroundColor": "#002663",
+          "textColor": "#FFFFFF",
+          "imagePath": "assets/images/Error_Issues_Issue4.png"
+        }
+      ]
     },
-    "privacyPolicyPage": {
-      "appBarTitle": "Error",
-      "title": "Error",
-      "content": ""
+    "aboutPage": {
+      "appBarTitle": "About Curtis Error",
+      "heroImagePath": "assets/images/Error_About_Hero.png",
+      "bioTitle": "About Me",
+      "bioParagraph1": "Curtis Error is a dedicated public servant with a passion for community development and effective governance. With a background in business and a commitment to fiscal responsibility, Curtis brings a wealth of experience to the table. He is a strong advocate for transparency and accountability in government, and he is committed to working collaboratively to find solutions to the challenges facing our county.\n\nThroughout his career, Curtis has been actively involved in numerous local initiatives, from supporting small businesses to improving public infrastructure. He believes in a common-sense approach to problem-solving and is dedicated to ensuring that the voices of all residents are heard. His vision for the county is one of a smart growth, economic prosperity, and a high quality of life for all.\n\nAs a husband and father, Curtis understands the importance of building a strong and vibrant community for future generations. He is a firm believer in the power of collaboration and is committed to working with residents, business leaders, and community organizations to create a better future for our county.",
+      "bioParagraph2": "This is a placeholder for the second paragraph of the bio. It will be placed between the double picture and the single picture.",
+      "bioParagraph3": "This is a placeholder for the third paragraph of the bio. It will be placed after the single picture.",
+      "bioImage1Path": "assets/images/Error_About_Bio1.png",
+      "bioImage2Path": "assets/images/Error_About_Bio2.png",
+      "bioImage3Path": "assets/images/Error_About_Bio3.png"
+    },
+    "endorsementsPage": {
+      "appBarTitle": "Endorsements",
+      "heroImagePath": "assets/images/Error_Endorsements_Hero.png",
+      "title": "Endorsed by Leaders and the Community",
+      "endorsements": [
+        {
+          "name": "John Doe",
+          "quote": "Curtis Error is the leader we need for our community. His dedication and vision are truly inspiring.",
+          "imagePath": "assets/images/Error_Endorsements_1.png",
+          "imageLeft": true,
+          "backgroundColor": "#002663",
+          "textColor": "#FFFFFF"
+        },
+        {
+          "name": "Jane Smith",
+          "quote": "I've known Curtis for years, and he is a man of integrity and action. He will bring positive change to our county.",
+          "imagePath": "assets/images/Error_Endorsements_2.png",
+          "imageLeft": false,
+          "backgroundColor": "#A01124",
+          "textColor": "#FFFFFF"
+        }
+      ],
+      "communityTitle": "Community Endorsements",
+      "communityEndorsements": [
+        "John Doe",
+        "Jane Smith",
+        "Bob Builder",
+        "Alice Johnson",
+        "Charlie Brown",
+        "Emily Davis",
+        "Frank White"
+      ],
+      "endorsementCallToAction": "Join the list of supporters!",
+      "endorsementCallToActionText": "Fill out the form below to endorse Curtis Error and allow him to publish your endorsement on this page."
+    },
+    "donatePage": {
+      "heroImagePath": "assets/images/Error_Donate_Hero.png",
+      "title": "Support Our Campaign",
+      "subtitle": "Your contribution helps us make a difference in our community.",
+      "mailDonationText": "If you prefer to donate by mail, please send a check payable to \"Curtis Error Campaign\" to: 123 Main Street, Anytown, USA 12345"
     },
     "commonAppBar": {
-      "logoPath": "assets/images/Blair_Logo.png",
-      "logoWidth": 0,
-      "logoHeight": 0,
-      "navItems": []
-    },
-    "donateSection": {
-      "title": "",
-      "buttonText": ""
-    },
-    "footer": {
-      "paidForText": ""
-    },
-    "errorPage": {
-      "appBarTitle": "Error",
-      "errorMessagePrefix": "An error occurred: "
+      "logoPath": "assets/logos/Error_Logo.png",
+      "logoWidth": 400.0,
+      "logoHeight": 100.0,
+      "navItems": [
+        {"label": "Home", "path": "/home"},
+        {"label": "About", "path": "/about"},
+        {"label": "Issues", "path": "/issues"},
+        {"label": "Donate", "path": "/donate"},
+        {"label": "Endorsements", "path": "/endorsements"}
+      ]
     },
     "widgets": {
       "signupForm": {
-        "title": "",
-        "endorseText": "",
-        "getInvolvedText": "",
-        "automatedMessagingText": "",
-        "emailOptInText": "",
-        "legalText": "",
-        "submitButtonText": "",
-        "privacyPolicyText": ""
+        "endorseText": "I endorse Curtis Error and allow him to publish my endorsement",
+        "getInvolvedText": "I want to get involved with the campaign",
+        "automatedMessagingText": "I agree to receive automated messaging from Elect Error",
+        "emailOptInText": "I agree to receive emails from Elect Error",
+        "buttonText": "Submit",
+        "privacyButtonText": "Privacy Policy"
+      },
+      "donateWidget": {
+        "amounts": [25, 50, 100, 250, 500, 1000],
+        "customAmountLabel": "Custom Amount",
+        "continueButtonText": "Continue",
+        "selectAmountValidation": "Please select or enter an amount",
+        "firstNameLabel": "First Name",
+        "lastNameLabel": "Last Name",
+        "addressLine1Label": "Address Line 1",
+        "addressLine2Label": "Address Line 2 (Optional)",
+        "cityLabel": "City",
+        "stateLabel": "State",
+        "zipCodeLabel": "Zip Code",
+        "employerLabel": "Employer",
+        "occupationLabel": "Occupation",
+        "firstNameValidation": "Please enter your first name",
+        "lastNameValidation": "Please enter your last name",
+        "addressValidation": "Please enter your address",
+        "cityValidation": "Please enter your city",
+        "stateValidation": "Please enter your state",
+        "zipCodeValidation": "Please enter your zip code",
+        "employerValidation": "Please enter your employer",
+        "occupationValidation": "Please enter your occupation",
+        "proceedToPaymentButtonText": "Proceed to Payment",
+        "coverFeesText": "Cover transaction fees",
+        "recurringDonationText": "Make this a recurring monthly donation",
+        "emailLabel": "Email",
+        "phoneNumberLabel": "Phone Number",
+        "emailValidation": "Please enter your email",
+        "invalidEmailValidation": "Please enter a valid email address",
+        "contactEmailText": "Contact me via Email",
+        "contactPhoneText": "Contact me via Phone Call",
+        "contactMailText": "Contact me via Mail",
+        "contactSmsText": "Contact me via SMS",
+        "submitButtonText": "Submit"
       }
     },
-    "donationWidget": {
-        "amountSelectionPrompt": "",
-        "customAmountLabel": "",
-        "continueButtonText": "",
-        "firstNameValidation": "",
-        "lastNameValidation": "",
-        "addressValidation": "",
-        "addressLine2Label": "",
-        "cityLabel": "",
-        "stateLabel": "",
-        "zipCodeLabel": "",
-        "employerLabel": "",
-        "occupationLabel": "",
-        "proceedToPaymentButtonText": "",
-        "coverFeesText": "",
-        "recurringDonationText": "",
-        "emailLabel": "",
-        "phoneLabel": "",
-        "emailValidationEmpty": "",
-        "emailValidationInvalid": "",
-        "contactEmailText": "",
-        "contactPhoneText": "",
-        "contactMailText": "",
-        "contactSmsText": "",
-        "submitButtonText": "",
-        "successMessage": "",
-        "errorMessages": {
-            "submitFormError": "",
-            "submitFormGenericError": "",
-            "createPaymentIntentFailed": "",
-            "createPaymentIntentError": "",
-            "stripeError": "",
-            "unforeseenError": "",
-            "submitDetailsFailed": "",
-            "submitDetailsError": ""
-        },
-        "donationAmounts": []
-    }
-  },
-  "assets": {
-    "faviconImagePath": "assets/Cerberus_Favicon.png",
-    "logoPath": "assets/images/Blair_Logo.png",
-    "homePage": {
-        "logoPath": "assets/images/Blair_Logo.png",
-        "heroImagePath": "assets/images/Blair_Logo.png"
+    "donateSection": {
+      "callToActionText": "Make a Difference!",
+      "buttonText": "Donate Now!"
     },
-    "aboutPage": {
-        "heroImagePath": "assets/images/Blair_Logo.png",
-        "bioImage1Path": "assets/images/Blair_Logo.png",
-        "bioImage2Path": "assets/images/Blair_Logo.png",
-        "bioImage3Path": "assets/images/Blair_Logo.png"
-    },
-    "donatePage": {
-        "heroImagePath": "assets/images/Blair_Logo.png"
-    },
-    "endorsementsPage": {
-        "heroImagePath": "assets/images/Blair_Logo.png"
-    },
-    "issuesPage": {
-        "heroImagePath": "assets/images/Blair_Logo.png"
-    },
-    "commonAppBar": {
-        "logoPath": "assets/images/Blair_Logo.png"
+    "footer": {
+      "paidForText": "Paid for by Elect Error",
+      "facebookLink": "https://www.facebook.com/",
+      "instagramLink": "https://www.instagram.com/",
+      "xLink": "https://twitter.com/",
+      "linkedinLink": "https://www.linkedin.com/",
+      "youtubeLink": "https://www.youtube.com/"
     }
   }
 }
