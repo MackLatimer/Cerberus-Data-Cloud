@@ -12,6 +12,7 @@
     "textColor": "#000000",
     "fontFamily": "Bebas Neue",
     "secondaryFontFamily": "tinos",
+    "usePageTransitions": false,
     "issuesSectionTheme": {
       "backgroundColor": "#a01124",
       "textColor": "#FFFFFF",
@@ -40,6 +41,7 @@
   "content": {
     "siteTitle": "Curtis Emmons for County Commissioner",
     "faviconImagePath": "assets/favicons/Emmons_Favicon.png",
+    "launchStatus": false,
     "comingSoonPage": {
       "title": "Our new website is coming soon!",
       "subtitle": "In the meantime, you can support our campaign by donating below."
@@ -154,7 +156,7 @@
       "logoWidth": 400.0,
       "logoHeight": 100.0,
       "navItems": [
-        {"label": "Home", "path": "/"},
+        {"label": "Home", "path": "/home"},
         {"label": "About", "path": "/about"},
         {"label": "Issues", "path": "/issues"},
         {"label": "Donate", "path": "/donate"},

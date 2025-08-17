@@ -70,6 +70,7 @@ class EndorsementsPage extends StatelessWidget {
                 padding: const EdgeInsets.all(24.0),
                 child: Column(
                   children: [
+                    const SizedBox(height: 40),
                     Text(
                       config.content.endorsementsPage.communityTitle,
                       style: Theme.of(context).textTheme.headlineMedium,
@@ -86,7 +87,7 @@ class EndorsementsPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 40),
                     Text(
-                      config.content.endorsementsPage.endorsementCallToAction, 
+                      config.content.endorsementsPage.endorsementCallToAction,
                       style: Theme.of(context).textTheme.headlineSmall,
                       textAlign: TextAlign.center,
                     ),

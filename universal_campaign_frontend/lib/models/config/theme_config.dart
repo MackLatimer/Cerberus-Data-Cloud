@@ -7,6 +7,7 @@ class ThemeConfig {
   final String textColor;
   final String fontFamily;
   final String secondaryFontFamily;
+  final bool usePageTransitions;
   final HomePageSectionTheme issuesSectionTheme;
   final HomePageSectionTheme aboutMeSectionTheme;
   final HomePageSectionTheme endorsementsSectionTheme;
@@ -19,6 +20,7 @@ class ThemeConfig {
     required this.textColor,
     required this.fontFamily,
     required this.secondaryFontFamily,
+    required this.usePageTransitions,
     required this.issuesSectionTheme,
     required this.aboutMeSectionTheme,
     required this.endorsementsSectionTheme,
@@ -33,6 +35,7 @@ class ThemeConfig {
       textColor: json['textColor'] ?? '',
       fontFamily: json['fontFamily'] ?? '',
       secondaryFontFamily: json['secondaryFontFamily'] ?? '',
+      usePageTransitions: json['usePageTransitions'] ?? true,
       issuesSectionTheme: HomePageSectionTheme.fromJson(json['issuesSectionTheme'] ?? {}),
       aboutMeSectionTheme: HomePageSectionTheme.fromJson(json['aboutMeSectionTheme'] ?? {}),
       endorsementsSectionTheme: HomePageSectionTheme.fromJson(json['endorsementsSectionTheme'] ?? {}),

@@ -5,20 +5,20 @@ class EndorsementsPageContent {
   final String heroImagePath;
   final String title;
   final List<Endorsement> endorsements;
+  final String communityTitle;
   final List<String> communityEndorsements;
-  final String endorsementTitle1;
-  final String endorsementTitle2;
-  final String endorsementBodyParagraph;
+  final String endorsementCallToAction;
+  final String endorsementCallToActionText;
 
   EndorsementsPageContent({
     required this.appBarTitle,
     required this.heroImagePath,
     required this.title,
     required this.endorsements,
+    required this.communityTitle,
     required this.communityEndorsements,
-    required this.endorsementTitle1,
-    required this.endorsementTitle2,
-    required this.endorsementBodyParagraph,
+    required this.endorsementCallToAction,
+    required this.endorsementCallToActionText,
   });
 
   factory EndorsementsPageContent.fromJson(Map<String, dynamic> json) {
@@ -29,12 +29,12 @@ class EndorsementsPageContent {
       endorsements: (json['endorsements'] as List? ?? [])
           .map((i) => Endorsement.fromJson(i))
           .toList(),
+      communityTitle: json['communityTitle'] ?? '',
       communityEndorsements: (json['communityEndorsements'] as List? ?? [])
           .map((i) => i.toString())
           .toList(),
-      endorsementTitle1: json['endorsementTitle1'] ?? '',
-      endorsementTitle2: json['endorsementTitle2'] ?? '',
-      endorsementBodyParagraph: json['endorsementBodyParagraph'] ?? '',
+      endorsementCallToAction: json['endorsementCallToAction'] ?? '',
+      endorsementCallToActionText: json['endorsementCallToActionText'] ?? '',
     );
   }
 }

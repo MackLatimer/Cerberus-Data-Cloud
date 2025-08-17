@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
 
   Widget buildApp(BuildContext context, CampaignConfig config) {
     final router = GoRouter(
-      initialLocation: '/home',
+      initialLocation: config.content.launchStatus ? '/home' : '/coming-soon',
       routes: [
         GoRoute(
           path: '/home',
@@ -128,6 +128,15 @@ class MyApp extends StatelessWidget {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
+      pageTransitionsTheme: config.theme.usePageTransitions ? const PageTransitionsTheme() : const PageTransitionsTheme(
+        builders: <TargetPlatform, PageTransitionsBuilder>{
+          TargetPlatform.android: NoOpPageTransitionsBuilder(),
+          TargetPlatform.iOS: NoOpPageTransitionsBuilder(),
+          TargetPlatform.linux: NoOpPageTransitionsBuilder(),
+          TargetPlatform.macOS: NoOpPageTransitionsBuilder(),
+          TargetPlatform.windows: NoOpPageTransitionsBuilder(),
+        },
+      ),
       colorScheme: ColorScheme.fromSeed(
         seedColor: primaryColor,
         primary: primaryColor,
@@ -195,5 +204,20 @@ class MyApp extends StatelessWidget {
       default:
         return GoogleFonts.robotoTextTheme(); // Fallback to Roboto
     }
+  }
+}
+
+class NoOpPageTransitionsBuilder extends PageTransitionsBuilder {
+  const NoOpPageTransitionsBuilder();
+
+  @override
+  Widget buildTransitions<T>(
+    PageRoute<T> route,
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
+    return child;
   }
 }

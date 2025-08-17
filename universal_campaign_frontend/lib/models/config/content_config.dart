@@ -16,6 +16,7 @@ import 'package:universal_campaign_frontend/models/config/signup_form_content.da
 class ContentConfig {
   final String siteTitle;
   final String faviconImagePath;
+  final bool launchStatus;
   final HomePageContent homePage;
   final AboutPageContent aboutPage;
   final ComingSoonPageContent comingSoonPage;
@@ -34,6 +35,7 @@ class ContentConfig {
   ContentConfig({
     required this.siteTitle,
     required this.faviconImagePath,
+    required this.launchStatus,
     required this.homePage,
     required this.aboutPage,
     required this.comingSoonPage,
@@ -54,6 +56,7 @@ class ContentConfig {
     return ContentConfig(
       siteTitle: json['siteTitle'] ?? '',
       faviconImagePath: json['faviconImagePath'] ?? '',
+      launchStatus: json['launchStatus'] ?? false,
       homePage: HomePageContent.fromJson(json['homePage'] ?? {}),
       aboutPage: AboutPageContent.fromJson(json['aboutPage'] ?? {}),
       comingSoonPage: ComingSoonPageContent.fromJson(json['comingSoonPage'] ?? {}),
