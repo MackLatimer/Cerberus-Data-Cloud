@@ -106,7 +106,6 @@ class MyApp extends StatelessWidget {
     Color textColor = _parseColor(config.theme.textColor, Colors.black);
 
     final TextTheme primaryFontTextTheme = _getGoogleFontTextTheme(config.theme.fontFamily);
-    final TextTheme secondaryFontTextTheme = _getGoogleFontTextTheme(config.theme.secondaryFontFamily);
 
     final TextTheme appTextTheme = Theme.of(context).textTheme.copyWith(
           displayLarge: primaryFontTextTheme.displayLarge?.copyWith(fontSize: 152, color: textColor, fontWeight: FontWeight.bold),
@@ -154,8 +153,8 @@ class MyApp extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: secondaryColor,
           foregroundColor: Colors.white,
-          textStyle: appTextTheme.titleSmall,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+          textStyle: appTextTheme.labelLarge,
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
@@ -164,7 +163,7 @@ class MyApp extends StatelessWidget {
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: secondaryColor,
-          textStyle: appTextTheme.labelMedium?.copyWith(color: secondaryColor),
+          textStyle: appTextTheme.labelLarge?.copyWith(color: secondaryColor),
         ),
       ),
     );

@@ -20,11 +20,22 @@ class EndorsementsPage extends StatelessWidget {
     final isCompact = windowSize == WindowSize.compact;
     final heroHeight = isCompact ? MediaQuery.of(context).size.height * 0.5 : MediaQuery.of(context).size.height;
 
+    final double screenWidth = MediaQuery.of(context).size.width;
+    double appBarHeight;
+    if (screenWidth < 600) {
+      appBarHeight = 240.0; // Compact
+    } else if (screenWidth < 1000) {
+      appBarHeight = 190.0; // Medium
+    } else {
+      appBarHeight = 120.0; // Normal
+    }
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: CommonAppBar(
         config: config,
         scrollController: scrollController,
+        appBarHeight: appBarHeight, // Pass the calculated height
       ),
       body: CustomScrollView(
         controller: scrollController,

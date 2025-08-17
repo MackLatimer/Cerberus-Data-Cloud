@@ -6,7 +6,7 @@ class SignupFormContent {
   final String emailOptInText;
   final String legalText;
   final String buttonText;
-  final String privacyPolicyText;
+  final String privacyButtonText;
 
   SignupFormContent({
     required this.title,
@@ -16,7 +16,7 @@ class SignupFormContent {
     required this.emailOptInText,
     required this.legalText,
     required this.buttonText,
-    required this.privacyPolicyText,
+    required this.privacyButtonText,
   });
 
   factory SignupFormContent.fromJson(Map<String, dynamic> json) {
@@ -28,7 +28,7 @@ class SignupFormContent {
       emailOptInText: json['emailOptInText'] ?? '',
       legalText: json['legalText'] ?? '',
       buttonText: json['buttonText'] ?? '',
-      privacyPolicyText: json['privacyPolicyText'] ?? '',
+      privacyButtonText: json['privacyButtonText'] ?? '',
     );
   }
 }

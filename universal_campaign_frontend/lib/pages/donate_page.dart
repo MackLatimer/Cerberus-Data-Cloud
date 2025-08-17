@@ -14,11 +14,22 @@ class DonatePage extends StatelessWidget {
     final config = Provider.of<CampaignProvider>(context).campaignConfig!;
     final ScrollController scrollController = ScrollController();
 
+    final double screenWidth = MediaQuery.of(context).size.width;
+    double appBarHeight;
+    if (screenWidth < 600) {
+      appBarHeight = 240.0; // Compact
+    } else if (screenWidth < 1000) {
+      appBarHeight = 190.0; // Medium
+    } else {
+      appBarHeight = 120.0; // Normal
+    }
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: CommonAppBar(
         config: config,
         scrollController: scrollController,
+        appBarHeight: appBarHeight, // Pass the calculated height
       ),
       body: CustomScrollView(
         controller: scrollController,

@@ -230,7 +230,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
                       context.go('/privacy-policy');
                     },
                     child: Text(
-                      widget.config.content.signupForm.privacyPolicyText,
+                      widget.config.content.signupForm.privacyButtonText,
                       style: textTheme.bodyMedium?.copyWith(decoration: TextDecoration.underline),
                     ),
                   ),

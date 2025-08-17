@@ -151,7 +151,8 @@
         "getInvolvedText": "I want to get involved with the campaign",
         "automatedMessagingText": "I agree to receive automated messaging from Elect Emmons",
         "emailOptInText": "I agree to receive emails from Elect Emmons",
-        "buttonText": "Submit"
+        "buttonText": "Submit",
+        "privacyButtonText": "Privacy Policy"
       }
     },
     "donateSection": {
@@ -159,7 +160,12 @@
       "buttonText": "Donate Now!"
     },
     "footer": {
-      "paidForText": "Paid for by Elect Emmons"
+      "paidForText": "Paid for by Elect Emmons",
+      "facebookLink": "https://www.facebook.com/",
+      "instagramLink": "https://www.instagram.com/",
+      "xLink": "https://twitter.com/",
+      "linkedinLink": "https://www.linkedin.com/",
+      "youtubeLink": "https://www.youtube.com/"
     }
   }
 }

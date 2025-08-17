@@ -67,7 +67,7 @@ class ContentConfig {
       errorPage: ErrorPageContent.fromJson(json['errorPage'] ?? {}),
       widgets: WidgetsContent.fromJson(json['widgets'] ?? {}),
       donationWidget: DonationWidgetContent.fromJson(json['donationWidget'] ?? {}),
-      signupForm: SignupFormContent.fromJson(json['signupForm'] ?? {}),
+      signupForm: SignupFormContent.fromJson(json['widgets']['signupForm'] ?? {}),
     );
   }
 }

@@ -9,19 +9,21 @@ class CommonAppBar extends StatefulWidget implements PreferredSizeWidget {
   final CampaignConfig config;
   final List<Widget>? actions;
   final ScrollController? scrollController;
+  final double appBarHeight; // New parameter
 
   const CommonAppBar({
     super.key,
     required this.config,
     this.actions,
     this.scrollController,
+    required this.appBarHeight, // New parameter
   });
 
   @override
   CommonAppBarState createState() => CommonAppBarState();
 
   @override
-  Size get preferredSize => const Size.fromHeight(220.0);
+  Size get preferredSize => Size.fromHeight(appBarHeight); // Use the passed height
 }
 
 class CommonAppBarState extends State<CommonAppBar> {
@@ -129,7 +131,7 @@ class CommonAppBarState extends State<CommonAppBar> {
                   onPressed: () => context.go(item.path),
                   child: Text(
                     item.label,
-                    style: textTheme.labelLarge?.copyWith(
+                    style: textTheme.titleSmall?.copyWith(
                       color: Color(int.parse(widget.config.theme.primaryColor.substring(1, 7), radix: 16) + 0xFF000000),
                       fontWeight: FontWeight.bold,
                     ),
@@ -149,7 +151,7 @@ class CommonAppBarState extends State<CommonAppBar> {
                     onPressed: () => context.go(item.path),
                     child: Text(
                       item.label,
-                      style: textTheme.labelLarge?.copyWith(
+                      style: textTheme.titleSmall?.copyWith(
                         color: Color(int.parse(widget.config.theme.primaryColor.substring(1, 7), radix: 16) + 0xFF000000),
                         fontWeight: FontWeight.bold,
                       ),
@@ -167,42 +169,52 @@ class CommonAppBarState extends State<CommonAppBar> {
         final isCompact = constraints.maxWidth < 600;
         final isMedium = constraints.maxWidth < 1000;
 
+        double appBarHeight;
+        if (isCompact) {
+          appBarHeight = 240.0;
+        } else if (isMedium) {
+          appBarHeight = 190.0;
+        } else {
+          appBarHeight = 120.0;
+        }
+
         return AppBar(
           elevation: opacity,
           backgroundColor: Colors.white.withAlpha((255 * opacity).toInt()),
           title: null,
           automaticallyImplyLeading: false,
-          flexibleSpace: Center(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0),
-              child: isCompact || isMedium
-                  ? (Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Image.asset(
-                          widget.config.content.commonAppBar.logoPath.isNotEmpty ? widget.config.content.commonAppBar.logoPath : 'assets/images/error_placeholder.png',
-                          width: widget.config.content.commonAppBar.logoWidth,
-                          height: widget.config.content.commonAppBar.logoHeight,
-                        ),
-                        const SizedBox(height: 16.0),
-                        if (isCompact)
-                          compactNavigation
-                        else
-                          navigation,
-                      ],
-                    ))
-                  : Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Image.asset(
-                          widget.config.content.commonAppBar.logoPath.isNotEmpty ? widget.config.content.commonAppBar.logoPath : 'assets/images/error_placeholder.png',
-                          width: widget.config.content.commonAppBar.logoWidth,
-                          height: widget.config.content.commonAppBar.logoHeight,
-                        ),
+          toolbarHeight: appBarHeight,
+          flexibleSpace: Container(
+            height: appBarHeight, // Explicitly set height
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+            child: isCompact || isMedium
+                ? (Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Image.asset(
+                        widget.config.content.commonAppBar.logoPath.isNotEmpty ? widget.config.content.commonAppBar.logoPath : 'assets/images/error_placeholder.png',
+                        width: widget.config.content.commonAppBar.logoWidth,
+                        height: widget.config.content.commonAppBar.logoHeight,
+                      ),
+                      const SizedBox(height: 16.0),
+                      if (isCompact)
+                        compactNavigation
+                      else
                         navigation,
-                      ],
-                    ),
-            ),
+                    ],
+                  ))
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Image.asset(
+                        widget.config.content.commonAppBar.logoPath.isNotEmpty ? widget.config.content.commonAppBar.logoPath : 'assets/images/error_placeholder.png',
+                        width: widget.config.content.commonAppBar.logoWidth,
+                        height: widget.config.content.commonAppBar.logoHeight,
+                      ),
+                      navigation,
+                    ],
+                  ),
           ),
           actions: widget.actions,
         );

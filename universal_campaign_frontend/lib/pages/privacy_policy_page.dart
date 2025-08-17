@@ -13,9 +13,20 @@ class PrivacyPolicyPage extends StatelessWidget {
     final config = Provider.of<CampaignProvider>(context).campaignConfig!;
     final textTheme = Theme.of(context).textTheme;
 
+    final double screenWidth = MediaQuery.of(context).size.width;
+    double appBarHeight;
+    if (screenWidth < 600) {
+      appBarHeight = 240.0; // Compact
+    } else if (screenWidth < 1000) {
+      appBarHeight = 190.0; // Medium
+    } else {
+      appBarHeight = 120.0; // Normal
+    }
+
     return Scaffold(
       appBar: CommonAppBar(
         config: config,
+        appBarHeight: appBarHeight, // Pass the calculated height
       ),
       body: CustomScrollView(
         slivers: <Widget>[

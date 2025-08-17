@@ -180,7 +180,7 @@
         "emailOptInText": "I agree to receive emails from Elect Tice",
         "legalText": "Reply STOP to opt out, HELP for help. Msg & data rates may apply. Frequency may vary.",
         "submitButtonText": "Sign Up",
-        "privacyPolicyText": "Privacy Policy"
+        "privacyButtonText": "Privacy Policy"
       }
     },
     "footer": {
