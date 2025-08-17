@@ -2,6 +2,7 @@ class DonationWidgetContent {
   final List<int> amounts;
   final String customAmountLabel;
   final String continueButtonText;
+  final String selectAmountValidation;
   final String firstNameLabel;
   final String lastNameLabel;
   final String addressLine1Label;
@@ -36,6 +37,7 @@ class DonationWidgetContent {
     required this.amounts,
     required this.customAmountLabel,
     required this.continueButtonText,
+    required this.selectAmountValidation,
     required this.firstNameLabel,
     required this.lastNameLabel,
     required this.addressLine1Label,
@@ -72,6 +74,7 @@ class DonationWidgetContent {
       amounts: List<int>.from(json['amounts'] ?? [25, 50, 100, 250, 500, 1000]),
       customAmountLabel: json['customAmountLabel'] ?? 'Custom Amount',
       continueButtonText: json['continueButtonText'] ?? 'Continue',
+      selectAmountValidation: json['selectAmountValidation'] ?? 'Please select or enter an amount',
       firstNameLabel: json['firstNameLabel'] ?? 'First Name',
       lastNameLabel: json['lastNameLabel'] ?? 'Last Name',
       addressLine1Label: json['addressLine1Label'] ?? 'Address Line 1',
