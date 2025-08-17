@@ -169,7 +169,7 @@ class _DonationWidgetState extends State<DonationWidget> {
       if (response.statusCode == 200) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Thank you for your donation!')),
+            const SnackBar(content: Text('Thank you for your donation!'))
           );
           context.go('/home');
         }
@@ -189,13 +189,14 @@ class _DonationWidgetState extends State<DonationWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final donationWidgetContent = widget.config.content.donationWidget;
     return FutureBuilder(
       future: _stripeInitializationFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return AnimatedSwitcher(
             duration: const Duration(milliseconds: 300),
-            child: _buildStep(),
+            child: _buildStep(donationWidgetContent),
           );
         }
         return const Center(child: CircularProgressIndicator());
@@ -203,18 +204,18 @@ class _DonationWidgetState extends State<DonationWidget> {
     );
   }
 
-  Widget _buildStep() {
+  Widget _buildStep(donationWidgetContent) {
     switch (_step) {
       case DonationStep.amount:
-        return _buildAmountStep();
+        return _buildAmountStep(donationWidgetContent);
       case DonationStep.details:
-        return _buildDetailsStep();
+        return _buildDetailsStep(donationWidgetContent);
       case DonationStep.contact:
-        return _buildContactStep();
+        return _buildContactStep(donationWidgetContent);
     }
   }
 
-  Widget _buildAmountStep() {
+  Widget _buildAmountStep(donationWidgetContent) {
     return Column(
       key: const ValueKey<int>(1),
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -223,9 +224,9 @@ class _DonationWidgetState extends State<DonationWidget> {
           spacing: 10,
           runSpacing: 10,
           alignment: WrapAlignment.center,
-          children: [25, 50, 100, 250, 500, 1000]
+          children: donationWidgetContent.amounts
               .map((amount) => ChoiceChip(
-                    label: const Text('\$amount'),
+                    label: Text('\$$amount'),
                     selected: _selectedAmount == amount,
                     onSelected: (selected) {
                       setState(() {
@@ -241,8 +242,8 @@ class _DonationWidgetState extends State<DonationWidget> {
         const SizedBox(height: 20),
         TextField(
           controller: _customAmountController,
-          decoration: const InputDecoration(
-            labelText: 'Custom Amount',
+          decoration: InputDecoration(
+            labelText: donationWidgetContent.customAmountLabel,
             prefixText: r'$',
           ),
           keyboardType: TextInputType.number,
@@ -255,13 +256,13 @@ class _DonationWidgetState extends State<DonationWidget> {
         const SizedBox(height: 20),
         ElevatedButton(
           onPressed: _createPaymentIntent,
-          child: const Text('Continue'),
+          child: Text(donationWidgetContent.continueButtonText),
         ),
       ],
     );
   }
 
-  Widget _buildDetailsStep() {
+  Widget _buildDetailsStep(donationWidgetContent) {
     return Form(
       key: _formKey,
       child: Column(
@@ -269,56 +270,56 @@ class _DonationWidgetState extends State<DonationWidget> {
         children: [
           TextFormField(
             controller: _firstNameController,
-            decoration: const InputDecoration(labelText: 'First Name'),
-            validator: (value) => value!.isEmpty ? 'Please enter your first name' : null,
+            decoration: InputDecoration(labelText: donationWidgetContent.firstNameLabel),
+            validator: (value) => value!.isEmpty ? donationWidgetContent.firstNameValidation : null,
           ),
           TextFormField(
             controller: _lastNameController,
-            decoration: const InputDecoration(labelText: 'Last Name'),
-            validator: (value) => value!.isEmpty ? 'Please enter your last name' : null,
+            decoration: InputDecoration(labelText: donationWidgetContent.lastNameLabel),
+            validator: (value) => value!.isEmpty ? donationWidgetContent.lastNameValidation : null,
           ),
           TextFormField(
             controller: _addressLine1Controller,
-            decoration: const InputDecoration(labelText: 'Address Line 1'),
-            validator: (value) => value!.isEmpty ? 'Please enter your address' : null,
+            decoration: InputDecoration(labelText: donationWidgetContent.addressLine1Label),
+            validator: (value) => value!.isEmpty ? donationWidgetContent.addressValidation : null,
           ),
           TextFormField(
             controller: _addressLine2Controller,
-            decoration: const InputDecoration(labelText: 'Address Line 2 (Optional)'),
+            decoration: InputDecoration(labelText: donationWidgetContent.addressLine2Label),
           ),
           TextFormField(
             controller: _addressCityController,
-            decoration: const InputDecoration(labelText: 'City'),
-            validator: (value) => value!.isEmpty ? 'Please enter your city' : null,
+            decoration: InputDecoration(labelText: donationWidgetContent.cityLabel),
+            validator: (value) => value!.isEmpty ? donationWidgetContent.cityValidation : null,
           ),
           TextFormField(
             controller: _addressStateController,
-            decoration: const InputDecoration(labelText: 'State'),
-            validator: (value) => value!.isEmpty ? 'Please enter your state' : null,
+            decoration: InputDecoration(labelText: donationWidgetContent.stateLabel),
+            validator: (value) => value!.isEmpty ? donationWidgetContent.stateValidation : null,
           ),
           TextFormField(
             controller: _addressZipController,
-            decoration: const InputDecoration(labelText: 'Zip Code'),
-            validator: (value) => value!.isEmpty ? 'Please enter your zip code' : null,
+            decoration: InputDecoration(labelText: donationWidgetContent.zipCodeLabel),
+            validator: (value) => value!.isEmpty ? donationWidgetContent.zipCodeValidation : null,
           ),
           TextFormField(
             controller: _employerController,
-            decoration: const InputDecoration(labelText: 'Employer'),
-            validator: (value) => value!.isEmpty ? 'Please enter your employer' : null,
+            decoration: InputDecoration(labelText: donationWidgetContent.employerLabel),
+            validator: (value) => value!.isEmpty ? donationWidgetContent.employerValidation : null,
           ),
           TextFormField(
             controller: _occupationController,
-            decoration: const InputDecoration(labelText: 'Occupation'),
-            validator: (value) => value!.isEmpty ? 'Please enter your occupation' : null,
+            decoration: InputDecoration(labelText: donationWidgetContent.occupationLabel),
+            validator: (value) => value!.isEmpty ? donationWidgetContent.occupationValidation : null,
           ),
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: _handlePayment,
-            child: const Text('Proceed to Payment'),
+            child: Text(donationWidgetContent.proceedToPaymentButtonText),
           ),
           const SizedBox(height: 20),
           CheckboxListTile(
-            title: const Text('Cover transaction fees'),
+            title: Text(donationWidgetContent.coverFeesText),
             value: _coverFees,
             onChanged: (value) {
               setState(() {
@@ -327,7 +328,7 @@ class _DonationWidgetState extends State<DonationWidget> {
             },
           ),
           CheckboxListTile(
-            title: const Text('Make this a recurring monthly donation'),
+            title: Text(donationWidgetContent.recurringDonationText),
             value: _isRecurring,
             onChanged: (value) {
               setState(() {
@@ -340,7 +341,7 @@ class _DonationWidgetState extends State<DonationWidget> {
     );
   }
 
-  Widget _buildContactStep() {
+  Widget _buildContactStep(donationWidgetContent) {
     return Form(
       key: const ValueKey<int>(3),
       child: Column(
@@ -348,26 +349,26 @@ class _DonationWidgetState extends State<DonationWidget> {
         children: [
           TextFormField(
             controller: _emailController,
-            decoration: const InputDecoration(labelText: 'Email'),
+            decoration: InputDecoration(labelText: donationWidgetContent.emailLabel),
             keyboardType: TextInputType.emailAddress,
             validator: (value) {
               if (value!.isEmpty) {
-                return 'Please enter your email';
+                return donationWidgetContent.emailValidation;
               }
               if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\\.[a-zA-Z]+").hasMatch(value)) {
-                return 'Please enter a valid email address';
+                return donationWidgetContent.invalidEmailValidation;
               }
               return null;
             },
           ),
           TextFormField(
             controller: _phoneController,
-            decoration: const InputDecoration(labelText: 'Phone Number'),
+            decoration: InputDecoration(labelText: donationWidgetContent.phoneNumberLabel),
             keyboardType: TextInputType.phone,
           ),
           const SizedBox(height: 20),
           CheckboxListTile(
-            title: const Text('Contact me via Email'),
+            title: Text(donationWidgetContent.contactEmailText),
             value: _contactEmail,
             onChanged: (value) {
               setState(() {
@@ -376,7 +377,7 @@ class _DonationWidgetState extends State<DonationWidget> {
             },
           ),
           CheckboxListTile(
-            title: const Text('Contact me via Phone Call'),
+            title: Text(donationWidgetContent.contactPhoneText),
             value: _contactPhone,
             onChanged: (value) {
               setState(() {
@@ -385,7 +386,7 @@ class _DonationWidgetState extends State<DonationWidget> {
             },
           ),
           CheckboxListTile(
-            title: const Text('Contact me via Mail'),
+            title: Text(donationWidgetContent.contactMailText),
             value: _contactMail,
             onChanged: (value) {
               setState(() {
@@ -394,7 +395,7 @@ class _DonationWidgetState extends State<DonationWidget> {
             },
           ),
           CheckboxListTile(
-            title: const Text('Contact me via SMS'),
+            title: Text(donationWidgetContent.contactSmsText),
             value: _contactSms,
             onChanged: (value) {
               setState(() {
@@ -405,7 +406,7 @@ class _DonationWidgetState extends State<DonationWidget> {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: _submitDetails,
-            child: const Text('Submit'),
+            child: Text(donationWidgetContent.submitButtonText),
           ),
         ],
       ),

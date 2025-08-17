@@ -30,7 +30,7 @@ class ComingSoonPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      config.content.comingSoonPage.message,
+                      config.content.comingSoonPage.subtitle,
                       style: Theme.of(context).textTheme.bodyLarge,
                       textAlign: TextAlign.center,
                     ),

@@ -1,16 +1,16 @@
 class ComingSoonPageContent {
   final String title;
-  final String message;
+  final String subtitle;
 
   ComingSoonPageContent({
     required this.title,
-    required this.message,
+    required this.subtitle,
   });
 
   factory ComingSoonPageContent.fromJson(Map<String, dynamic> json) {
     return ComingSoonPageContent(
       title: json['title'] ?? '',
-      message: json['message'] ?? '',
+      subtitle: json['subtitle'] ?? '',
     );
   }
 }

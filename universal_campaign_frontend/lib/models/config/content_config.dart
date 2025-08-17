@@ -69,7 +69,7 @@ class ContentConfig {
       footer: FooterContent.fromJson(json['footer'] ?? {}),
       errorPage: ErrorPageContent.fromJson(json['errorPage'] ?? {}),
       widgets: WidgetsContent.fromJson(json['widgets'] ?? {}),
-      donationWidget: DonationWidgetContent.fromJson(json['donationWidget'] ?? {}),
+      donationWidget: DonationWidgetContent.fromJson(json['widgets']['donateWidget'] ?? {}),
       signupForm: SignupFormContent.fromJson(json['widgets']['signupForm'] ?? {}),
     );
   }
