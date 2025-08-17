@@ -6,62 +6,62 @@
   "stripeWebhookKeySecretManagerName": "projects/Cerberus-Data-Cloud/secrets/COX_STRIPE_WEBHOOK_KEY",
   "apiBaseUrl": "https://cerberus-backend-885603051818.us-south1.run.app/api/v1",
   "theme": {
-    "primaryColor": "#002663",
-    "secondaryColor": "#A01124",
+    "primaryColor": "#4e008e",
+    "secondaryColor": "#ba0020",
     "backgroundColor": "#FFFFFF",
     "textColor": "#000000",
-    "fontFamily": "Bebas Neue",
-    "secondaryFontFamily": "tinos",
+    "fontFamily": "Montserrat",
+    "secondaryFontFamily": "Playfair Display",
     "usePageTransitions": false,
     "issuesSectionTheme": {
-      "backgroundColor": "#a01124",
+      "backgroundColor": "#4e008e",
       "textColor": "#FFFFFF",
       "buttonColor": "#FFFFFF",
-      "buttonTextColor": "#002663"
+      "buttonTextColor": "#ba0020"
     },
     "aboutMeSectionTheme": {
       "backgroundColor": "#FFFFFF",
-      "textColor": "#000000",
-      "buttonColor": "#002663",
-      "buttonTextColor": "#FFFFFF"
+      "textColor": "#4e008e",
+      "buttonColor": "#4e008e",
+      "buttonTextColor": "#ba0020"
     },
     "endorsementsSectionTheme": {
-      "backgroundColor": "#002663",
+      "backgroundColor": "#ba0020",
       "textColor": "#FFFFFF",
       "buttonColor": "#FFFFFF",
-      "buttonTextColor": "#a01124"
+      "buttonTextColor": "#4e008e"
     },
     "donateSectionTheme": {
-      "backgroundColor": "#FFFFFF",
-      "textColor": "#000000",
-      "buttonColor": "#002663",
-      "buttonTextColor": "#FFFFFF"
+      "backgroundColor": "#4e008e",
+      "textColor": "#FFFFFF",
+      "buttonColor": "#FFFFFF",
+      "buttonTextColor": "#ba0020"
     }
   },
   "content": {
-    "siteTitle": "Curtis Cox for County Commissioner",
+    "siteTitle": "Bea Cox for JP 4, 2",
     "faviconImagePath": "assets/favicons/Cox_Favicon.png",
     "launchStatus": false,
     "comingSoonPage": {
-      "title": "Our new website is coming soon!",
+      "title": "Our campaign is launching soon!",
       "subtitle": "In the meantime, you can support our campaign by donating below."
     },
     "homePage": {
       "heroTitle": "Welcome to our campaign!",
       "callToActionText": "Join us in making a difference.",
       "heroImagePath": "assets/images/Cox_Home_Hero.png",
-      "homeTitleMessage": "Welcome to our campaign!",
+      "homeTitleMessage": "Welcome to our campaign2!",
       "issuesImage": "assets/images/Cox_Home_Issues_Preview.png",
-      "issuesMessage": "Learn about the key issues we're fighting for.",
+      "issuesMessage": "I am running to bring Justice, Transparency, and Efficiency to our JP court. The west side of our county deserves better.",
       "issuesButton": "View Issues",
       "aboutMeImage": "assets/images/Cox_Home_About_Preview.png",
-      "aboutMeMessage": "Discover more about Curtis Cox.",
+      "aboutMeMessage": "I have served Bell County for many years and will it will always be my home. Read my story here.",
       "aboutMeButton": "About Me",
       "endorsementsImage": "assets/images/Cox_Home_Endorsements_Preview.png",
-      "endorsementsMessage": "See who supports our campaign.",
+      "endorsementsMessage": "Making a better Bell County requires support from our community. I am humbled by the support I have received.",
       "endorsementsButton": "View Endorsements",
       "donateImage": "assets/images/Cox_Home_Donate_Preview.png",
-      "donateMessage": "Support our mission with a donation.",
+      "donateMessage": "I can't do this alone. I need your support to win this election and bring positive change to our community.",
       "donateButton": "Donate Now"
     },
     "issuesPage": {
