@@ -45,7 +45,7 @@ class IssuesPage extends StatelessWidget {
               height: heroHeight,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(config.assets.issuesPage.heroImagePath),
+                  image: AssetImage(config.content.issuesPage.heroImagePath.isNotEmpty ? config.content.issuesPage.heroImagePath : 'assets/images/error_placeholder.png'),
                   fit: BoxFit.cover,
                 ),
               ),

@@ -61,6 +61,12 @@ class DonatePage extends StatelessWidget {
                           style: Theme.of(context).textTheme.headlineMedium,
                           textAlign: TextAlign.center,
                         ),
+                        const SizedBox(height: 20),
+                        Text(
+                          config.content.donatePage.subtitle,
+                          style: Theme.of(context).textTheme.bodyLarge,
+                          textAlign: TextAlign.center,
+                        ),
                         const SizedBox(height: 40),
                         DonationWidget(config: config),
                         const SizedBox(height: 40),

@@ -29,7 +29,8 @@ class HighProfileEndorsementCard extends StatelessWidget {
       height: isCompact ? 200 : 400,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage(imagePath.isNotEmpty ? imagePath : 'assets/images/error_placeholder.png'),
+          image: AssetImage(
+              imagePath.isNotEmpty ? imagePath : 'assets/images/error_placeholder.png'),
           fit: BoxFit.cover,
         ),
       ),
@@ -41,47 +42,43 @@ class HighProfileEndorsementCard extends StatelessWidget {
       color: backgroundColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment:
+            imageLeft ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: <Widget>[
           Text(
             '"$quote"',
             style: textTheme.titleLarge
                 ?.copyWith(fontStyle: FontStyle.italic, color: textColor),
+            textAlign: imageLeft ? TextAlign.right : TextAlign.left,
           ),
           const SizedBox(height: 8.0),
           Text(
             '- $name',
             style: textTheme.titleMedium
                 ?.copyWith(fontWeight: FontWeight.bold, color: textColor),
+            textAlign: imageLeft ? TextAlign.right : TextAlign.left,
           ),
         ],
       ),
     );
 
     if (isCompact) {
-      return Card(
-        margin: EdgeInsets.zero,
-        elevation: 4.0,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [imageWidget, textWidget],
-        ),
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [imageWidget, textWidget],
       );
     }
 
     final imageExpanded = Expanded(child: imageWidget);
     final textExpanded = Expanded(child: textWidget);
 
-    return Card(
-      margin: EdgeInsets.zero,
-      elevation: 4.0,
-      child: SizedBox(
-        height: 400,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children:
-              imageLeft ? [imageExpanded, textExpanded] : [textExpanded, imageExpanded],
-        ),
+    return SizedBox(
+      height: 400,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: imageLeft
+            ? [imageExpanded, textExpanded]
+            : [textExpanded, imageExpanded],
       ),
     );
   }

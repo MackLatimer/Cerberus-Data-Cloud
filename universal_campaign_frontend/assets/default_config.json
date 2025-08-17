@@ -129,10 +129,24 @@
           "backgroundColor": "#A01124",
           "textColor": "#FFFFFF"
         }
-      ]
+      ],
+      "communityTitle": "Community Endorsements",
+      "communityEndorsements": [
+        "John Doe",
+        "Jane Smith",
+        "Bob Builder",
+        "Alice Johnson",
+        "Charlie Brown",
+        "Emily Davis",
+        "Frank White"
+      ],
+      "endorsementCallToAction": "Join the list of supporters!",
+      "endorsementCallToActionText": "Fill out the form below to endorse Curtis Emmons and allow him to publish your endorsement on this page."
     },
     "donatePage": {
       "heroImagePath": "assets/images/Emmons_Donate_Hero.png",
+      "title": "Support Our Campaign",
+      "subtitle": "Your contribution helps us make a difference in our community.",
       "mailDonationText": "If you prefer to donate by mail, please send a check payable to \"Curtis Emmons Campaign\" to: 123 Main Street, Anytown, USA 12345"
     },
     "commonAppBar": {

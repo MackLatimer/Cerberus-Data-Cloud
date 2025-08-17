@@ -53,49 +53,50 @@ class EndorsementsPage extends StatelessWidget {
           ),
           SliverList(
             delegate: SliverChildListDelegate([
+              for (int i = 0; i < config.content.endorsementsPage.endorsements.length; i++)
+                HighProfileEndorsementCard(
+                  name: config.content.endorsementsPage.endorsements[i].name,
+                  quote: config.content.endorsementsPage.endorsements[i].quote,
+                  imagePath: config.content.endorsementsPage.endorsements[i].imagePath,
+                  imageLeft: config.content.endorsementsPage.endorsements[i].imageLeft,
+                  backgroundColor: config.content.endorsementsPage.endorsements[i].backgroundColor != null
+                      ? Color(int.parse(config.content.endorsementsPage.endorsements[i].backgroundColor!.substring(1, 7), radix: 16) + 0xFF000000)
+                      : null,
+                  textColor: config.content.endorsementsPage.endorsements[i].textColor != null
+                      ? Color(int.parse(config.content.endorsementsPage.endorsements[i].textColor!.substring(1, 7), radix: 16) + 0xFF000000)
+                      : null,
+                ),
               Padding(
                 padding: const EdgeInsets.all(24.0),
-                child: Center(
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 1200),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        const SizedBox(height: 40),
-                        Text(
-                          config.content.endorsementsPage.title,
-                          style: Theme.of(context).textTheme.headlineMedium,
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 40),
-                        // High Profile Endorsements
-                        for (int i = 0; i < config.content.endorsementsPage.endorsements.length; i++)
-                          HighProfileEndorsementCard(
-                            name: config.content.endorsementsPage.endorsements[i].name,
-                            quote: config.content.endorsementsPage.endorsements[i].quote,
-                            imagePath: config.content.endorsementsPage.endorsements[i].imagePath,
-                            imageLeft: config.content.endorsementsPage.endorsements[i].imageLeft,
-                            backgroundColor: config.content.endorsementsPage.endorsements[i].backgroundColor != null
-                                ? Color(int.parse(config.content.endorsementsPage.endorsements[i].backgroundColor!.substring(1, 7), radix: 16) + 0xFF000000)
-                                : null,
-                            textColor: config.content.endorsementsPage.endorsements[i].textColor != null
-                                ? Color(int.parse(config.content.endorsementsPage.endorsements[i].textColor!.substring(1, 7), radix: 16) + 0xFF000000)
-                                : null,
-                          ),
-                        const SizedBox(height: 40),
-                        // Community Endorsements
-                        for (var endorsement in config.content.endorsementsPage.communityEndorsements)
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: Text(
-                              '"$endorsement" - ',
-                              style: Theme.of(context).textTheme.bodyLarge,
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                      ],
+                child: Column(
+                  children: [
+                    Text(
+                      config.content.endorsementsPage.communityTitle,
+                      style: Theme.of(context).textTheme.headlineMedium,
+                      textAlign: TextAlign.center,
                     ),
-                  ),
+                    const SizedBox(height: 20),
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      spacing: 16.0,
+                      runSpacing: 16.0,
+                      children: config.content.endorsementsPage.communityEndorsements
+                          .map((name) => Chip(label: Text(name)))
+                          .toList(),
+                    ),
+                    const SizedBox(height: 40),
+                    Text(
+                      config.content.endorsementsPage.endorsementCallToAction, 
+                      style: Theme.of(context).textTheme.headlineSmall,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      config.content.endorsementsPage.endorsementCallToActionText,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
               ),
               DonateSection(config: config),
