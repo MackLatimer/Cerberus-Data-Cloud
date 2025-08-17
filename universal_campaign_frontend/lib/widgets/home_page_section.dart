@@ -67,7 +67,7 @@ class HomePageSection extends StatelessWidget {
             style: textTheme.bodyMedium?.copyWith(color: textColor ?? Colors.black),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 16.0),
+          const SizedBox(height: 20.0),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: buttonColor ?? colorScheme.secondary,

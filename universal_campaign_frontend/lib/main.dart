@@ -115,14 +115,14 @@ class MyApp extends StatelessWidget {
           headlineLarge: primaryFontTextTheme.headlineLarge?.copyWith(fontSize: 78, color: textColor, fontWeight: FontWeight.bold),
           headlineMedium: primaryFontTextTheme.headlineMedium?.copyWith(fontSize: 62, color: textColor, fontWeight: FontWeight.bold),
           headlineSmall: primaryFontTextTheme.headlineSmall?.copyWith(fontSize: 50, color: textColor, fontWeight: FontWeight.bold),
-          titleLarge: primaryFontTextTheme.titleLarge?.copyWith(fontSize: 40, color: textColor, fontWeight: FontWeight.bold),
+          titleLarge: primaryFontTextTheme.titleLarge?.copyWith(fontSize: 42, color: textColor, fontWeight: FontWeight.bold),
           titleMedium: primaryFontTextTheme.titleMedium?.copyWith(fontSize: 32, color: textColor, fontWeight: FontWeight.bold),
           titleSmall: primaryFontTextTheme.titleSmall?.copyWith(fontSize: 25, color: textColor, fontWeight: FontWeight.bold),
           bodyLarge: GoogleFonts.tinos(fontSize: 20, color: textColor),
           bodyMedium: GoogleFonts.tinos(fontSize: 16, color: textColor),
           bodySmall: GoogleFonts.tinos(fontSize: 12.8, color: textColor),
-          labelLarge: primaryFontTextTheme.labelLarge?.copyWith(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
-          labelMedium: primaryFontTextTheme.labelMedium?.copyWith(fontSize: 16, fontWeight: FontWeight.bold),
+          labelLarge: primaryFontTextTheme.labelLarge?.copyWith(fontSize: 22, color: Colors.white, fontWeight: FontWeight.bold),
+          labelMedium: primaryFontTextTheme.labelMedium?.copyWith(fontSize: 18, fontWeight: FontWeight.bold),
           labelSmall: primaryFontTextTheme.labelSmall?.copyWith(fontSize: 12.8, fontWeight: FontWeight.bold),
         );
 
