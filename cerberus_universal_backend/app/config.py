@@ -21,7 +21,7 @@ try:
     DB_PASS = os.environ.get("DB_PASS") or access_secret_version("DB_PASS")
     DB_NAME = os.environ.get("DB_NAME") or access_secret_version("DB_NAME")
     DB_CONNECTION_NAME = os.environ.get("DB_CONNECTION_NAME") or access_secret_version("DB_CONNECTION_NAME")
-    SECRET_KEY = os.environ.get("SECRET_KEY") or access_secret_version("SECRET_KEY")
+    SECRET_KEY = os.environ.get("FLASK_SECRET_KEY") or access_secret_version("FLASK_SECRET_KEY")
     PGCRYPTO_SECRET_KEY = os.environ.get("PGCRYPTO_SECRET_KEY") or access_secret_version("PGCRYPTO_SECRET_KEY")
     STRIPE_SECRET_KEYS = {
         'blair_frontend': os.environ.get("BLAIR_STRIPE_SECRET_KEY") or access_secret_version("BLAIR_STRIPE_SECRET_KEY"),
