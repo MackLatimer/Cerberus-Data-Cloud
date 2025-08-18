@@ -32,6 +32,7 @@ images:
 - '${_REGION}-docker.pkg.dev/$PROJECT_ID/cerberus-images/cerberus-backend:$BUILD_ID'
 
 options:
+  logging: CLOUD_LOGGING_ONLY
   substitution_option: 'ALLOW_LOOSE'
 substitutions:
   _REGION: 'us-south1'
