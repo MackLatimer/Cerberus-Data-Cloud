@@ -1,0 +1,6 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/universal-campaign-frontend:latest', '.']
+  dir: 'universal_campaign_frontend'
+images:
+- 'gcr.io/$PROJECT_ID/universal-campaign-frontend:latest'

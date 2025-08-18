@@ -1,40 +1,6 @@
 steps:
-# Build and deploy the backend
 - name: 'gcr.io/cloud-builders/docker'
-  id: 'Build Backend Docker Image'
-  args: [ 'build', '-t', '${_REGION}-docker.pkg.dev/$PROJECT_ID/cerberus-images/cerberus-backend:$BUILD_ID', './cerberus_universal_backend' ]
-
-- name: 'gcr.io/cloud-builders/docker'
-  id: 'Push Backend Docker Image'
-  args: [ 'push', '${_REGION}-docker.pkg.dev/$PROJECT_ID/cerberus-images/cerberus-backend:$BUILD_ID' ]
-  waitFor: ['Build Backend Docker Image']
-
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  id: 'Deploy Backend to Cloud Run'
-  entrypoint: gcloud
-  args:
-    - 'run'
-    - 'deploy'
-    - 'cerberus-backend'
-    - '--image'
-    - '${_REGION}-docker.pkg.dev/$PROJECT_ID/cerberus-images/cerberus-backend:$BUILD_ID'
-    - '--region'
-    - '${_REGION}'
-    - '--platform'
-    - 'managed'
-    - '--allow-unauthenticated'
-    - '--add-cloudsql-instances'
-    - '${_INSTANCE_CONNECTION_NAME}'
-    - '--set-secrets=DB_USER=DB_USER:latest,DB_PASS=DB_PASSWORD:latest,DB_NAME=DB_NAME:latest,DB_CONNECTION_NAME=DB_CONNECTION_NAME:latest,FLASK_SECRET_KEY=FLASK_SECRET_KEY:latest,PGCRYPTO_SECRET_KEY=PGCRYPTO_SECRET_KEY:latest,BLAIR_STRIPE_SECRET_KEY=BLAIR_STRIPE_SECRET_KEY:latest,COX_STRIPE_SECRET_KEY=COX_STRIPE_SECRET_KEY:latest,EMMONS_STRIPE_SECRET_KEY=EMMONS_STRIPE_SECRET_KEY:latest,GAUNTT_STRIPE_SECRET_KEY=GAUNTT_STRIPE_SECRET_KEY:latest,MINTZ_STRIPE_SECRET_KEY=MINTZ_STRIPE_SECRET_KEY:latest,TICE_STRIPE_SECRET_KEY=TICE_STRIPE_SECRET_KEY:latest,TULLOCH_STRIPE_SECRET_KEY=TULLOCH_STRIPE_SECRET_KEY:latest,LEUDEKE_STRIPE_SECRET_KEY=LEUDEKE_STRIPE_SECRET_KEY:latest,WHITSON_STRIPE_SECRET_KEY=WHITSON_STRIPE_SECRET_KEY:latest,BLAIR_STRIPE_WEBHOOK_KEY=BLAIR_STRIPE_WEBHOOK_KEY:latest,COX_STRIPE_WEBHOOK_KEY=COX_STRIPE_WEBHOOK_KEY:latest,EMMONS_STRIPE_WEBHOOK_KEY=EMMONS_STRIPE_WEBHOOK_KEY:latest,GAUNTT_STRIPE_WEBHOOK_KEY=GAUNTT_STRIPE_WEBHOOK_KEY:latest,MINTZ_STRIPE_WEBHOOK_KEY=MINTZ_STRIPE_WEBHOOK_KEY:latest,TICE_STRIPE_WEBHOOK_KEY=TICE_STRIPE_WEBHOOK_KEY:latest,WHITSON_STRIPE_WEBHOOK_KEY=WHITSON_STRIPE_WEBHOOK_KEY:latest,TULLOCH_STRIPE_WEBHOOK_KEY=TULLOCH_STRIPE_WEBHOOK_KEY:latest,FLASK_ENV=FLASK_ENV:latest'
-  waitFor: ['Push Backend Docker Image']
-
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/cerberus-backend:latest', '.']
+  dir: 'cerberus_universal_backend'
 images:
-- '${_REGION}-docker.pkg.dev/$PROJECT_ID/cerberus-images/cerberus-backend:$BUILD_ID'
-
-options:
-  logging: CLOUD_LOGGING_ONLY
-  substitution_option: 'ALLOW_LOOSE'
-substitutions:
-  _REGION: 'us-south1'
-  _INSTANCE_CONNECTION_NAME: 'cerberus-data-cloud:us-south1:cerberus-db'
-  _PROJECT_ID: 'cerberus-data-cloud'
+- 'gcr.io/$PROJECT_ID/cerberus-backend:latest'
