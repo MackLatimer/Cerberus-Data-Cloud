@@ -25,77 +25,6 @@ steps:
     - '--allow-unauthenticated'
     - '--add-cloudsql-instances'
     - '${_INSTANCE_CONNECTION_NAME}'
-    steps:
-# Build and push the backend
-- name: 'gcr.io/cloud-builders/docker'
-  id: 'Build and Push Backend'
-  args: [ 'build', '-t', 'gcr.io/$PROJECT_ID/cerberus-backend:latest', '.' ]
-  dir: 'cerberus_universal_backend'
-
-# Install Flutter SDK once and cache it
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  id: 'Install and Cache Flutter SDK'
-  entrypoint: 'bash'
-  args:
-    - '-c'
-    - |
-      if [ -d "/flutter/bin" ] && command -v /flutter/bin/flutter > /dev/null;
-      then
-        echo "Flutter SDK already exists in cache. Skipping download."
-        /flutter/bin/flutter doctor
-      else
-        echo "Flutter SDK not found in cache. Cloning and installing..."
-        apt-get update && apt-get install -y git unzip
-        git clone https://github.com/flutter/flutter.git /flutter
-        git config --global --add safe.directory /flutter
-        cd /flutter
-        git checkout ${_FLUTTER_VERSION}
-        ./bin/flutter --version
-        ./bin/flutter upgrade
-        echo "Running flutter doctor..."
-        ./bin/flutter doctor
-      fi
-
-# Install common dependencies
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  id: 'Install Dependencies'
-  entrypoint: 'bash'
-  args:
-    - '-c'
-    - |
-      apt-get update && apt-get install -y nodejs npm unzip
-      npm install -g firebase-tools@13.11.2
-  waitFor: ['Install and Cache Flutter SDK']
-
-# Build and deploy all campaign frontends
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  id: 'Build and Deploy All Campaigns'
-  entrypoint: 'bash'
-  args:
-    - '-c'
-    - |
-      export PATH="/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-      apt-get update && apt-get install -y nodejs npm unzip
-      npm install -g firebase-tools@13.11.2
-      chmod +x build_campaigns.sh
-      ./build_campaigns.sh
-  dir: 'universal_campaign_frontend'
-  waitFor: ['Install Dependencies']
-
-images:
-- 'gcr.io/$PROJECT_ID/cerberus-backend:latest'
-
-options:
-  substitution_option: 'ALLOW_LOOSE'
-  volumes:
-    - name: 'flutter_sdk'
-      path: '/flutter'
-substitutions:
-  _REGION: 'us-south1'
-  _INSTANCE_CONNECTION_NAME: 'cerberus-data-cloud:us-south1:cerberus-db'
-  _PROJECT_ID: 'cerberus-data-cloud'
-  _FLUTTER_VERSION: '3.35.1'
-
   waitFor: ['Push Backend Docker Image']
 
 # Install Flutter SDK once and cache it
@@ -121,6 +50,9 @@ substitutions:
         echo "Running flutter doctor..."
         ./bin/flutter doctor
       fi
+  volumes:
+    - name: 'flutter_sdk'
+      path: '/flutter'
 
 # Install common dependencies
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -156,6 +88,7 @@ options:
   volumes:
     - name: 'flutter_sdk'
       path: '/flutter'
+
 substitutions:
   _REGION: 'us-south1'
   _INSTANCE_CONNECTION_NAME: 'cerberus-data-cloud:us-south1:cerberus-db'
