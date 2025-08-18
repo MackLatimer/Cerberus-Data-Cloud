@@ -1,159 +1,140 @@
 {
-  "campaignId": 3,
-  "default_campaign_id": "emmons",
+  "campaignId": 2,
+  "default_campaign_id": "cox",
   "defaultCampaign": true,
-  "stripePublicKey": "pk_test_51Rprl4DJohanGZYnPtUtDTPfjA4PNgyif3BFs4IcCn3CB389C7V2T6AH2zq7TPsuhPSDf7BGK1Ytc6atHH5gqKog00kvIBYB7b",
-  "stripeSecretKeySecretManagerName": "projects/Cerberus-Data-Cloud/secrets/EMMONS_STRIPE_SECRET_KEY",
-  "stripeWebhookKeySecretManagerName": "projects/Cerberus-Data-Cloud/secrets/EMMONS_STRIPE_WEBHOOK_KEY",
+  "stripePublicKey": "pk_live_51RprktRfTCt4TPGsqAgRck5QC3G795vtuLhnBmiFUKlO7pUgYbnbLSHk2mb8tUj0aBigtfeUclAmuCePvQLMlxkQ00vMlmX9To",
+  "stripeSecretKeySecretManagerName": "projects/Cerberus-Data-Cloud/secrets/COX_STRIPE_SECRET_KEY",
+  "stripeWebhookKeySecretManagerName": "projects/Cerberus-Data-Cloud/secrets/COX_STRIPE_WEBHOOK_KEY",
   "apiBaseUrl": "https://cerberus-backend-885603051818.us-south1.run.app/api/v1",
   "theme": {
-    "primaryColor": "#002663",
-    "secondaryColor": "#A01124",
+    "primaryColor": "#4e008e",
+    "secondaryColor": "#ba0020",
     "backgroundColor": "#FFFFFF",
     "textColor": "#000000",
-    "fontFamily": "Bebas Neue",
-    "secondaryFontFamily": "tinos",
+    "fontFamily": "Montserrat Bold",
+    "secondaryFontFamily": "Playfair Display",
     "usePageTransitions": false,
     "issuesSectionTheme": {
-      "backgroundColor": "#a01124",
+      "backgroundColor": "#4e008e",
       "textColor": "#FFFFFF",
       "buttonColor": "#FFFFFF",
-      "buttonTextColor": "#002663"
+      "buttonTextColor": "#ba0020"
     },
     "aboutMeSectionTheme": {
       "backgroundColor": "#FFFFFF",
-      "textColor": "#000000",
-      "buttonColor": "#002663",
+      "textColor": "#4e008e",
+      "buttonColor": "#4e008e",
       "buttonTextColor": "#FFFFFF"
     },
     "endorsementsSectionTheme": {
-      "backgroundColor": "#002663",
+      "backgroundColor": "#4e008e",
       "textColor": "#FFFFFF",
       "buttonColor": "#FFFFFF",
-      "buttonTextColor": "#a01124"
+      "buttonTextColor": "#ba0020"
     },
     "donateSectionTheme": {
       "backgroundColor": "#FFFFFF",
-      "textColor": "#000000",
-      "buttonColor": "#002663",
+      "textColor": "#4e008e",
+      "buttonColor": "#4e008e",
       "buttonTextColor": "#FFFFFF"
     }
   },
   "content": {
-    "siteTitle": "Curtis Emmons for County Commissioner",
-    "faviconImagePath": "/assets/favicons/Emmons_Favicon.png",
-    "launchStatus": false,
+    "siteTitle": "Bea Cox for JP 4, 2",
+    "faviconImagePath": "assets/favicons/Cox_Favicon.png",
+    "launchStatus": true,
     "comingSoonPage": {
-      "title": "Our new website is coming soon!",
+      "title": "Our campaign is launching soon!",
       "subtitle": "In the meantime, you can support our campaign by donating below."
     },
     "homePage": {
       "heroTitle": "Welcome to our campaign!",
       "callToActionText": "Join us in making a difference.",
-      "heroImagePath": "assets/images/Emmons_Home_Hero.png",
-      "homeTitleMessage": "Welcome to our campaign!",
-      "issuesImage": "assets/images/Emmons_Home_Issues_Preview.png",
-      "issuesMessage": "Learn about the key issues we're fighting for.",
+      "heroImagePath": "assets/images/Cox_Home_Hero.png",
+      "homeTitleMessage": "Welcome to our campaign2!",
+      "issuesImage": "assets/images/Cox_Home_Issues_Preview.png",
+      "issuesMessage": "I am running to bring Justice, Transparency, and Efficiency to our JP court. The west side of our county deserves better.",
       "issuesButton": "View Issues",
-      "aboutMeImage": "assets/images/Emmons_Home_About_Preview.png",
-      "aboutMeMessage": "Discover more about Curtis Emmons.",
+      "aboutMeImage": "assets/images/Cox_Home_About_Preview.png",
+      "aboutMeMessage": "I have served Bell County for many years and will it will always be my home. Read my story here.",
       "aboutMeButton": "About Me",
-      "endorsementsImage": "assets/images/Emmons_Home_Endorsements_Preview.png",
-      "endorsementsMessage": "See who supports our campaign.",
+      "endorsementsImage": "assets/images/Cox_Home_Endorsements_Preview.png",
+      "endorsementsMessage": "Making a better Bell County requires support from our community. I am humbled by the support I have received.",
       "endorsementsButton": "View Endorsements",
-      "donateImage": "assets/images/Emmons_Home_Donate_Preview.png",
-      "donateMessage": "Support our mission with a donation.",
+      "donateImage": "assets/images/Cox_Home_Donate_Preview.png",
+      "donateMessage": "I can't do this alone. I need your support to win this election and bring positive change to our community.",
       "donateButton": "Donate Now"
     },
     "issuesPage": {
       "appBarTitle": "Key Issues",
-      "heroImagePath": "assets/images/Emmons_Issues_Hero.png",
+      "heroImagePath": "assets/images/Cox_Issues_Hero.png",
       "title": "Issues",
       "issueSections": [
         {
-          "title": "Economic Growth & Job Creation",
-          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Curtis believes in fostering a business-friendly environment that attracts new opportunities and supports local entrepreneurs.",
-          "backgroundColor": "#a01124",
+          "title": "Justice",
+          "description": "Justice is swift and justice is fair. I will use my experience working in JP court and as your Truancy Master to balance deterrence and rehabilitation as we make our streets safer.",
+          "backgroundColor": "#4e008e",
           "textColor": "#FFFFFF",
-          "imagePath": "assets/images/Emmons_Issues_Issue1.png"
+          "imagePath": "assets/images/Cox_Issues_Issue1.png"
         },
         {
-          "title": "Community Safety & Emergency Services",
-          "description": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat a pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Ensuring our neighborhoods are safe and our first responders are well-equipped is a top priority.",
-          "backgroundColor": "#a01124",
-          "textColor": "#FFFFFF",
-          "imagePath": "assets/images/Emmons_Issues_Issue2.png"
+          "title": "Transparency",
+          "description": "A JP court should not be an uncertain or random place. Predictability and consistency in rulings allows people to solve problems before they even reach the court. I will always give a thorough reasoning for the decisions I make so we can increase confidence in our court again",
+          "backgroundColor": "#FFFFFF",
+          "textColor": "#4e008e",
+          "imagePath": "assets/images/Cox_Issues_Issue2.png"
         },
         {
-          "title": "Infrastructure Development & Maintenance",
-          "description": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. We must invest in maintaining and improving our roads, bridges, and public utilities to support our growing.",
-          "backgroundColor": "#002663",
+          "title": "Efficiency",
+          "description": "This community deserves a full-time judge for a full-time job. That means being a judge who handles every duty of the office—from signing warrants and conducting magistration to performing inquests at a moment's notice.",
+          "backgroundColor": "#ba0020",
           "textColor": "#FFFFFF",
-          "imagePath": "assets/images/Emmons_Issues_Issue3.png"
-        },
-        {
-          "title": "Fiscal Responsibility & Transparent Governance",
-          "description": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Curtis is committed to responsible spending of taxpayer dollars and ensuring all county operations are transparent and accountable to the public.",
-          "backgroundColor": "#002663",
-          "textColor": "#FFFFFF",
-          "imagePath": "assets/images/Emmons_Issues_Issue4.png"
+          "imagePath": "assets/images/Cox_Issues_Issue3.png"
         }
       ]
     },
     "aboutPage": {
-      "appBarTitle": "About Curtis Emmons",
-      "heroImagePath": "assets/images/Emmons_About_Hero.png",
+      "appBarTitle": "About Bea Cox",
+      "heroImagePath": "assets/images/Cox_About_Hero.png",
       "bioTitle": "About Me",
-      "bioParagraph1": "Curtis Emmons is a dedicated public servant with a passion for community development and effective governance. With a background in business and a commitment to fiscal responsibility, Curtis brings a wealth of experience to the table. He is a strong advocate for transparency and accountability in government, and he is committed to working collaboratively to find solutions to the challenges facing our county.\n\nThroughout his career, Curtis has been actively involved in numerous local initiatives, from supporting small businesses to improving public infrastructure. He believes in a common-sense approach to problem-solving and is dedicated to ensuring that the voices of all residents are heard. His vision for the county is one of a smart growth, economic prosperity, and a high quality of life for all.\n\nAs a husband and father, Curtis understands the importance of building a strong and vibrant community for future generations. He is a firm believer in the power of collaboration and is committed to working with residents, business leaders, and community organizations to create a better future for our county.",
-      "bioParagraph2": "This is a placeholder for the second paragraph of the bio. It will be placed between the double picture and the single picture.",
-      "bioParagraph3": "This is a placeholder for the third paragraph of the bio. It will be placed after the single picture.",
-      "bioImage1Path": "assets/images/Emmons_About_Bio1.png",
-      "bioImage2Path": "assets/images/Emmons_About_Bio2.png",
-      "bioImage3Path": "assets/images/Emmons_About_Bio3.png"
+      "bioParagraph1": "Bea Cox is a lifelong resident of Killeen with deep ties to both her community and her faith. Her father, a proud U.S. Army veteran, retired from Fort Hood in 1977 as a Sergeant First Class, settling their family in Killeen to stay close to their Texas roots. She and her husband Garry have been married for 21 years and share four sons. Together, they are active members of Maxdale Cowboy Church, where she also serves on the Praise & Worship Team.",
+      "bioParagraph2": "For more than three decades, Bea has dedicated her life to public service. She began her career working in the Killeen Police Department’s records division while still in high school, later serving in the vehicle registration office before embarking on a 25-year career with Bell County. For 23 of those years, she served under the Justice of the Peace, and now Sheriff, Bill Cooke as his Deputy Clerk and eventually Chief Clerk, before becoming the first appointed Bell County Truancy Master. She credits her faith, integrity, and strong work ethic for guiding her through these years of service.",
+      "bioParagraph3": "Beyond her professional commitments, Bea is an active member of numerous community organizations, including the Central Texas Republican Women-PAC and LULAC Herencia Chapter #4297. These roles have allowed her to build strong relationships with citizens across Bell County, giving her valuable perspective on the needs and aspirations of the community she proudly calls home. With 35 years of service behind her, she continues to carry forward the same commitment to people and principles that has defined her life’s work.",
+      "bioImage1Path": "assets/images/Cox_About_Bio1.png",
+      "bioImage2Path": "assets/images/Cox_About_Bio2.png",
+      "bioImage3Path": "assets/images/Cox_About_Bio3.png"
     },
     "endorsementsPage": {
       "appBarTitle": "Endorsements",
-      "heroImagePath": "assets/images/Emmons_Endorsements_Hero.png",
+      "heroImagePath": "assets/images/Cox_Endorsements_Hero.png",
       "title": "Endorsed by Leaders and the Community",
       "endorsements": [
         {
-          "name": "John Doe",
-          "quote": "Curtis Emmons is the leader we need for our community. His dedication and vision are truly inspiring.",
-          "imagePath": "assets/images/Emmons_Endorsements_1.png",
+          "name": "Mack Latimer",
+          "quote": "Bea Cox is the Person we need in JP 4. She has the temperment, experience, and work ethic to turn that office around.",
+          "imagePath": "assets/images/Cox_Endorsements_1.png",
           "imageLeft": true,
-          "backgroundColor": "#002663",
-          "textColor": "#FFFFFF"
-        },
-        {
-          "name": "Jane Smith",
-          "quote": "I've known Curtis for years, and he is a man of integrity and action. He will bring positive change to our county.",
-          "imagePath": "assets/images/Emmons_Endorsements_2.png",
-          "imageLeft": false,
-          "backgroundColor": "#A01124",
-          "textColor": "#FFFFFF"
+          "backgroundColor": "#FFFFFF",
+          "textColor": "#4e008e"
         }
       ],
       "communityTitle": "Community Endorsements",
       "communityEndorsements": [
-        "John Doe",
-        "Jane Smith",
-        "Bob Builder",
-        "Alice Johnson",
-        "Charlie Brown",
-        "Emily Davis",
-        "Frank White"
+        "Laura Latimer",
+        "Michael Smith",
+        "Alyssa Hill"
       ],
       "endorsementCallToAction": "Join the list of supporters!",
-      "endorsementCallToActionText": "Fill out the form below to endorse Curtis Emmons and allow him to publish your endorsement on this page."
+      "endorsementCallToActionText": "Fill out the form below to endorse Bea Cox and allow her to publish your endorsement on this page."
     },
     "donatePage": {
-      "heroImagePath": "assets/images/Emmons_Donate_Hero.png",
+      "heroImagePath": "assets/images/Cox_Donate_Hero.png",
       "title": "Support Our Campaign",
       "subtitle": "Your contribution helps us make a difference in our community.",
-      "mailDonationText": "If you prefer to donate by mail, please send a check payable to \"Curtis Emmons Campaign\" to: 123 Main Street, Anytown, USA 12345"
+      "mailDonationText": "If you prefer to donate by mail, please send a check payable to \"Bea Cox Campaign\" to: 127 Lake Road, Belton, TX 76513"
     },
     "commonAppBar": {
-      "logoPath": "assets/logos/Emmons_Logo.png",
+      "logoPath": "assets/logos/Cox_Logo.png",
       "logoWidth": 400.0,
       "logoHeight": 100.0,
       "navItems": [
@@ -166,12 +147,14 @@
     },
     "widgets": {
       "signupForm": {
-        "endorseText": "I endorse Curtis Emmons and allow him to publish my endorsement",
+        "title": "Sign Up for Updates",
+        "endorseText": "I endorse Bea Cox and allow her to publish my endorsement",
         "getInvolvedText": "I want to get involved with the campaign",
-        "automatedMessagingText": "I agree to receive automated messaging from Elect Emmons",
-        "emailOptInText": "I agree to receive emails from Elect Emmons",
+        "automatedMessagingText": "I agree to receive automated messaging from the Bea Cox Campaign",
+        "emailOptInText": "I agree to receive emails from the Bea Cox Campaign",
         "buttonText": "Submit",
-        "privacyButtonText": "Privacy Policy"
+        "privacyButtonText": "Privacy Policy",
+        "legalText": "By submitting this form, you agree to receive communications from the campaign."
       },
       "donateWidget": {
         "amounts": [25, 50, 100, 250, 500, 1000],
@@ -214,12 +197,12 @@
       "buttonText": "Donate Now!"
     },
     "footer": {
-      "paidForText": "Paid for by Elect Emmons",
-      "facebookLink": "https://www.facebook.com/",
-      "instagramLink": "https://www.instagram.com/",
-      "xLink": "https://twitter.com/",
-      "linkedinLink": "https://www.linkedin.com/",
-      "youtubeLink": "https://www.youtube.com/"
+      "paidForText": "Paid for by the Bea Cox Campaign",
+      "facebookLink": "https://www.facebook.com/beaforjp",
+      "instagramLink": "https://www.instagram.com/beaforjp",
+      "xLink": "https://x.com/beaforjp",
+      "linkedinLink": "https://www.linkedin.com/company/beaforjp",
+      "youtubeLink": "https://www.youtube.com/beaforjp"
     }
   }
 }
