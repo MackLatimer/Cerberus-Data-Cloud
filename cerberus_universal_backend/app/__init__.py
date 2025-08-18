@@ -31,6 +31,9 @@ def create_app(config_name_override: str = None) -> Flask:
     app = Flask(__name__)
     app.config.from_object(get_config_by_name(effective_config_name))
 
+    print(f"DEBUG: Effective config name: {effective_config_name}")
+    print(f"DEBUG: Current config name (from env): {current_config_name}")
+
     CORS(app, resources={
         r"/api/v1/*": {
             "origins": [
