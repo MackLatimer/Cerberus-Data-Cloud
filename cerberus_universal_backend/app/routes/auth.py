@@ -53,7 +53,6 @@ def login():
                 'user_id': user.id,
                 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
             }, current_app.config['FLASK_SECRET_KEY'], algorithm="HS256")
-
         return jsonify({'token': token})
 
     return jsonify({'message': 'Could not verify password!'}), 401
