@@ -156,15 +156,11 @@ class _DonationWidgetState extends State<DonationWidget> {
         ),
       );
 
-      final paymentMethod = await Stripe.instance.createPaymentMethod(
-        params: PaymentMethodParams.card(
+      final paymentIntent = await Stripe.instance.confirmPayment(
+        paymentIntentClientSecret: _paymentIntentClientSecret!,
+        data: PaymentMethodParams.card(
           paymentMethodData: PaymentMethodData(billingDetails: billingDetails),
         ),
-      );
-
-      final paymentIntent = await Stripe.instance.confirmPayment(
-        _paymentIntentClientSecret!,
-        PaymentMethodParams.card(paymentMethodData: PaymentMethodData(billingDetails: billingDetails)),
       );
 
       if (paymentIntent.status == PaymentIntentsStatus.Succeeded) {
@@ -445,7 +441,8 @@ class _DonationWidgetState extends State<DonationWidget> {
               });
             },
           ),
-          CheckboxListTiletle: Text(donationWidgetContent.contactMailText),
+          CheckboxListTile(
+            title: Text(donationWidgetContent.contactMailText),
             value: _contactMail,
             onChanged: (value) {
               setState(() {

@@ -3,7 +3,7 @@ import 'package:universal_campaign_frontend/models/config/content_config.dart';
 import 'package:universal_campaign_frontend/models/config/assets_config.dart';
 
 class CampaignConfig {
-  final String campaignId;
+  final int campaignId;
   final bool defaultCampaign;
   final String stripeSecretKeySecretManagerName;
   final String stripeWebhookKeySecretManagerName;
@@ -27,7 +27,7 @@ class CampaignConfig {
 
   factory CampaignConfig.fromJson(Map<String, dynamic> json) {
     return CampaignConfig(
-      campaignId: json['campaignId'] ?? '',
+      campaignId: json['campaignId'] as int? ?? 0,
       defaultCampaign: json['defaultCampaign'] ?? false,
       stripeSecretKeySecretManagerName: json['stripeSecretKeySecretManagerName'] ?? '',
       stripeWebhookKeySecretManagerName: json['stripeWebhookKeySecretManagerName'] ?? '',

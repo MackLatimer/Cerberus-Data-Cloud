@@ -1,7 +1,7 @@
 import os
 from google.cloud.sql.connector import Connector, IPTypes
 from google.cloud import secretmanager
-import psycopg2 # Changed from psycopg
+import pg8000
 
 import google.auth # Add this import
 
@@ -61,7 +61,7 @@ def get_db_connection():
     connector = Connector()
     connection = connector.connect(
         DB_CONNECTION_NAME,
-        "psycopg2",
+        "pg8000",
         user=DB_USER,
         password=DB_PASS,
         db=DB_NAME,
@@ -100,7 +100,7 @@ class DevelopmentConfig(Config):
     """Development configuration."""
     DEBUG = True
     # For local development, set the DATABASE_URL environment variable.
-    # Example: postgresql+psycopg://user:password@localhost:5432/voter_db
+    # Example: postgresql+pg8000://user:password@localhost:5432/voter_db
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
 
 class TestingConfig(Config):
@@ -108,7 +108,7 @@ class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_ECHO = False
     # Use a separate test database or an in-memory SQLite database for tests.
-    # Example: DATABASE_URL="postgresql+psycopg://test_user:test_password@localhost:5432/test_db"
+    # Example: DATABASE_URL="postgresql+pg8000://test_user:test_password@localhost:5432/test_db"
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         'DATABASE_URL',
         'sqlite:///:memory:' # Default to in-memory SQLite for simple tests
@@ -120,7 +120,7 @@ class ProductionConfig(Config):
     # In production, the database connection is managed by the Cloud SQL Python Connector.
     # The SQLAlchemy engine is configured with a "creator" function that establishes
     # a secure connection to the Cloud SQL instance.
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg://user:password@localhost/dbname' # Changed from psycopg2
+    SQLALCHEMY_DATABASE_URI = 'postgresql+pg8000://user:password@localhost/dbname' # Changed from psycopg2
     SQLALCHEMY_ENGINE_OPTIONS = {
         "creator": get_db_connection,
         "pool_size": 5,

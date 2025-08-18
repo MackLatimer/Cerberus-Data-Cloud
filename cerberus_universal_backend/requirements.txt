@@ -11,5 +11,5 @@ Flask-CORS==6.0.1 # For Cross-Origin Resource Sharing
 stripe==12.3.0
 GeoAlchemy2
 psycopg2-binary
-google-cloud-secret-manager==2.16.2
+pg8000
 google-cloud-secret-manager==2.16.2
