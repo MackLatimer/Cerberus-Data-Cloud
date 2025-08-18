@@ -10,6 +10,6 @@ gunicorn==23.0.0 # WSGI server for deployment
 Flask-CORS==6.0.1 # For Cross-Origin Resource Sharing
 stripe==12.3.0
 GeoAlchemy2
-psycopg
+psycopg2-binary
 google-cloud-secret-manager==2.16.2
 google-cloud-secret-manager==2.16.2
