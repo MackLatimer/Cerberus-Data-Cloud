@@ -13,6 +13,7 @@ class HomePageSection extends StatelessWidget {
   final Color? buttonColor;
   final Color? buttonTextColor;
   final Color? backgroundColor;
+  final String buttonText;
 
   const HomePageSection({
     super.key,

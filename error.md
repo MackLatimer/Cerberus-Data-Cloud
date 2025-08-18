@@ -1,10 +1,12 @@
+The build failed on step 5:
+
 Already have image (with digest): gcr.io/google.com/cloudsdktool/cloud-sdk
-Hit:1 http://packages.cloud.google.com/apt cloud-sdk-bookworm InRelease
-Hit:2 http://deb.debian.org/debian bookworm InRelease
-Get:3 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
-Get:4 http://deb.debian.org/debian-security bookworm-security InRelease [48.0 kB]
+Hit:1 http://deb.debian.org/debian bookworm InRelease
+Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [48.0 kB]
+Hit:4 http://packages.cloud.google.com/apt cloud-sdk-bookworm InRelease
 Get:5 http://deb.debian.org/debian-security bookworm-security/main amd64 Packages [274 kB]
-Fetched 378 kB in 0s (766 kB/s)
+Fetched 378 kB in 1s (696 kB/s)
 Reading package lists...
 Reading package lists...
 Building dependency tree...
@@ -702,7 +704,7 @@ Get:448 http://deb.debian.org/debian bookworm/main amd64 x11-xserver-utils amd64
 Get:449 http://deb.debian.org/debian bookworm/main amd64 libegl1 amd64 1.6.0-1 [33.7 kB]
 Get:450 http://deb.debian.org/debian bookworm/main amd64 zutty amd64 0.14.0.20230218+dfsg1-1 [177 kB]
 debconf: delaying package configuration, since apt-utils is not installed
-Fetched 33.2 MB in 1s (29.2 MB/s)
+Fetched 33.2 MB in 1s (35.2 MB/s)
 Selecting previously unselected package node-fast-deep-equal.
 (Reading database ... 
 Preparing to unpack .../000-node-fast-deep-equal_3.1.3-3_all.deb ...
@@ -2518,8 +2520,89 @@ npm WARN deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supp
 npm WARN deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
 npm WARN deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
 
-added 645 packages in 3m
+added 645 packages in 2m
 
 75 packages are looking for funding
   run `npm fund` for details
-bash: line 5: ./build_campaigns.sh: cannot execute: required file not found
+Building campaign: emmons
+Downloading Web SDK...                                           2,519ms
+Resolving dependencies...
+Downloading packages...
+  characters 1.4.0 (1.4.1 available)
+  flutter_lints 3.0.2 (6.0.0 available)
+  flutter_stripe 10.2.0 (11.5.0 available)
+  freezed_annotation 2.4.4 (3.1.0 available)
+  get_it 7.7.0 (8.2.0 available)
+  go_router 14.8.1 (16.1.0 available)
+> leak_tracker 11.0.1 (was 10.0.9)
+> leak_tracker_flutter_testing 3.0.10 (was 3.0.9)
+> leak_tracker_testing 3.0.2 (was 3.0.1)
+  lints 3.0.0 (6.0.0 available)
+  material_color_utilities 0.11.1 (0.13.0 available)
+  meta 1.16.0 (1.17.0 available)
+  stripe_android 10.2.1 (11.5.0 available)
+  stripe_ios 10.2.0 (11.5.0 available)
+  stripe_platform_interface 10.2.0 (11.5.0 available)
+> test_api 0.7.6 (was 0.7.4) (0.7.7 available)
+> vector_math 2.2.0 (was 2.1.4)
+  vm_service 15.0.0 (15.0.2 available)
+Changed 5 dependencies!
+14 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Compiling lib/main.dart for the Web...                          
+Wasm dry run succeeded. Consider building and testing your application with the `--wasm` flag. See docs for more info: https://docs.flutter.dev/platform-integration/web/wasm
+Use --no-wasm-dry-run to disable these warnings.
+Target dart2js failed: ProcessException: Process exited abnormally with exit code 1:
+lib/widgets/home_page_section.dart:23:19:
+Error: 'buttonText' isn't an instance field of this class.
+    required this.buttonText, // Added this line
+                  ^^^^^^^^^^
+lib/widgets/home_page_section.dart:80:25:
+Error: The getter 'buttonText' isn't defined for the type 'HomePageSection'.
+ - 'HomePageSection' is from 'package:universal_campaign_frontend/widgets/home_page_section.dart' ('lib/widgets/home_page_section.dart').
+            child: Text(buttonText),
+                        ^^^^^^^^^^
+Error: Compilation failed.
+  Command: /flutter/bin/cache/dart-sdk/bin/dart compile js --platform-binaries=/flutter/bin/cache/flutter_web_sdk/kernel --invoker=flutter_tool -Ddart.vm.product=true -DFLUTTER_VERSION=3.35.1 -DFLUTTER_CHANNEL=[user-branch] -DFLUTTER_GIT_URL=unknown source -DFLUTTER_FRAMEWORK_REVISION=20f8274939 -DFLUTTER_ENGINE_REVISION=1e9a811bf8 -DFLUTTER_DART_VERSION=3.9.0 -DFLUTTER_WEB_USE_SKIA=true -DFLUTTER_WEB_USE_SKWASM=false -DFLUTTER_WEB_CANVASKIT_URL=https://www.gstatic.com/flutter-canvaskit/1e9a811bf8e70466596bcf0ea3a8b5adb5f17f7f/ --native-null-assertions --no-source-maps -O4 --minify -o /workspace/universal_campaign_frontend/.dart_tool/flutter_build/1d40cdfb8e90e49111765ac076751199/app.dill --packages=/workspace/universal_campaign_frontend/.dart_tool/package_config.json --cfe-only /workspace/universal_campaign_frontend/.dart_tool/flutter_build/1d40cdfb8e90e49111765ac076751199/main.dart
+#0      RunResult.throwException (package:flutter_tools/src/base/process.dart:118:5)
+#1      _DefaultProcessUtils.run (package:flutter_tools/src/base/process.dart:344:19)
+<asynchronous suspension>
+#2      Dart2JSTarget.build (package:flutter_tools/src/build_system/targets/web.dart:204:5)
+<asynchronous suspension>
+#3      _BuildInstance._invokeInternal (package:flutter_tools/src/build_system/build_system.dart:873:9)
+<asynchronous suspension>
+#4      Future.wait.<anonymous closure> (dart:async/future.dart:525:21)
+<asynchronous suspension>
+#5      _BuildInstance.invokeTarget (package:flutter_tools/src/build_system/build_system.dart:811:32)
+<asynchronous suspension>
+#6      Future.wait.<anonymous closure> (dart:async/future.dart:525:21)
+<asynchronous suspension>
+#7      _BuildInstance.invokeTarget (package:flutter_tools/src/build_system/build_system.dart:811:32)
+<asynchronous suspension>
+#8      FlutterBuildSystem.build (package:flutter_tools/src/build_system/build_system.dart:631:16)
+<asynchronous suspension>
+#9      WebBuilder.buildWeb (package:flutter_tools/src/web/compile.dart:90:34)
+<asynchronous suspension>
+#10     BuildWebCommand.runCommand (package:flutter_tools/src/commands/build_web.dart:281:5)
+<asynchronous suspension>
+#11     FlutterCommand.run.<anonymous closure> (package:flutter_tools/src/runner/flutter_command.dart:1581:27)
+<asynchronous suspension>
+#12     AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:154:19)
+<asynchronous suspension>
+#13     CommandRunner.runCommand (package:args/command_runner.dart:212:13)
+<asynchronous suspension>
+#14     FlutterCommandRunner.runCommand.<anonymous closure> (package:flutter_tools/src/runner/flutter_command_runner.dart:503:9)
+<asynchronous suspension>
+#15     AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:154:19)
+<asynchronous suspension>
+#16     FlutterCommandRunner.runCommand (package:flutter_tools/src/runner/flutter_command_runner.dart:438:5)
+<asynchronous suspension>
+#17     run.<anonymous closure>.<anonymous closure> (package:flutter_tools/runner.dart:98:11)
+<asynchronous suspension>
+#18     AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:154:19)
+<asynchronous suspension>
+#19     main (package:flutter_tools/executable.dart:101:3)
+<asynchronous suspension>
+
+Compiling lib/main.dart for the Web...                             32.5s
+Error: Failed to compile application for the Web.

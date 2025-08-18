@@ -222,6 +222,8 @@ class MyApp extends StatelessWidget {
         return GoogleFonts.signikaTextTheme();
       case 'Tinos':
         return GoogleFonts.tinosTextTheme();
+      case 'Montserrat':
+        return GoogleFonts.montserratTextTheme();
       // Add more cases for other fonts as needed
       default:
         return GoogleFonts.robotoTextTheme(); // Fallback to Roboto

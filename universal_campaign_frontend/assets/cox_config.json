@@ -24,19 +24,19 @@
       "backgroundColor": "#FFFFFF",
       "textColor": "#4e008e",
       "buttonColor": "#4e008e",
-      "buttonTextColor": "#ba0020"
+      "buttonTextColor": "#FFFFFF"
     },
     "endorsementsSectionTheme": {
-      "backgroundColor": "#ba0020",
-      "textColor": "#FFFFFF",
-      "buttonColor": "#FFFFFF",
-      "buttonTextColor": "#4e008e"
-    },
-    "donateSectionTheme": {
       "backgroundColor": "#4e008e",
       "textColor": "#FFFFFF",
       "buttonColor": "#FFFFFF",
       "buttonTextColor": "#ba0020"
+    },
+    "donateSectionTheme": {
+      "backgroundColor": "#FFFFFF",
+      "textColor": "#4e008e",
+      "buttonColor": "#4e008e",
+      "buttonTextColor": "#FFFFFF"
     }
   },
   "content": {
@@ -73,21 +73,21 @@
         {
           "title": "Justice",
           "description": "Justice is swift and justice is fair. I will use my experience working in JP court and as your Truancy Master to balance deterrence and rehabilitation as we make our streets safer.",
-          "backgroundColor": "#a01124",
+          "backgroundColor": "#4e008e",
           "textColor": "#FFFFFF",
           "imagePath": "assets/images/Cox_Issues_Issue1.png"
         },
         {
           "title": "Transparency",
           "description": "A JP court should not be an uncertain or random place. Predictability and consistency in rulings allows people to solve problems before they even reach the court. I will always give a thorough reasoning for the decisions I make so we can increase confidence in our court again",
-          "backgroundColor": "#a01124",
-          "textColor": "#FFFFFF",
+          "backgroundColor": "#FFFFFF",
+          "textColor": "#4e008e",
           "imagePath": "assets/images/Cox_Issues_Issue2.png"
         },
         {
           "title": "Efficiency",
           "description": "This community deserves a full-time judge for a full-time job. That means being a judge who handles every duty of the office—from signing warrants and conducting magistration to performing inquests at a moment's notice.",
-          "backgroundColor": "#002663",
+          "backgroundColor": "#ba0020",
           "textColor": "#FFFFFF",
           "imagePath": "assets/images/Cox_Issues_Issue3.png"
         }
@@ -110,40 +110,36 @@
       "title": "Endorsed by Leaders and the Community",
       "endorsements": [
         {
-          "name": "John Doe",
-          "quote": "Curtis Cox is the leader we need for our community. His dedication and vision are truly inspiring.",
+          "name": "Mack Latimer",
+          "quote": "Bea Cox is the Person we need in JP 4. She has the temperment, experience, and work ethic to turn that office around.",
           "imagePath": "assets/images/Cox_Endorsements_1.png",
           "imageLeft": true,
-          "backgroundColor": "#002663",
-          "textColor": "#FFFFFF"
+          "backgroundColor": "#FFFFFF",
+          "textColor": "#4e008e"
         },
         {
-          "name": "Jane Smith",
-          "quote": "I've known Curtis for years, and he is a man of integrity and action. He will bring positive change to our county.",
+          "name": "Tyler Rayner",
+          "quote": "Bea Cox is a truly good person who will focus of finding justice in every situation",
           "imagePath": "assets/images/Cox_Endorsements_2.png",
           "imageLeft": false,
-          "backgroundColor": "#A01124",
+          "backgroundColor": "#4e008e",
           "textColor": "#FFFFFF"
         }
       ],
       "communityTitle": "Community Endorsements",
       "communityEndorsements": [
-        "John Doe",
-        "Jane Smith",
-        "Bob Builder",
-        "Alice Johnson",
-        "Charlie Brown",
-        "Emily Davis",
-        "Frank White"
+        "Laura Latimer",
+        "Michael Smith",
+        "Alyssa Hill",
       ],
       "endorsementCallToAction": "Join the list of supporters!",
-      "endorsementCallToActionText": "Fill out the form below to endorse Curtis Cox and allow him to publish your endorsement on this page."
+      "endorsementCallToActionText": "Fill out the form below to endorse Bea Cox and allow her to publish your endorsement on this page."
     },
     "donatePage": {
       "heroImagePath": "assets/images/Cox_Donate_Hero.png",
       "title": "Support Our Campaign",
       "subtitle": "Your contribution helps us make a difference in our community.",
-      "mailDonationText": "If you prefer to donate by mail, please send a check payable to \"Curtis Cox Campaign\" to: 123 Main Street, Anytown, USA 12345"
+      "mailDonationText": "If you prefer to donate by mail, please send a check payable to \"Bea Cox Campaign\" to: 127 Lake Road, Belton, TX 76513"
     },
     "commonAppBar": {
       "logoPath": "assets/logos/Cox_Logo.png",
@@ -160,10 +156,10 @@
     "widgets": {
       "signupForm": {
         "title": "Sign Up for Updates",
-        "endorseText": "I endorse Curtis Cox and allow him to publish my endorsement",
+        "endorseText": "I endorse Bea Cox and allow her to publish my endorsement",
         "getInvolvedText": "I want to get involved with the campaign",
-        "automatedMessagingText": "I agree to receive automated messaging from Elect Cox",
-        "emailOptInText": "I agree to receive emails from Elect Cox",
+        "automatedMessagingText": "I agree to receive automated messaging from the Bea Cox Campaign",
+        "emailOptInText": "I agree to receive emails from the Bea Cox Campaign",
         "buttonText": "Submit",
         "privacyButtonText": "Privacy Policy",
         "legalText": "By submitting this form, you agree to receive communications from the campaign."
@@ -209,12 +205,12 @@
       "buttonText": "Donate Now!"
     },
     "footer": {
-      "paidForText": "Paid for by Elect Cox",
-      "facebookLink": "https://www.facebook.com/",
-      "instagramLink": "https://www.instagram.com/",
-      "xLink": "https://twitter.com/",
-      "linkedinLink": "https://www.linkedin.com/",
-      "youtubeLink": "https://www.youtube.com/"
+      "paidForText": "Paid for by the Bea Cox Campaign",
+      "facebookLink": "https://www.facebook.com/beaforjp",
+      "instagramLink": "https://www.instagram.com/beaforjp",
+      "xLink": "https://x.com/beaforjp",
+      "linkedinLink": "https://www.linkedin.com/company/beaforjp",
+      "youtubeLink": "https://www.youtube.com/beaforjp"
     }
   }
 }
