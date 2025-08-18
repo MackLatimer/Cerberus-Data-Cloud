@@ -42,8 +42,8 @@ class _DonationWidgetState extends State<DonationWidget> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
 
-  bool _coverFees = false;
-  bool _isRecurring = false;
+  final bool _coverFees = false;
+  final bool _isRecurring = false;
   bool _contactEmail = false;
   bool _contactPhone = false;
   bool _contactMail = false;
@@ -156,14 +156,17 @@ class _DonationWidgetState extends State<DonationWidget> {
         ),
       );
 
-      final paymentIntent = await Stripe.instance.confirmPayment(
-        paymentIntentClientSecret: _paymentIntentClientSecret!,
-        data: PaymentMethodParams.card(
-          paymentMethodData: PaymentMethodData(billingDetails: billingDetails),
+      final paymentIntent = await Stripe.web.confirmPaymentElement(
+        _paymentIntentClientSecret!,
+        ConfirmPaymentElementOptions(
+          confirmParams: ConfirmPaymentParams(
+            returnUrl: '${Uri.base.origin}/#/donate', // Return to the donate page
+            billingDetails: billingDetails,
+          ),
         ),
       );
 
-      if (paymentIntent.status == PaymentIntentsStatus.Succeeded) {
+      if (paymentIntent.status == Stripe.web.PaymentIntentsStatus.Succeeded) {
         // The payment was successful, now update the backend with the donor details.
         await _recordDonation(paymentIntent.id);
         setState(() {
@@ -279,7 +282,7 @@ class _DonationWidgetState extends State<DonationWidget> {
           controller: _customAmountController,
           decoration: InputDecoration(
             labelText: donationWidgetContent.customAmountLabel,
-            prefixText: r'$',
+            prefixText: r'\$',
           ),
           keyboardType: TextInputType.number,
           onChanged: (value) {
@@ -374,28 +377,12 @@ class _DonationWidgetState extends State<DonationWidget> {
             autofillHints: const [AutofillHints.jobTitle],
           ),
           const SizedBox(height: 20),
-          CardField(
-            onCardChanged: (details) {},
-          ),
-          const SizedBox(height: 20),
-          CheckboxListTile(
-            title: Text(donationWidgetContent.coverFeesText),
-            value: _coverFees,
-            onChanged: (value) {
-              setState(() {
-                _coverFees = value!;
-              });
-            },
-          ),
-          CheckboxListTile(
-            title: Text(donationWidgetContent.recurringDonationText),
-            value: _isRecurring,
-            onChanged: (value) {
-              setState(() {
-                _isRecurring = value!;
-              });
-            },
-          ),
+          // Stripe Payment Element
+                    _paymentIntentClientSecret != null
+              ? const Stripe.web.PaymentElement(
+                  clientSecret: _paymentIntentClientSecret!,
+                )
+              : const CircularProgressIndicator(),
           const SizedBox(height: 20),
           TextFormField(
             controller: _emailController,
@@ -406,7 +393,7 @@ class _DonationWidgetState extends State<DonationWidget> {
                 return donationWidgetContent.emailValidation;
               }
               if (!RegExp(
-                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\\.[a-zA-Z]+")
                   .hasMatch(value)) {
                 return donationWidgetContent.invalidEmailValidation;
               }
