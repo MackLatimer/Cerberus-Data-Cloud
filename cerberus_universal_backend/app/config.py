@@ -2,10 +2,13 @@ import os
 from google.cloud.sql.connector import Connector, IPTypes
 from google.cloud import secretmanager
 
+import google.auth # Add this import
+
 def access_secret_version(secret_id, version_id="latest"):
     """Access the payload for the given secret version."""
     client = secretmanager.SecretManagerServiceClient()
-    project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
+    # project_id = os.environ.get("GOOGLE_CLOUD_PROJECT") # Remove or comment out this line
+    credentials, project_id = google.auth.default() # Add this line
     print(f"DEBUG: Attempting to access secret '{secret_id}' in project '{project_id}") # Add this line
     name = f"projects/{project_id}/secrets/{secret_id}/versions/{version_id}"
     response = client.access_secret_version(name=name)
