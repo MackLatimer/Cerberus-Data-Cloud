@@ -36,13 +36,7 @@ def create_app(config_name_override: str = None) -> Flask:
 
     CORS(app, resources={
         r"/api/v1/*": {
-            "origins": [
-                "https://electemmons.com",
-                "http://localhost:8080",
-                "http://localhost:5000",
-                "https://cerberus-data-cloud.web.app",
-                "https://cerberus-data-cloud-dev.web.app",
-            ]
+            "origins": app.config["CORS_ORIGINS"]
         }
     }, supports_credentials=True)
 

@@ -11,7 +11,7 @@
     "secondaryColor": "#ba0020",
     "backgroundColor": "#FFFFFF",
     "textColor": "#000000",
-    "fontFamily": "Montserrat",
+    "fontFamily": "Montserrat Bold",
     "secondaryFontFamily": "Playfair Display",
     "usePageTransitions": false,
     "issuesSectionTheme": {
