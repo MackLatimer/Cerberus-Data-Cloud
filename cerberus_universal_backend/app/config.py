@@ -41,7 +41,7 @@ try:
         'gauntt_frontend': os.environ.get("GAUNTT_STRIPE_WEBHOOK_KEY") or access_secret_version("GAUNTT_STRIPE_WEBHOOK_KEY"),
         'mintz_frontend': os.environ.get("MINTZ_STRIPE_WEBHOOK_KEY") or access_secret_version("MINTZ_STRIPE_WEBHOOK_KEY"),
         'tice_frontend': os.environ.get("TICE_STRIPE_WEBHOOK_KEY") or access_secret_version("TICE_STRIPE_WEBHOOK_KEY"),
-        'tulloch_frontend': os.environ.get("TULLOCH_STRIPE_WEBHOOK_KEY") or access_secret_version("TULLOCH_STRIPE_WEBHOOK_KEY"),
+        # 'tulloch_frontend': os.environ.get("TULLOCH_STRIPE_WEBHOOK_KEY") or access_secret_version("TULLOCH_STRIPE_WEBHOOK_KEY"),
         'leudeke_frontend': os.environ.get("LEUDEKE_STRIPE_WEBHOOK_KEY") or access_secret_version("LEUDEKE_STRIPE_WEBHOOK_KEY"),
         'whitson_frontend': os.environ.get("WHITSON_STRIPE_WEBHOOK_KEY") or access_secret_version("WHITSON_STRIPE_WEBHOOK_KEY"),
     }
