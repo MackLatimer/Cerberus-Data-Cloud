@@ -114,7 +114,7 @@ class ProductionConfig(Config):
     # In production, the database connection is managed by the Cloud SQL Python Connector.
     # The SQLAlchemy engine is configured with a "creator" function that establishes
     # a secure connection to the Cloud SQL instance.
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg://'
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg://user:password@localhost/dbname'
     SQLALCHEMY_ENGINE_OPTIONS = {
         "creator": get_db_connection,
         "pool_size": 5,
