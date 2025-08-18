@@ -2,7 +2,7 @@
   "campaignId": 2,
   "default_campaign_id": "cox",
   "defaultCampaign": true,
-  "stripePublicKey": "pk_test_51Rprl4DJohanGZYnPtUtDTPfjA4PNgyif3BFs4IcCn3CB389C7V2T6AH2zq7TPsuhPSDf7BGK1Ytc6atHH5gqKog00kvIBYB7b",
+  "stripePublicKey": "pk_live_51RprktRfTCt4TPGsqAgRck5QC3G795vtuLhnBmiFUKlO7pUgYbnbLSHk2mb8tUj0aBigtfeUclAmuCePvQLMlxkQ00vMlmX9To",
   "stripeSecretKeySecretManagerName": "projects/Cerberus-Data-Cloud/secrets/COX_STRIPE_SECRET_KEY",
   "stripeWebhookKeySecretManagerName": "projects/Cerberus-Data-Cloud/secrets/COX_STRIPE_WEBHOOK_KEY",
   "apiBaseUrl": "https://cerberus-backend-885603051818.us-south1.run.app/api/v1",
