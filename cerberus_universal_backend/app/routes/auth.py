@@ -50,9 +50,9 @@ def login():
 
     if user.check_password(password):
             token = jwt.encode({
-        'user_id': user.id,
-        'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
-    }, current_app.config['FLASK_SECRET_KEY'], algorithm="HS256")
+                'user_id': user.id,
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
+            }, current_app.config['FLASK_SECRET_KEY'], algorithm="HS256")
 
         return jsonify({'token': token})
 
