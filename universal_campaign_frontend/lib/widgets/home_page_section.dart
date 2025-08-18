@@ -20,6 +20,7 @@ class HomePageSection extends StatelessWidget {
     required this.summary,
     required this.imagePath,
     required this.routePath,
+    required this.buttonText, // Added this line
     this.imageBackgroundColor = Colors.grey,
     this.imageLeft = true,
     this.textColor,
@@ -76,7 +77,7 @@ class HomePageSection extends StatelessWidget {
             onPressed: () {
               context.go(routePath);
             },
-            child: Text('Learn More about $title'),
+            child: Text(buttonText),
           ),
         ],
       ),

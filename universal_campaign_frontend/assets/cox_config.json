@@ -159,12 +159,14 @@
     },
     "widgets": {
       "signupForm": {
+        "title": "Sign Up for Updates",
         "endorseText": "I endorse Curtis Cox and allow him to publish my endorsement",
         "getInvolvedText": "I want to get involved with the campaign",
         "automatedMessagingText": "I agree to receive automated messaging from Elect Cox",
         "emailOptInText": "I agree to receive emails from Elect Cox",
         "buttonText": "Submit",
-        "privacyButtonText": "Privacy Policy"
+        "privacyButtonText": "Privacy Policy",
+        "legalText": "By submitting this form, you agree to receive communications from the campaign."
       },
       "donateWidget": {
         "amounts": [25, 50, 100, 250, 500, 1000],
