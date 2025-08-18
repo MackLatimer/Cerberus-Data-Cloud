@@ -50,9 +50,6 @@ steps:
         echo "Running flutter doctor..."
         ./bin/flutter doctor
       fi
-  volumes:
-    - name: 'flutter_sdk'
-      path: '/flutter'
 
 # Install common dependencies
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
