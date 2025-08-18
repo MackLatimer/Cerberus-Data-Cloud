@@ -217,9 +217,8 @@ class _DonationWidgetState extends State<DonationWidget> {
           'is_recurring': _isRecurring,
         }),
       );
-    } catch (e, s) {
+    } catch (e) {
       // Log the error, but don't block the user flow.
-      print("Error recording donation: $e");
     }
   }
 
@@ -476,11 +475,11 @@ class _DonationWidgetState extends State<DonationWidget> {
       key: const ValueKey<int>(3),
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Text("Thank you for your donation!"),
+        const Text('Thank you for your donation!'),
         const SizedBox(height: 20),
         ElevatedButton(
           onPressed: () => context.go('/home'),
-          child: const Text("Done"),
+          child: const Text('Done'),
         ),
       ],
     );

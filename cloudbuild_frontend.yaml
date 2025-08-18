@@ -1,0 +1,10 @@
+steps:
+- name: 'cirrusci/flutter:3.19.0'
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    cd universal_campaign_frontend
+    flutter --version
+    flutter pub get
+    flutter build web --release
