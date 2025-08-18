@@ -6,6 +6,7 @@ def access_secret_version(secret_id, version_id="latest"):
     """Access the payload for the given secret version."""
     client = secretmanager.SecretManagerServiceClient()
     project_id = os.environ.get("GCP_PROJECT")
+    print(f"DEBUG: Attempting to access secret '{secret_id}' in project '{project_id}") # Add this line
     name = f"projects/{project_id}/secrets/{secret_id}/versions/{version_id}"
     response = client.access_secret_version(name=name)
     return response.payload.data.decode('UTF-8')
