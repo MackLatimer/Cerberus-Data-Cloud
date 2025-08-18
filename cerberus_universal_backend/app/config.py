@@ -1,6 +1,7 @@
 import os
 from google.cloud.sql.connector import Connector, IPTypes
 from google.cloud import secretmanager
+import psycopg # Add this line
 
 import google.auth # Add this import
 
