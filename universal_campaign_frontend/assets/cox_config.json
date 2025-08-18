@@ -71,40 +71,33 @@
       "title": "Issues",
       "issueSections": [
         {
-          "title": "Economic Growth & Job Creation",
-          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Curtis believes in fostering a business-friendly environment that attracts new opportunities and supports local entrepreneurs.",
+          "title": "Justice",
+          "description": "Justice is swift and justice is fair. I will use my experience working in JP court and as your Truancy Master to balance deterrence and rehabilitation as we make our streets safer.",
           "backgroundColor": "#a01124",
           "textColor": "#FFFFFF",
           "imagePath": "assets/images/Cox_Issues_Issue1.png"
         },
         {
-          "title": "Community Safety & Emergency Services",
-          "description": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat a pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Ensuring our neighborhoods are safe and our first responders are well-equipped is a top priority.",
+          "title": "Transparency",
+          "description": "A JP court should not be an uncertain or random place. Predictability and consistency in rulings allows people to solve problems before they even reach the court. I will always give a thorough reasoning for the decisions I make so we can increase confidence in our court again",
           "backgroundColor": "#a01124",
           "textColor": "#FFFFFF",
           "imagePath": "assets/images/Cox_Issues_Issue2.png"
         },
         {
-          "title": "Infrastructure Development & Maintenance",
-          "description": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. We must invest in maintaining and improving our roads, bridges, and public utilities to support our growing community.",
+          "title": "Efficiency",
+          "description": "This community deserves a full-time judge for a full-time job. That means being a judge who handles every duty of the office—from signing warrants and conducting magistration to performing inquests at a moment's notice.",
           "backgroundColor": "#002663",
           "textColor": "#FFFFFF",
           "imagePath": "assets/images/Cox_Issues_Issue3.png"
-        },
-        {
-          "title": "Fiscal Responsibility & Transparent Governance",
-          "description": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Curtis is committed to responsible spending of taxpayer dollars and ensuring all county operations are transparent and accountable to the public.",
-          "backgroundColor": "#002663",
-          "textColor": "#FFFFFF",
-          "imagePath": "assets/images/Cox_Issues_Issue4.png"
         }
       ]
     },
     "aboutPage": {
-      "appBarTitle": "About Curtis Cox",
+      "appBarTitle": "About Bea Cox",
       "heroImagePath": "assets/images/Cox_About_Hero.png",
       "bioTitle": "About Me",
-      "bioParagraph1": "Curtis Cox is a dedicated public servant with a passion for community development and effective governance. With a background in business and a commitment to fiscal responsibility, Curtis brings a wealth of experience to the table. He is a strong advocate for transparency and accountability in government, and he is committed to working with residents, business leaders, and community organizations to create a better future for our county.\n\nThroughout his career, Curtis has been actively involved in numerous local initiatives, from supporting small businesses to improving public infrastructure. He believes in a common-sense approach to problem-solving and is dedicated to ensuring that the voices of all residents are heard. His vision for the county is one of a smart growth, economic prosperity, and a high quality of life for all.\n\nAs a husband and father, Curtis understands the importance of building a strong and vibrant community for future generations. He is a firm believer in the power of collaboration and is committed to working with residents, business leaders, and community organizations to create a better future for our county.",
+      "bioParagraph1": "Bea Cox is a dedicated public servant with a passion for community development and effective governance. With a background in business and a commitment to fiscal responsibility, Bea brings a wealth of experience to the table. She is a strong advocate for transparency and accountability in government, and she is committed to working with residents, business leaders, and community organizations to create a better future for our county.\n\nThroughout her career, Bea has been actively involved in numerous local initiatives, from supporting small businesses to improving public infrastructure. She believes in a common-sense approach to problem-solving and is dedicated to ensuring that the voices of all residents are heard. Her vision for the county is one of a smart growth, economic prosperity, and a high quality of life for all.\n\nAs a wife and mother, Bea understands the importance of building a strong and vibrant community for future generations. She is a firm believer in the power of collaboration and is committed to working with residents, business leaders, and community organizations to create a better future for our county.",
       "bioParagraph2": "This is a placeholder for the second paragraph of the bio. It will be placed between the double picture and the single picture.",
       "bioParagraph3": "This is a placeholder for the third paragraph of the bio. It will be placed after the single picture.",
       "bioImage1Path": "assets/images/Cox_About_Bio1.png",

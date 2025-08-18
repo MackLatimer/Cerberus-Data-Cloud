@@ -1,6 +1,14 @@
 steps:
+# Build and push the backend
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/$PROJECT_ID/cerberus-backend:latest', '.']
+  id: 'Build and Push Backend'
+  args: [ 'build', '-t', 'gcr.io/$PROJECT_ID/cerberus-backend:latest', '.' ]
   dir: 'cerberus_universal_backend'
+
 images:
 - 'gcr.io/$PROJECT_ID/cerberus-backend:latest'
+
+options:
+  substitution_option: 'ALLOW_LOOSE'
+substitutions:
+  _PROJECT_ID: 'cerberus-data-cloud'

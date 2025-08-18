@@ -96,7 +96,7 @@ class _DonationWidgetState extends State<DonationWidget> {
 
     try {
       final response = await http.post(
-        Uri.parse('${widget.config.apiBaseUrl}/api/v1/donate/create-payment-intent'),
+        Uri.parse('${widget.config.apiBaseUrl}/donate/create-payment-intent'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'amount': amount * 100, // Convert to cents
@@ -191,7 +191,7 @@ class _DonationWidgetState extends State<DonationWidget> {
     final amount = _selectedAmount ?? int.tryParse(_customAmountController.text);
     try {
       await http.post(
-        Uri.parse('${widget.config.apiBaseUrl}/api/v1/donate/record-donation'),
+        Uri.parse('${widget.config.apiBaseUrl}/donate/record-donation'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'payment_intent_id': paymentIntentId,

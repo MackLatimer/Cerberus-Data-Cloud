@@ -73,6 +73,7 @@ class Config:
     """Base configuration."""
     CORS_ORIGINS = [
         "https://electemmons.com",
+        "https://beaforjp.com",
         "http://localhost:8080", # Example for local development
     ]
 
