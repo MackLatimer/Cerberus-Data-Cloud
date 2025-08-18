@@ -68,7 +68,7 @@ class DonatePage extends StatelessWidget {
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 40),
-                        DonationWidget(config: config),
+                        DonationWidget(apiBaseUrl: config.apiBaseUrl, stripePublicKey: config.stripePublicKey),
                         const SizedBox(height: 40),
                         Text(
                           config.content.donatePage.mailDonationText,

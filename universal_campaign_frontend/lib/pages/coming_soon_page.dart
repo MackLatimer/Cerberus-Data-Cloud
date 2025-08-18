@@ -37,7 +37,7 @@ class ComingSoonPage extends StatelessWidget {
                     const SizedBox(height: 40),
                     ConstrainedBox(
                       constraints: const BoxConstraints(maxWidth: 600),
-                      child: DonationWidget(config: config),
+                      child: DonationWidget(apiBaseUrl: config.apiBaseUrl, stripePublicKey: config.stripePublicKey),
                     ),
                   ],
                 ),

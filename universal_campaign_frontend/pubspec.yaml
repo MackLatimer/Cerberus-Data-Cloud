@@ -18,6 +18,7 @@ dependencies:
   web: ^1.0.0
   http: ^1.2.1
   flutter_stripe: ^11.5.0
+  flutter_stripe_web: ^6.5.1
   provider: ^6.0.0
   get_it: ^7.2.0
   google_fonts: ^6.2.1

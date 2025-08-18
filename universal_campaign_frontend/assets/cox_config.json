@@ -116,14 +116,6 @@
           "imageLeft": true,
           "backgroundColor": "#FFFFFF",
           "textColor": "#4e008e"
-        },
-        {
-          "name": "Tyler Rayner",
-          "quote": "Bea Cox is a truly good person who will focus of finding justice in every situation",
-          "imagePath": "assets/images/Cox_Endorsements_2.png",
-          "imageLeft": false,
-          "backgroundColor": "#4e008e",
-          "textColor": "#FFFFFF"
         }
       ],
       "communityTitle": "Community Endorsements",
