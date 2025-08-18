@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:universal_campaign_frontend/providers/campaign_provider.dart';
 import 'package:universal_campaign_frontend/widgets/common_app_bar.dart';
 import 'package:universal_campaign_frontend/widgets/footer.dart';
-import 'package:universal_campaign_frontend/widgets/donation_widget.dart';
+//import 'package:universal_campaign_frontend/widgets/donation_widget.dart';
 
 
 class DonatePage extends StatelessWidget {
@@ -68,7 +68,7 @@ class DonatePage extends StatelessWidget {
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 40),
-                        DonationWidget(apiBaseUrl: config.apiBaseUrl, stripePublicKey: config.stripePublicKey),
+                       // DonationWidget(apiBaseUrl: config.apiBaseUrl, stripePublicKey: config.stripePublicKey),
                         const SizedBox(height: 40),
                         Text(
                           config.content.donatePage.mailDonationText,

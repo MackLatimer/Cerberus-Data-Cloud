@@ -42,7 +42,7 @@
   "content": {
     "siteTitle": "Bea Cox for JP 4, 2",
     "faviconImagePath": "assets/favicons/Cox_Favicon.png",
-    "launchStatus": false,
+    "launchStatus": true,
     "comingSoonPage": {
       "title": "Our campaign is launching soon!",
       "subtitle": "In the meantime, you can support our campaign by donating below."
@@ -97,9 +97,9 @@
       "appBarTitle": "About Bea Cox",
       "heroImagePath": "assets/images/Cox_About_Hero.png",
       "bioTitle": "About Me",
-      "bioParagraph1": "Bea Cox is a dedicated public servant with a passion for community development and effective governance. With a background in business and a commitment to fiscal responsibility, Bea brings a wealth of experience to the table. She is a strong advocate for transparency and accountability in government, and she is committed to working with residents, business leaders, and community organizations to create a better future for our county.\n\nThroughout her career, Bea has been actively involved in numerous local initiatives, from supporting small businesses to improving public infrastructure. She believes in a common-sense approach to problem-solving and is dedicated to ensuring that the voices of all residents are heard. Her vision for the county is one of a smart growth, economic prosperity, and a high quality of life for all.\n\nAs a wife and mother, Bea understands the importance of building a strong and vibrant community for future generations. She is a firm believer in the power of collaboration and is committed to working with residents, business leaders, and community organizations to create a better future for our county.",
-      "bioParagraph2": "This is a placeholder for the second paragraph of the bio. It will be placed between the double picture and the single picture.",
-      "bioParagraph3": "This is a placeholder for the third paragraph of the bio. It will be placed after the single picture.",
+      "bioParagraph1": "Bea Cox is a lifelong resident of Killeen with deep ties to both her community and her faith. Her father, a proud U.S. Army veteran, retired from Fort Hood in 1977 as a Sergeant First Class, settling their family in Killeen to stay close to their Texas roots. She and her husband Garry have been married for 21 years and share four sons. Together, they are active members of Maxdale Cowboy Church, where she also serves on the Praise & Worship Team.",
+      "bioParagraph2": "For more than three decades, Bea has dedicated her life to public service. She began her career working in the Killeen Police Department’s records division while still in high school, later serving in the vehicle registration office before embarking on a 25-year career with Bell County. For 23 of those years, she served under the Justice of the Peace, and now Sheriff, Bill Cooke as his Deputy Clerk and eventually Chief Clerk, before becoming the first appointed Bell County Truancy Master. She credits her faith, integrity, and strong work ethic for guiding her through these years of service.",
+      "bioParagraph3": "Beyond her professional commitments, Bea is an active member of numerous community organizations, including the Central Texas Republican Women-PAC and LULAC Herencia Chapter #4297. These roles have allowed her to build strong relationships with citizens across Bell County, giving her valuable perspective on the needs and aspirations of the community she proudly calls home. With 35 years of service behind her, she continues to carry forward the same commitment to people and principles that has defined her life’s work.",
       "bioImage1Path": "assets/images/Cox_About_Bio1.png",
       "bioImage2Path": "assets/images/Cox_About_Bio2.png",
       "bioImage3Path": "assets/images/Cox_About_Bio3.png"
