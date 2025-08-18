@@ -1,5 +1,6 @@
 {
   "campaignId": "cox",
+  "default_campaign_id": "cox",
   "defaultCampaign": true,
   "stripePublicKey": "pk_test_51Rprl4DJohanGZYnPtUtDTPfjA4PNgyif3BFs4IcCn3CB389C7V2T6AH2zq7TPsuhPSDf7BGK1Ytc6atHH5gqKog00kvIBYB7b",
   "stripeSecretKeySecretManagerName": "projects/Cerberus-Data-Cloud/secrets/COX_STRIPE_SECRET_KEY",
