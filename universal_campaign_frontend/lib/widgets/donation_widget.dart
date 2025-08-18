@@ -377,7 +377,7 @@ class _DonationWidgetState extends State<DonationWidget> {
                 InputDecoration(labelText: donationWidgetContent.employerLabel),
             validator: (value) =>
                 value!.isEmpty ? donationWidgetContent.employerValidation : null,
-            autofillHints: const [AutofillHints.organization],
+            autofillHints: const [AutofillHints.organizationName],
           ),
           TextFormField(
             controller: _occupationController,
