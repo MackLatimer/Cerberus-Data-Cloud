@@ -61,7 +61,7 @@ def get_db_connection():
     connector = Connector()
     connection = connector.connect(
         DB_CONNECTION_NAME,
-        "psycopg",
+        "psycopg2",
         user=DB_USER,
         password=DB_PASS,
         db=DB_NAME,
