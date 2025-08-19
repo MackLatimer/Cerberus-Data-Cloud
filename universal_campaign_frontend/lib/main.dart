@@ -18,7 +18,14 @@ import 'package:web/web.dart' as web;
 import 'package:universal_campaign_frontend/locator.dart';
 import 'package:universal_campaign_frontend/services/config_service.dart';
 
-void main() {
+import 'package:flutter_stripe/flutter_stripe.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Set your Stripe publishable key
+  Stripe.publishableKey = 'pk_test_YOUR_PUBLISHABLE_KEY'; // Replace with your key
+  await Stripe.instance.applySettings();
   setupLocator();
   setUrlStrategy(const HashUrlStrategy());
   runApp(

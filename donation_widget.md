@@ -1,3 +1,60 @@
+Here is a complete, well-documented Flutter widget (donation_widget.dart) that uses Stripe for a multi-step donation process as you've described.
+
+This code requires the flutter_stripe and http packages. Add them to your pubspec.yaml file:
+
+YAML
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_stripe: ^10.1.1 # Use the latest version
+  http: ^1.2.1 # Use the latest version
+You will also need to initialize Stripe in your main.dart file with your publishable key.
+
+Dart
+
+// main.dart
+import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'donation_widget.dart'; // Import the new widget
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Set your Stripe publishable key
+  Stripe.publishableKey = 'pk_test_YOUR_PUBLISHABLE_KEY'; // Replace with your key
+  await Stripe.instance.applySettings();
+
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Stripe Donation Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Make a Donation'),
+        ),
+        body: const DonationWidget(),
+      ),
+    );
+  }
+}
+Donation Widget Code
+Here is the code for donation_widget.dart. It is a self-contained, stateful widget that manages the three distinct steps of the donation process.
+
+donation_widget.dart
+
+Dart
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -101,7 +158,7 @@ class _DonationWidgetState extends State<DonationWidget> {
       case 3:
         return _buildConfirmationStep();
       default:
-        return const Center(child: Text('An error occurred.'));
+        return const Center(child: Text("An error occurred."));
     }
   }
 
@@ -342,13 +399,11 @@ class _DonationWidgetState extends State<DonationWidget> {
       });
 
     } on StripeException catch (e) {
-      if (!mounted) return;
       // Handle Stripe-specific errors (e.g., card declined)
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Payment failed: ${e.error.localizedMessage}')),
       );
     } catch (e) {
-      if (!mounted) return;
       // Handle other errors (e.g., network issues)
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('An unexpected error occurred: $e')),

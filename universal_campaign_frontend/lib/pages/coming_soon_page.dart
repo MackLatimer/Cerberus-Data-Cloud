@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:universal_campaign_frontend/providers/campaign_provider.dart';
-//import 'package:universal_campaign_frontend/widgets/donation_widget.dart';
+import 'package:universal_campaign_frontend/widgets/donation_widget.dart';
 
 
 class ComingSoonPage extends StatelessWidget {
@@ -37,7 +37,7 @@ class ComingSoonPage extends StatelessWidget {
                     const SizedBox(height: 40),
                     ConstrainedBox(
                       constraints: const BoxConstraints(maxWidth: 600),
-                      // child: DonationWidget(apiBaseUrl: config.apiBaseUrl, stripePublicKey: config.stripePublicKey),
+                      child: const DonationWidget(),
                     ),
                   ],
                 ),
