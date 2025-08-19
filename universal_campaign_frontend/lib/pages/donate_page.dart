@@ -39,7 +39,7 @@ class DonatePage extends StatelessWidget {
               height: MediaQuery.of(context).size.height,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(config.assets.donatePage.heroImagePath.isNotEmpty ? config.assets.donatePage.heroImagePath : 'assets/images/Blair_Logo.png'),
+                  image: AssetImage(config.content.donatePage.heroImagePath.isNotEmpty ? config.content.donatePage.heroImagePath : 'assets/images/Blair_Logo.png'),
                   fit: BoxFit.cover,
                 ),
               ),

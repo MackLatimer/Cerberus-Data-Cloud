@@ -40,7 +40,7 @@ class AboutPage extends StatelessWidget {
               height: MediaQuery.of(context).size.height,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(config.assets.aboutPage.heroImagePath.isNotEmpty ? config.assets.aboutPage.heroImagePath : 'assets/images/Blair_Logo.png'),
+                  image: AssetImage(config.content.aboutPage.heroImagePath.isNotEmpty ? config.content.aboutPage.heroImagePath : 'assets/images/Blair_Logo.png'),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -78,7 +78,7 @@ class AboutPage extends StatelessWidget {
                                 padding: const EdgeInsets.all(8.0),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(15.0),
-                                  child: Image.asset(config.assets.aboutPage.bioImage1Path.isNotEmpty ? config.assets.aboutPage.bioImage1Path : 'assets/images/Blair_Logo.png', fit: BoxFit.cover),
+                                  child: Image.asset(config.content.aboutPage.bioImage1Path.isNotEmpty ? config.content.aboutPage.bioImage1Path : 'assets/images/Blair_Logo.png', fit: BoxFit.cover),
                                 ),
                               ),
                             ),
@@ -87,7 +87,7 @@ class AboutPage extends StatelessWidget {
                                 padding: const EdgeInsets.all(8.0),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(15.0),
-                                  child: Image.asset(config.assets.aboutPage.bioImage2Path.isNotEmpty ? config.assets.aboutPage.bioImage2Path : 'assets/images/Blair_Logo.png', fit: BoxFit.cover),
+                                  child: Image.asset(config.content.aboutPage.bioImage2Path.isNotEmpty ? config.content.aboutPage.bioImage2Path : 'assets/images/Blair_Logo.png', fit: BoxFit.cover),
                                 ),
                               ),
                             ),
@@ -107,7 +107,7 @@ class AboutPage extends StatelessWidget {
                                 padding: const EdgeInsets.all(8.0),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(15.0),
-                                  child: Image.asset(config.assets.aboutPage.bioImage3Path.isNotEmpty ? config.assets.aboutPage.bioImage3Path : 'assets/images/Blair_Logo.png', fit: BoxFit.cover),
+                                  child: Image.asset(config.content.aboutPage.bioImage3Path.isNotEmpty ? config.content.aboutPage.bioImage3Path : 'assets/images/Blair_Logo.png', fit: BoxFit.cover),
                                 ),
                               ),
                             ),

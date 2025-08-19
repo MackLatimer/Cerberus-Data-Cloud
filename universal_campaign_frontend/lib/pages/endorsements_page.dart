@@ -45,7 +45,7 @@ class EndorsementsPage extends StatelessWidget {
               height: heroHeight,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(config.assets.endorsementsPage.heroImagePath.isNotEmpty ? config.assets.endorsementsPage.heroImagePath : 'assets/images/Blair_Logo.png'),
+                  image: AssetImage(config.content.endorsementsPage.heroImagePath.isNotEmpty ? config.content.endorsementsPage.heroImagePath : 'assets/images/Blair_Logo.png'),
                   fit: BoxFit.cover,
                 ),
               ),
