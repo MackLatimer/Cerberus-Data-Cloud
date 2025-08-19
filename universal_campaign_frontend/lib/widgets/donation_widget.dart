@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
+
+import 'package:flutter_stripe_web/flutter_stripe_web.dart';
 
 class DonationWidget extends StatefulWidget {
   const DonationWidget({super.key});
@@ -97,7 +98,7 @@ class _DonationWidgetState extends State<DonationWidget> {
       case 1:
         return _buildAmountSelectionStep();
       case 2:
-        return _buildUserInfoAndPaymentStep();
+        return _buildUserInfoStep();
       case 3:
         return _buildConfirmationStep();
       default:
@@ -159,9 +160,9 @@ class _DonationWidgetState extends State<DonationWidget> {
   }
 
   //****************************************************************************
-  // STEP 2: User Information & Payment
+  // STEP 2: User Information
   //****************************************************************************
-  Widget _buildUserInfoAndPaymentStep() {
+  Widget _buildUserInfoStep() {
     return Form(
       key: _formKey,
       child: Column(
@@ -198,24 +199,14 @@ class _DonationWidgetState extends State<DonationWidget> {
               ],
             ),
           ),
-          const Divider(height: 32),
-          const Text('Payment Details', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 16),
-          // This is the pre-built Stripe CardForm element.
-          CardFormField(
-            controller: CardFormEditController(),
-            style: CardFormStyle(
-              backgroundColor: Theme.of(context).inputDecorationTheme.fillColor,
-            ),
-          ),
           const SizedBox(height: 24),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: _isLoading ? null : _handlePayment,
+              onPressed: _isLoading ? null : _initiatePayment,
               child: _isLoading
                   ? const CircularProgressIndicator(color: Colors.white)
-                  : const Text('Submit Donation'),
+                  : const Text('Proceed to Payment'),
             ),
           ),
         ],
@@ -292,7 +283,7 @@ class _DonationWidgetState extends State<DonationWidget> {
   // Stripe Payment Logic
   //****************************************************************************
 
-  Future<void> _handlePayment() async {
+  Future<void> _initiatePayment() async {
     // 1. Validate the form
     if (!_formKey.currentState!.validate()) {
       return;
@@ -307,49 +298,46 @@ class _DonationWidgetState extends State<DonationWidget> {
       final paymentIntentData = await _createPaymentIntent(
         amount: (_selectedAmount! * 100).toInt(), // Amount in cents
         currency: 'usd',
-      );
-
-      final clientSecret = paymentIntentData['clientSecret'];
-
-      // 3. Collect billing details from the form
-      final billingDetails = BillingDetails(
-        name: '${_firstNameController.text} ${_lastNameController.text}',
-        email: _emailController.text, // You might collect this earlier
-        phone: _phoneController.text, // Or this
-        address: Address(
-          line1: _address1Controller.text,
-          line2: _address2Controller.text,
-          city: _cityController.text,
-          state: _stateController.text,
-          postalCode: _zipController.text,
-          country: 'US',
-        ),
-      );
-
-      // 4. Confirm the payment on the client
-      await Stripe.instance.confirmPayment(
-        paymentIntentClientSecret: clientSecret,
-        data: PaymentMethodParams.card(
-          paymentMethodData: PaymentMethodData(
-            billingDetails: billingDetails,
+        // Pass billing details to the backend
+        billingDetails: BillingDetails(
+          name: '${_firstNameController.text} ${_lastNameController.text}',
+          email: _emailController.text,
+          phone: _phoneController.text,
+          address: Address(
+            line1: _address1Controller.text,
+            line2: _address2Controller.text,
+            city: _cityController.text,
+            state: _stateController.text,
+            postalCode: _zipController.text,
+            country: 'US',
           ),
         ),
       );
 
-      // 5. Payment successful, move to the next step
-      setState(() {
-        _currentStep = 3;
-      });
+      final clientSecret = paymentIntentData['clientSecret'];
 
-    } on StripeException catch (e) {
       if (!mounted) return;
-      // Handle Stripe-specific errors (e.g., card declined)
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Payment failed: ${e.error.localizedMessage}')),
+
+      // 3. Navigate to the Payment Screen
+      final paymentResult = await Navigator.of(context).push<bool>(
+        MaterialPageRoute(
+          builder: (context) => _StripePaymentScreen(
+            clientSecret: clientSecret,
+            amount: _selectedAmount!,
+          ),
+        ),
       );
+
+      // 4. Check payment result and move to the next step
+      if (paymentResult == true) {
+        setState(() {
+          _currentStep = 3;
+        });
+      }
+
     } catch (e) {
       if (!mounted) return;
-      // Handle other errors (e.g., network issues)
+      // Handle errors (e.g., network issues, failed to create PI)
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('An unexpected error occurred: $e')),
       );
@@ -363,7 +351,11 @@ class _DonationWidgetState extends State<DonationWidget> {
   /// ⚠️ SERVER-SIDE FUNCTION (Placeholder) ⚠️
   /// This function simulates a call to your backend server.
   /// In a real app, this would be an HTTPS request to an endpoint you control.
-  Future<Map<String, dynamic>> _createPaymentIntent({required int amount, required String currency}) async {
+  Future<Map<String, dynamic>> _createPaymentIntent({
+    required int amount,
+    required String currency,
+    required BillingDetails billingDetails,
+  }) async {
     // DO NOT store your secret key in the app!
     // This is a placeholder and is NOT secure.
     const String stripeSecretKey = 'sk_test_YOUR_SECRET_KEY'; // Replace with your test secret key
@@ -373,6 +365,8 @@ class _DonationWidgetState extends State<DonationWidget> {
       'amount': amount.toString(),
       'currency': currency,
       'payment_method_types[]': 'card',
+      // You can pass customer details here so they are pre-filled
+      'receipt_email': billingDetails.email,
     };
 
     try {
@@ -392,6 +386,121 @@ class _DonationWidgetState extends State<DonationWidget> {
       }
     } catch (err) {
       throw Exception('Failed to connect to Stripe: $err');
+    }
+  }
+}
+
+
+//****************************************************************************
+// New Screen for Stripe Payment Element
+//****************************************************************************
+
+class _StripePaymentScreen extends StatefulWidget {
+  final String clientSecret;
+  final double amount;
+
+  const _StripePaymentScreen({
+    required this.clientSecret,
+    required this.amount,
+  });
+
+  @override
+  State<_StripePaymentScreen> createState() => _StripePaymentScreenState();
+}
+
+class _StripePaymentScreenState extends State<_StripePaymentScreen> {
+  bool _isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Complete Your Donation'),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Donating: \$${widget.amount.toStringAsFixed(2)}',
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 24),
+              const Text(
+                'Enter Payment Details',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+              // The PaymentElement is rendered here using the client secret.
+              PaymentElement(
+                clientSecret: widget.clientSecret,
+                onCardChanged: (_) {},
+              ),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _isLoading ? null : _confirmPayment,
+                  child: _isLoading
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Text('Submit Donation'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _confirmPayment() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      // For web, we use confirmPaymentElement
+      await WebStripe.instance.confirmPaymentElement(
+        const ConfirmPaymentElementOptions(
+          confirmParams: ConfirmPaymentParams(
+            return_url: 'https://your-return-url.com',
+          ),
+        ),
+      );
+
+      if (!mounted) return;
+
+      // Payment successful, show a success message and pop back
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Payment Successful! Thank you for your donation.'),
+          backgroundColor: Colors.green,
+        ),
+      );
+      // Pop the payment screen and pass `true` to indicate success
+      Navigator.of(context).pop(true);
+
+    } on StripeException catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Payment failed: ${e.error.localizedMessage}'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('An unexpected error occurred: $e')),
+        ),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 }
