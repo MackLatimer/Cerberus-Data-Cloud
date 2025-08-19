@@ -10,7 +10,7 @@ from ..utils.security import token_required, encrypt_data, decrypt_data
 
 voters_api_bp = Blueprint('voters_api', __name__, url_prefix='/api/v1/voters')
 
-public_api_bp = Blueprint('public_api', __name__, url_prefix='/api/v1')
+public_api_bp = Blueprint('public_api', __name__, url_prefix='/api/v1/public')
 
 
 

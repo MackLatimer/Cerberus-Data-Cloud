@@ -52,7 +52,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
       'notes': 'Signed up via website form. Endorse: $_endorseChecked, Get Involved: $_getInvolvedChecked',
     };
 
-    final url = Uri.parse('${widget.config.apiBaseUrl}/signups');
+    final url = Uri.parse('${widget.config.apiBaseUrl}/public/signups');
 
     try {
       final response = await http.post(
