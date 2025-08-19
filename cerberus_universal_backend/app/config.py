@@ -3,17 +3,23 @@ from google.cloud.sql.connector import Connector, IPTypes
 from google.cloud import secretmanager
 import pg8000
 
-import google.auth # Add this import
+import google.auth
+from google.api_core import exceptions as google_exceptions
 
 def access_secret_version(secret_id, version_id="latest"):
     """Access the payload for the given secret version."""
-    client = secretmanager.SecretManagerServiceClient()
-    # project_id = os.environ.get("GOOGLE_CLOUD_PROJECT") # Remove or comment out this line
-    credentials, project_id = google.auth.default() # Add this line
-    print(f"DEBUG: Attempting to access secret '{secret_id}' in project '{project_id}") # Add this line
-    name = f"projects/{project_id}/secrets/{secret_id}/versions/{version_id}"
-    response = client.access_secret_version(name=name)
-    return response.payload.data.decode('UTF-8')
+    try:
+        client = secretmanager.SecretManagerServiceClient()
+        credentials, project_id = google.auth.default()
+        name = f"projects/{project_id}/secrets/{secret_id}/versions/{version_id}"
+        response = client.access_secret_version(name=name)
+        return response.payload.data.decode('UTF-8')
+    except google_exceptions.PermissionDenied:
+        raise RuntimeError(f"Permission denied for secret '{secret_id}' in project '{project_id}'. Please grant the 'Secret Manager Secret Accessor' role.")
+    except google_exceptions.NotFound:
+        raise RuntimeError(f"Secret '{secret_id}' not found in project '{project_id}'.")
+    except Exception as e:
+        raise RuntimeError(f"An unexpected error occurred while accessing secret '{secret_id}': {e}")
 
 # According to 12-Factor App methodology, configuration should be stored in the environment.
 # For production environments, it is highly recommended to use a secret management service
