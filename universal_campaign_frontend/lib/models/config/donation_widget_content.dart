@@ -1,5 +1,6 @@
 class DonationWidgetContent {
   final List<int> amounts;
+  final String stripeSecretKeySecretManagerName;
   final String customAmountLabel;
   final String continueButtonText;
   final String selectAmountValidation;
@@ -35,6 +36,7 @@ class DonationWidgetContent {
 
   DonationWidgetContent({
     required this.amounts,
+    required this.stripeSecretKeySecretManagerName,
     required this.customAmountLabel,
     required this.continueButtonText,
     required this.selectAmountValidation,
@@ -72,6 +74,7 @@ class DonationWidgetContent {
   factory DonationWidgetContent.fromJson(Map<String, dynamic> json) {
     return DonationWidgetContent(
       amounts: List<int>.from(json['amounts'] ?? [25, 50, 100, 250, 500, 1000]),
+      stripeSecretKeySecretManagerName: json['stripeSecretKeySecretManagerName'] ?? 'default_stripe_key',
       customAmountLabel: json['customAmountLabel'] ?? 'Custom Amount',
       continueButtonText: json['continueButtonText'] ?? 'Continue',
       selectAmountValidation: json['selectAmountValidation'] ?? 'Please select or enter an amount',

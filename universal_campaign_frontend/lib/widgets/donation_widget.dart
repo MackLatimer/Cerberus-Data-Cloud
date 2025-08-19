@@ -1,8 +1,9 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:universal_campaign_frontend/providers/campaign_provider.dart';
+import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-
 import 'package:flutter_stripe_web/flutter_stripe_web.dart';
 
 class DonationWidget extends StatefulWidget {
@@ -358,7 +359,12 @@ class _DonationWidgetState extends State<DonationWidget> {
   }) async {
     // DO NOT store your secret key in the app!
     // This is a placeholder and is NOT secure.
-    const String stripeSecretKey = 'sk_test_YOUR_SECRET_KEY'; // Replace with your test secret key
+    final campaignProvider = Provider.of<CampaignProvider>(context, listen: false);
+    final config = campaignProvider.campaignConfig;
+    if (config == null) {
+      throw Exception('Campaign configuration is not loaded.');
+    }
+    final String stripeSecretKey = config.stripeSecretKeySecretManagerName; // Replace with your test secret key
     const String url = 'https://api.stripe.com/v1/payment_intents';
 
     final body = {
