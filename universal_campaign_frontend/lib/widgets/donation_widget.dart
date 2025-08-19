@@ -495,8 +495,7 @@ class _StripePaymentScreenState extends State<_StripePaymentScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('An unexpected error occurred: $e')),
-        ),
-      );
+        );
     } finally {
       setState(() {
         _isLoading = false;
