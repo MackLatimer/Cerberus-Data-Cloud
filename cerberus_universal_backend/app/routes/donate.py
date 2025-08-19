@@ -44,8 +44,10 @@ def create_payment_intent():
             'clientSecret': intent.client_secret,
         })
     except stripe.error.StripeError as e:
+        current_app.logger.error(f"Stripe error while creating PaymentIntent: {e}")
         return jsonify({'error': str(e)}), 400
     except Exception as e:
+        current_app.logger.error(f"Unexpected error while creating PaymentIntent: {e}")
         return jsonify({'error': str(e)}), 500
 
 @donate_bp.route('/record-donation', methods=['POST'])
