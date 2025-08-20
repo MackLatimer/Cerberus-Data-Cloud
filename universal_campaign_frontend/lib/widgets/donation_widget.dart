@@ -349,38 +349,45 @@ class _DonationWidgetState extends State<DonationWidget> {
     }
   }
 
-  /// ⚠️ SERVER-SIDE FUNCTION (Placeholder) ⚠️
-  /// This function simulates a call to your backend server.
-  /// In a real app, this would be an HTTPS request to an endpoint you control.
+  /// Calls the backend to create a Stripe PaymentIntent.
   Future<Map<String, dynamic>> _createPaymentIntent({
     required int amount,
     required String currency,
     required BillingDetails billingDetails,
   }) async {
-    // DO NOT store your secret key in the app!
-    // This is a placeholder and is NOT secure.
     final campaignProvider = Provider.of<CampaignProvider>(context, listen: false);
     final config = campaignProvider.campaignConfig;
     if (config == null) {
       throw Exception('Campaign configuration is not loaded.');
     }
-    final String stripeSecretKey = config.stripeSecretKeySecretManagerName; // Replace with your test secret key
-    const String url = 'https://api.stripe.com/v1/payment_intents';
 
-    final body = {
-      'amount': amount.toString(),
+    final url = Uri.parse('${config.apiBaseUrl}/api/v1/donate/create-payment-intent');
+
+    final body = json.encode({
+      'amount': amount,
       'currency': currency,
-      'payment_method_types[]': 'card',
-      // You can pass customer details here so they are pre-filled
-      'receipt_email': billingDetails.email,
-    };
+      'campaign_id': config.campaignId,
+      // The backend can use these details to pre-fill customer information in Stripe
+      'billing_details': {
+        'name': billingDetails.name,
+        'email': billingDetails.email,
+        'phone': billingDetails.phone,
+        'address': {
+          'line1': billingDetails.address.line1,
+          'line2': billingDetails.address.line2,
+          'city': billingDetails.address.city,
+          'state': billingDetails.address.state,
+          'postal_code': billingDetails.address.postalCode,
+          'country': billingDetails.address.country,
+        }
+      }
+    });
 
     try {
       final response = await http.post(
-        Uri.parse(url),
+        url,
         headers: {
-          'Authorization': 'Bearer $stripeSecretKey',
-          'Content-Type': 'application/x-www-form-urlencoded'
+          'Content-Type': 'application/json',
         },
         body: body,
       );
@@ -388,10 +395,12 @@ class _DonationWidgetState extends State<DonationWidget> {
       if (response.statusCode == 200) {
         return json.decode(response.body);
       } else {
-        throw Exception('Failed to create PaymentIntent: ${response.body}');
+        final errorBody = json.decode(response.body);
+        final errorMessage = errorBody['error'] ?? 'Failed to create PaymentIntent.';
+        throw Exception(errorMessage);
       }
-    } catch (err) {
-      throw Exception('Failed to connect to Stripe: $err');
+    } catch (e) {
+      throw Exception('Failed to connect to the server: $e');
     }
   }
 }
