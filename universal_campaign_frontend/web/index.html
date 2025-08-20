@@ -4,17 +4,7 @@
   <meta charset="UTF-8">
   <title>universal_campaign_frontend</title>
   <link id="favicon" rel="icon" type="image/png" />
-  <script>
-    (function() {
-      const params = new URLSearchParams(window.location.search);
-      let campaign = params.get('campaign') || 'cox';
-      const favicon = document.getElementById('favicon');
-      if (favicon) {
-        let campaignName = campaign.charAt(0).toUpperCase() + campaign.slice(1);
-        favicon.href = `assets/favicons/${campaignName}_Favicon.png`;
-      }
-    })();
-  </script>
+  
   <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>

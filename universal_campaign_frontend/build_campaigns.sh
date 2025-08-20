@@ -21,13 +21,17 @@ do
 
   if [ -f "$CONFIG_FILE" ]; then
     SITE_TITLE=$(jq -r '.content.siteTitle' "$CONFIG_FILE")
+    FAVICON_PATH=$(jq -r '.content.faviconImagePath' "$CONFIG_FILE")
     echo "Site title: $SITE_TITLE"
+    echo "Favicon path: $FAVICON_PATH"
 
     # Restore original index.html for modification
     cp "$INDEX_FILE_BACKUP" "$INDEX_FILE"
     
     # Replace title
     sed -i "s|<title>.*</title>|<title>$SITE_TITLE</title>|" "$INDEX_FILE"
+    # Replace favicon link
+    sed -i "s|<link id=\"favicon\".*/>|<link id=\"favicon\" rel=\"icon\" type=\"image/png\" href=\"$FAVICON_PATH\"/>|" "$INDEX_FILE"
   fi
 
   flutter build web --release
