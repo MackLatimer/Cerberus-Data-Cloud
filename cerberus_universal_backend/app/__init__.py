@@ -36,7 +36,10 @@ def create_app(config_name_override: str = None) -> Flask:
 
     CORS(app, resources={
         r"/api/v1/*": {
-            "origins": app.config["CORS_ORIGINS"]
+            "origins": app.config["CORS_ORIGINS"],
+            "methods": ["GET", "HEAD", "POST", "OPTIONS", "PUT", "DELETE"],
+            "allow_headers": ["Content-Type", "Authorization"],
+            "expose_headers": ["Content-Type", "Authorization"],
         }
     }, supports_credentials=True)
 
