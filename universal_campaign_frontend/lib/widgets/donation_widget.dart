@@ -373,12 +373,12 @@ class _DonationWidgetState extends State<DonationWidget> {
         'email': billingDetails.email,
         'phone': billingDetails.phone,
         'address': {
-          'line1': billingDetails.address.line1,
-          'line2': billingDetails.address.line2,
-          'city': billingDetails.address.city,
-          'state': billingDetails.address.state,
-          'postal_code': billingDetails.address.postalCode,
-          'country': billingDetails.address.country,
+          'line1': billingDetails.address?.line1 ?? '',
+          'line2': billingDetails.address?.line2 ?? '',
+          'city': billingDetails.address?.city ?? '',
+          'state': billingDetails.address?.state ?? '',
+          'postal_code': billingDetails.address?.postalCode ?? '',
+          'country': billingDetails.address?.country ?? '',
         }
       }
     });
