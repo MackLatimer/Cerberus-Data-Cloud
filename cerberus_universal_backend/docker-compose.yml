@@ -20,6 +20,7 @@ services:
       - DB_PASS=testpass
       - DB_NAME=testdb
       - DB_CONNECTION_NAME=test-connection
+      - GCP_PROJECT=cerberus-data-cloud
     command: >
       sh -c "
       flask db upgrade &&
@@ -35,4 +36,4 @@ services:
       - '5432:5432'
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/01-init.sql
-      - ./new_database_schema.sql:/docker-entrypoint-initdb.d/02-schema.sql
+      - ./database_schema.sql:/docker-entrypoint-initdb.d/02-schema.sql

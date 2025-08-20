@@ -10,7 +10,9 @@ def access_secret_version(secret_id, version_id="latest"):
     """Access the payload for the given secret version."""
     try:
         client = secretmanager.SecretManagerServiceClient()
-        credentials, project_id = google.auth.default()
+        project_id = os.environ.get("GCP_PROJECT")
+        if not project_id:
+            credentials, project_id = google.auth.default()
         name = f"projects/{project_id}/secrets/{secret_id}/versions/{version_id}"
         response = client.access_secret_version(name=name)
         return response.payload.data.decode('UTF-8')
