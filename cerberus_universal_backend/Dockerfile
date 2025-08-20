@@ -56,6 +56,7 @@ COPY --from=builder /venv /venv
 # Copy only the necessary application code
 COPY --chown=appuser:appgroup app/ ./app/
 COPY --chown=appuser:appgroup run.py .
+COPY --chown=appuser:appgroup check_db.py .
 COPY --chown=appuser:appgroup migrations/ ./migrations/
 COPY --chown=appuser:appgroup migrations/alembic.ini migrations/
 
