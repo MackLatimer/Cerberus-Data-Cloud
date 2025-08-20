@@ -10,7 +10,7 @@ services:
       - '8080:8080'
     environment:
       - FLASK_ENV=development
-      - DATABASE_URL=postgresql+psycopg://test_user:test_password@db:5432/test_db
+      - DATABASE_URL=postgresql+pg8000://test_user:test_password@db:5432/test_db
       - FLASK_SECRET_KEY=a_very_secret_and_secure_key_that_is_not_this_one
       - PGCRYPTO_SECRET_KEY=a_very_secret_pgcrypto_key
       - STRIPE_SECRET_KEY=sk_test_123
