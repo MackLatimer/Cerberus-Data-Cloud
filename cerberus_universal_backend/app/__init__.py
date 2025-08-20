@@ -31,6 +31,19 @@ def create_app(config_name_override: str = None) -> Flask:
     app = Flask(__name__)
     app.config.from_object(get_config_by_name(effective_config_name))
 
+    from flask import request # Added for OPTIONS handler
+
+    @app.before_request
+    def handle_options_requests():
+        if request.method == 'OPTIONS':
+            headers = {
+                'Access-Control-Allow-Origin': request.headers.get('Origin', '*'),
+                'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+                'Access-Control-Allow-Headers': request.headers.get('Access-Control-Request-Headers', 'Content-Type, Authorization'),
+                'Access-Control-Max-Age': '86400', # Cache preflight for 24 hours
+            }
+            return '', 200, headers
+
     print(f"DEBUG: Effective config name: {effective_config_name}")
     print(f"DEBUG: Current config name (from env): {current_config_name}")
 

@@ -13,7 +13,7 @@ import 'package:universal_campaign_frontend/pages/issues_page.dart';
 import 'package:universal_campaign_frontend/pages/privacy_policy_page.dart';
 import 'package:universal_campaign_frontend/providers/campaign_provider.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:web/web.dart' as web;
+
 
 import 'package:universal_campaign_frontend/locator.dart';
 import 'package:universal_campaign_frontend/services/config_service.dart';
@@ -83,9 +83,7 @@ class MyApp extends StatelessWidget {
   }
 
   Widget buildApp(BuildContext context, CampaignConfig config) {
-    // Update favicon
-    final favicon = web.document.getElementById('favicon') as web.HTMLLinkElement;
-    favicon.href = config.content.faviconImagePath;
+    
 
     final router = GoRouter(
       initialLocation: config.content.launchStatus ? '/home' : '/coming-soon',
