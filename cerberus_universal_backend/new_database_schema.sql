@@ -2,11 +2,37 @@
 CREATE EXTENSION IF NOT EXISTS postgis;
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
+-- Create ENUM types
+CREATE TYPE source_type_enum AS ENUM('Manual', 'API', 'Import');
+CREATE TYPE gender_enum AS ENUM('Male', 'Female', 'Non-binary', 'Other', 'Unknown');
+CREATE TYPE income_bracket_enum AS ENUM('Low', 'Middle', 'High', 'Unknown');
+CREATE TYPE registration_status_enum AS ENUM('Active', 'Inactive', 'Purged');
+CREATE TYPE preferred_contact_method_enum AS ENUM('Email', 'Phone', 'Mail', 'SocialMedia', 'None');
+CREATE TYPE verification_status_enum AS ENUM('Verified', 'Pending', 'Invalid');
+CREATE TYPE enrichment_status_enum AS ENUM('Pending', 'Enriched', 'Failed');
+CREATE TYPE property_type_enum AS ENUM('Residential', 'Commercial', 'Mixed', 'Vacant');
+CREATE TYPE address_type_enum AS ENUM('Home', 'Work', 'Mailing', 'Other');
+CREATE TYPE occupancy_status_enum AS ENUM('Owner', 'Renter', 'Temporary', 'Unknown');
+CREATE TYPE email_type_enum AS ENUM('Personal', 'Work', 'Other');
+CREATE TYPE phone_type_enum AS ENUM('Mobile', 'Home', 'Work', 'Other');
+CREATE TYPE payment_type_enum AS ENUM('CreditCard', 'BankAccount', 'PayPal', 'Other');
+CREATE TYPE voting_method_enum AS ENUM('InPerson', 'Mail', 'Absentee', 'Other');
+CREATE TYPE survey_channel_enum AS ENUM('Online', 'Phone', 'InPerson', 'Mail');
+CREATE TYPE completion_status_enum AS ENUM('Complete', 'Partial', 'Abandoned');
+CREATE TYPE relationship_type_enum AS ENUM('Family', 'Spouse', 'Friend', 'Colleague', 'Other');
+CREATE TYPE district_type_enum AS ENUM('Federal', 'State', 'Local', 'Special');
+CREATE TYPE campaign_type_enum AS ENUM('Local', 'State', 'Federal', 'Issue');
+CREATE TYPE interaction_type_enum AS ENUM('ContactForm', 'Donation', 'Endorsement', 'Volunteer', 'Other');
+CREATE TYPE payment_status_enum AS ENUM('succeeded', 'pending', 'failed', 'requires_payment_method', 'requires_confirmation');
+CREATE TYPE merge_method_enum AS ENUM('Manual', 'Automated');
+CREATE TYPE action_type_enum AS ENUM('INSERT', 'UPDATE', 'DELETE');
+CREATE TYPE backup_type_enum AS ENUM('Full', 'Incremental', 'WAL');
+
 -- 1. Data Sources
 CREATE TABLE data_sources (
     source_id SERIAL PRIMARY KEY,
     source_name VARCHAR(255),
-    source_type ENUM('Manual', 'API', 'Import') DEFAULT 'Manual',
+    source_type source_type_enum DEFAULT 'Manual',
     api_endpoint VARCHAR(255),
     import_date DATE,
     description TEXT,
@@ -20,20 +46,20 @@ CREATE TABLE persons (
     first_name VARCHAR(255),
     last_name VARCHAR(255),
     date_of_birth DATE,
-    gender ENUM('Male', 'Female', 'Non-binary', 'Other', 'Unknown'),
+    gender gender_enum,
     party_affiliation VARCHAR(100),
     ethnicity VARCHAR(100),
-    income_bracket ENUM('Low', 'Middle', 'High', 'Unknown'),
+    income_bracket income_bracket_enum,
     education_level VARCHAR(100),
     voter_propensity_score INT CHECK (voter_propensity_score BETWEEN 0 AND 100),
-    registration_status ENUM('Active', 'Inactive', 'Purged') DEFAULT 'Active',
+    registration_status registration_status_enum DEFAULT 'Active',
     status_change_date DATE,
     consent_opt_in BOOLEAN DEFAULT FALSE,
     duplicate_flag BOOLEAN DEFAULT FALSE,
     last_contact_date DATE,
     ml_tags JSONB,
     change_history JSONB,
-    preferred_contact_method ENUM('Email', 'Phone', 'Mail', 'SocialMedia', 'None'),
+    preferred_contact_method preferred_contact_method_enum,
     language_preference VARCHAR(50),
     accessibility_needs TEXT,
     last_updated_by VARCHAR(255),
@@ -68,7 +94,7 @@ CREATE TABLE person_identifiers (
     confidence_score INT DEFAULT 100 CHECK (confidence_score BETWEEN 0 AND 100),
     issue_date DATE,
     expiration_date DATE,
-    verification_status ENUM('Verified', 'Pending', 'Invalid') DEFAULT 'Pending',
+    verification_status verification_status_enum DEFAULT 'Pending',
     source_id INT,
     source VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -95,8 +121,8 @@ CREATE TABLE addresses (
     parent_address_id INT,
     metadata JSONB,
     change_history JSONB,
-    enrichment_status ENUM('Pending', 'Enriched', 'Failed') DEFAULT 'Pending',
-    property_type ENUM('Residential', 'Commercial', 'Mixed', 'Vacant'),
+    enrichment_status enrichment_status_enum DEFAULT 'Pending',
+    property_type property_type_enum,
     delivery_point_code VARCHAR(10),
     last_validated_date DATE,
     source_id INT,
@@ -113,12 +139,12 @@ CREATE TABLE person_addresses (
     person_address_id SERIAL PRIMARY KEY,
     person_id INT NOT NULL,
     address_id INT NOT NULL,
-    address_type ENUM('Home', 'Work', 'Mailing', 'Other'),
+    address_type address_type_enum,
     confidence_score INT DEFAULT 100 CHECK (confidence_score BETWEEN 0 AND 100),
     is_current BOOLEAN DEFAULT TRUE,
     start_date DATE,
     end_date DATE,
-    occupancy_status ENUM('Owner', 'Renter', 'Temporary', 'Unknown') DEFAULT 'Unknown',
+    occupancy_status occupancy_status_enum DEFAULT 'Unknown',
     move_in_date DATE,
     source_id INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -134,7 +160,7 @@ CREATE TABLE person_emails (
     email_id SERIAL PRIMARY KEY,
     person_id INT NOT NULL,
     email VARCHAR(255) UNIQUE,
-    email_type ENUM('Personal', 'Work', 'Other'),
+    email_type email_type_enum,
     confidence_score INT DEFAULT 100 CHECK (confidence_score BETWEEN 0 AND 100),
     is_verified BOOLEAN DEFAULT FALSE,
     source_id INT,
@@ -149,7 +175,7 @@ CREATE TABLE person_phones (
     phone_id SERIAL PRIMARY KEY,
     person_id INT NOT NULL,
     phone_number VARCHAR(50) UNIQUE,
-    phone_type ENUM('Mobile', 'Home', 'Work', 'Other'),
+    phone_type phone_type_enum,
     confidence_score INT DEFAULT 100 CHECK (confidence_score BETWEEN 0 AND 100),
     is_verified BOOLEAN DEFAULT FALSE,
     source_id INT,
@@ -193,7 +219,7 @@ CREATE TABLE person_employers (
 CREATE TABLE person_payment_info (
     payment_id SERIAL PRIMARY KEY,
     person_id INT NOT NULL,
-    payment_type ENUM('CreditCard', 'BankAccount', 'PayPal', 'Other'),
+    payment_type payment_type_enum,
     details JSONB,  -- Encrypt: pgp_sym_encrypt
     confidence_score INT DEFAULT 100 CHECK (confidence_score BETWEEN 0 AND 100),
     source_id INT,
@@ -224,7 +250,7 @@ CREATE TABLE voter_history (
     election_date DATE,
     election_type VARCHAR(100),
     voted BOOLEAN,
-    voting_method ENUM('InPerson', 'Mail', 'Absentee', 'Other'),
+    voting_method voting_method_enum,
     turnout_reason TEXT,
     survey_link_id INT,
     details JSONB,
@@ -232,10 +258,8 @@ CREATE TABLE voter_history (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (person_id) REFERENCES persons(person_id) ON DELETE CASCADE,
-    FOREIGN KEY (survey_link_id) REFERENCES survey_results(survey_id),
     FOREIGN KEY (source_id) REFERENCES data_sources(source_id)
-) PARTITION BY RANGE (election_date);
-CREATE INDEX idx_voter_history_date ON voter_history(election_date);
+);
 
 -- 14. Survey Results
 CREATE TABLE survey_results (
@@ -247,8 +271,8 @@ CREATE TABLE survey_results (
     search_vector TSVECTOR,
     confidence_score INT DEFAULT 100 CHECK (confidence_score BETWEEN 0 AND 100),
     response_time INT,
-    survey_channel ENUM('Online', 'Phone', 'InPerson', 'Mail'),
-    completion_status ENUM('Complete', 'Partial', 'Abandoned') DEFAULT 'Complete',
+    survey_channel survey_channel_enum,
+    completion_status completion_status_enum DEFAULT 'Complete',
     source_id INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -271,7 +295,7 @@ CREATE TABLE person_relationships (
     relationship_id SERIAL PRIMARY KEY,
     person_id1 INT NOT NULL,
     person_id2 INT NOT NULL,
-    relationship_type ENUM('Family', 'Spouse', 'Friend', 'Colleague', 'Other'),
+    relationship_type relationship_type_enum,
     details TEXT,
     confidence_score INT DEFAULT 100 CHECK (confidence_score BETWEEN 0 AND 100),
     source_id INT,
@@ -287,7 +311,7 @@ CREATE TABLE person_relationships (
 CREATE TABLE districts (
     district_id SERIAL PRIMARY KEY,
     district_name VARCHAR(255),
-    district_type ENUM('Federal', 'State', 'Local', 'Special'),
+    district_type district_type_enum,
     boundaries JSONB,
     geom GEOMETRY(MULTIPOLYGON, 4326),
     district_code VARCHAR(50),
@@ -321,7 +345,7 @@ CREATE TABLE campaigns (
     campaign_name VARCHAR(255),
     start_date DATE,
     end_date DATE,
-    campaign_type ENUM('Local', 'State', 'Federal', 'Issue'),
+    campaign_type campaign_type_enum,
     details JSONB,
     source_id INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -334,7 +358,7 @@ CREATE TABLE person_campaign_interactions (
     interaction_id SERIAL PRIMARY KEY,
     person_id INT NOT NULL,
     campaign_id INT NOT NULL,
-    interaction_type ENUM('ContactForm', 'Donation', 'Endorsement', 'Volunteer', 'Other'),
+    interaction_type interaction_type_enum,
     interaction_date DATE,
     amount DECIMAL(10,2),
     follow_up_needed BOOLEAN DEFAULT FALSE,
@@ -382,7 +406,7 @@ CREATE TABLE donations (
     id SERIAL PRIMARY KEY,
     amount DECIMAL(10,2) NOT NULL,
     currency VARCHAR(3) DEFAULT 'USD',
-    payment_status ENUM('succeeded', 'pending', 'failed', 'requires_payment_method', 'requires_confirmation') DEFAULT 'pending',
+    payment_status payment_status_enum DEFAULT 'pending',
     stripe_payment_intent_id VARCHAR(255) UNIQUE NOT NULL,
     first_name VARCHAR(255),
     last_name VARCHAR(255),
@@ -421,7 +445,7 @@ CREATE TABLE person_merges (
     merge_date DATE DEFAULT CURRENT_DATE,
     merge_reason TEXT,
     merge_confidence INT CHECK (merge_confidence BETWEEN 0 AND 100),
-    merge_method ENUM('Manual', 'Automated') DEFAULT 'Manual',
+    merge_method merge_method_enum DEFAULT 'Manual',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (merged_from_person_id) REFERENCES persons(person_id),
     FOREIGN KEY (merged_to_person_id) REFERENCES persons(person_id)
@@ -432,7 +456,7 @@ CREATE TABLE audit_logs (
     log_id SERIAL PRIMARY KEY,
     table_name VARCHAR(100),
     record_id INT,
-    action_type ENUM('INSERT', 'UPDATE', 'DELETE'),
+    action_type action_type_enum,
     changed_by_user VARCHAR(255),
     ip_address VARCHAR(45),
     session_id VARCHAR(100),
@@ -456,11 +480,11 @@ CREATE TRIGGER donations_audit AFTER UPDATE ON donations FOR EACH ROW EXECUTE FU
 -- 25. Backup Logs
 CREATE TABLE backup_logs (
     backup_id SERIAL PRIMARY KEY,
-    backup_type ENUM('Full', 'Incremental', 'WAL'),
+    backup_type backup_type_enum,
     backup_location VARCHAR(255),
     backup_size BIGINT,
     backup_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    status ENUM('Success', 'Failed') DEFAULT 'Success',
+    status VARCHAR(50) DEFAULT 'Success',
     retention_expiry_date DATE,
     encryption_status BOOLEAN DEFAULT FALSE
 );

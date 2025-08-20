@@ -507,3 +507,20 @@ CREATE TABLE subscriptions (
     active BOOLEAN DEFAULT TRUE,
     last_checked TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Insert a default data source
+INSERT INTO data_sources (source_id, source_name, source_type, description) VALUES
+(1, 'Manual Entry', 'Manual', 'Default source for manually entered data') ON CONFLICT (source_id) DO NOTHING;
+
+-- Insert campaigns
+INSERT INTO campaigns (campaign_id, campaign_name, start_date, end_date, campaign_type, details, source_id) VALUES
+(1, 'Blair', '2023-01-01', '2023-12-31', 'Local', '{}', 1),
+(2, 'Cox', '2023-01-01', '2023-12-31', 'Local', '{}', 1),
+(3, 'Emmons', '2023-01-01', '2023-12-31', 'Local', '{}', 1),
+(4, 'Gauntt', '2023-01-01', '2023-12-31', 'Local', '{}', 1),
+(5, 'Mintz', '2023-01-01', '2023-12-31', 'Local', '{}', 1),
+(6, 'Tice', '2023-01-01', '2023-12-31', 'Local', '{}', 1),
+(7, 'Tulloch', '2023-01-01', '2023-12-31', 'Local', '{}', 1),
+(8, 'Leudeke', '2023-01-01', '2023-12-31', 'Local', '{}', 1),
+(9, 'Whitson', '2023-01-01', '2023-12-31', 'Local', '{}', 1)
+ON CONFLICT (campaign_id) DO NOTHING;
