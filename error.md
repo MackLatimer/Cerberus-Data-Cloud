@@ -1,9 +1,9 @@
 Already have image (with digest): gcr.io/google.com/cloudsdktool/cloud-sdk
 Hit:1 http://deb.debian.org/debian bookworm InRelease
 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
-Hit:3 http://packages.cloud.google.com/apt cloud-sdk-bookworm InRelease
-Get:4 http://deb.debian.org/debian-security bookworm-security InRelease [48.0 kB]
-Fetched 103 kB in 0s (269 kB/s)
+Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [48.0 kB]
+Hit:4 http://packages.cloud.google.com/apt cloud-sdk-bookworm InRelease
+Fetched 103 kB in 0s (246 kB/s)
 Reading package lists...
 Reading package lists...
 Building dependency tree...
@@ -701,7 +701,7 @@ Get:448 http://deb.debian.org/debian bookworm/main amd64 x11-xserver-utils amd64
 Get:449 http://deb.debian.org/debian bookworm/main amd64 libegl1 amd64 1.6.0-1 [33.7 kB]
 Get:450 http://deb.debian.org/debian bookworm/main amd64 zutty amd64 0.14.0.20230218+dfsg1-1 [177 kB]
 debconf: delaying package configuration, since apt-utils is not installed
-Fetched 33.2 MB in 2s (20.0 MB/s)
+Fetched 33.2 MB in 1s (40.4 MB/s)
 Selecting previously unselected package node-fast-deep-equal.
 (Reading database ... 
 Preparing to unpack .../000-node-fast-deep-equal_3.1.3-3_all.deb ...
@@ -2522,102 +2522,4 @@ added 645 packages in 3m
 75 packages are looking for funding
   run `npm fund` for details
 Building campaign: emmons
-Downloading Web SDK...                                           2,681ms
-Resolving dependencies...
-Downloading packages...
-  characters 1.4.0 (1.4.1 available)
-  flutter_lints 3.0.2 (6.0.0 available)
-  freezed_annotation 2.4.4 (3.1.0 available)
-  get_it 7.7.0 (8.2.0 available)
-  go_router 14.8.1 (16.2.0 available)
-> leak_tracker 11.0.1 (was 10.0.9)
-> leak_tracker_flutter_testing 3.0.10 (was 3.0.9)
-> leak_tracker_testing 3.0.2 (was 3.0.1)
-  lints 3.0.0 (6.0.0 available)
-  material_color_utilities 0.11.1 (0.13.0 available)
-  meta 1.16.0 (1.17.0 available)
-  provider 6.1.5 (6.1.5+1 available)
-> test_api 0.7.6 (was 0.7.4) (0.7.7 available)
-> vector_math 2.2.0 (was 2.1.4)
-  vm_service 15.0.0 (15.0.2 available)
-Changed 5 dependencies!
-11 packages have newer versions incompatible with dependency constraints.
-Try `flutter pub outdated` for more information.
-Compiling lib/main.dart for the Web...                          
-Wasm dry run succeeded. Consider building and testing your application with the `--wasm` flag. See docs for more info: https://docs.flutter.dev/platform-integration/web/wasm
-Use --no-wasm-dry-run to disable these warnings.
-Target dart2js failed: ProcessException: Process exited abnormally with exit code 1:
-lib/widgets/donation_widget.dart:376:43:
-Error: Property 'line1' cannot be accessed on 'Address?' because it is potentially null.
- - 'Address' is from 'package:stripe_platform_interface/src/models/address.dart' ('/builder/home/.pub-cache/hosted/pub.dev/stripe_platform_interface-11.5.0/lib/src/models/address.dart').
-          'line1': billingDetails.address.line1,
-                                          ^^^^^
-lib/widgets/donation_widget.dart:377:43:
-Error: Property 'line2' cannot be accessed on 'Address?' because it is potentially null.
- - 'Address' is from 'package:stripe_platform_interface/src/models/address.dart' ('/builder/home/.pub-cache/hosted/pub.dev/stripe_platform_interface-11.5.0/lib/src/models/address.dart').
-          'line2': billingDetails.address.line2,
-                                          ^^^^^
-lib/widgets/donation_widget.dart:378:42:
-Error: Property 'city' cannot be accessed on 'Address?' because it is potentially null.
- - 'Address' is from 'package:stripe_platform_interface/src/models/address.dart' ('/builder/home/.pub-cache/hosted/pub.dev/stripe_platform_interface-11.5.0/lib/src/models/address.dart').
-          'city': billingDetails.address.city,
-                                         ^^^^
-lib/widgets/donation_widget.dart:379:43:
-Error: Property 'state' cannot be accessed on 'Address?' because it is potentially null.
- - 'Address' is from 'package:stripe_platform_interface/src/models/address.dart' ('/builder/home/.pub-cache/hosted/pub.dev/stripe_platform_interface-11.5.0/lib/src/models/address.dart').
-          'state': billingDetails.address.state,
-                                          ^^^^^
-lib/widgets/donation_widget.dart:380:49:
-Error: Property 'postalCode' cannot be accessed on 'Address?' because it is potentially null.
- - 'Address' is from 'package:stripe_platform_interface/src/models/address.dart' ('/builder/home/.pub-cache/hosted/pub.dev/stripe_platform_interface-11.5.0/lib/src/models/address.dart').
-          'postal_code': billingDetails.address.postalCode,
-                                                ^^^^^^^^^^
-lib/widgets/donation_widget.dart:381:45:
-Error: Property 'country' cannot be accessed on 'Address?' because it is potentially null.
- - 'Address' is from 'package:stripe_platform_interface/src/models/address.dart' ('/builder/home/.pub-cache/hosted/pub.dev/stripe_platform_interface-11.5.0/lib/src/models/address.dart').
-          'country': billingDetails.address.country,
-                                            ^^^^^^^
-Error: Compilation failed.
-  Command: /flutter/bin/cache/dart-sdk/bin/dart compile js --platform-binaries=/flutter/bin/cache/flutter_web_sdk/kernel --invoker=flutter_tool -Ddart.vm.product=true -DFLUTTER_VERSION=3.35.1 -DFLUTTER_CHANNEL=[user-branch] -DFLUTTER_GIT_URL=unknown source -DFLUTTER_FRAMEWORK_REVISION=20f8274939 -DFLUTTER_ENGINE_REVISION=1e9a811bf8 -DFLUTTER_DART_VERSION=3.9.0 -DFLUTTER_WEB_USE_SKIA=true -DFLUTTER_WEB_USE_SKWASM=false -DFLUTTER_WEB_CANVASKIT_URL=https://www.gstatic.com/flutter-canvaskit/1e9a811bf8e70466596bcf0ea3a8b5adb5f17f7f/ --native-null-assertions --no-source-maps -O4 --minify -o /workspace/universal_campaign_frontend/.dart_tool/flutter_build/1d40cdfb8e90e49111765ac076751199/app.dill --packages=/workspace/universal_campaign_frontend/.dart_tool/package_config.json --cfe-only /workspace/universal_campaign_frontend/.dart_tool/flutter_build/1d40cdfb8e90e49111765ac076751199/main.dart
-#0      RunResult.throwException (package:flutter_tools/src/base/process.dart:118:5)
-#1      _DefaultProcessUtils.run (package:flutter_tools/src/base/process.dart:344:19)
-<asynchronous suspension>
-#2      Dart2JSTarget.build (package:flutter_tools/src/build_system/targets/web.dart:204:5)
-<asynchronous suspension>
-#3      _BuildInstance._invokeInternal (package:flutter_tools/src/build_system/build_system.dart:873:9)
-<asynchronous suspension>
-#4      Future.wait.<anonymous closure> (dart:async/future.dart:525:21)
-<asynchronous suspension>
-#5      _BuildInstance.invokeTarget (package:flutter_tools/src/build_system/build_system.dart:811:32)
-<asynchronous suspension>
-#6      Future.wait.<anonymous closure> (dart:async/future.dart:525:21)
-<asynchronous suspension>
-#7      _BuildInstance.invokeTarget (package:flutter_tools/src/build_system/build_system.dart:811:32)
-<asynchronous suspension>
-#8      FlutterBuildSystem.build (package:flutter_tools/src/build_system/build_system.dart:631:16)
-<asynchronous suspension>
-#9      WebBuilder.buildWeb (package:flutter_tools/src/web/compile.dart:90:34)
-<asynchronous suspension>
-#10     BuildWebCommand.runCommand (package:flutter_tools/src/commands/build_web.dart:281:5)
-<asynchronous suspension>
-#11     FlutterCommand.run.<anonymous closure> (package:flutter_tools/src/runner/flutter_command.dart:1581:27)
-<asynchronous suspension>
-#12     AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:154:19)
-<asynchronous suspension>
-#13     CommandRunner.runCommand (package:args/command_runner.dart:212:13)
-<asynchronous suspension>
-#14     FlutterCommandRunner.runCommand.<anonymous closure> (package:flutter_tools/src/runner/flutter_command_runner.dart:503:9)
-<asynchronous suspension>
-#15     AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:154:19)
-<asynchronous suspension>
-#16     FlutterCommandRunner.runCommand (package:flutter_tools/src/runner/flutter_command_runner.dart:438:5)
-<asynchronous suspension>
-#17     run.<anonymous closure>.<anonymous closure> (package:flutter_tools/runner.dart:98:11)
-<asynchronous suspension>
-#18     AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:154:19)
-<asynchronous suspension>
-#19     main (package:flutter_tools/executable.dart:101:3)
-<asynchronous suspension>
-
-Compiling lib/main.dart for the Web...                             36.3s
-Error: Failed to compile application for the Web.
+./build_campaigns.sh: 23: jq: not found
