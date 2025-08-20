@@ -8,7 +8,7 @@ from ..utils.security import encrypt_data, decrypt_data
 
 donate_bp = Blueprint('donate_bp', __name__, url_prefix='/api/v1/donate')
 
-@donate_bp.route('/create-payment-intent', methods=['POST'])
+@donate_bp.route('/create-payment-intent', methods=['POST', 'OPTIONS'])
 def create_payment_intent():
     data = request.get_json()
     amount = data.get('amount')

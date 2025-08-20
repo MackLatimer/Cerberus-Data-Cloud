@@ -361,7 +361,7 @@ class _DonationWidgetState extends State<DonationWidget> {
       throw Exception('Campaign configuration is not loaded.');
     }
 
-    final url = Uri.parse('${config.apiBaseUrl}/api/v1/donate/create-payment-intent');
+    final url = Uri.parse('${config.apiBaseUrl}/donate/create-payment-intent');
 
     final body = json.encode({
       'amount': amount,
