@@ -59,7 +59,7 @@ steps:
   args:
     - '-c'
     - |
-      apt-get update && apt-get install -y nodejs npm unzip
+      apt-get update && apt-get install -y nodejs npm unzip jq
       npm install -g firebase-tools@13.11.2
   waitFor: ['Install and Cache Flutter SDK']
 
@@ -71,7 +71,7 @@ steps:
     - '-c'
     - |
       export PATH="/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-      apt-get update && apt-get install -y nodejs npm unzip
+      apt-get update && apt-get install -y nodejs npm unzip jq
       npm install -g firebase-tools@13.11.2
       chmod +x build_campaigns.sh
       ./build_campaigns.sh
