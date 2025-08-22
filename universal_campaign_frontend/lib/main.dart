@@ -24,9 +24,6 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Set your Stripe publishable key
-  Stripe.publishableKey = 'pk_test_YOUR_PUBLISHABLE_KEY'; // Replace with your key
-  await Stripe.instance.applySettings();
   setupLocator();
   setUrlStrategy(const HashUrlStrategy());
   runApp(
@@ -78,6 +75,8 @@ class MyApp extends StatelessWidget {
         }
 
         final config = provider.campaignConfig!;
+        Stripe.publishableKey = config.stripePublicKey;
+        Stripe.instance.applySettings();
         return buildApp(context, config);
       },
     );
