@@ -480,7 +480,7 @@ class _StripePaymentScreenState extends State<_StripePaymentScreen> {
       await WebStripe.instance.confirmPaymentElement(
         const ConfirmPaymentElementOptions(
           confirmParams: ConfirmPaymentParams(
-            return_url: 'https://your-return-url.com',
+            return_url: 'https://beaforjp.com/donation-success',
           ),
         ),
       );
