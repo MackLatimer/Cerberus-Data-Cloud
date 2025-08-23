@@ -1,3 +1,4 @@
+import 'package:universal_campaign_frontend/pages/donation_success_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
@@ -109,6 +110,10 @@ class MyApp extends StatelessWidget {
         GoRoute(
           path: '/donate',
           builder: (context, state) => const DonatePage(),
+        ),
+        GoRoute(
+          path: '/donation-success',
+          builder: (context, state) => const DonationSuccessPage(),
         ),
         GoRoute(
           path: '/endorsements',
