@@ -11,8 +11,9 @@
     "secondaryColor": "#ba0020",
     "backgroundColor": "#FFFFFF",
     "textColor": "#000000",
-    "fontFamily": "Montserrat Bold",
+    "fontFamily": "Montserrat",
     "secondaryFontFamily": "Playfair Display",
+    "navBarItemFontSize": 16.0,
     "usePageTransitions": false,
     "issuesSectionTheme": {
       "backgroundColor": "#4e008e",

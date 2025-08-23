@@ -13,6 +13,7 @@
     "textColor": "#000000",
     "fontFamily": "Bebas Neue",
     "secondaryFontFamily": "tinos",
+    "navBarItemFontSize": 16.0,
     "usePageTransitions": false,
     "issuesSectionTheme": {
       "backgroundColor": "#a01124",

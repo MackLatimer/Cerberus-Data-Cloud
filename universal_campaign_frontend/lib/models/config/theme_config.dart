@@ -7,6 +7,7 @@ class ThemeConfig {
   final String textColor;
   final String fontFamily;
   final String secondaryFontFamily;
+  final double navBarItemFontSize;
   final bool usePageTransitions;
   final HomePageSectionTheme issuesSectionTheme;
   final HomePageSectionTheme aboutMeSectionTheme;
@@ -20,6 +21,7 @@ class ThemeConfig {
     required this.textColor,
     required this.fontFamily,
     required this.secondaryFontFamily,
+    required this.navBarItemFontSize,
     required this.usePageTransitions,
     required this.issuesSectionTheme,
     required this.aboutMeSectionTheme,
@@ -35,6 +37,7 @@ class ThemeConfig {
       textColor: json['textColor'] ?? '',
       fontFamily: json['fontFamily'] ?? '',
       secondaryFontFamily: json['secondaryFontFamily'] ?? '',
+      navBarItemFontSize: (json['navBarItemFontSize'] as num?)?.toDouble() ?? 16.0,
       usePageTransitions: json['usePageTransitions'] ?? true,
       issuesSectionTheme: HomePageSectionTheme.fromJson(json['issuesSectionTheme'] ?? {}),
       aboutMeSectionTheme: HomePageSectionTheme.fromJson(json['aboutMeSectionTheme'] ?? {}),

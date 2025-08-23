@@ -91,6 +91,7 @@ class CommonAppBarState extends State<CommonAppBar> {
                 style: textTheme.labelLarge?.copyWith(
                   color: Color(int.parse(widget.config.theme.primaryColor.substring(1, 7), radix: 16) + 0xFF000000),
                   fontWeight: FontWeight.bold,
+                  fontSize: widget.config.theme.navBarItemFontSize,
                 ),
               ),
             ),
@@ -134,6 +135,7 @@ class CommonAppBarState extends State<CommonAppBar> {
                     style: textTheme.titleSmall?.copyWith(
                       color: Color(int.parse(widget.config.theme.primaryColor.substring(1, 7), radix: 16) + 0xFF000000),
                       fontWeight: FontWeight.bold,
+                      fontSize: widget.config.theme.navBarItemFontSize,
                     ),
                   ),
                 ),
@@ -154,6 +156,7 @@ class CommonAppBarState extends State<CommonAppBar> {
                       style: textTheme.titleSmall?.copyWith(
                         color: Color(int.parse(widget.config.theme.primaryColor.substring(1, 7), radix: 16) + 0xFF000000),
                         fontWeight: FontWeight.bold,
+                        fontSize: widget.config.theme.navBarItemFontSize,
                       ),
                     ),
                   ),
