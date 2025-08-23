@@ -103,6 +103,7 @@ def public_create_signup():
         new_interaction = PersonCampaignInteraction(
             person_id=person.person_id,
             campaign_id=campaign_id,
+            user_id=1,
             interaction_type=interaction_type_from_payload,
             interaction_date=datetime.now(timezone.utc).date(), # Changed to .date() for DATE type
             details={'notes': final_interaction_notes} if final_interaction_notes else {'notes': "Website signup.'''"},

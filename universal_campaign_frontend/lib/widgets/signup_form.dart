@@ -48,7 +48,7 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
         'agreed_to_messaging': _agreedToMessaging,
         'agreed_to_emails': _agreedToEmails,
       },
-      'interaction_type': 'Website Signup',
+      'interaction_type': 'ContactForm',
       'notes': 'Signed up via website form. Endorse: $_endorseChecked, Get Involved: $_getInvolvedChecked',
     };
 
