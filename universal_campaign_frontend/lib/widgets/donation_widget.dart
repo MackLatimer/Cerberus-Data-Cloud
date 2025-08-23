@@ -449,8 +449,9 @@ class _StripePaymentScreenState extends State<_StripePaymentScreen> {
               ),
               const SizedBox(height: 16),
               // The PaymentElement is rendered here using the client secret.
-              SizedBox(
+              Container(
                 height: 400,
+                key: const ValueKey('stripe_payment_element'),
                 child: PaymentElement(
                   clientSecret: widget.clientSecret,
                   onCardChanged: (_) {},
