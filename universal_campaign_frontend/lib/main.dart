@@ -21,6 +21,7 @@ import 'package:universal_campaign_frontend/services/config_service.dart';
 
 import 'package:flutter_stripe/flutter_stripe.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
