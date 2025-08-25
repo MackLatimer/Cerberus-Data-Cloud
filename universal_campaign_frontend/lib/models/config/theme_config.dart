@@ -1,5 +1,23 @@
 import 'package:universal_campaign_frontend/models/config/home_page_section_theme.dart';
 
+double _parseNavBarItemFontSize(dynamic value) {
+  if (value is num) {
+    return value.toDouble();
+  } else if (value is String) {
+    switch (value) {
+      case 'largeLabel':
+        return 18.0;
+      case 'mediumLabel':
+        return 16.0;
+      case 'smallLabel':
+        return 14.0;
+      default:
+        return 16.0;
+    }
+  }
+  return 16.0;
+}
+
 class ThemeConfig {
   final String primaryColor;
   final String secondaryColor;
@@ -37,7 +55,7 @@ class ThemeConfig {
       textColor: json['textColor'] ?? '',
       fontFamily: json['fontFamily'] ?? '',
       secondaryFontFamily: json['secondaryFontFamily'] ?? '',
-      navBarItemFontSize: (json['navBarItemFontSize'] as num?)?.toDouble() ?? 16.0,
+      navBarItemFontSize: _parseNavBarItemFontSize(json['navBarItemFontSize']),
       usePageTransitions: json['usePageTransitions'] ?? true,
       issuesSectionTheme: HomePageSectionTheme.fromJson(json['issuesSectionTheme'] ?? {}),
       aboutMeSectionTheme: HomePageSectionTheme.fromJson(json['aboutMeSectionTheme'] ?? {}),
@@ -46,4 +64,3 @@ class ThemeConfig {
     );
   }
 }
-
