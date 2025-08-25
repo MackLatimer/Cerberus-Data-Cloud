@@ -118,6 +118,7 @@ class _DonationWidgetState extends State<DonationWidget> {
         const Text('Choose an amount', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
         const SizedBox(height: 16),
         Wrap(
+          alignment: WrapAlignment.center,
           spacing: 8.0,
           runSpacing: 8.0,
           children: List.generate(_donationAmounts.length, (index) {

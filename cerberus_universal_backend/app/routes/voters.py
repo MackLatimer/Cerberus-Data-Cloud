@@ -59,11 +59,9 @@ def public_create_signup():
             pass # Person already exists, no need to create a new one
         else:
             # Assuming a default data source with source_id = 1 exists
-            default_source_id = 1
             person = Person(
                 first_name=first_name,
                 last_name=last_name,
-                source_id=default_source_id,
                 # Add other fields as necessary from the payload or defaults
             )
             db.session.add(person)
@@ -74,7 +72,6 @@ def public_create_signup():
                     person_id=person.person_id,
                     email=encrypted_email,
                     email_type='Personal', # Default type
-                    source_id=default_source_id
                 )
                 db.session.add(new_person_email)
 
@@ -83,7 +80,6 @@ def public_create_signup():
                     person_id=person.person_id,
                     phone_number=encrypted_phone,
                     phone_type='Mobile', # Default type
-                    source_id=default_source_id
                 )
                 db.session.add(new_person_phone)
 

@@ -13,7 +13,7 @@ class PersonCampaignInteraction(db.Model):
     follow_up_needed = db.Column(db.Boolean, default=False)
     details = db.Column(db.JSON)
     confidence_score = db.Column(db.Integer, default=100)
-    source_id = db.Column(db.Integer)
+    source_id = db.Column(db.Integer, nullable=True)
     created_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp())
     updated_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
 

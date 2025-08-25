@@ -24,7 +24,7 @@ class Person(db.Model):
     language_preference = db.Column(db.String(50))
     accessibility_needs = db.Column(db.String)
     last_updated_by = db.Column(db.String(255))
-    source_id = db.Column(db.Integer)
+    source_id = db.Column(db.Integer, nullable=True)
     created_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp())
     updated_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
 
