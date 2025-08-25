@@ -42,7 +42,7 @@
   },
   "content": {
     "siteTitle": "Curtis Error for County Commissioner",
-    "faviconImagePath": "/assets/favicons/Error_Favicon.png",
+    "faviconImagePath": "favicon.png",
     "launchStatus": false,
     "comingSoonPage": {
       "title": "Our new website is coming soon!",

@@ -13,7 +13,7 @@
     "textColor": "#000000",
     "fontFamily": "Montserrat",
     "secondaryFontFamily": "Playfair Display",
-    "navBarItemFontSize": 16.0,
+    "navBarItemFontSize": "largeLabel",
     "usePageTransitions": false,
     "issuesSectionTheme": {
       "backgroundColor": "#4e008e",
@@ -42,7 +42,7 @@
   },
   "content": {
     "siteTitle": "Bea Cox for JP 4, 2",
-    "faviconImagePath": "assets/favicons/Cox_Favicon.png",
+    "faviconImagePath": "favicon.png",
     "launchStatus": true,
     "comingSoonPage": {
       "title": "Our campaign is launching soon!",

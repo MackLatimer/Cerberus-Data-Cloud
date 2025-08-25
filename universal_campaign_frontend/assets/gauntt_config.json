@@ -42,7 +42,7 @@
   },
   "content": {
     "siteTitle": "Curtis Gauntt for County Commissioner",
-    "faviconImagePath": "/assets/favicons/Gauntt_Favicon.png",
+    "faviconImagePath": "favicon.png",
     "launchStatus": false,
     "comingSoonPage": {
       "title": "Our new website is coming soon!",
